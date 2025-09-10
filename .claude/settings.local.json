@@ -18,7 +18,8 @@
       "Bash(npx supabase:*)",
       "Bash(set SUPABASE_ACCESS_TOKEN=sbp_1a961003734d01b6d0137c0a4a0893238b7a1275)",
       "Bash(vercel env add:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

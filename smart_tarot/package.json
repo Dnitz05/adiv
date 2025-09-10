@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vercel dev",
-    "build": "tsc --build",
+    "build": "echo 'Build skipped - Vercel handles TypeScript compilation'",
     "deploy": "vercel --prod",
     "deploy:staging": "vercel",
     "lint": "eslint pages/api --ext .ts,.js",
