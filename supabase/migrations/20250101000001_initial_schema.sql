@@ -3,8 +3,8 @@
 -- Ultra-Professional Supabase Database Structure
 -- =====================================================================
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Enable UUID extension (using gen_random_uuid for compatibility)
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- =====================================================================
 -- ENUMS
@@ -25,7 +25,7 @@ CREATE TYPE notification_type AS ENUM ('email', 'push', 'marketing');
 
 -- Users table - Core user profiles and preferences
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE,
     name TEXT,
     tier user_tier NOT NULL DEFAULT 'free',
@@ -50,7 +50,7 @@ CREATE TABLE users (
 
 -- Divination sessions - Complete reading sessions with results
 CREATE TABLE sessions (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     technique divination_technique NOT NULL,
     locale TEXT NOT NULL DEFAULT 'en',
@@ -101,7 +101,7 @@ CREATE TABLE user_stats (
 
 -- API usage tracking - Monitor endpoint usage and performance
 CREATE TABLE api_usage (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(id) ON DELETE SET NULL,
     endpoint TEXT NOT NULL,
     method TEXT NOT NULL,
@@ -117,19 +117,8 @@ CREATE TABLE api_usage (
     CONSTRAINT valid_processing_time CHECK (processing_time_ms >= 0)
 );
 
--- User sessions for authentication (Supabase Auth integration)
--- This table is managed by Supabase Auth, we just add our custom columns
-ALTER TABLE auth.users ADD COLUMN IF NOT EXISTS user_tier user_tier DEFAULT 'free';
-ALTER TABLE auth.users ADD COLUMN IF NOT EXISTS preferences JSONB DEFAULT '{
-    "locale": "en",
-    "theme": "auto",
-    "defaultTechnique": null,
-    "notifications": {
-        "email": true,
-        "push": true,
-        "marketing": false
-    }
-}'::jsonb;
+-- Note: auth.users table is managed by Supabase Auth automatically
+-- We use our custom users table instead for additional user data
 
 -- =====================================================================
 -- INDEXES
