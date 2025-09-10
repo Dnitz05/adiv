@@ -1,0 +1,96 @@
+{
+  "version": 2,
+  "name": "smart-divination",
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "env": {
+    "RANDOM_ORG_API_KEY": "@random-org-api-key",
+    "DEEPSEEK_API_KEY": "@deepseek-api-key",
+    "SUPABASE_URL": "@supabase-url",
+    "SUPABASE_ANON_KEY": "@supabase-anon-key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-role-key",
+    "ENABLE_ANALYTICS": "true",
+    "ENABLE_RATE_LIMITING": "true",
+    "ENABLE_REQUEST_SIGNING": "true",
+    "CACHE_MAX_AGE": "300"
+  },
+  "functions": {
+    "pages/api/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 30,
+      "memory": 1024,
+      "regions": ["all"]
+    },
+    "pages/api/draw/**/*.ts": {
+      "runtime": "edge",
+      "regions": ["all"],
+      "maxDuration": 15
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-Requested-With, X-Request-ID, X-Technique"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options", 
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=300, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/api/health",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/tarot/:path*",
+      "destination": "/api/draw/cards/:path*"
+    },
+    {
+      "source": "/api/iching/:path*", 
+      "destination": "/api/draw/coins/:path*"
+    },
+    {
+      "source": "/api/runes/:path*",
+      "destination": "/api/draw/runes/:path*"
+    }
+  ],
+  "regions": ["all"],
+  "cleanUrls": true,
+  "trailingSlash": false
+}

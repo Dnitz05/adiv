@@ -1,0 +1,172 @@
+[
+  {
+    "id": "major_00_fool",
+    "name": "The Fool",
+    "arcana": "Major",
+    "suit": "",
+    "upright": {
+      "en": "New beginnings, innocence, spontaneity, free spirit",
+      "es": "Nuevos comienzos, inocencia, espontaneidad, espíritu libre",
+      "ca": "Nous començaments, innocència, espontaneïtat, esperit lliure"
+    },
+    "reversed": {
+      "en": "Recklessness, taken advantage of, inconsideration, lack of direction",
+      "es": "Imprudencia, aprovecharse, falta de consideración, falta de dirección",
+      "ca": "Imprudència, aprofitar-se, falta de consideració, falta de direcció"
+    },
+    "asset": "assets/cards/major_00_fool.png"
+  },
+  {
+    "id": "major_01_magician",
+    "name": "The Magician",
+    "arcana": "Major",
+    "suit": "",
+    "upright": {
+      "en": "Willpower, desire, creation, manifestation",
+      "es": "Fuerza de voluntad, deseo, creación, manifestación",
+      "ca": "Força de voluntat, desig, creació, manifestació"
+    },
+    "reversed": {
+      "en": "Trickery, illusions, out of touch, lack of energy",
+      "es": "Engaños, ilusiones, desconectado, falta de energía",
+      "ca": "Enganys, il·lusions, desconnectat, falta d'energia"
+    },
+    "asset": "assets/cards/major_01_magician.png"
+  },
+  {
+    "id": "major_02_high_priestess",
+    "name": "The High Priestess",
+    "arcana": "Major",
+    "suit": "",
+    "upright": {
+      "en": "Intuition, sacred knowledge, divine feminine, subconscious mind",
+      "es": "Intuición, conocimiento sagrado, feminino divino, mente subconsciente",
+      "ca": "Intuïció, coneixement sagrat, femení diví, ment subconscient"
+    },
+    "reversed": {
+      "en": "Secrets, disconnected from intuition, withdrawal and silence",
+      "es": "Secretos, desconectado de la intuición, retraimiento y silencio",
+      "ca": "Secrets, desconnectat de la intuïció, retraïment i silenci"
+    },
+    "asset": "assets/cards/major_02_high_priestess.png"
+  },
+  {
+    "id": "major_03_empress",
+    "name": "The Empress",
+    "arcana": "Major",
+    "suit": "",
+    "upright": {
+      "en": "Femininity, beauty, nature, nurturing, abundance",
+      "es": "Feminidad, belleza, naturaleza, cuidado, abundancia",
+      "ca": "Feminitat, bellesa, naturalesa, cura, abundància"
+    },
+    "reversed": {
+      "en": "Creative block, dependence on others, smothering",
+      "es": "Bloqueo creativo, dependencia de otros, asfixia",
+      "ca": "Bloqueig creatiu, dependència dels altres, asfíxia"
+    },
+    "asset": "assets/cards/major_03_empress.png"
+  },
+  {
+    "id": "major_04_emperor",
+    "name": "The Emperor",
+    "arcana": "Major",
+    "suit": "",
+    "upright": {
+      "en": "Authority, establishment, structure, father figure",
+      "es": "Autoridad, establecimiento, estructura, figura paterna",
+      "ca": "Autoritat, establiment, estructura, figura paterna"
+    },
+    "reversed": {
+      "en": "Tyranny, rigidity, coldness, abuse of power",
+      "es": "Tiranía, rigidez, frialdad, abuso de poder",
+      "ca": "Tirania, rigidesa, fredor, abús de poder"
+    },
+    "asset": "assets/cards/major_04_emperor.png"
+  },
+  {
+    "id": "major_05_hierophant",
+    "name": "The Hierophant",
+    "arcana": "Major",
+    "suit": "",
+    "upright": {
+      "en": "Spiritual wisdom, religious beliefs, conformity, tradition",
+      "es": "Sabiduría espiritual, creencias religiosas, conformidad, tradición",
+      "ca": "Saviesa espiritual, creences religioses, conformitat, tradició"
+    },
+    "reversed": {
+      "en": "Personal beliefs, freedom, challenging tradition",
+      "es": "Creencias personales, libertad, desafiar la tradición",
+      "ca": "Creences personals, llibertat, desafiar la tradició"
+    },
+    "asset": "assets/cards/major_05_hierophant.png"
+  },
+  {
+    "id": "minor_wands_ace",
+    "name": "Ace of Wands",
+    "arcana": "Minor",
+    "suit": "Wands",
+    "upright": {
+      "en": "Inspiration, new opportunities, growth, potential",
+      "es": "Inspiración, nuevas oportunidades, crecimiento, potencial",
+      "ca": "Inspiració, noves oportunitats, creixement, potencial"
+    },
+    "reversed": {
+      "en": "Lack of energy, lack of passion, boredom, missed opportunities",
+      "es": "Falta de energía, falta de pasión, aburrimiento, oportunidades perdidas",
+      "ca": "Falta d'energia, falta de passió, avorriment, oportunitats perdudes"
+    },
+    "asset": "assets/cards/minor_wands_ace.png"
+  },
+  {
+    "id": "minor_cups_ace",
+    "name": "Ace of Cups",
+    "arcana": "Minor",
+    "suit": "Cups",
+    "upright": {
+      "en": "Love, new relationships, compassion, creativity",
+      "es": "Amor, nuevas relaciones, compasión, creatividad",
+      "ca": "Amor, noves relacions, compassió, creativitat"
+    },
+    "reversed": {
+      "en": "Self-love, intuition, repressed emotions",
+      "es": "Amor propio, intuición, emociones reprimidas",
+      "ca": "Amor propi, intuïció, emocions reprimides"
+    },
+    "asset": "assets/cards/minor_cups_ace.png"
+  },
+  {
+    "id": "minor_swords_ace",
+    "name": "Ace of Swords",
+    "arcana": "Minor",
+    "suit": "Swords",
+    "upright": {
+      "en": "Breakthrough, clarity, sharp mind, new ideas",
+      "es": "Avance, claridad, mente aguda, nuevas ideas",
+      "ca": "Avanç, claredat, ment aguda, noves idees"
+    },
+    "reversed": {
+      "en": "Confusion, brutal thoughts, chaos, lack of clarity",
+      "es": "Confusión, pensamientos brutales, caos, falta de claridad",
+      "ca": "Confusió, pensaments brutals, caos, falta de claredat"
+    },
+    "asset": "assets/cards/minor_swords_ace.png"
+  },
+  {
+    "id": "minor_pentacles_ace",
+    "name": "Ace of Pentacles",
+    "arcana": "Minor",
+    "suit": "Pentacles",
+    "upright": {
+      "en": "A new financial or career opportunity, manifestation, abundance",
+      "es": "Nueva oportunidad financiera o profesional, manifestación, abundancia",
+      "ca": "Nova oportunitat financera o professional, manifestació, abundància"
+    },
+    "reversed": {
+      "en": "Lost opportunity, lack of planning, bad investment",
+      "es": "Oportunidad perdida, falta de planificación, mala inversión",
+      "ca": "Oportunitat perduda, falta de planificació, mala inversió"
+    },
+    "asset": "assets/cards/minor_pentacles_ace.png"
+  }
+]

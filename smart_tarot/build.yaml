@@ -1,0 +1,45 @@
+# Smart Divination - Professional Build Configuration
+# Supports building 3 separate apps from unified codebase
+
+targets:
+  # Common shared target configuration
+  $default:
+    builders:
+      # Code Generation - Type-safe contracts
+      json_serializable|json_serializable:
+        generate_for:
+          - lib/shared/contracts/**
+          - lib/core/**
+      
+      # Riverpod DI Code Generation
+      riverpod_generator|riverpod_generator:
+        generate_for:
+          - lib/shared/services/**
+          - lib/core/**
+          
+      # Database Generation - Isar Collections
+      isar_generator|isar_generator:
+        generate_for:
+          - lib/shared/database/entities/**
+          
+      # API Client Generation - Retrofit
+      retrofit_generator|retrofit:
+        generate_for:
+          - lib/shared/services/api/**
+
+# Build Performance Optimization
+global_options:
+  # Ultra-fast incremental builds
+  json_serializable|json_serializable:
+    options:
+      explicit_to_json: true
+      field_rename: snake
+      include_if_null: false
+      
+  riverpod_generator|riverpod_generator:
+    options:
+      # Generate keepAlive providers for singletons
+      
+  isar_generator|isar_generator:
+    options:
+      # Generate type adapters for better performance

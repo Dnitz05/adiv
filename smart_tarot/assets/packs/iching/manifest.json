@@ -1,0 +1,280 @@
+{
+  "version": "1.0.0",
+  "technique": "iching",
+  "lastUpdated": "2024-12-20",
+  "compatibilityVersion": "1.0",
+
+  "colorPalette": {
+    "primary": "#DC2626",
+    "primaryContainer": "#FEE2E2",
+    "secondary": "#EF4444",
+    "secondaryContainer": "#FEF2F2",
+    "tertiary": "#F97316",
+    "tertiaryContainer": "#FFF7ED",
+    "surface": "#FFFFFF",
+    "surfaceVariant": "#FEF9F9",
+    "background": "#FFFEFE",
+    "error": "#B91C1C",
+    "onPrimary": "#FFFFFF",
+    "onPrimaryContainer": "#7F1D1D",
+    "onSecondary": "#FFFFFF",
+    "onSecondaryContainer": "#991B1B",
+    "onTertiary": "#FFFFFF",
+    "onTertiaryContainer": "#9A3412",
+    "onSurface": "#1F2937",
+    "onSurfaceVariant": "#6B7280",
+    "onBackground": "#111827",
+    "onError": "#FFFFFF",
+    "outline": "#D1D5DB",
+    "shadow": "#000000",
+    "gradientColors": ["#DC2626", "#EF4444", "#F97316"],
+    "accentColors": {
+      "gold": "#F59E0B",
+      "wisdom": "#B91C1C",
+      "earth": "#92400E"
+    }
+  },
+
+  "assets": {
+    "cardImages": [
+      "hexagrams/hexagram_01_creative.png",
+      "hexagrams/hexagram_02_receptive.png",
+      "hexagrams/hexagram_03_difficulty.png",
+      "hexagrams/hexagram_04_youthful_folly.png",
+      "hexagrams/hexagram_05_waiting.png",
+      "hexagrams/hexagram_06_conflict.png",
+      "hexagrams/hexagram_07_army.png",
+      "hexagrams/hexagram_08_holding_together.png",
+      "hexagrams/hexagram_09_small_taming.png",
+      "hexagrams/hexagram_10_treading.png",
+      "hexagrams/hexagram_11_peace.png",
+      "hexagrams/hexagram_12_standstill.png",
+      "hexagrams/hexagram_13_fellowship.png",
+      "hexagrams/hexagram_14_possession.png",
+      "hexagrams/hexagram_15_modesty.png",
+      "hexagrams/hexagram_16_enthusiasm.png",
+      "hexagrams/hexagram_17_following.png",
+      "hexagrams/hexagram_18_decay.png",
+      "hexagrams/hexagram_19_approach.png",
+      "hexagrams/hexagram_20_contemplation.png",
+      "hexagrams/hexagram_21_biting_through.png",
+      "hexagrams/hexagram_22_grace.png",
+      "hexagrams/hexagram_23_splitting_apart.png",
+      "hexagrams/hexagram_24_return.png",
+      "hexagrams/hexagram_25_innocence.png",
+      "hexagrams/hexagram_26_great_taming.png",
+      "hexagrams/hexagram_27_nourishment.png",
+      "hexagrams/hexagram_28_great_exceeding.png",
+      "hexagrams/hexagram_29_abysmal.png",
+      "hexagrams/hexagram_30_clinging.png",
+      "hexagrams/hexagram_31_influence.png",
+      "hexagrams/hexagram_32_duration.png",
+      "hexagrams/hexagram_33_retreat.png",
+      "hexagrams/hexagram_34_great_power.png",
+      "hexagrams/hexagram_35_progress.png",
+      "hexagrams/hexagram_36_darkening.png",
+      "hexagrams/hexagram_37_family.png",
+      "hexagrams/hexagram_38_opposition.png",
+      "hexagrams/hexagram_39_obstruction.png",
+      "hexagrams/hexagram_40_deliverance.png",
+      "hexagrams/hexagram_41_decrease.png",
+      "hexagrams/hexagram_42_increase.png",
+      "hexagrams/hexagram_43_breakthrough.png",
+      "hexagrams/hexagram_44_coming_to_meet.png",
+      "hexagrams/hexagram_45_gathering.png",
+      "hexagrams/hexagram_46_pushing_upward.png",
+      "hexagrams/hexagram_47_oppression.png",
+      "hexagrams/hexagram_48_well.png",
+      "hexagrams/hexagram_49_revolution.png",
+      "hexagrams/hexagram_50_cauldron.png",
+      "hexagrams/hexagram_51_arousing.png",
+      "hexagrams/hexagram_52_keeping_still.png",
+      "hexagrams/hexagram_53_development.png",
+      "hexagrams/hexagram_54_marrying_maiden.png",
+      "hexagrams/hexagram_55_abundance.png",
+      "hexagrams/hexagram_56_wanderer.png",
+      "hexagrams/hexagram_57_gentle.png",
+      "hexagrams/hexagram_58_joyous.png",
+      "hexagrams/hexagram_59_dispersion.png",
+      "hexagrams/hexagram_60_limitation.png",
+      "hexagrams/hexagram_61_inner_truth.png",
+      "hexagrams/hexagram_62_small_exceeding.png",
+      "hexagrams/hexagram_63_after_completion.png",
+      "hexagrams/hexagram_64_before_completion.png"
+    ],
+    "backgroundImages": [
+      "backgrounds/chinese_calligraphy.jpg",
+      "backgrounds/ancient_wisdom.jpg",
+      "backgrounds/yin_yang_temple.jpg"
+    ],
+    "iconImages": [
+      "icons/yin_yang.png",
+      "icons/trigrams.png",
+      "icons/coins_oracle.png",
+      "icons/bamboo_sticks.png"
+    ],
+    "lottieAnimations": [
+      "animations/coin_toss.json",
+      "animations/wisdom_flow.json",
+      "animations/hexagram_formation.json",
+      "animations/tao_symbol.json"
+    ],
+    "audioAssets": [
+      "audio/coin_drop.mp3",
+      "audio/temple_bell.mp3",
+      "audio/zen_ambient.mp3"
+    ]
+  },
+
+  "content": {
+    "displayName": {
+      "en": "Smart I Ching",
+      "es": "Smart I Ching",
+      "ca": "Smart I Ching"
+    },
+    "description": {
+      "en": "Ancient Chinese wisdom oracle with traditional coin tossing and AI-powered interpretations",
+      "es": "Oráculo de sabiduría china ancestral con lanzamiento tradicional de monedas e interpretaciones IA",
+      "ca": "Oracle de saviesa xinesa ancestral amb llançament tradicional de monedes i interpretacions IA"
+    },
+    "welcomeMessages": {
+      "en": "☯️ Welcome to the ancient wisdom of the I Ching! For over 3,000 years, this oracle has guided seekers through life's changes and decisions. What question shall we explore with the coins of wisdom?",
+      "es": "☯️ ¡Bienvenido a la sabiduría ancestral del I Ching! Durante más de 3,000 años, este oráculo ha guiado a los buscadores a través de los cambios y decisiones de la vida. ¿Qué pregunta exploraremos con las monedas de la sabiduría?",
+      "ca": "☯️ Benvingut a la saviesa ancestral de l'I Ching! Durant més de 3,000 anys, aquest oracle ha guiat els cercadors a través dels canvis i decisions de la vida. Quina pregunta explorarem amb les monedes de la saviesa?"
+    },
+    "ritualMessages": {
+      "en": "🪙 The ancient coins dance in harmony with the Tao... Listening to the eternal wisdom... The hexagram emerges from the cosmic flow...",
+      "es": "🪙 Las monedas ancestrales danzan en armonía con el Tao... Escuchando la sabiduría eterna... El hexagrama emerge del flujo cósmico...",
+      "ca": "🪙 Les monedes ancestrals dancen en harmonia amb el Tao... Escoltant la saviesa eterna... L'hexagrama emergeix del flux còsmic..."
+    },
+    "interpretationPrompts": {
+      "en": "As a master of I Ching wisdom with deep understanding of Chinese philosophy and the Book of Changes, interpret this hexagram reading for someone asking about: {question}.\n\nHexagram received:\n{hexagram}\n{lines}\n{transformation}\n\nProvide a comprehensive interpretation that:\n1. Explains the hexagram's core meaning and symbolism\n2. Interprets the trigrams and their interaction\n3. Addresses changing lines and transformation (if any)\n4. Relates the wisdom to the querent's situation\n5. Offers practical guidance rooted in Taoist philosophy\n6. Suggests contemplation points and actions\n\nDraw from classical I Ching texts while making the wisdom accessible and relevant to modern life. Be profound yet practical.",
+      "es": "Como maestro de la sabiduría del I Ching con profunda comprensión de la filosofía china y el Libro de los Cambios, interpreta esta lectura de hexagrama para alguien que pregunta sobre: {question}.\n\nHexagrama recibido:\n{hexagram}\n{lines}\n{transformation}\n\nProporciona una interpretación integral que:\n1. Explique el significado central y simbolismo del hexagrama\n2. Interprete los trigramas y su interacción\n3. Aborde líneas cambiantes y transformación (si las hay)\n4. Relacione la sabiduría con la situación del consultante\n5. Ofrezca orientación práctica arraigada en filosofía taoísta\n6. Sugiera puntos de contemplación y acciones\n\nExtrae de textos clásicos del I Ching mientras haces la sabiduría accesible y relevante para la vida moderna. Sé profundo pero práctico.",
+      "ca": "Com a mestre de la saviesa de l'I Ching amb profunda comprensió de la filosofia xinesa i el Llibre dels Canvis, interpreta aquesta lectura d'hexagrama per a algú que pregunta sobre: {question}.\n\nHexagrama rebut:\n{hexagram}\n{lines}\n{transformation}\n\nProporcionau una interpretació integral que:\n1. Expliqui el significat central i simbolisme de l'hexagrama\n2. Interpreti els trigrames i la seva interacció\n3. Abordis línies canviants i transformació (si n'hi ha)\n4. Relacioni la saviesa amb la situació del consultant\n5. Ofereixi orientació pràctica arrelada en filosofia taoista\n6. Suggereixi punts de contemplació i accions\n\nExtreu de textos clàssics de l'I Ching mentre fas la saviesa accessible i rellevant per a la vida moderna. Sigues profund però pràctic."
+    },
+    "followUpQuestions": {
+      "en": [
+        "Would you like to explore the changing lines in more detail?",
+        "How does this hexagram's wisdom apply to your current path?",
+        "Are you interested in understanding the trigram relationships better?",
+        "Would you like guidance on timing and when to act on this advice?",
+        "Is there a specific aspect of the transformation you'd like to discuss?"
+      ],
+      "es": [
+        "¿Te gustaría explorar las líneas cambiantes con más detalle?",
+        "¿Cómo se aplica la sabiduría de este hexagrama a tu camino actual?",
+        "¿Te interesa entender mejor las relaciones de los trigramas?",
+        "¿Te gustaría orientación sobre el timing y cuándo actuar con este consejo?",
+        "¿Hay algún aspecto específico de la transformación que te gustaría discutir?"
+      ],
+      "ca": [
+        "T'agradaria explorar les línies canviants amb més detall?",
+        "Com s'aplica la saviesa d'aquest hexagrama al teu camí actual?",
+        "T'interessa entendre millor les relacions dels trigrames?",
+        "T'agradaria orientació sobre el timing i quan actuar amb aquest consell?",
+        "Hi ha algun aspecte específic de la transformació que t'agradaria discutir?"
+      ]
+    },
+    "errorMessages": {
+      "en": "The cosmic flow seems disturbed... Let me realign with the Tao and consult the oracle again.",
+      "es": "El flujo cósmico parece perturbado... Déjame realinearme con el Tao y consultar el oráculo de nuevo.",
+      "ca": "El flux còsmic sembla pertorbat... Deixa'm realinear-me amb el Tao i consultar l'oracle de nou."
+    },
+    "featureDescriptions": {
+      "unlimited_readings": {
+        "en": "Unlimited daily consultations with the oracle",
+        "es": "Consultas diarias ilimitadas con el oráculo",
+        "ca": "Consultes diàries il·limitades amb l'oracle"
+      },
+      "complete_history": {
+        "en": "Complete hexagram history with detailed transformations",
+        "es": "Historial completo de hexagramas con transformaciones detalladas",
+        "ca": "Historial complet d'hexagrames amb transformacions detallades"
+      },
+      "changing_lines": {
+        "en": "Full changing lines analysis and hexagram transformations",
+        "es": "Análisis completo de líneas cambiantes y transformaciones de hexagramas",
+        "ca": "Anàlisi complet de línies canviants i transformacions d'hexagrames"
+      },
+      "classical_texts": {
+        "en": "Access to classical I Ching texts and commentaries",
+        "es": "Acceso a textos clásicos del I Ching y comentarios",
+        "ca": "Accés a textos clàssics de l'I Ching i comentaris"
+      },
+      "yarrow_method": {
+        "en": "Traditional yarrow stalk method simulation",
+        "es": "Simulación del método tradicional de tallos de milenrama",
+        "ca": "Simulació del mètode tradicional de tiges de mil·lenrama"
+      },
+      "timing_guidance": {
+        "en": "Timing and seasonal guidance based on hexagram cycles",
+        "es": "Orientación de tiempo y estacional basada en ciclos de hexagramas",
+        "ca": "Orientació de temps i estacional basada en cicles d'hexagrames"
+      }
+    },
+    "specialContent": {
+      "hexagramDatabase": "Complete 64-hexagram database with classical meanings",
+      "methods": ["coins", "yarrow"],
+      "traditions": ["king_wen", "wilhelm", "blofeld"]
+    }
+  },
+
+  "features": {
+    "freeFeatures": [
+      "Traditional coin method",
+      "7 readings per week",
+      "Basic hexagram interpretations", 
+      "7-day reading history",
+      "Core I Ching wisdom"
+    ],
+    "premiumFeatures": [
+      "Unlimited daily readings",
+      "Changing lines analysis",
+      "Hexagram transformations",
+      "1-year reading history",
+      "Classical text references",
+      "Export readings to PDF"
+    ],
+    "premiumAnnualFeatures": [
+      "All premium features",
+      "Yarrow stalk method",
+      "Seasonal timing guidance",
+      "Advanced trigram analysis",
+      "Historical commentary access"
+    ],
+    "maxSessionsFree": 7,
+    "maxHistoryFree": 7,
+    "spreadsAvailable": {
+      "free": ["single_hexagram"],
+      "premium": ["single_hexagram", "changing_lines"],
+      "premium_annual": ["single_hexagram", "changing_lines", "yarrow_method", "seasonal_timing"]
+    },
+    "specialFeatures": {
+      "hexagramAnimation": true,
+      "triggramBreakdown": true,
+      "philosophicalContext": true,
+      "timingGuidance": true
+    }
+  },
+
+  "metadata": {
+    "appStoreCategory": "Lifestyle", 
+    "contentRating": "4+",
+    "keywords": ["i ching", "chinese", "oracle", "wisdom", "divination", "tao", "philosophy"],
+    "marketingTags": ["Ancient Wisdom", "I Ching Oracle", "Chinese Philosophy"],
+    "supportedLanguages": ["en", "es", "ca"],
+    "minimumOSVersion": {
+      "ios": "14.0",
+      "android": "21"
+    },
+    "recommendedDiskSpace": "120MB",
+    "internetRequired": false,
+    "analyticsEvents": [
+      "hexagram_generated",
+      "reading_completed",
+      "changing_lines_analyzed", 
+      "premium_triggered",
+      "interpretation_rated"
+    ]
+  }
+}
