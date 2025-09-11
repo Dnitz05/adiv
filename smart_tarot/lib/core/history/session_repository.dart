@@ -105,14 +105,16 @@ class SessionRepository {
       totalMessages += session.messages.length;
     }
     
-    final mostUsedTechnique = techniqueCount.entries
-        .reduce((a, b) => a.value > b.value ? a : b)
-        .key;
+    final mostUsedTechnique = techniqueCount.entries.isEmpty
+        ? null
+        : techniqueCount.entries
+            .reduce((a, b) => a.value > b.value ? a : b)
+            .key;
     
     return {
       'total_sessions': totalSessions,
       'total_messages': totalMessages,
-      'most_used_technique': mostUsedTechnique.name,
+      'most_used_technique': mostUsedTechnique?.name,
       'technique_breakdown': techniqueCount.map(
           (key, value) => MapEntry(key.name, value)),
       'first_session': sessions.isEmpty 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum BillingPlan {
   free,
@@ -40,6 +41,9 @@ class BillingService {
 
   Future<void> initialize() async {
     try {
+      // Load saved billing state first
+      await _loadBillingState();
+      
       final bool available = await _inAppPurchase.isAvailable();
       if (!available) {
         throw BillingException('In-app purchases not available on this device');
@@ -164,7 +168,8 @@ class BillingService {
     _planChangeController.add(_currentPlan);
     
     // Save to local storage
-    _saveBillingState();
+    _saveBillingState().catchError((error) => 
+        _errorController.add('Failed to save billing state: $error'));
   }
 
   // Free tier limitations
@@ -183,7 +188,8 @@ class BillingService {
   void recordFreeSession() {
     if (!isPremium) {
       _lastFreeSessionDate = DateTime.now();
-      _saveBillingState();
+      _saveBillingState().catchError((error) => 
+          _errorController.add('Failed to save free session date: $error'));
     }
   }
 
@@ -239,15 +245,48 @@ class BillingService {
     return '20%'; // Placeholder
   }
 
-  // Local storage (simplified - would use SharedPreferences or Isar)
-  void _saveBillingState() {
-    // Save current plan, expiry date, last free session date
-    // Implementation would depend on chosen storage solution
+  // Local storage with SharedPreferences
+  Future<void> _saveBillingState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('billing_plan', _currentPlan.name);
+    if (_premiumExpiryDate != null) {
+      await prefs.setString('premium_expiry', _premiumExpiryDate!.toIso8601String());
+    }
+    if (_lastFreeSessionDate != null) {
+      await prefs.setString('last_free_session', _lastFreeSessionDate!.toIso8601String());
+    }
   }
 
   Future<void> _loadBillingState() async {
-    // Load billing state from local storage
-    // Implementation would depend on chosen storage solution
+    final prefs = await SharedPreferences.getInstance();
+    
+    // Load billing plan
+    final planName = prefs.getString('billing_plan');
+    if (planName != null) {
+      _currentPlan = BillingPlan.values.firstWhere(
+        (plan) => plan.name == planName,
+        orElse: () => BillingPlan.free,
+      );
+    }
+    
+    // Load premium expiry date
+    final expiryString = prefs.getString('premium_expiry');
+    if (expiryString != null) {
+      _premiumExpiryDate = DateTime.parse(expiryString);
+      
+      // Check if premium has expired
+      if (_premiumExpiryDate!.isBefore(DateTime.now())) {
+        _currentPlan = BillingPlan.free;
+        _premiumExpiryDate = null;
+        await _saveBillingState(); // Update storage
+      }
+    }
+    
+    // Load last free session date
+    final lastFreeString = prefs.getString('last_free_session');
+    if (lastFreeString != null) {
+      _lastFreeSessionDate = DateTime.parse(lastFreeString);
+    }
   }
 
   // Premium upgrade prompts

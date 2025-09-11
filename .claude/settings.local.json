@@ -20,7 +20,10 @@
       "Bash(vercel env add:*)",
       "Bash(vercel:*)",
       "Bash(git commit:*)",
-      "WebFetch(domain:smart-divination-dhgbsz2kh-dnitzs-projects.vercel.app)"
+      "WebFetch(domain:smart-divination-dhgbsz2kh-dnitzs-projects.vercel.app)",
+      "Bash(npm run type-check:*)",
+      "WebFetch(domain:smart-divination.vercel.app)",
+      "Bash(flutter:*)"
     ],
     "deny": [],
     "ask": []

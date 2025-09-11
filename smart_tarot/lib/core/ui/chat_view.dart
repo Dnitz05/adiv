@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../shared/models/contracts.dart';
 import '../../shared/services/api_service.dart';
+import '../../shared/infrastructure/app_config.dart';
 import '../chat/chat_orchestrator.dart';
 import '../history/session_repository.dart';
 import 'message_bubble.dart';
@@ -10,7 +11,15 @@ import 'divination_result_widget.dart';
 
 // Providers
 final apiServiceProvider = Provider<ApiService>((ref) {
-  return ApiService(baseUrl: 'YOUR_VERCEL_URL'); // Replace with your URL
+  final config = ref.read(appConfigProvider);
+  final apiService = ApiService(baseUrl: config.apiBaseUrl);
+  
+  // Ensure proper disposal
+  ref.onDispose(() {
+    apiService.dispose();
+  });
+  
+  return apiService;
 });
 
 final sessionRepositoryProvider = Provider<SessionRepository>((ref) {
