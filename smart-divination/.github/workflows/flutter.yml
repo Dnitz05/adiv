@@ -1,0 +1,75 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'smart-divination/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'smart-divination/**'
+
+jobs:
+  flutter-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Flutter version
+        run: flutter --version
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap workspace
+        working-directory: smart-divination
+        run: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          melos bootstrap
+
+      - name: Generate localizations
+        working-directory: smart-divination
+        run: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          melos run gen:l10n
+
+      - name: Analyze
+        working-directory: smart-divination
+        run: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          melos run analyze:all
+
+      - name: Test
+        working-directory: smart-divination
+        run: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          melos run test:all
+
+      - name: Generate coverage
+        working-directory: smart-divination
+        run: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          melos run test:coverage
+
+      - name: Install very_good_coverage
+        run: dart pub global activate very_good_coverage
+
+      - name: Enforce coverage threshold (>=60%)
+        working-directory: smart-divination
+        run: |
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          melos run enforce:coverage
+
