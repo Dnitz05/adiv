@@ -17,7 +17,10 @@
     "type-check": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "gen:db:types:dburl": "supabase gen types typescript --db-url \"$SUPABASE_DB_URL\" --schema public > lib/types/generated/supabase.ts",
+    "gen:db:types:proj": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" --schema public > lib/types/generated/supabase.ts",
+    "gen:db:types": "npm run gen:db:types:dburl"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
