@@ -1,0 +1,68 @@
+name: smart_divination
+repository: https://github.com/smart-divination/monorepo
+
+packages:
+  - apps/**
+  - packages/**
+
+command:
+  version:
+    releaseUrl: true
+  bootstrap:
+    runPubGetInParallel: false
+    hooks:
+      pre: echo "Setting up workspace..."
+      post: echo "Workspace setup complete!"
+  clean:
+    hooks:
+      pre: echo "Cleaning workspace..."
+
+scripts:
+  build:all:
+    run: flutter build apk
+    exec:
+      concurrency: 3
+    packageFilters:
+      dirExists: android
+
+  build:apk:
+    run: flutter build apk --release
+    packageFilters:
+      flutter: true
+      dirExists: android
+
+  build:aab:
+    run: flutter build appbundle --release
+    packageFilters:
+      flutter: true
+      dirExists: android
+
+  build:ios:
+    run: flutter build ios --release --no-codesign
+    packageFilters:
+      flutter: true
+      dirExists: ios
+  
+  test:all:
+    run: flutter test
+    exec:
+      concurrency: 3
+    packageFilters:
+      flutter: true
+      
+  analyze:all:
+    run: flutter analyze
+    packageFilters:
+      flutter: true
+  
+  # Generate localizations (run before analyze/test)
+  gen:l10n:
+    run: flutter gen-l10n
+    packageFilters:
+      flutter: true
+      dirExists: lib/l10n
+      
+  clean:all:
+    run: flutter clean
+    packageFilters:
+      flutter: true
