@@ -48,3 +48,34 @@ jobs:
         run: |
           if [ -d "__tests__" ]; then npm test; else echo "No tests yet"; fi
 
+  db-types-check:
+    name: Verify Supabase types up-to-date
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SUPABASE_DB_URL || (secrets.SUPABASE_PROJECT_ID && secrets.SUPABASE_ACCESS_TOKEN) }}
+    defaults:
+      run:
+        working-directory: smart-divination/backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Generate types and check diff
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          if [ -n "$SUPABASE_DB_URL" ]; then
+            npm run gen:db:types:dburl
+          else
+            npm run gen:db:types:proj
+          fi
+          git diff --exit-code lib/types/generated/supabase.ts || (echo "::error file=lib/types/generated/supabase.ts::Supabase types out of date. Run npm run gen:db:types and commit changes."; exit 1)
