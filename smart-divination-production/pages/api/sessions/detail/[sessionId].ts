@@ -15,6 +15,7 @@ import {
   log,
 } from '../../../../lib/utils/api';
 import { getSession, getUserTier } from '../../../../lib/utils/supabase';
+import { recordApiMetric } from '../../../../lib/utils/metrics';
 import type { DivinationSession, ApiResponse } from '../../../../lib/types/api';
 import { nanoid } from 'nanoid';
 
@@ -33,7 +34,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
     // Only allow GET requests
     if (req.method !== 'GET') {
-      return sendApiResponse(
+      const d405 = Date.now() - startTime;
+      const resp = sendApiResponse(
         {
           success: false,
           error: {
@@ -45,6 +47,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         405
       );
+      recordApiMetric('/api/sessions/detail/[sessionId]', 405, d405);
+      return resp;
     }
 
     // Extract sessionId from URL path
@@ -53,7 +57,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
     const sessionId = pathSegments[pathSegments.length - 1];
 
     if (!sessionId || sessionId === '[sessionId]') {
-      return sendApiResponse(
+      const d400 = Date.now() - startTime;
+      const resp = sendApiResponse(
         {
           success: false,
           error: {
@@ -65,6 +70,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         400
       );
+      recordApiMetric('/api/sessions/detail/[sessionId]', 400, d400);
+      return resp;
     }
 
     log('info', 'Session details requested', {
@@ -83,7 +90,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         sessionId,
       });
 
-      return sendApiResponse(
+      const d404 = Date.now() - startTime;
+      const resp404 = sendApiResponse(
         {
           success: false,
           error: {
@@ -95,6 +103,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         404
       );
+      recordApiMetric('/api/sessions/detail/[sessionId]', 404, d404);
+      return resp404;
     }
 
     // Check user tier for enhanced details
@@ -153,6 +163,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
     // Send response
     const nextResponse = sendApiResponse(response, 200);
     addStandardHeaders(nextResponse);
+    recordApiMetric('/api/sessions/detail/[sessionId]', 200, processingTime);
 
     return nextResponse;
   } catch (error) {
@@ -161,6 +172,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       error: error instanceof Error ? error.message : String(error),
     });
 
+    const d500 = Date.now() - startTime;
+    recordApiMetric('/api/sessions/detail/[sessionId]', 500, d500);
     return handleApiError(error, requestId);
   }
 }

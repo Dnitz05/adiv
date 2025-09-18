@@ -8,6 +8,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { log } from '../../../lib/utils/api';
 import type { DivinationTechnique, TarotCard, Hexagram, Rune } from '../../../lib/types/api';
+import { fetchWithTimeout } from '../../../lib/utils/http';
 
 // =============================================================================
 // DEEPSEEK V3 CONFIGURATION
@@ -268,13 +269,14 @@ async function getAIInterpretation(
     stream: false,
   };
 
-  const response = await fetch(DEEPSEEK_API_URL, {
+  const response = await fetchWithTimeout(DEEPSEEK_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
     },
     body: JSON.stringify(requestBody),
+    timeoutMs: 15000,
   });
 
   if (!response.ok) {

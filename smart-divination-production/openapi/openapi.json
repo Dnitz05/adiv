@@ -1,0 +1,400 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Smart Divination Backend API",
+    "version": "1.0.0",
+    "description": "Core endpoints for health, sessions and divination draws (tarot / iching / runes)."
+  },
+  "servers": [
+    { "url": "/", "description": "Relative server" }
+  ],
+  "tags": [
+    { "name": "Health" },
+    { "name": "Sessions" },
+    { "name": "Draw" }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Health status",
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponseHealth" } } } },
+          "503": { "description": "Service unavailable", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponseHealth" } } } }
+        }
+      }
+    },
+    "/api/sessions": {
+      "post": {
+        "tags": ["Sessions"],
+        "summary": "Create divination session",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SessionRequest" } } } },
+        "responses": {
+          "201": { "description": "Created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponseDivinationSession" } } } },
+          "400": { "description": "Validation error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorResponse" } } } },
+          "405": { "description": "Method not allowed" }
+        }
+      }
+    },
+    "/api/sessions/{userId}": {
+      "get": {
+        "tags": ["Sessions"],
+        "summary": "List user sessions",
+        "parameters": [
+          { "name": "userId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "limit", "in": "query", "required": false, "schema": { "type": "integer", "default": 20 } },
+          { "name": "offset", "in": "query", "required": false, "schema": { "type": "integer", "default": 0 } },
+          { "name": "technique", "in": "query", "required": false, "schema": { "type": "string", "enum": ["tarot", "iching", "runes"] } }
+        ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponseSessionsList" } } } },
+          "400": { "description": "Invalid parameters" }
+        }
+      }
+    },
+    "/api/sessions/detail/{sessionId}": {
+      "get": {
+        "tags": ["Sessions"],
+        "summary": "Get session details",
+        "parameters": [ { "name": "sessionId", "in": "path", "required": true, "schema": { "type": "string" } } ],
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponseDivinationSession" } } } },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/api/draw/cards": {
+      "post": {
+        "tags": ["Draw"],
+        "summary": "Draw tarot cards",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DrawCardsRequest" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CardsDrawResponse" } } } },
+          "400": { "description": "Invalid request" }
+        }
+      }
+    },
+    "/api/draw/coins": {
+      "post": {
+        "tags": ["Draw"],
+        "summary": "Toss I Ching coins",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TossCoinsRequest" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CoinsTossResponse" } } } },
+          "400": { "description": "Invalid request" }
+        }
+      }
+    },
+    "/api/draw/runes": {
+      "post": {
+        "tags": ["Draw"],
+        "summary": "Draw runes",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DrawRunesRequest" } } } },
+        "responses": {
+          "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RunesDrawResponse" } } } },
+          "400": { "description": "Invalid request" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string" },
+          "message": { "type": "string" },
+          "details": { "type": "object", "additionalProperties": true },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "requestId": { "type": "string" }
+        },
+        "required": ["code", "message", "timestamp"]
+      },
+      "ResponseMetadata": {
+        "type": "object",
+        "properties": {
+          "processingTimeMs": { "type": "number" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "version": { "type": "string" },
+          "requestId": { "type": "string" }
+        },
+        "required": ["processingTimeMs", "timestamp", "version"]
+      },
+      "ApiResponseHealth": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "$ref": "#/components/schemas/HealthStatus" },
+          "meta": { "$ref": "#/components/schemas/ResponseMetadata" }
+        },
+        "required": ["success"]
+      },
+      "ApiErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "error": { "$ref": "#/components/schemas/ApiError" }
+        },
+        "required": ["success", "error"]
+      },
+      "ApiResponseDivinationSession": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "$ref": "#/components/schemas/DivinationSession" },
+          "meta": { "$ref": "#/components/schemas/ResponseMetadata" }
+        },
+        "required": ["success"]
+      },
+      "ApiResponseSessionsList": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "sessions": { "type": "array", "items": { "$ref": "#/components/schemas/DivinationSession" } },
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "limit": { "type": "integer" },
+                  "offset": { "type": "integer" },
+                  "total": { "type": "integer" },
+                  "hasMore": { "type": "boolean" }
+                }
+              },
+              "filters": {
+                "type": "object",
+                "properties": {
+                  "technique": { "type": "string", "nullable": true },
+                  "orderBy": { "type": "string" },
+                  "orderDirection": { "type": "string" }
+                }
+              },
+              "userTier": { "type": "string", "enum": ["free", "premium", "premium_annual"] }
+            }
+          },
+          "meta": { "$ref": "#/components/schemas/ResponseMetadata" }
+        },
+        "required": ["success"]
+      },
+      "HealthStatus": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["healthy", "degraded", "unhealthy"] },
+          "services": { "type": "array", "items": { "$ref": "#/components/schemas/ServiceStatus" } },
+          "metrics": { "$ref": "#/components/schemas/SystemMetrics" },
+          "uptime": { "$ref": "#/components/schemas/UptimeInfo" }
+        }
+      },
+      "ServiceStatus": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "status": { "type": "string", "enum": ["healthy", "degraded", "unhealthy"] },
+          "responseTime": { "type": "number", "nullable": true },
+          "lastCheck": { "type": "string", "format": "date-time" },
+          "error": { "type": "string", "nullable": true }
+        }
+      },
+      "SystemMetrics": {
+        "type": "object",
+        "properties": {
+          "requestsPerMinute": { "type": "number" },
+          "averageResponseTime": { "type": "number" },
+          "errorRate": { "type": "number" },
+          "memoryUsage": { "type": "number" }
+        }
+      },
+      "UptimeInfo": {
+        "type": "object",
+        "properties": {
+          "startTime": { "type": "string", "format": "date-time" },
+          "uptimeSeconds": { "type": "integer" },
+          "uptimePercentage": { "type": "number" }
+        }
+      },
+      "SessionRequest": {
+        "type": "object",
+        "properties": {
+          "session_id": { "type": "string" },
+          "user_id": { "type": "string" },
+          "technique": { "type": "string", "enum": ["tarot", "iching", "runes"] },
+          "locale": { "type": "string", "default": "en" },
+          "topic": { "type": "string" },
+          "messages": {
+            "type": "array",
+            "items": { "type": "object", "properties": { "role": { "type": "string", "enum": ["user", "assistant"] }, "content": { "type": "string" }, "timestamp": { "type": "string" } }, "required": ["role", "content", "timestamp"] }
+          },
+          "is_premium": { "type": "boolean" },
+          "created_at": { "type": "string" },
+          "last_activity": { "type": "string" },
+          "question": { "type": "string" },
+          "results": { "type": "object" },
+          "interpretation": { "type": "string" },
+          "summary": { "type": "string" },
+          "metadata": { "$ref": "#/components/schemas/SessionMetadata" }
+        },
+        "required": ["user_id"]
+      },
+      "SessionMetadata": {
+        "type": "object",
+        "properties": {
+          "seed": { "type": "string" },
+          "method": { "type": "string" },
+          "signature": { "type": "string" },
+          "duration": { "type": "number" },
+          "rating": { "type": "number" }
+        },
+        "required": ["seed", "method"]
+      },
+      "DivinationSession": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "userId": { "type": "string" },
+          "technique": { "type": "string", "enum": ["tarot", "iching", "runes"] },
+          "locale": { "type": "string" },
+          "createdAt": { "type": "string" },
+          "lastActivity": { "type": "string" },
+          "question": { "type": "string" },
+          "results": { "type": "object" },
+          "interpretation": { "type": "string" },
+          "summary": { "type": "string" },
+          "metadata": { "$ref": "#/components/schemas/SessionMetadata" }
+        },
+        "required": ["id", "userId", "technique", "locale", "createdAt", "lastActivity", "metadata"]
+      },
+      "DrawCardsRequest": {
+        "type": "object",
+        "properties": {
+          "technique": { "type": "string", "enum": ["tarot"], "default": "tarot" },
+          "count": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "spread": { "type": "string" },
+          "allowReversed": { "type": "boolean", "default": true },
+          "seed": { "type": "string" },
+          "question": { "type": "string" },
+          "locale": { "type": "string", "default": "en" },
+          "userId": { "type": "string" }
+        },
+        "required": ["count"]
+      },
+      "TarotCard": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "suit": { "type": "string" },
+          "number": { "type": ["integer", "null"] },
+          "isReversed": { "type": "boolean" },
+          "position": { "type": "integer" }
+        }
+      },
+      "CardsDrawResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "data": { "type": "array", "items": { "$ref": "#/components/schemas/TarotCard" } },
+              "spread": { "type": "string" }
+            }
+          },
+          "meta": { "$ref": "#/components/schemas/ResponseMetadata" },
+          "seed": { "type": "string" },
+          "method": { "type": "string" },
+          "signature": { "type": "string" },
+          "sessionId": { "type": "string" },
+          "orientationSeed": { "type": "string" },
+          "orientationMethod": { "type": "string" },
+          "orientationSignature": { "type": "string" },
+          "independentOrientations": { "type": "boolean" }
+        },
+        "required": ["success"]
+      },
+      "TossCoinsRequest": {
+        "type": "object",
+        "properties": {
+          "technique": { "type": "string", "enum": ["iching"], "default": "iching" },
+          "method": { "type": "string", "enum": ["coins", "yarrow"], "default": "coins" },
+          "seed": { "type": "string" },
+          "question": { "type": "string" },
+          "locale": { "type": "string", "default": "en" },
+          "userId": { "type": "string" }
+        }
+      },
+      "HexagramLine": {
+        "type": "object",
+        "properties": {
+          "position": { "type": "integer" },
+          "type": { "type": "string", "enum": ["yin", "yang"] },
+          "isChanging": { "type": "boolean" },
+          "value": { "type": "integer" }
+        }
+      },
+      "Hexagram": {
+        "type": "object",
+        "properties": {
+          "number": { "type": "integer" },
+          "name": { "type": "string" },
+          "lines": { "type": "array", "items": { "$ref": "#/components/schemas/HexagramLine" } },
+          "trigrams": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 },
+          "transformedTo": { "$ref": "#/components/schemas/Hexagram" }
+        }
+      },
+      "CoinsTossResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "object", "properties": { "data": { "$ref": "#/components/schemas/Hexagram" } } },
+          "meta": { "$ref": "#/components/schemas/ResponseMetadata" },
+          "seed": { "type": "string" },
+          "method": { "type": "string" },
+          "signature": { "type": "string" },
+          "sessionId": { "type": "string" }
+        },
+        "required": ["success"]
+      },
+      "DrawRunesRequest": {
+        "type": "object",
+        "properties": {
+          "technique": { "type": "string", "enum": ["runes"], "default": "runes" },
+          "count": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "allowReversed": { "type": "boolean", "default": true },
+          "runeSet": { "type": "string", "enum": ["elder_futhark"], "default": "elder_futhark" },
+          "seed": { "type": "string" },
+          "question": { "type": "string" },
+          "locale": { "type": "string", "default": "en" },
+          "userId": { "type": "string" }
+        },
+        "required": ["count"]
+      },
+      "Rune": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "symbol": { "type": "string" },
+          "isReversed": { "type": "boolean" },
+          "position": { "type": "integer" },
+          "meaning": { "type": "string" }
+        }
+      },
+      "RunesDrawResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "object", "properties": { "data": { "type": "array", "items": { "$ref": "#/components/schemas/Rune" } } } },
+          "meta": { "$ref": "#/components/schemas/ResponseMetadata" },
+          "seed": { "type": "string" },
+          "method": { "type": "string" },
+          "signature": { "type": "string" },
+          "sessionId": { "type": "string" }
+        },
+        "required": ["success"]
+      }
+    }
+  }
+}
+

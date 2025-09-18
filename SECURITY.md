@@ -9,7 +9,7 @@ Supported Versions
 - Main branch of the canonical workspace under `smart-divination/`.
 
 Scope
-- Serverless backend under `smart-divination/pages/api/`
+- Serverless backend under `smart-divination/backend/pages/api/`
 - Flutter apps under `smart-divination/apps/`
 - Shared Flutter package `smart-divination/packages/common/`
 

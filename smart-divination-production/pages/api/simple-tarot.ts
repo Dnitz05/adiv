@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { recordApiMetric } from '../../lib/utils/metrics';
 
 // Simple Tarot deck - just first 10 cards for testing
 const SIMPLE_TAROT = [
@@ -16,9 +17,12 @@ const SIMPLE_TAROT = [
 ];
 
 export default async function handler(req: NextRequest): Promise<Response> {
+  const start = Date.now();
   try {
     if (req.method !== 'POST') {
-      return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+      const r405 = NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+      recordApiMetric('/api/simple-tarot', 405, Date.now() - start);
+      return r405;
     }
 
     const body = await req.json();
@@ -55,7 +59,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
       };
     });
 
-    return NextResponse.json(
+    const r200 = NextResponse.json(
       {
         success: true,
         data: cards,
@@ -67,8 +71,10 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
       { status: 200 }
     );
+    recordApiMetric('/api/simple-tarot', 200, Date.now() - start);
+    return r200;
   } catch (error) {
-    return NextResponse.json(
+    const r500 = NextResponse.json(
       {
         success: false,
         error: error instanceof Error ? error.message : String(error),
@@ -76,6 +82,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
       { status: 500 }
     );
+    recordApiMetric('/api/simple-tarot', 500, Date.now() - start);
+    return r500;
   }
 }
 

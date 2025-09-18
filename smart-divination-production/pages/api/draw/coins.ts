@@ -18,6 +18,7 @@ import {
 } from '../../../lib/utils/api';
 import { generateRandomCoins } from '../../../lib/utils/randomness';
 import { createDivinationSession } from '../../../lib/utils/supabase';
+import { recordApiMetric } from '../../../lib/utils/metrics';
 import type { Hexagram, HexagramLine } from '../../../lib/types/api';
 
 // =============================================================================
@@ -974,6 +975,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
     const nextResponse = sendApiResponse(response, 200);
     addStandardHeaders(nextResponse);
+    recordApiMetric('/api/draw/coins', 200, processingTime);
 
     return nextResponse;
   } catch (error) {
@@ -981,6 +983,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       error: error instanceof Error ? error.message : String(error),
     });
 
+    const d500 = Date.now() - startTime;
+    recordApiMetric('/api/draw/coins', 500, d500);
     return handleApiError(error);
   }
 }

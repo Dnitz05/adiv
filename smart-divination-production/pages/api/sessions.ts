@@ -16,6 +16,7 @@ import {
   parseApiRequest,
 } from '../../lib/utils/api';
 import { createSession, getUserTier } from '../../lib/utils/supabase';
+import { recordApiMetric } from '../../lib/utils/metrics';
 import type { DivinationSession, SessionMetadata, ApiResponse } from '../../lib/types/api';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
@@ -72,7 +73,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
     // Only allow POST requests for session creation
     if (req.method !== 'POST') {
-      return sendApiResponse(
+      const duration405 = Date.now() - startTime;
+      const resp = sendApiResponse(
         {
           success: false,
           error: {
@@ -84,6 +86,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         405
       );
+      recordApiMetric('/api/sessions', 405, duration405);
+      return resp;
     }
 
     log('info', 'Session creation requested', {
@@ -163,6 +167,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
     // Send response
     const nextResponse = sendApiResponse(response, 201);
     addStandardHeaders(nextResponse);
+    recordApiMetric('/api/sessions', 201, processingTime);
 
     return nextResponse;
   } catch (error) {
@@ -173,7 +178,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
     // Handle validation errors specifically
     if (error instanceof z.ZodError) {
-      return sendApiResponse(
+      const duration400 = Date.now() - startTime;
+      const resp = sendApiResponse(
         {
           success: false,
           error: {
@@ -186,8 +192,12 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         400
       );
+      recordApiMetric('/api/sessions', 400, duration400);
+      return resp;
     }
 
+    const duration500 = Date.now() - startTime;
+    recordApiMetric('/api/sessions', 500, duration500);
     return handleApiError(error, requestId);
   }
 }

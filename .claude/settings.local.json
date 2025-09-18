@@ -23,7 +23,16 @@
       "WebFetch(domain:smart-divination-dhgbsz2kh-dnitzs-projects.vercel.app)",
       "Bash(npm run type-check:*)",
       "WebFetch(domain:smart-divination.vercel.app)",
-      "Bash(flutter:*)"
+      "Bash(flutter:*)",
+      "Bash(find:*)",
+      "Bash(npm test)",
+      "Bash(cat:*)",
+      "Bash(melos analyze:*)",
+      "Bash(melos test:*)",
+      "Bash(dart pub:*)",
+      "Bash(melos:*)",
+      "Bash(dart:*)",
+      "Bash(/c/Users/neo/AppData/Local/Pub/Cache/bin/melos.bat bootstrap)"
     ],
     "deny": [],
     "ask": []

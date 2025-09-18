@@ -393,6 +393,7 @@ export type HttpStatusCode =
   | 200 // OK
   | 201 // Created  
   | 405 // Method Not Allowed
+  | 413 // Payload Too Large
   | 400 // Bad Request
   | 401 // Unauthorized
   | 403 // Forbidden

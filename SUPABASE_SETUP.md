@@ -21,10 +21,12 @@ This guide provides step-by-step instructions for setting up the Supabase backen
 
 ## 2. Configure Environment Variables
 
-1. Copy `.env.example` to `.env.local`:
-   ```bash
-   cp .env.example .env.local
-   ```
+In the canonical backend folder (`smart-divination/backend`), copy the example file and fill values:
+
+```bash
+cd smart-divination/backend
+cp .env.example .env.local
+```
 
 2. Fill in your Supabase credentials from the project dashboard:
    - Go to **Settings** → **API**
@@ -104,7 +106,7 @@ You can check this in the Supabase dashboard under **Database** → **Tables**.
 
 ### Test Database Connection
 
-Run this simple test to verify your database connection:
+Run this simple test inside `smart-divination/backend` to verify your database connection:
 
 ```javascript
 import { getSupabaseClient } from './lib/utils/supabase';
@@ -129,7 +131,7 @@ Try creating a test user through your app or the Supabase dashboard.
 
 ### Vercel Environment Variables
 
-When deploying to Vercel, add these environment variables:
+When deploying to Vercel (project for `smart-divination/backend`), add these environment variables:
 
 ```bash
 vercel env add SUPABASE_URL production

@@ -15,6 +15,7 @@ import {
   log,
 } from '../../../lib/utils/api';
 import { getUserSessions, getUserTier } from '../../../lib/utils/supabase';
+import { recordApiMetric } from '../../../lib/utils/metrics';
 import type { ApiResponse } from '../../../lib/types/api';
 import { nanoid } from 'nanoid';
 
@@ -33,7 +34,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
     // Only allow GET requests
     if (req.method !== 'GET') {
-      return sendApiResponse(
+      const d405 = Date.now() - startTime;
+      const resp = sendApiResponse(
         {
           success: false,
           error: {
@@ -45,6 +47,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         405
       );
+      recordApiMetric('/api/sessions/[userId]', 405, d405);
+      return resp;
     }
 
     // Extract userId from URL path
@@ -53,7 +57,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
     const userId = pathSegments[pathSegments.length - 1];
 
     if (!userId || userId === '[userId]') {
-      return sendApiResponse(
+      const d400 = Date.now() - startTime;
+      const resp = sendApiResponse(
         {
           success: false,
           error: {
@@ -65,6 +70,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         400
       );
+      recordApiMetric('/api/sessions/[userId]', 400, d400);
+      return resp;
     }
 
     log('info', 'User sessions requested', {
@@ -180,6 +187,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
     // Send response
     const nextResponse = sendApiResponse(response, 200);
     addStandardHeaders(nextResponse);
+    recordApiMetric('/api/sessions/[userId]', 200, processingTime);
 
     return nextResponse;
   } catch (error) {
@@ -188,6 +196,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       error: error instanceof Error ? error.message : String(error),
     });
 
+    const d500 = Date.now() - startTime;
+    recordApiMetric('/api/sessions/[userId]', 500, d500);
     return handleApiError(error, requestId);
   }
 }

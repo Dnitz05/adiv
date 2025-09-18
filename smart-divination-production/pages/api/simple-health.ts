@@ -3,13 +3,17 @@
  */
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { recordApiMetric } from '../../lib/utils/metrics';
 
 export default async function handler(req: NextRequest): Promise<Response> {
+  const start = Date.now();
   if (req.method !== 'GET') {
-    return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+    const resp405 = NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+    recordApiMetric('/api/simple-health', 405, Date.now() - start);
+    return resp405;
   }
 
-  return NextResponse.json(
+  const resp200 = NextResponse.json(
     {
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -30,6 +34,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
     }
   );
+  recordApiMetric('/api/simple-health', 200, Date.now() - start);
+  return resp200;
 }
 
 export const runtime = 'edge';

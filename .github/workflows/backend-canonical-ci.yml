@@ -1,0 +1,50 @@
+# Backend CI for canonical backend under smart-divination/backend
+name: Backend Canonical CI
+
+on:
+  push:
+    paths:
+      - 'smart-divination/backend/**'
+      - '.github/workflows/backend-canonical-ci.yml'
+  pull_request:
+    paths:
+      - 'smart-divination/backend/**'
+      - '.github/workflows/backend-canonical-ci.yml'
+
+concurrency:
+  group: backend-canonical-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint, Type Check, and Test (canonical)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: smart-divination/backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: smart-divination/backend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm i --no-audit --no-fund; fi
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: |
+          if [ -d "__tests__" ]; then npm test; else echo "No tests yet"; fi
+

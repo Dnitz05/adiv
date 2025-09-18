@@ -11,6 +11,7 @@
 
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { recordApiMetric } from '../../lib/utils/metrics';
 
 // PREMIUM TIER DEFINITIONS
 type UserTier = 'free' | 'premium' | 'premium_annual';
@@ -198,6 +199,7 @@ ${isPremium ? 'PREMIUM FEATURES: Include timing, specific advice, and spiritual 
         temperature: 0.7,
         stream: false,
       }),
+      // Pass through to fetchWithTimeout if needed in future refactor
     });
 
     if (!response.ok) throw new Error(`AI API error: ${response.status}`);
@@ -228,13 +230,15 @@ export default async function handler(req: NextRequest): Promise<Response> {
     }
 
     if (req.method !== 'POST') {
-      return NextResponse.json(
+      const r405 = NextResponse.json(
         {
           success: false,
           error: { code: 'METHOD_NOT_ALLOWED', message: 'Only POST allowed' },
         },
         { status: 405 }
       );
+      recordApiMetric('/api/premium-tarot', 405, Date.now() - startTime);
+      return r405;
     }
 
     // Parse request with premium context
@@ -246,7 +250,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
       question,
       // technique = 'tarot',
       includeAI = true,
-      // userId intentionally omitted from response composition
+      userId = 'anonymous',
       userTier = 'free', // From frontend authentication
     } = body;
 
@@ -256,7 +260,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
     const accessCheck = await validatePremiumAccess(userId, tier);
 
     if (!accessCheck.isValid) {
-      return NextResponse.json(
+      const r402 = NextResponse.json(
         {
           success: false,
           error: {
@@ -272,22 +276,26 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         { status: 402 }
       ); // 402 = Payment Required
+      recordApiMetric('/api/premium-tarot', 402, Date.now() - startTime);
+      return r402;
     }
 
     // Validate spread access
     const spreadConfig = ALL_SPREADS[spread];
     if (!spreadConfig) {
-      return NextResponse.json(
+      const r400 = NextResponse.json(
         {
           success: false,
           error: { code: 'INVALID_SPREAD', message: `Invalid spread: ${spread}` },
         },
         { status: 400 }
       );
+      recordApiMetric('/api/premium-tarot', 400, Date.now() - startTime);
+      return r400;
     }
 
     if (spreadConfig.premium && tier === 'free') {
-      return NextResponse.json(
+      const r402prem = NextResponse.json(
         {
           success: false,
           error: {
@@ -301,11 +309,13 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         { status: 402 }
       );
+      recordApiMetric('/api/premium-tarot', 402, Date.now() - startTime);
+      return r402prem;
     }
 
     // Validate card count
     if (count > accessCheck.features.maxCardsPerReading) {
-      return NextResponse.json(
+      const r400limit = NextResponse.json(
         {
           success: false,
           error: {
@@ -315,6 +325,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
         },
         { status: 400 }
       );
+      recordApiMetric('/api/premium-tarot', 400, Date.now() - startTime);
+      return r400limit;
     }
 
     // AI access validation
@@ -443,7 +455,7 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
     };
 
-    return NextResponse.json(response, {
+    const r200 = NextResponse.json(response, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -451,8 +463,10 @@ export default async function handler(req: NextRequest): Promise<Response> {
         'X-User-Tier': tier,
       },
     });
+    recordApiMetric('/api/premium-tarot', 200, Date.now() - startTime);
+    return r200;
   } catch (error) {
-    return NextResponse.json(
+    const r500 = NextResponse.json(
       {
         success: false,
         error: {
@@ -463,6 +477,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
       { status: 500 }
     );
+    recordApiMetric('/api/premium-tarot', 500, Date.now() - startTime);
+    return r500;
   }
 }
 

@@ -15,6 +15,7 @@ import {
   log,
 } from '../../lib/utils/api';
 import { checkSupabaseHealth } from '../../lib/utils/supabase';
+import { getOverallMetrics, recordApiMetric } from '../../lib/utils/metrics';
 import { checkRandomOrgHealth } from '../../lib/utils/randomness';
 import type { HealthStatus, ServiceStatus, SystemMetrics, UptimeInfo } from '../../lib/types/api';
 
@@ -141,6 +142,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
 
     const nextResponse = sendApiResponse(response, httpStatus);
     addStandardHeaders(nextResponse);
+    // Record metrics
+    recordApiMetric('/api/health', httpStatus, processingTime);
 
     return nextResponse;
   } catch (error) {
@@ -161,14 +164,13 @@ export default async function handler(req: NextRequest): Promise<Response> {
  */
 async function getSystemMetrics(): Promise<SystemMetrics> {
   // In a real implementation, these would come from monitoring systems
-  // For now, we'll provide mock data
-  // Note: Edge Runtime compatible - no process.memoryUsage() available
-
+  // We aggregate local metrics as a robust fallback
+  const m = getOverallMetrics();
   return {
-    requestsPerMinute: 0, // Would be tracked by monitoring
-    averageResponseTime: 0, // Would be calculated from recent requests
-    errorRate: 0, // Would be calculated from error logs
-    memoryUsage: 64, // Mock value for Edge Runtime compatibility (MB)
+    requestsPerMinute: m.requestsPerMinute,
+    averageResponseTime: m.averageResponseTime,
+    errorRate: m.errorRate,
+    memoryUsage: m.memoryUsage,
   };
 }
 

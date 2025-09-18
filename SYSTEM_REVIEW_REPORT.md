@@ -256,3 +256,9 @@ The current backend can be deployed and will function for:
 The **TypeScript backend is EXCEPTIONAL** with professional-grade implementation of all divination systems, but the **complete application CANNOT function** due to critical client-server integration failures.
 
 **IMMEDIATE ACTION REQUIRED**: Implement missing API endpoints and fix client dependencies before ANY deployment consideration.
+
+---
+
+Archived Report Notice
+
+This document is an archived system review. The canonical backend now lives under `smart-divination/backend/`, and migration (Option B) is in progress. For current state and instructions, see `smart-divination/README.md`.

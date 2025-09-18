@@ -7,6 +7,7 @@
 
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { recordApiMetric } from '../../lib/utils/metrics';
 
 // COMPLETE TAROT DECK WITH AI INTERPRETATION CONTEXT
 const TAROT_DECK = [
@@ -362,15 +363,17 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
     };
 
-    return NextResponse.json(response, {
+    const r200 = NextResponse.json(response, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
     });
+    recordApiMetric('/api/tarot-ai-enhanced', 200, processingTime);
+    return r200;
   } catch (error) {
-    return NextResponse.json(
+    const r500 = NextResponse.json(
       {
         success: false,
         error: {
@@ -381,6 +384,8 @@ export default async function handler(req: NextRequest): Promise<Response> {
       },
       { status: 500 }
     );
+    recordApiMetric('/api/tarot-ai-enhanced', 500, Date.now() - startTime);
+    return r500;
   }
 }
 

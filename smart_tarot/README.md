@@ -1,4 +1,6 @@
-# Smart Tarot
+# Smart Tarot (Legacy)
+
+> Status: This folder contains the legacy combined app/backend. The canonical backend now lives under `smart-divination/backend/`. New development should target the canonical workspace. This document remains for historical reference.
 
 Professional tarot app with verifiable randomness and AI interpretation.
 

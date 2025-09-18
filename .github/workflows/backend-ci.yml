@@ -46,3 +46,11 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Metrics sanity (Jest)
+        run: npm test -- --testPathPattern=metrics.sanity.test.ts
+
+      - name: OpenAPI - merge base + addendum
+        run: node scripts/merge_openapi.js
+
+      - name: OpenAPI - validate with Swagger Parser
+        run: npx @apidevtools/swagger-parser validate openapi/_merged.json

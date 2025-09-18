@@ -25,6 +25,8 @@ import type {
 /**
  * Parse and validate API request
  */
+const MAX_BODY_SIZE = 256 * 1024; // 256KB
+
 export async function parseApiRequest(
   req: NextRequest,
   schema?: z.ZodTypeAny
@@ -39,6 +41,9 @@ export async function parseApiRequest(
     
     if (contentType.includes('application/json')) {
       const text = await req.text();
+      if (text && text.length > MAX_BODY_SIZE) {
+        throw new Error('payload too large');
+      }
       body = text ? JSON.parse(text) : {};
     } else if (contentType.includes('application/x-www-form-urlencoded')) {
       const formData = await req.formData();
@@ -222,7 +227,10 @@ export function handleApiError(error: unknown, requestId?: string): NextResponse
     // Generic error
     const message = error.message;
     
-    if (message.includes('rate limit')) {
+    if (message.toLowerCase().includes('payload') && message.toLowerCase().includes('large')) {
+      statusCode = 413 as HttpStatusCode;
+      apiError = createApiError('PAYLOAD_TOO_LARGE', message, statusCode, undefined, requestId);
+    } else if (message.includes('rate limit')) {
       statusCode = 429;
       apiError = createApiError('RATE_LIMIT_EXCEEDED', message, statusCode, undefined, requestId);
     } else if (message.includes('unauthorized')) {

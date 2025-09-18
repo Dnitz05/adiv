@@ -1,38 +1,46 @@
-# 🚀 Smart Divination - Build Guide
+﻿# Legacy Notice
 
-**One Codebase → Three Professional Applications**
+This guide belongs to the legacy `smart_tarot/` tree. The canonical backend and up-to-date build instructions live under `smart-divination/`.
+
+See: `smart-divination/README.md` and `smart-divination/backend/`.
+
+---
+
+# ðŸš€ Smart Divination - Build Guide
+
+**One Codebase â†’ Three Professional Applications**
 
 This guide explains how to build Smart Tarot, Smart I Ching, and Smart Runes from the unified Smart Divination codebase.
 
-## 🏗️ Architecture Overview
+## ðŸ—ï¸ Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    UNIFIED CODEBASE                        │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
-│  │    Core     │  │   Shared    │  │       Packs         │ │
-│  │   Engine    │  │  Services   │  │  Configuration      │ │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
-                           ▼
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    UNIFIED CODEBASE                        â”‚
+â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”‚
+â”‚  â”‚    Core     â”‚  â”‚   Shared    â”‚  â”‚       Packs         â”‚ â”‚
+â”‚  â”‚   Engine    â”‚  â”‚  Services   â”‚  â”‚  Configuration      â”‚ â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â–¼
                   Environment Variables
-                 ┌─────────────────────┐
-                 │  APP_TECHNIQUE=X    │
-                 │  APP_NAME=Y         │
-                 │  PRIMARY_COLOR=Z    │
-                 └─────────────────────┘
-                           ▼
-       ┌─────────────────────────────────────────────────┐
-       │               BUILD PROCESS                     │
-       └─────────────────────────────────────────────────┘
-                           ▼
-  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐
-  │ Smart Tarot │  │Smart I Ching│  │  Smart Runes    │
-  │     🃏      │  │     ☯️      │  │       ᚱ         │
-  └─────────────┘  └─────────────┘  └─────────────────┘
+                 â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                 â”‚  APP_TECHNIQUE=X    â”‚
+                 â”‚  APP_NAME=Y         â”‚
+                 â”‚  PRIMARY_COLOR=Z    â”‚
+                 â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â–¼
+       â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+       â”‚               BUILD PROCESS                     â”‚
+       â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                           â–¼
+  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+  â”‚ Smart Tarot â”‚  â”‚Smart I Chingâ”‚  â”‚  Smart Runes    â”‚
+  â”‚     ðŸƒ      â”‚  â”‚     â˜¯ï¸      â”‚  â”‚       áš±         â”‚
+  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-## 🔧 Prerequisites
+## ðŸ”§ Prerequisites
 
 ### Required Software
 - **Flutter SDK** 3.24.0 or higher
@@ -49,7 +57,7 @@ This guide explains how to build Smart Tarot, Smart I Ching, and Smart Runes fro
   - Get from: https://platform.deepseek.com/
   - Required for production builds
 
-## ⚙️ Environment Setup
+## âš™ï¸ Environment Setup
 
 ### 1. Clone and Setup
 ```bash
@@ -74,7 +82,7 @@ copy .env.example .env
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-## 📱 Building Applications
+## ðŸ“± Building Applications
 
 ### Quick Start - Build All Apps
 ```bash
@@ -90,7 +98,7 @@ scripts\build_all_apps.bat ios
 
 ### Individual App Builds
 
-#### Smart Tarot 🃏
+#### Smart Tarot ðŸƒ
 ```bash
 # Android App Bundle (for Google Play)
 scripts\build_smart_tarot.bat bundle
@@ -105,7 +113,7 @@ scripts\build_smart_tarot.bat ios
 scripts\build_smart_tarot.bat web
 ```
 
-#### Smart I Ching ☯️
+#### Smart I Ching â˜¯ï¸
 ```bash
 # Android App Bundle
 scripts\build_smart_iching.bat bundle
@@ -120,7 +128,7 @@ scripts\build_smart_iching.bat ios
 scripts\build_smart_iching.bat web
 ```
 
-#### Smart Runes ᚱ
+#### Smart Runes áš±
 ```bash
 # Android App Bundle
 scripts\build_smart_runes.bat bundle
@@ -135,7 +143,7 @@ scripts\build_smart_runes.bat ios
 scripts\build_smart_runes.bat web
 ```
 
-## 🎯 App Configurations
+## ðŸŽ¯ App Configurations
 
 Each app is configured via environment variables and pack manifests:
 
@@ -157,7 +165,7 @@ Each app is configured via environment variables and pack manifests:
 - **Bundle ID**: `com.smartdivination.runes`
 - **Features**: 24 Elder Futhark runes, Norse mythology, bindrunes
 
-## 📦 Build Outputs
+## ðŸ“¦ Build Outputs
 
 After successful builds, find your apps here:
 
@@ -171,7 +179,7 @@ After successful builds, find your apps here:
 ### Web
 - **Web Apps**: `build/web/`
 
-## 🔍 Troubleshooting
+## ðŸ” Troubleshooting
 
 ### Common Build Issues
 
@@ -214,7 +222,7 @@ Error: Xcode not found
 - Battery usage acceptable during extended sessions
 - Network requests complete within timeout limits
 
-## 🚀 Deployment
+## ðŸš€ Deployment
 
 ### App Store Preparation
 
@@ -240,21 +248,21 @@ npm install -g vercel
 vercel --prod
 ```
 
-## 🔐 Security Considerations
+## ðŸ” Security Considerations
 
 ### API Key Security
-- ✅ Never commit `.env` to version control
-- ✅ Use environment-specific API keys
-- ✅ Rotate API keys regularly
-- ✅ Monitor API usage for suspicious activity
+- âœ… Never commit `.env` to version control
+- âœ… Use environment-specific API keys
+- âœ… Rotate API keys regularly
+- âœ… Monitor API usage for suspicious activity
 
 ### Build Security
-- ✅ Use signed release builds for production
-- ✅ Enable code obfuscation for Flutter releases
-- ✅ Validate all environment variables
-- ✅ Use secure build environments
+- âœ… Use signed release builds for production
+- âœ… Enable code obfuscation for Flutter releases
+- âœ… Validate all environment variables
+- âœ… Use secure build environments
 
-## 📊 Monitoring
+## ðŸ“Š Monitoring
 
 ### Build Pipeline Monitoring
 - Build success/failure rates
@@ -268,7 +276,7 @@ vercel --prod
 - API response times
 - Revenue analytics
 
-## 🆘 Support
+## ðŸ†˜ Support
 
 ### Build Issues
 1. Check this guide first
@@ -281,7 +289,7 @@ vercel --prod
 - Check code documentation and comments
 - Consult the architecture diagrams
 
-## 🎉 Success Checklist
+## ðŸŽ‰ Success Checklist
 
 After successful builds, verify:
 
@@ -294,7 +302,7 @@ After successful builds, verify:
 
 ---
 
-## 📝 Build Commands Reference
+## ðŸ“ Build Commands Reference
 
 ```bash
 # Quick build all apps (Android App Bundles)
@@ -312,4 +320,4 @@ flutter run --dart-define=APP_TECHNIQUE=tarot lib/app/smart_tarot.dart
 flutter clean && flutter pub get
 ```
 
-**🚀 Ready to build the future of divination apps!**
+**ðŸš€ Ready to build the future of divination apps!**

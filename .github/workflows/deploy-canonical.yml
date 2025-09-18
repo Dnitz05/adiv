@@ -1,0 +1,75 @@
+name: Deploy Canonical Backend
+
+on:
+  pull_request:
+    paths:
+      - 'smart-divination/backend/**'
+      - '.github/workflows/deploy-canonical.yml'
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'smart-divination/backend/**'
+      - '.github/workflows/deploy-canonical.yml'
+
+concurrency:
+  group: deploy-canonical-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: smart-divination/backend
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: smart-divination/backend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm i --no-audit --no-fund; fi
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Pull Vercel Env
+        run: npx vercel pull --yes --token $VERCEL_TOKEN --environment=${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
+
+      - name: Deploy (Preview)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          npx vercel deploy --prebuilt --token $VERCEL_TOKEN > ../DEPLOY_URL.txt
+          echo "preview_url=$(cat ../DEPLOY_URL.txt)" >> $GITHUB_OUTPUT
+
+      - name: Comment Preview URL
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: canonical-deploy
+          message: |
+            Preview deployed: $(cat DEPLOY_URL.txt)
+
+      - name: Deploy (Production)
+        if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
+        run: npx vercel deploy --prebuilt --prod --token $VERCEL_TOKEN
+

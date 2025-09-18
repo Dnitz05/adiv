@@ -414,3 +414,9 @@
 **Last updated:** December 2024  
 **Version:** 1.0  
 **Status:** Ready for implementation
+
+---
+
+Legacy Notice: This roadmap belongs to the legacy `smart_tarot/` tree. The canonical backend and current planning live under `smart-divination/`.
+
+See: `smart-divination/README.md` and `smart-divination/backend/`.

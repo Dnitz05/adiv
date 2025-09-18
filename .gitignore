@@ -1,0 +1,36 @@
+# General
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Node/Next
+node_modules/
+.next/
+.vercel/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Flutter/Dart
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/pubspec.lock
+
+# Temporary files
+tmp_*.md
+tmp_*
+
+# Windows artifact
+nul
+
