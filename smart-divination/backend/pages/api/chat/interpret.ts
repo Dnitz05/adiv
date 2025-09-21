@@ -1,5 +1,6 @@
+export const runtime = 'edge';
 // Temporary delegation to legacy handler during migration
-export default async function handler(req: any): Promise<Response> {
+export default async function handler(req: Request): Promise<Response> {
   if (req.method === 'OPTIONS') {
     return new Response(null, { status: 204 });
   }

@@ -1,5 +1,12 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { nanoid } from 'nanoid';
-import { addStandardHeaders, createApiResponse, handleCors, log, sendApiResponse } from '../../../../lib/utils/api';
+import { createApiResponse, log } from '../../../../lib/utils/api';
+import {
+  applyCorsHeaders,
+  applyStandardResponseHeaders,
+  handleCorsPreflight,
+  sendJsonError,
+} from '../../../../lib/utils/nextApi';
 import { getUserStats, getUserTier } from '../../../../lib/utils/supabase';
 import { recordApiMetric } from '../../../../lib/utils/metrics';
 
@@ -30,7 +37,9 @@ interface PremiumStatus {
   };
 }
 
-function getPremiumFeatures(tier: 'free' | 'premium' | 'premium_annual') {
+function getPremiumFeatures(
+  tier: 'free' | 'premium' | 'premium_annual'
+): PremiumStatus['features'] {
   switch (tier) {
     case 'premium':
     case 'premium_annual':
@@ -54,84 +63,76 @@ function getPremiumFeatures(tier: 'free' | 'premium' | 'premium_annual') {
   }
 }
 
-function getUserLimits(tier: 'free' | 'premium' | 'premium_annual') {
+function getUserLimits(tier: 'free' | 'premium' | 'premium_annual'): PremiumStatus['limits'] {
   switch (tier) {
     case 'premium':
     case 'premium_annual':
-      return { sessionsPerDay: 999, sessionsPerWeek: 999, sessionsPerMonth: 999, historyRetention: 365 };
+      return {
+        sessionsPerDay: 999,
+        sessionsPerWeek: 999,
+        sessionsPerMonth: 999,
+        historyRetention: 365,
+      };
     default:
       return { sessionsPerDay: 3, sessionsPerWeek: 10, sessionsPerMonth: 20, historyRetention: 30 };
   }
 }
 
-export default async function handler(req: any): Promise<Response> {
-  const start = Date.now();
-  const requestId = nanoid();
-  try {
-    const cors = handleCors(req);
-    if (cors) return cors;
-    if (req.method !== 'GET') {
-      const d = Date.now() - start;
-      const resp405 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'METHOD_NOT_ALLOWED',
-            message: 'Only GET method is allowed for premium status',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        405
-      );
-      recordApiMetric('/api/users/[userId]/premium', 405, d);
-      return resp405;
-    }
+const METRICS_PATH = '/api/users/[userId]/premium';
+const ALLOW_HEADER_VALUE = 'OPTIONS, GET';
 
-    const url = new URL(req.url);
-    const seg = url.pathname.split('/');
-    const userId = seg[seg.length - 2];
-    if (!userId || userId === '[userId]') {
-      const d = Date.now() - start;
-      const resp400 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'MISSING_USER_ID',
-            message: 'User ID is required in URL path',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        400
-      );
-      recordApiMetric('/api/users/[userId]/premium', 400, d);
-      return resp400;
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+  const startedAt = Date.now();
+  const requestId = nanoid();
+
+  const corsConfig = { methods: 'GET,OPTIONS' };
+  applyCorsHeaders(res, corsConfig);
+  applyStandardResponseHeaders(res);
+
+  if (handleCorsPreflight(req, res, corsConfig)) {
+    recordApiMetric(METRICS_PATH, 204, Date.now() - startedAt);
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', ALLOW_HEADER_VALUE);
+    sendJsonError(res, 405, {
+      code: 'METHOD_NOT_ALLOWED',
+      message: 'Only GET method is allowed for premium status',
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 405, Date.now() - startedAt);
+    return;
+  }
+
+  try {
+    const userIdParam = req.query.userId;
+    const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam;
+    if (!userId || userId.trim().length === 0) {
+      sendJsonError(res, 400, {
+        code: 'MISSING_USER_ID',
+        message: 'User ID is required in URL path',
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
+      return;
     }
 
     const tier = await getUserTier(userId);
     if (!tier) {
-      const d = Date.now() - start;
-      const resp404 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'USER_NOT_FOUND',
-            message: 'User not found in database',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        404
-      );
-      recordApiMetric('/api/users/[userId]/premium', 404, d);
-      return resp404;
+      sendJsonError(res, 404, {
+        code: 'USER_NOT_FOUND',
+        message: 'User not found in database',
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 404, Date.now() - startedAt);
+      return;
     }
 
     let stats = { totalSessions: 0, sessionsThisWeek: 0, sessionsThisMonth: 0 };
     try {
       stats = await getUserStats(userId);
-    } catch (e) {
+    } catch (error) {
       log('warn', 'getUserStats failed, using defaults', { requestId, userId });
     }
 
@@ -146,39 +147,37 @@ export default async function handler(req: any): Promise<Response> {
         totalSessions: stats.totalSessions || 0,
       },
     };
+
     if (tier !== 'free') {
       premiumStatus.billingCycle = tier === 'premium_annual' ? 'annual' : 'monthly';
       premiumStatus.subscriptionId = `sub_${userId.slice(-8)}`;
       const now = new Date();
-      const exp = new Date(now);
-      if (tier === 'premium_annual') exp.setFullYear(now.getFullYear() + 1);
-      else exp.setMonth(now.getMonth() + 1);
-      premiumStatus.expiresAt = exp.toISOString();
+      const expiration = new Date(now);
+      if (tier === 'premium_annual') {
+        expiration.setFullYear(now.getFullYear() + 1);
+      } else {
+        expiration.setMonth(now.getMonth() + 1);
+      }
+      premiumStatus.expiresAt = expiration.toISOString();
     }
 
-    const ms = Date.now() - start;
-    const response = createApiResponse(premiumStatus, { processingTimeMs: ms, requestId });
-    const out = sendApiResponse(response, 200);
-    addStandardHeaders(out);
-    recordApiMetric('/api/users/[userId]/premium', 200, ms);
-    return out;
-  } catch (error: any) {
-    const ms = Date.now() - start;
-    log('error', 'Premium status retrieval failed', { requestId, error: String(error?.message || error) });
-    const resp = sendApiResponse(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to retrieve premium status',
-          details: { message: String(error?.message || error) },
-          timestamp: new Date().toISOString(),
-          requestId,
-        },
-      },
-      500
-    );
-    recordApiMetric('/api/users/[userId]/premium', 500, ms);
-    return resp;
+    const duration = Date.now() - startedAt;
+    res
+      .status(200)
+      .json(createApiResponse(premiumStatus, { processingTimeMs: duration, requestId }));
+    recordApiMetric(METRICS_PATH, 200, duration);
+  } catch (error: unknown) {
+    const duration = Date.now() - startedAt;
+    log('error', 'Premium status retrieval failed', {
+      requestId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    sendJsonError(res, 500, {
+      code: 'INTERNAL_ERROR',
+      message: 'Failed to retrieve premium status',
+      details: { message: error instanceof Error ? error.message : String(error) },
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 500, duration);
   }
 }

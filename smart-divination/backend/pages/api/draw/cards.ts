@@ -1,78 +1,110 @@
-// Temporary delegation to legacy handler during migration
-export default async function handler(req: any): Promise<Response> {
-  const start = Date.now();
+import type { NextApiRequest, NextApiResponse } from 'next';
+import {
+  applyCorsHeaders,
+  applyStandardResponseHeaders,
+  getLocaleFromHeader,
+  handleCorsPreflight,
+  parseRequestBody,
+  sendJsonError,
+} from '../../../lib/utils/nextApi';
 
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 204 });
+const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
+const MIN_CARD_COUNT = 1;
+const MAX_CARD_COUNT = 78;
+
+export default function handler(req: NextApiRequest, res: NextApiResponse): void {
+  const startedAt = Date.now();
+  const corsConfig = { methods: 'POST,OPTIONS' } as const;
+
+  applyCorsHeaders(res, corsConfig);
+  applyStandardResponseHeaders(res);
+
+  if (handleCorsPreflight(req, res, corsConfig)) {
+    return;
   }
+
   if (req.method !== 'POST') {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: {
-          code: 'METHOD_NOT_ALLOWED',
-          message: 'Only POST method is allowed for draw/cards',
-          timestamp: new Date().toISOString(),
-        },
-      }),
-      { status: 405, headers: { 'content-type': 'application/json' } }
-    );
+    res.setHeader('Allow', ALLOW_HEADER_VALUE);
+    sendJsonError(res, 405, {
+      code: 'METHOD_NOT_ALLOWED',
+      message: 'Only POST method is allowed for draw/cards',
+    });
+    return;
   }
 
   try {
-    const raw = await req.text();
-    const payload = raw ? JSON.parse(raw) : {};
+    const payload = parseRequestBody(req);
+    const count = resolveCount(payload.count);
+    const allowReversed = resolveAllowReversed(payload.allow_reversed);
+    const seed = resolveSeed(payload.seed);
+    const locale = getLocaleFromHeader(req);
 
-    const count = Math.max(1, Math.min(78, Number(payload?.count ?? 1)));
-    const allowReversed = Boolean(payload?.allow_reversed ?? true);
-    let seed: string;
-    if (typeof payload?.seed === 'string' && payload.seed.length > 0) {
-      seed = payload.seed;
-    } else {
-      seed = generateSeed();
-    }
-    const locale: string = (req.headers?.get?.('x-locale') as string) || 'en';
-
-    const indices = generateUniqueIndices(78, count, seed);
-    const results = indices.map((idx: number, i: number) => ({
+    const indices = generateUniqueIndices(MAX_CARD_COUNT, count, seed);
+    const results = indices.map((idx: number, index: number) => ({
       id: `card_${idx}`,
       upright: allowReversed ? randomBoolFromSeed(seed, idx) : true,
-      position: i + 1,
+      position: index + 1,
     }));
 
-    const response = {
+    res.status(200).json({
       result: results,
       seed,
       timestamp: new Date().toISOString(),
       locale,
-    };
-
-    return new Response(JSON.stringify(response), {
-      status: 200,
-      headers: { 'content-type': 'application/json' },
     });
-  } catch (error) {
-    const body = {
-      success: false,
-      error: {
+  } catch (error: unknown) {
+    const duration = Date.now() - startedAt;
+    const details = error instanceof Error ? error.message : String(error);
+    sendJsonError(
+      res,
+      400,
+      {
         code: 'INVALID_REQUEST',
         message: 'Failed to parse request body',
-        timestamp: new Date().toISOString(),
-        details: error instanceof Error ? error.message : String(error),
+        details,
       },
-      meta: {
-        processingTimeMs: Date.now() - start,
-      },
-    };
-    return new Response(JSON.stringify(body), {
-      status: 400,
-      headers: { 'content-type': 'application/json' },
-    });
+      { processingTimeMs: duration }
+    );
   }
 }
 
+function resolveCount(value: unknown): number {
+  const numeric =
+    typeof value === 'number'
+      ? value
+      : typeof value === 'string'
+        ? Number.parseInt(value, 10)
+        : Number.NaN;
+  if (Number.isFinite(numeric)) {
+    return Math.max(MIN_CARD_COUNT, Math.min(MAX_CARD_COUNT, Math.trunc(numeric)));
+  }
+  return MIN_CARD_COUNT;
+}
+
+function resolveAllowReversed(value: unknown): boolean {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const normalised = value.trim().toLowerCase();
+    if (['true', '1', 'yes', 'on'].includes(normalised)) {
+      return true;
+    }
+    if (['false', '0', 'no', 'off'].includes(normalised)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function resolveSeed(value: unknown): string {
+  if (typeof value === 'string' && value.trim().length > 0) {
+    return value;
+  }
+  return generateSeed();
+}
+
 function generateSeed(): string {
-  // Node crypto may not be available in all runtimes; fallback to Math.random
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const crypto = require('node:crypto');
@@ -82,8 +114,8 @@ function generateSeed(): string {
   }
 }
 
-function mulberry32(a: number) {
-  return function () {
+function mulberry32(a: number): () => number {
+  return function (): number {
     let t = (a += 0x6d2b79f5);
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
@@ -93,7 +125,7 @@ function mulberry32(a: number) {
 
 function hashSeed(seed: string): number {
   let h = 2166136261 >>> 0;
-  for (let i = 0; i < seed.length; i++) {
+  for (let i = 0; i < seed.length; i += 1) {
     h ^= seed.charCodeAt(i);
     h = Math.imul(h, 16777619);
   }
@@ -102,9 +134,8 @@ function hashSeed(seed: string): number {
 
 function generateUniqueIndices(deckSize: number, count: number, seed: string): number[] {
   const rnd = mulberry32(hashSeed(seed));
-  const indices = Array.from({ length: deckSize }, (_, i) => i);
-  // Fisher-Yates shuffle (partial)
-  for (let i = deckSize - 1; i > deckSize - 1 - count; i--) {
+  const indices = Array.from({ length: deckSize }, (_, index) => index);
+  for (let i = deckSize - 1; i > deckSize - 1 - count; i -= 1) {
     const j = Math.floor(rnd() * (i + 1));
     [indices[i], indices[j]] = [indices[j], indices[i]];
   }

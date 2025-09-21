@@ -34,3 +34,14 @@ tmp_*
 # Windows artifact
 nul
 
+# IDE artifacts
+*.iml
+
+
+# Supabase CLI binaries
+supabase_cli/
+supabase_windows_amd64*.tar.gz
+
+# Local env backups
+.env.local.*
+

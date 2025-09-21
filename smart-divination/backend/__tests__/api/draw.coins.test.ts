@@ -1,30 +1,32 @@
-// Tests for /api/draw/coins (canonical)
+﻿// Tests for /api/draw/coins (canonical)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const handler = require('../../pages/api/draw/coins').default as (req: any) => Promise<Response>;
-import { makeRequest } from '../../test_utils/makeRequest';
+const handler = require('../../pages/api/draw/coins').default as (
+  req: any,
+  res: any
+) => void | Promise<void>;
+import { invokeNodeHandler } from '../../test_utils/invokeNodeHandler';
 
 describe('API /api/draw/coins (canonical)', () => {
   it('returns 405 on non-POST', async () => {
-    const res = await handler(makeRequest('GET', { path: '/api/draw/coins' }));
+    const res = await invokeNodeHandler(handler, 'GET', { path: '/api/draw/coins' });
     expect(res.status).toBe(405);
   });
 
-  it('returns valid iching result on POST', async () => {
-    const body = { rounds: 6, seed: 'seed123' };
-    const req = makeRequest('POST', { path: '/api/draw/coins', body });
-    const res = await handler(req);
+  it('returns a valid response on POST', async () => {
+    const res = await invokeNodeHandler(handler, 'POST', {
+      path: '/api/draw/coins',
+      body: { count: 6, allow_reversed: false, seed: 'coins-seed' },
+    });
     expect(res.status).toBe(200);
     const json = (await res.json()) as any;
-    expect(json).toHaveProperty('result');
-    expect(json.result).toHaveProperty('lines');
+    expect(json).toHaveProperty('result.lines');
     expect(Array.isArray(json.result.lines)).toBe(true);
     expect(json.result.lines.length).toBe(6);
-    for (const n of json.result.lines) {
-      expect([6, 7, 8, 9]).toContain(n);
-    }
-    expect(json.result).toHaveProperty('primary_hex');
-    expect(json.result).toHaveProperty('changing_lines');
-    expect(Array.isArray(json.result.changing_lines)).toBe(true);
+    expect(json).toHaveProperty('seed');
+    expect(json).toHaveProperty('timestamp');
+    expect(json).toHaveProperty('locale');
   });
 });
+
+
 

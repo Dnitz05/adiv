@@ -72,41 +72,6 @@ export function createApiError(
   };
 }
 
-export function sendApiResponse<T>(
-  response: ApiResponse<T> | ApiError,
-  statusCode: HttpStatusCode = 200
-): Response {
-  const isError = (response as any).code !== undefined && (response as any).success === undefined;
-  const body = isError
-    ? { success: false, error: response }
-    : response;
-  return new Response(JSON.stringify(body), {
-    status: statusCode,
-    headers: { 'content-type': 'application/json' },
-  });
-}
-
-export function addStandardHeaders(res: Response): void {
-  res.headers.set('x-api-version', '1.0.0');
-  res.headers.set('x-frame-options', 'DENY');
-  res.headers.set('x-content-type-options', 'nosniff');
-}
-
-export function handleCors(req: { method?: string; headers?: any }): Response | null {
-  const origin = '*';
-  if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        'Access-Control-Allow-Origin': origin,
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, X-Request-ID, X-Technique, X-User-ID, X-Locale',
-      },
-    });
-  }
-  return null;
-}
-
 export function log(level: 'debug' | 'info' | 'warn' | 'error', message: string, ctx?: any): void {
   const line = JSON.stringify({
     level,
@@ -118,17 +83,4 @@ export function log(level: 'debug' | 'info' | 'warn' | 'error', message: string,
   if (level === 'error') console.error(line);
   else if (level === 'warn') console.warn(line);
   else console.log(line);
-}
-
-export async function parseApiRequest<T = any>(req: any): Promise<T> {
-  const contentType = req?.headers?.get?.('content-type') ?? '';
-  if (contentType.includes('application/json')) {
-    const text = await req.text();
-    return text ? JSON.parse(text) : ({} as T);
-  }
-  if (contentType.includes('application/x-www-form-urlencoded')) {
-    const formData = await req.formData();
-    return Object.fromEntries(formData.entries()) as any;
-  }
-  return {} as T;
 }

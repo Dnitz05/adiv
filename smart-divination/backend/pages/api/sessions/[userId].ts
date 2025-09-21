@@ -1,6 +1,13 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
-import { addStandardHeaders, createApiResponse, handleCors, log, sendApiResponse } from '../../../lib/utils/api';
+import { createApiResponse, log } from '../../../lib/utils/api';
+import {
+  applyCorsHeaders,
+  applyStandardResponseHeaders,
+  handleCorsPreflight,
+  sendJsonError,
+} from '../../../lib/utils/nextApi';
 import { getUserSessions, getUserTier } from '../../../lib/utils/supabase';
 import { recordApiMetric } from '../../../lib/utils/metrics';
 
@@ -12,77 +19,72 @@ const QuerySchema = z.object({
   orderDir: z.enum(['asc', 'desc']).default('desc'),
 });
 
-export default async function handler(req: any): Promise<Response> {
-  const start = Date.now();
+const METRICS_PATH = '/api/sessions/[userId]';
+const ALLOW_HEADER_VALUE = 'OPTIONS, GET';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+  const startedAt = Date.now();
   const requestId = nanoid();
 
+  const corsConfig = { methods: 'GET,OPTIONS' };
+  applyCorsHeaders(res, corsConfig);
+  applyStandardResponseHeaders(res);
+
+  if (handleCorsPreflight(req, res, corsConfig)) {
+    recordApiMetric(METRICS_PATH, 204, Date.now() - startedAt);
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', ALLOW_HEADER_VALUE);
+    sendJsonError(res, 405, {
+      code: 'METHOD_NOT_ALLOWED',
+      message: 'Only GET method is allowed for sessions retrieval',
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 405, Date.now() - startedAt);
+    return;
+  }
+
   try {
-    const cors = handleCors(req);
-    if (cors) return cors;
-
-    if (req.method !== 'GET') {
-      const d = Date.now() - start;
-      const resp405 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'METHOD_NOT_ALLOWED',
-            message: 'Only GET method is allowed for sessions retrieval',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        405
-      );
-      recordApiMetric('/api/sessions/[userId]', 405, d);
-      return resp405;
-    }
-
-    const url = new URL(req.url);
-    const seg = url.pathname.split('/');
-    const userId = seg[seg.length - 1];
-    if (!userId || userId === '[userId]') {
-      const d = Date.now() - start;
-      const resp400 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'MISSING_USER_ID',
-            message: 'User ID is required in URL path',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        400
-      );
-      recordApiMetric('/api/sessions/[userId]', 400, d);
-      return resp400;
+    const userIdParam = req.query.userId;
+    const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam;
+    if (!userId || userId.trim().length === 0) {
+      sendJsonError(res, 400, {
+        code: 'MISSING_USER_ID',
+        message: 'User ID is required in URL path',
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
+      return;
     }
 
     log('info', 'User sessions requested', { requestId, userId });
 
-    const qs = QuerySchema.parse({
-      limit: url.searchParams.get('limit') ?? undefined,
-      offset: url.searchParams.get('offset') ?? undefined,
-      technique: url.searchParams.get('technique') ?? undefined,
-      orderBy: url.searchParams.get('orderBy') ?? undefined,
-      orderDir: url.searchParams.get('orderDir') ?? undefined,
-    });
+    const queryInput = {
+      limit: normalizeQueryValue(req.query.limit),
+      offset: normalizeQueryValue(req.query.offset),
+      technique: normalizeQueryValue(req.query.technique),
+      orderBy: normalizeQueryValue(req.query.orderBy),
+      orderDir: normalizeQueryValue(req.query.orderDir),
+    };
+
+    const qs = QuerySchema.parse(queryInput);
 
     let userTier: 'free' | 'premium' | 'premium_annual' = 'free';
     try {
       userTier = (await getUserTier(userId)) ?? 'free';
-    } catch {}
+    } catch (error) {}
 
     const sessions = await getUserSessions(userId, {
       limit: qs.limit,
       offset: qs.offset,
-      technique: (qs.technique as any) ?? undefined,
+      technique: qs.technique ?? undefined,
       orderBy: qs.orderBy,
       order: qs.orderDir,
     });
 
-    const ms = Date.now() - start;
+    const duration = Date.now() - startedAt;
     const payload = {
       sessions,
       pagination: {
@@ -98,28 +100,27 @@ export default async function handler(req: any): Promise<Response> {
       },
       userTier,
     };
-    const response = createApiResponse(payload, { processingTimeMs: ms, requestId });
-    const out = sendApiResponse(response, 200);
-    addStandardHeaders(out);
-    recordApiMetric('/api/sessions/[userId]', 200, ms);
-    return out;
-  } catch (error: any) {
-    const ms = Date.now() - start;
-    log('error', 'User sessions retrieval failed', { requestId, error: String(error?.message || error) });
-    const resp = sendApiResponse(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to retrieve sessions',
-          details: { message: String(error?.message || error) },
-          timestamp: new Date().toISOString(),
-          requestId,
-        },
-      },
-      500
-    );
-    recordApiMetric('/api/sessions/[userId]', 500, ms);
-    return resp;
+    res.status(200).json(createApiResponse(payload, { processingTimeMs: duration, requestId }));
+    recordApiMetric(METRICS_PATH, 200, duration);
+  } catch (error: unknown) {
+    const duration = Date.now() - startedAt;
+    log('error', 'User sessions retrieval failed', {
+      requestId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    sendJsonError(res, 500, {
+      code: 'INTERNAL_ERROR',
+      message: 'Failed to retrieve sessions',
+      details: { message: error instanceof Error ? error.message : String(error) },
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 500, duration);
   }
+}
+
+function normalizeQueryValue(value: string | string[] | undefined): string | undefined {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+  return value;
 }

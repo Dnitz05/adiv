@@ -1,6 +1,7 @@
+export const runtime = 'edge';
 // Minimal, self-contained health endpoint for the canonical backend.
 // Kept independent from legacy libs to ensure CI runs green during migration.
-export default async function handler(req: any): Promise<Response> {
+export default async function handler(req: Request): Promise<Response> {
   const start = Date.now();
 
   if (req.method !== 'GET') {

@@ -1,5 +1,12 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { nanoid } from 'nanoid';
-import { addStandardHeaders, createApiResponse, handleCors, log, sendApiResponse } from '../../../../lib/utils/api';
+import { createApiResponse, log } from '../../../../lib/utils/api';
+import {
+  applyCorsHeaders,
+  applyStandardResponseHeaders,
+  handleCorsPreflight,
+  sendJsonError,
+} from '../../../../lib/utils/nextApi';
 import { recordApiMetric } from '../../../../lib/utils/metrics';
 
 interface PackManifest {
@@ -14,7 +21,10 @@ interface PackManifest {
   updated_at: string;
   languages: string[];
   content: { cards?: number; hexagrams?: number; runes?: number; spreads?: string[] };
-  assets: { images: { format: string; resolution: string; count: number }; audio?: { format: string; count: number } };
+  assets: {
+    images: { format: string; resolution: string; count: number };
+    audio?: { format: string; count: number };
+  };
   compatibility: { min_app_version: string; supported_platforms: string[] };
   premium_required: boolean;
   download_size: number;
@@ -25,7 +35,8 @@ const AVAILABLE_PACKS: Record<string, PackManifest> = {
   'tarot-rider-waite': {
     id: 'tarot-rider-waite',
     name: 'Rider-Waite Tarot Deck',
-    description: 'The classic and most widely recognized tarot deck, featuring beautiful traditional artwork',
+    description:
+      'The classic and most widely recognized tarot deck, featuring beautiful traditional artwork',
     version: '1.0.0',
     technique: 'tarot',
     author: 'Smart Divination Team',
@@ -78,116 +89,95 @@ const AVAILABLE_PACKS: Record<string, PackManifest> = {
   },
 };
 
-export default async function handler(req: any): Promise<Response> {
-  const start = Date.now();
-  const requestId = nanoid();
-  try {
-    const cors = handleCors(req);
-    if (cors) return cors;
-    if (req.method !== 'GET') {
-      const d = Date.now() - start;
-      const resp405 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'METHOD_NOT_ALLOWED',
-            message: 'Only GET method is allowed for pack manifest',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        405
-      );
-      recordApiMetric('/api/packs/[packId]/manifest', 405, d);
-      return resp405;
-    }
+const METRICS_PATH = '/api/packs/[packId]/manifest';
+const ALLOW_HEADER_VALUE = 'OPTIONS, GET';
 
-    const url = new URL(req.url);
-    const seg = url.pathname.split('/');
-    const packId = seg[seg.length - 2];
-    if (!packId || packId === '[packId]') {
-      const d = Date.now() - start;
-      const resp400 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'MISSING_PACK_ID',
-            message: 'Pack ID is required in URL path',
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        400
-      );
-      recordApiMetric('/api/packs/[packId]/manifest', 400, d);
-      return resp400;
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+  const startedAt = Date.now();
+  const requestId = nanoid();
+
+  const corsConfig = { methods: 'GET,OPTIONS' };
+  applyCorsHeaders(res, corsConfig);
+  applyStandardResponseHeaders(res);
+
+  if (handleCorsPreflight(req, res, corsConfig)) {
+    recordApiMetric(METRICS_PATH, 204, Date.now() - startedAt);
+    return;
+  }
+
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', ALLOW_HEADER_VALUE);
+    sendJsonError(res, 405, {
+      code: 'METHOD_NOT_ALLOWED',
+      message: 'Only GET method is allowed for pack manifest',
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 405, Date.now() - startedAt);
+    return;
+  }
+
+  try {
+    const packIdParam = req.query.packId;
+    const packId = Array.isArray(packIdParam) ? packIdParam[0] : packIdParam;
+    if (!packId || packId.trim().length === 0) {
+      sendJsonError(res, 400, {
+        code: 'MISSING_PACK_ID',
+        message: 'Pack ID is required in URL path',
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
+      return;
     }
 
     const manifest = AVAILABLE_PACKS[packId];
     if (!manifest) {
-      const d = Date.now() - start;
-      const resp404 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'PACK_NOT_FOUND',
-            message: 'Pack not found or not available',
-            details: { packId, availablePacks: Object.keys(AVAILABLE_PACKS) },
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        404
-      );
-      recordApiMetric('/api/packs/[packId]/manifest', 404, d);
-      return resp404;
+      sendJsonError(res, 404, {
+        code: 'PACK_NOT_FOUND',
+        message: 'Pack not found or not available',
+        details: { packId, availablePacks: Object.keys(AVAILABLE_PACKS) },
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 404, Date.now() - startedAt);
+      return;
     }
 
-    const requestedVersion = url.searchParams.get('version');
+    const requestedVersion = getQueryValue(req.query.version);
     if (requestedVersion && requestedVersion !== manifest.version) {
-      const d = Date.now() - start;
-      const resp404 = sendApiResponse(
-        {
-          success: false,
-          error: {
-            code: 'VERSION_MISMATCH',
-            message: 'Requested version not available',
-            details: { requestedVersion, availableVersion: manifest.version },
-            timestamp: new Date().toISOString(),
-            requestId,
-          },
-        },
-        404
-      );
-      recordApiMetric('/api/packs/[packId]/manifest', 404, d);
-      return resp404;
+      sendJsonError(res, 404, {
+        code: 'VERSION_MISMATCH',
+        message: 'Requested version not available',
+        details: { requestedVersion, availableVersion: manifest.version },
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 404, Date.now() - startedAt);
+      return;
     }
 
-    const ms = Date.now() - start;
-    const response = createApiResponse(manifest, { processingTimeMs: ms, requestId });
-    const out = sendApiResponse(response, 200);
-    addStandardHeaders(out);
-    out.headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600');
-    out.headers.set('ETag', `"${manifest.checksum}"`);
-    recordApiMetric('/api/packs/[packId]/manifest', 200, ms);
-    return out;
-  } catch (error: any) {
-    const ms = Date.now() - start;
-    log('error', 'Pack manifest retrieval failed', { requestId, error: String(error?.message || error) });
-    const resp = sendApiResponse(
-      {
-        success: false,
-        error: {
-          code: 'INTERNAL_ERROR',
-          message: 'Failed to retrieve pack manifest',
-          details: { message: String(error?.message || error) },
-          timestamp: new Date().toISOString(),
-          requestId,
-        },
-      },
-      500
-    );
-    recordApiMetric('/api/packs/[packId]/manifest', 500, ms);
-    return resp;
+    res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+    res.setHeader('ETag', `"${manifest.checksum}"`);
+
+    const duration = Date.now() - startedAt;
+    res.status(200).json(createApiResponse(manifest, { processingTimeMs: duration, requestId }));
+    recordApiMetric(METRICS_PATH, 200, duration);
+  } catch (error: unknown) {
+    const duration = Date.now() - startedAt;
+    log('error', 'Pack manifest retrieval failed', {
+      requestId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    sendJsonError(res, 500, {
+      code: 'INTERNAL_ERROR',
+      message: 'Failed to retrieve pack manifest',
+      details: { message: error instanceof Error ? error.message : String(error) },
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 500, duration);
   }
+}
+
+function getQueryValue(value: string | string[] | undefined): string | undefined {
+  if (Array.isArray(value)) {
+    return value[0];
+  }
+  return value;
 }
