@@ -68,12 +68,12 @@ The tarot client consumes live Supabase history and interpretations. The I Ching
 - Pack metadata lives in `backend/data/packs/manifests.json` and is loaded through `lib/packs/manifestRegistry.ts` with checksum validation.
 
 ## Release Status & Next Steps
-- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore, key.properties), release APK tested (48.3MB). iOS signing and store metadata pending.
+- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore, key.properties), release APK tested (48.3MB). Build blockers resolved (app_links compileSdk, intl 0.20.0) and documented in `ANDROID_LAUNCH_CHECKLIST.md`. iOS signing and store metadata pending.
 - **Backend**: Production environment configuration complete (`.env.production`, error handling standardized, health/metrics endpoints operational).
 - **Security**: Comprehensive secrets management guide in `docs/SECRETS.md` covering GitHub Actions, Vercel, Supabase, and rotation procedures.
 - **I Ching and runes**: Server endpoints complete behind feature flags; Flutter clients need UX, localisation, entitlement gating, and QA before exposure.
 - **Content packs**: Manifest registry in place; distribution hosting, entitlement checks, and purchase flows are still TODO.
 - **Observability**: In-memory metrics available; connect Datadog or Grafana before production.
-- **CI/CD**: Secrets documented but not yet configured in GitHub Actions.
+- **CI/CD**: Secrets documented but not yet configured in GitHub Actions. Use `CRITICAL_BLOCKERS_PLAN.md` to track the remaining launch-critical tasks.
 
 Consult `docs/STATUS.md` for the current sprint focus, `docs/MIGRATION_GUIDE.md` for migration checklist progress, and `docs/SECRETS.md` for comprehensive secrets management.

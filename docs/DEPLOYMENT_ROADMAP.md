@@ -4,7 +4,9 @@ This document provides a comprehensive roadmap for deploying the Smart Divinatio
 
 ## Overview
 
-This roadmap covers the 5 critical tasks required for production launch:
+This roadmap covers the 5 critical tasks required for production launch.
+
+- See also `ANDROID_LAUNCH_CHECKLIST.md` (Play Store readiness) and `CRITICAL_BLOCKERS_PLAN.md` for daily execution details.
 
 1. [ ] **iOS Signing Configuration** - Complete Apple Developer setup
 2. [ ] **Production Credentials** - Gather and configure all API keys and secrets

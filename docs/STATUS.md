@@ -15,7 +15,9 @@
 - Standardized error handling with centralized error definitions (`lib/utils/errors.ts`).
 - Health and metrics endpoints operational with Node.js runtime.
 - Android signing fully configured (keystore generated, key.properties, build.gradle.kts).
+- Resolved Android build failure (app_links compileSdk) by pinning compileSdk=34 and aligning intl 0.20.0; release builds now pass Flutter analyze/test.
 - Release APK build tested and verified (48.3MB).
+- Migrated shared localisation pipeline to generated CommonStrings with additional smoke tests in the common package.
 - Production environment variables documented (`.env.production`, `.env.production.example`).
 - Comprehensive secrets management guide created (`docs/SECRETS.md`).
 
@@ -25,7 +27,8 @@
 - Wire premium entitlements and storefront presentation for content packs.
 - Connect backend metrics to Datadog/Grafana and define alert thresholds.
 - Expand Flutter coverage with HTTP mocks, Supabase-aware integration tests, and offline handling.
-- Finalise store metadata, localisation, and branding for the tarot client release.
+- Finalise store metadata, localisation polish, and branding for the tarot client release.
+- Produce Play Store asset pack (icon, splash, screenshots, feature graphic) following `ANDROID_LAUNCH_CHECKLIST.md`.
 
 ## Known Gaps
 - iOS signing not yet configured; blocked until macOS signing environment is available (Android complete).
@@ -37,5 +40,5 @@
 ## Manual QA Checklist (Tarot)
 - Run `scripts/supabase/apply.sh` to migrate/seed, then confirm tarot draws, interpretations, and history for the demo account.
 - Validate session limits and error messages with and without Supabase credentials.
-- Exercise `flutter build apk --release` from `apps/tarot` and smoke test on device/emulator.
+- Exercise `flutter build apk --release` from `apps/tarot` (ensure `JAVA_HOME` points to a JDK 17 install) and smoke test on device/emulator.
 - When feature flags are enabled, sanity-check I Ching and runes endpoints with seeded accounts before exposing them in builds.
