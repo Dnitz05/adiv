@@ -64,7 +64,10 @@
       "Bash(git cat-file:*)",
       "Read(//c/**)",
       "Bash(sort:*)",
-      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch -r temp/' --prune-empty --tag-name-filter cat -- chore/update-vercel-deps)"
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch -r temp/' --prune-empty --tag-name-filter cat -- chore/update-vercel-deps)",
+      "Bash(git gc:*)",
+      "Bash(git reset:*)",
+      "Bash(gh run view:*)"
     ],
     "deny": [],
     "ask": []
