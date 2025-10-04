@@ -5,15 +5,6 @@ allprojects {
     }
 }
 
-// Force compileSdk for all library subprojects to fix app_links 6.4.1 issue
-subprojects {
-    plugins.withId("com.android.library") {
-        configure<com.android.build.gradle.LibraryExtension> {
-            compileSdk = 34
-        }
-    }
-}
-
 val newBuildDir: Directory =
     rootProject.layout.buildDirectory
         .dir("../../build")
@@ -25,6 +16,13 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 
     project.evaluationDependsOn(":app")
+
+    // Force compileSdk for library subprojects (fixes app_links 6.4.1 issue)
+    afterEvaluate {
+        extensions.findByType<com.android.build.gradle.LibraryExtension>()?.apply {
+            compileSdk = 34
+        }
+    }
 }
 
 tasks.register<Delete>("clean") {
