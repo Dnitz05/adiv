@@ -6,6 +6,7 @@
 - Current build status: `STATUS.md`
 - Session history schema notes: `SESSION_HISTORY_SCHEMA.md`
 - Supabase setup walkthrough: `../SUPABASE_SETUP.md`
+- Supabase production runbook: `SUPABASE_PRODUCTION_RUNBOOK.md`
 - Security policy: `../SECURITY.md`
 - Code of Conduct: `../CODE_OF_CONDUCT.md`
 
