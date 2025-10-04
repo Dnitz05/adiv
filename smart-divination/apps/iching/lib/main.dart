@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
-import 'package:common/shared/infrastructure/localization/app_localizations.dart';
+import 'package:common/l10n/common_strings.dart';
+import 'package:common/shared/infrastructure/localization/common_strings_extensions.dart';
 
 import 'api/draw_coins_api.dart';
 
@@ -17,15 +17,10 @@ class SmartIChingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: CommonStrings.localizationsDelegates,
+      supportedLocales: CommonStrings.supportedLocales,
       onGenerateTitle: (context) =>
-          AppLocalizations.of(context).appTitle('iching'),
+          CommonStrings.of(context).appTitle('iching'),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
@@ -95,7 +90,7 @@ class _IChingHomeScreenState extends State<_IChingHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final result = _response?.result;
 
     return Scaffold(

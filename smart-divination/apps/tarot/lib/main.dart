@@ -2,11 +2,11 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
 
-import 'package:common/shared/infrastructure/localization/app_localizations.dart';
+import 'package:common/l10n/common_strings.dart';
+import 'package:common/shared/infrastructure/localization/common_strings_extensions.dart';
 
 import 'api/draw_cards_api.dart';
 import 'api/interpretation_api.dart';
@@ -134,13 +134,8 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
     return MaterialApp(
       title: 'Smart Tarot',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: CommonStrings.localizationsDelegates,
+      supportedLocales: CommonStrings.supportedLocales,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6C5CE7)),
         useMaterial3: true,
@@ -173,7 +168,7 @@ class _SignInViewState extends State<_SignInView> {
   }
 
   Future<void> _submit() async {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -250,7 +245,7 @@ class _SignInViewState extends State<_SignInView> {
   }
 
   Future<void> _promptPasswordReset() async {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final controller =
         TextEditingController(text: _emailController.text.trim());
     String? dialogError;
@@ -282,7 +277,7 @@ class _SignInViewState extends State<_SignInView> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: Text(AppLocalizations.of(dialogContext).cancel),
+                  child: Text(CommonStrings.of(dialogContext).cancel),
                 ),
                 FilledButton(
                   onPressed: () {
@@ -313,7 +308,7 @@ class _SignInViewState extends State<_SignInView> {
   }
 
   Future<void> _sendPasswordReset(String email) async {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final trimmedEmail = email.trim();
     if (trimmedEmail.isEmpty) {
       setState(() {
@@ -370,7 +365,7 @@ class _SignInViewState extends State<_SignInView> {
 
   @override
   Widget build(BuildContext context) {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -489,7 +484,7 @@ class _PasswordResetViewState extends State<_PasswordResetView> {
   }
 
   Future<void> _updatePassword() async {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final password = _passwordController.text.trim();
     final confirm = _confirmController.text.trim();
 
@@ -549,7 +544,7 @@ class _PasswordResetViewState extends State<_PasswordResetView> {
 
   @override
   Widget build(BuildContext context) {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -762,7 +757,7 @@ class _HomeState extends State<_Home> {
     if (_drawing) {
       return;
     }
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     setState(() {
       _drawing = true;
       _error = null;
@@ -872,7 +867,7 @@ class _HomeState extends State<_Home> {
   }
 
   Widget _buildEligibilityCard(
-    AppLocalizations localisation,
+    CommonStrings localisation,
     SessionEligibility eligibility,
   ) {
     final theme = Theme.of(context);
@@ -913,7 +908,7 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildDrawFormCard(AppLocalizations localisation) {
+  Widget _buildDrawFormCard(CommonStrings localisation) {
     final theme = Theme.of(context);
     return Card(
       child: Padding(
@@ -970,7 +965,7 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildLatestDrawCard(AppLocalizations localisation) {
+  Widget _buildLatestDrawCard(CommonStrings localisation) {
     final draw = _latestDraw;
     if (draw == null) {
       return const SizedBox.shrink();
@@ -1060,7 +1055,7 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildProfileCard(AppLocalizations localisation) {
+  Widget _buildProfileCard(CommonStrings localisation) {
     final profile = _profile;
     if (profile == null) {
       return const SizedBox.shrink();
@@ -1120,7 +1115,7 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildHistoryCard(AppLocalizations localisation) {
+  Widget _buildHistoryCard(CommonStrings localisation) {
     final theme = Theme.of(context);
     if (_history.isEmpty) {
       return Card(
@@ -1193,7 +1188,7 @@ class _HomeState extends State<_Home> {
 
   @override
   Widget build(BuildContext context) {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final children = <Widget>[];
 
     if (_error != null) {

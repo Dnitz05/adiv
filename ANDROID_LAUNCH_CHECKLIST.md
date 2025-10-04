@@ -11,12 +11,12 @@ Status: Completed (app_links compileSdk override in place)
 Verification: cd smart-divination/apps/tarot && flutter build apk --release
 
 ### 1.2 Finish localisation migration (CommonStrings from ARB files)
-Status: In progress
+Status: Completed
 Actions:
-- Migrate remaining code paths away from legacy CommonStrings wrappers.
-- Remove obsolete references once all screens read from generated delegates.
-- Re-enable any skipped localisation tests.
-Verification: cd smart-divination/apps/tarot && flutter test
+- Apps now consume `CommonStrings` directly with shared helpers for technique-specific labels.
+- Legacy `AppLocalizations` wrapper removed from the common package.
+- All localisation smoke tests restored across apps (tarot, iching, runes).
+Verification: melos run analyze:all --no-select && melos run test:all --no-select
 
 ### 1.3 Validate Android release signing setup
 Status: Pending verification

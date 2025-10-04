@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:common/shared/infrastructure/localization/app_localizations.dart';
+import 'package:common/l10n/common_strings.dart';
 
 void main() {
-  testWidgets('loads AppLocalizations and resolves strings (ca)', (tester) async {
+  testWidgets('loads CommonStrings and resolves strings (ca)', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: CommonStrings.localizationsDelegates,
+        supportedLocales: CommonStrings.supportedLocales,
         locale: const Locale('ca'),
         home: Builder(
-          builder: (context) => Text(AppLocalizations.of(context).welcome),
+          builder: (context) => Text(CommonStrings.of(context).welcome),
         ),
       ),
     );
@@ -25,4 +19,3 @@ void main() {
     expect(find.text('Benvingut/da!'), findsOneWidget);
   });
 }
-

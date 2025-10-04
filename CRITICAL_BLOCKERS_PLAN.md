@@ -51,17 +51,16 @@ Solution B: override compileSdk in Gradle
 ---
 
 ## Task 2: Complete localisation migration
-Priority: High
+Priority: High (Completed)
 Estimated time: 1 day
 Difficulty: Medium
 
 Actions
-- Migrate shared localisation to ARB-generated CommonStrings fully.
-- Replace remaining manual string maps.
-- Ensure generated files are part of source control.
-- Re-enable previously skipped localisation tests.
+- Shared localisation now uses ARB-generated CommonStrings with helper extensions for technique labels.
+- Removed the legacy AppLocalizations wrapper and updated all apps/tests to use CommonStrings delegates.
+- Checked in generated localisation sources and re-enabled smoke tests for tarot, iching, and runes.
 
-Verification: melos run analyze:all --no-select and melos run test:all --no-select.
+Verification: melos run analyze:all --no-select && melos run test:all --no-select (passes).
 
 ---
 

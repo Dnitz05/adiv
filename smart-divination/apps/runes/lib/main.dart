@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
-import 'package:common/shared/infrastructure/localization/app_localizations.dart';
+import 'package:common/l10n/common_strings.dart';
+import 'package:common/shared/infrastructure/localization/common_strings_extensions.dart';
 
 import 'api/draw_runes_api.dart';
 
@@ -17,15 +17,9 @@ class SmartRunesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) =>
-          AppLocalizations.of(context).appTitle('runes'),
+      localizationsDelegates: CommonStrings.localizationsDelegates,
+      supportedLocales: CommonStrings.supportedLocales,
+      onGenerateTitle: (context) => CommonStrings.of(context).appTitle('runes'),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
@@ -98,7 +92,7 @@ class _RunesHomeScreenState extends State<_RunesHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final localisation = AppLocalizations.of(context);
+    final localisation = CommonStrings.of(context);
     final runes = _response?.result ?? const <RuneResult>[];
 
     return Scaffold(
