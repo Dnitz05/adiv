@@ -1,4 +1,7 @@
-﻿jest.mock('nanoid', () => ({ nanoid: () => 'test_nanoid' }));
+﻿jest.mock('../../lib/utils/api', () => {
+  const actual = jest.requireActual('../../lib/utils/api');
+  return { ...actual, createRequestId: () => 'test_request_id' };
+});
 // Method handling test for packs manifest endpoint (canonical)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const handler = require('../../pages/api/packs/[packId]/manifest').default as (

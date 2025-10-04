@@ -1,5 +1,8 @@
 ﻿// Method handling tests for sessions endpoints (canonical)
-jest.mock('nanoid', () => ({ nanoid: () => 'test_nanoid' }));
+jest.mock('../../lib/utils/api', () => {
+  const actual = jest.requireActual('../../lib/utils/api');
+  return { ...actual, createRequestId: () => 'test_request_id' };
+});
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const rootHandler = require('../../pages/api/sessions').default as (
   req: any,

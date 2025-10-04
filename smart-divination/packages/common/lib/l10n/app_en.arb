@@ -27,5 +27,135 @@
   "ok": "OK",
   "cancel": "Cancel",
   "save": "Save",
-  "close": "Close"
+  "close": "Close",
+  "allowReversed": "Allow reversed cards",
+  "drawingInProgress": "Drawing...",
+  "seedOptionalLabel": "Seed (optional)",
+  "generateSeed": "Generate seed",
+  "latestDrawTitle": "Latest draw ({count} cards)",
+  "@latestDrawTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "spreadLabel": "Spread: {spread}",
+  "@spreadLabel": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "methodSeedLabel": "Method: {method} • Seed: {seed}",
+  "@methodSeedLabel": {
+    "placeholders": {
+      "method": {},
+      "seed": {}
+    }
+  },
+  "methodLabel": "Method: {method}",
+  "@methodLabel": {
+    "placeholders": {
+      "method": {}
+    }
+  },
+  "seedLabel": "Seed: {seed}",
+  "@seedLabel": {
+    "placeholders": {
+      "seed": {}
+    }
+  },
+  "interpretationHeading": "Interpretation",
+  "historyHeading": "Previous draws",
+  "drawPlaceholder": "Draw cards to receive guidance.",
+  "cardOrientationUpright": "Upright",
+  "cardOrientationReversed": "Reversed",
+  "tierLabel": "Tier: {tier}",
+  "@tierLabel": {
+    "placeholders": {
+      "tier": {}
+    }
+  },
+  "usageToday": "Today: {used}/{limit}",
+  "@usageToday": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "usageWeek": "This week: {used}/{limit}",
+  "@usageWeek": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "usageMonth": "This month: {used}/{limit}",
+  "@usageMonth": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "remainingToday": "Remaining today: {remaining}",
+  "@remainingToday": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "nextWindow": "Next window: {timestamp}",
+  "@nextWindow": {
+    "placeholders": {
+      "timestamp": {}
+    }
+  },
+  "authSignInTitle": "Sign in to Smart Tarot",
+  "authSignUpTitle": "Create your Smart Tarot account",
+  "authEmailLabel": "Email",
+  "authPasswordLabel": "Password",
+  "authPasswordLabelWithHint": "Password (min 6 characters)",
+  "authSignInButton": "Sign in",
+  "authSignUpButton": "Create account",
+  "authToggleToSignIn": "Already have an account? Sign in",
+  "authToggleToSignUp": "Need an account? Create one",
+  "authValidationError": "Enter a valid email and a password of at least 6 characters.",
+  "authSignInSuccess": "Signed in successfully.",
+  "authSignUpConfirmationSent": "Check your inbox to confirm the account before signing in.",
+  "authSignUpSuccess": "Account created successfully.",
+  "authForgotPasswordLink": "Forgot password?",
+  "authForgotPasswordTitle": "Reset password",
+  "authForgotPasswordDescription": "Enter the email associated with your account and we'll send reset instructions.",
+  "authForgotPasswordSubmit": "Send email",
+  "authForgotPasswordSuccess": "Password reset email sent. Check your inbox.",
+  "authForgotPasswordMissingEmail": "Enter a valid email address to continue.",
+  "authPasswordResetTitle": "Set a new password",
+  "authPasswordResetDescription": "Enter a new password to finish resetting your account.",
+  "authPasswordResetNewPasswordLabel": "New password",
+  "authPasswordResetConfirmPasswordLabel": "Confirm password",
+  "authPasswordResetButton": "Update password",
+  "authPasswordResetSuccess": "Password updated. You can sign in with the new password.",
+  "authPasswordResetMismatch": "Passwords must match and include at least 6 characters.",
+  "authPasswordResetError": "Failed to update password. Please try again.",
+  "authPasswordResetSignOutNotice": "For security reasons you will be signed out after updating the password.",
+  "authGenericError": "Authentication failed.",
+  "authUnexpectedError": "Unexpected error: {error}",
+  "@authUnexpectedError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
 }

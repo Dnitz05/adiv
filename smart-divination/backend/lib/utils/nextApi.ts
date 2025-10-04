@@ -12,7 +12,7 @@ const DEFAULT_CORS: Required<CorsConfig> = {
   methods: 'GET,POST,PUT,DELETE,PATCH,OPTIONS',
   headers:
     'content-type,authorization,x-request-id,x-technique,x-user-id,x-locale,x-api-version,x-csrf-token,x-requested-with,accept,accept-version,content-length,content-md5,date',
-  credentials: true,
+  credentials: false,
 };
 
 const STANDARD_HEADERS: Record<string, string> = {
@@ -26,7 +26,11 @@ export function applyCorsHeaders(res: NextApiResponse, config?: CorsConfig): voi
   res.setHeader('Access-Control-Allow-Origin', cfg.origin);
   res.setHeader('Access-Control-Allow-Methods', cfg.methods);
   res.setHeader('Access-Control-Allow-Headers', cfg.headers);
-  res.setHeader('Access-Control-Allow-Credentials', String(cfg.credentials));
+  if (cfg.credentials) {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else if (typeof res.removeHeader === 'function') {
+    res.removeHeader('Access-Control-Allow-Credentials');
+  }
 }
 
 export function handleCorsPreflight(

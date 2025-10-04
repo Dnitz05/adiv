@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { nanoid } from 'nanoid';
-import { createApiResponse, log } from '../../../../lib/utils/api';
+import { createApiResponse, log, createRequestId } from '../../../../lib/utils/api';
 import {
   applyCorsHeaders,
   applyStandardResponseHeaders,
@@ -94,7 +93,7 @@ const ALLOW_HEADER_VALUE = 'OPTIONS, GET';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const startedAt = Date.now();
-  const requestId = nanoid();
+  const requestId = createRequestId();
 
   const corsConfig = { methods: 'GET,OPTIONS' };
   applyCorsHeaders(res, corsConfig);

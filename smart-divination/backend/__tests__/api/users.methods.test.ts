@@ -1,4 +1,7 @@
-﻿jest.mock('nanoid', () => ({ nanoid: () => 'test_nanoid' }));
+﻿jest.mock('../../lib/utils/api', () => {
+  const actual = jest.requireActual('../../lib/utils/api');
+  return { ...actual, createRequestId: () => 'test_request_id' };
+});
 // Method handling tests for users endpoints (canonical)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const premiumHandler = require('../../pages/api/users/[userId]/premium').default as (

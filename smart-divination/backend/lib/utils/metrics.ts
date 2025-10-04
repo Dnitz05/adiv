@@ -17,6 +17,7 @@ const MAX_SAMPLES = 1000;
 const WINDOW_MS = 60_000; // 1 minute window for RPS
 
 const store: Map<EndpointKey, EndpointStore> = new Map();
+const METRICS_DEBUG = process.env.METRICS_DEBUG === 'true';
 
 // ----------------------------------------------------------------------------
 // Optional external provider (no-op by default)
@@ -51,62 +52,171 @@ class ConsoleProvider implements MetricsProvider {
   }
 }
 
-class DatadogProvider implements MetricsProvider {
-  private apiKey: string;
-  private site: string;
-  constructor(apiKey: string, site = 'datadoghq.com') {
-    this.apiKey = apiKey;
-    this.site = site;
+type DatadogProviderOptions = {
+  apiKey: string;
+  site?: string;
+  service?: string;
+  env?: string;
+  metricPrefix?: string;
+  defaultTags?: string[];
+  timeoutMs?: number;
+};
+
+async function getFetchImpl(): Promise<typeof fetch> {
+  // Use native fetch if available (Node 18+)
+  if (typeof fetch === 'function') {
+    return fetch;
   }
+
+  // Fallback to node-fetch for older Node versions
+  // Note: This won't work in browser/edge environments due to bundler limitations
+  if (METRICS_DEBUG) {
+    // eslint-disable-next-line no-console
+    console.warn('metrics: native fetch not available, metrics will be disabled');
+  }
+  throw new Error('Fetch not available');
+}
+
+class DatadogProvider implements MetricsProvider {
+  private readonly apiKey: string;
+
+  private readonly site: string;
+
+  private readonly service?: string;
+
+  private readonly env?: string;
+
+  private readonly metricPrefix: string;
+
+  private readonly defaultTags: string[];
+
+  private readonly timeoutMs: number;
+
+  constructor(options: DatadogProviderOptions) {
+    this.apiKey = options.apiKey;
+    this.site = options.site ?? 'datadoghq.com';
+    this.service = options.service;
+    this.env = options.env;
+    this.metricPrefix = options.metricPrefix ?? 'smart_divination';
+    this.defaultTags = options.defaultTags ?? [];
+    this.timeoutMs = options.timeoutMs ?? 2000;
+  }
+
+  private buildTags(event: MetricEvent): string[] {
+    const statusGroup =
+      event.status >= 500
+        ? '5xx'
+        : event.status >= 400
+          ? '4xx'
+          : event.status >= 300
+            ? '3xx'
+            : '2xx';
+    const tagSet = new Set<string>([
+      ...this.defaultTags,
+      `endpoint:${event.endpoint}`,
+      `status:${event.status}`,
+      `status_group:${statusGroup}`,
+    ]);
+    if (this.service) tagSet.add(`service:${this.service}`);
+    if (this.env) tagSet.add(`env:${this.env}`);
+    return Array.from(tagSet);
+  }
+
   async send(event: MetricEvent): Promise<void> {
     try {
-      // Send as a single-point metric (distribution-like via series)
-      const statusGroup = event.status >= 500 ? '5xx' : event.status >= 400 ? '4xx' : event.status >= 300 ? '3xx' : '2xx';
-      const body = {
+      const fetchFn = await getFetchImpl();
+      const url = `https://api.${this.site}/api/v2/series`;
+      const tags = this.buildTags(event);
+      const tsSeconds = Math.floor(event.ts / 1000);
+      const payload = {
         series: [
           {
-            metric: 'smart_divination.api.latency_ms',
+            metric: `${this.metricPrefix}.api.latency_ms`,
             type: 3, // gauge
-            points: [[Math.floor(event.ts / 1000), event.durationMs]],
-            tags: [`endpoint:${event.endpoint}`, `status:${event.status}`, `status_group:${statusGroup}`],
+            points: [[tsSeconds, event.durationMs]],
+            tags,
           },
           {
-            metric: 'smart_divination.api.requests',
+            metric: `${this.metricPrefix}.api.requests`,
             type: 1, // count
-            points: [[Math.floor(event.ts / 1000), 1]],
-            tags: [`endpoint:${event.endpoint}`, `status:${event.status}`, `status_group:${statusGroup}`],
-          }
+            points: [[tsSeconds, 1]],
+            tags,
+          },
         ],
       };
-      const url = `https://api.${this.site}/api/v2/series`;
-      // Don't await response strictly; fire-and-forget
-      // but still catch errors to avoid unhandled rejections
-      void fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'DD-API-KEY': this.apiKey,
-        },
-        body: JSON.stringify(body),
-      }).catch(() => undefined);
-    } catch {
-      // swallow any provider error
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
+      try {
+        const response = await fetchFn(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'DD-API-KEY': this.apiKey,
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+        });
+        if (!response.ok && METRICS_DEBUG) {
+          // eslint-disable-next-line no-console
+          console.warn('metrics: datadog response not ok', response.status, response.statusText);
+        }
+      } finally {
+        clearTimeout(timeout);
+      }
+    } catch (error) {
+      if (METRICS_DEBUG) {
+        // eslint-disable-next-line no-console
+        console.warn('metrics: failed to send metric to Datadog', error);
+      }
     }
   }
 }
 
-function resolveProvider(): MetricsProvider {
-  const provider = (process.env.METRICS_PROVIDER || '').toLowerCase();
-  if (provider === 'console') return new ConsoleProvider();
+function parseTags(value?: string): string[] {
+  if (!value) return [];
+  return value
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0);
+}
+
+function resolveProviderFromEnv(): MetricsProvider {
+  const provider = (process.env.METRICS_PROVIDER || '').trim().toLowerCase();
+  if (provider === 'console') {
+    return new ConsoleProvider();
+  }
   if (provider === 'datadog') {
-    const key = process.env.DATADOG_API_KEY;
-    const site = process.env.DATADOG_SITE || 'datadoghq.com';
-    if (key) return new DatadogProvider(key, site);
+    const apiKey = process.env.DATADOG_API_KEY;
+    if (!apiKey) {
+      if (METRICS_DEBUG) {
+        // eslint-disable-next-line no-console
+        console.warn('metrics: DATADOG_API_KEY missing, falling back to noop');
+      }
+      return new NoopProvider();
+    }
+    return new DatadogProvider({
+      apiKey,
+      site: process.env.DATADOG_SITE || 'datadoghq.com',
+      service: process.env.DATADOG_SERVICE,
+      env: process.env.DATADOG_ENV,
+      metricPrefix: process.env.DATADOG_METRIC_PREFIX || 'smart_divination',
+      defaultTags: parseTags(process.env.DATADOG_TAGS),
+      timeoutMs: process.env.DATADOG_TIMEOUT_MS ? Number(process.env.DATADOG_TIMEOUT_MS) : undefined,
+    });
   }
   return new NoopProvider();
 }
 
-const provider: MetricsProvider = resolveProvider();
+let activeProvider: MetricsProvider = resolveProviderFromEnv();
+
+export function getMetricsProvider(): MetricsProvider {
+  return activeProvider;
+}
+
+export function configureMetricsProvider(provider?: MetricsProvider): void {
+  activeProvider = provider ?? resolveProviderFromEnv();
+}
 
 function getOrCreate(key: EndpointKey): EndpointStore {
   let s = store.get(key);
@@ -136,7 +246,7 @@ export function recordApiMetric(endpoint: string, status: number, durationMs: nu
 
   // fire-and-forget provider emission (non-blocking)
   const evt: MetricEvent = { endpoint, status, durationMs, ts: now };
-  void provider.send(evt).catch(() => undefined);
+  void getMetricsProvider().send(evt).catch(() => undefined);
 }
 
 function percentile(sortedValues: number[], p: number): number {
@@ -182,8 +292,7 @@ export function getOverallMetrics() {
   }
 
   const totalCount = summaries.reduce((a, s) => a + s.count, 0) || 1;
-  const weightedAvg =
-    summaries.reduce((a, s) => a + s.avg * s.count, 0) / totalCount;
+  const weightedAvg = summaries.reduce((a, s) => a + s.avg * s.count, 0) / totalCount;
   const weightedError =
     summaries.reduce((a, s) => a + (s.errorRate / 100) * s.count, 0) / totalCount;
   const totalRps = summaries.reduce((a, s) => a + s.rps, 0);
@@ -195,4 +304,3 @@ export function getOverallMetrics() {
     memoryUsage: 64, // Edge-safe placeholder
   };
 }
-

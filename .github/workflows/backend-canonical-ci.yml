@@ -16,7 +16,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  supabase-migrate:
+    name: Apply Supabase migrations and seeds
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SUPABASE_DB_URL != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Run migrations and seed data
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          chmod +x scripts/supabase/*.sh
+          scripts/supabase/apply.sh
   ci:
+    needs: supabase-migrate
     name: Lint, Type Check, and Test (canonical)
     runs-on: ubuntu-latest
     defaults:
@@ -49,6 +70,7 @@ jobs:
           if [ -d "__tests__" ]; then npm test; else echo "No tests yet"; fi
 
   db-types-check:
+    needs: supabase-migrate
     name: Verify Supabase types up-to-date
     runs-on: ubuntu-latest
     if: ${{ secrets.SUPABASE_DB_URL || (secrets.SUPABASE_PROJECT_ID && secrets.SUPABASE_ACCESS_TOKEN) }}
@@ -73,9 +95,11 @@ jobs:
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
-          if [ -n "$SUPABASE_DB_URL" ]; then
-            npm run gen:db:types:dburl
-          else
-            npm run gen:db:types:proj
-          fi
-          git diff --exit-code lib/types/generated/supabase.ts || (echo "::error file=lib/types/generated/supabase.ts::Supabase types out of date. Run npm run gen:db:types and commit changes."; exit 1)
+          npm run supabase:types:ci
+          git diff --exit-code lib/types/generated/supabase.ts || (echo "::error file=lib/types/generated/supabase.ts::Supabase types out of date. Run npm run supabase:types:ci locally and commit changes."; exit 1)
+
+
+
+
+
+

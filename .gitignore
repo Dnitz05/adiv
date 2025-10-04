@@ -45,3 +45,20 @@ supabase_windows_amd64*.tar.gz
 # Local env backups
 .env.local.*
 
+.vercel
+
+# Sensitive files
+.env.production
+*.jks
+**/github-secrets-output.txt
+
+# Temporary downloads and JDK
+temp/
+*.zip
+
+# Android keystore
+upload-keystore.jks
+key.properties
+
+# Pubspec overrides (local dev only)
+pubspec_overrides.yaml

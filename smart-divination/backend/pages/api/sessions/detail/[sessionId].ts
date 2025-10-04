@@ -1,23 +1,39 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { nanoid } from 'nanoid';
-import { createApiResponse, log } from '../../../../lib/utils/api';
+﻿import type { NextApiRequest, NextApiResponse } from 'next';
+import { z } from 'zod';
+
 import {
   applyCorsHeaders,
   applyStandardResponseHeaders,
   handleCorsPreflight,
   sendJsonError,
 } from '../../../../lib/utils/nextApi';
-import { getSession, getUserTier } from '../../../../lib/utils/supabase';
+import {
+  baseRequestSchema,
+  createApiResponse,
+  createRequestId,
+  handleApiError,
+  parseApiRequest,
+  resolveAuthContext,
+  createApiError,
+  type AuthContext,
+} from '../../../../lib/utils/api';
+import { getSession } from '../../../../lib/utils/supabase';
 import { recordApiMetric } from '../../../../lib/utils/metrics';
 
 const METRICS_PATH = '/api/sessions/detail/[sessionId]';
 const ALLOW_HEADER_VALUE = 'OPTIONS, GET';
 
+const sessionDetailRequestSchema = baseRequestSchema.extend({
+  sessionId: z.string().min(1, 'sessionId is required'),
+});
+
+type SessionDetailRequest = z.infer<typeof sessionDetailRequestSchema>;
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const startedAt = Date.now();
-  const requestId = nanoid();
+  const requestId = createRequestId();
 
-  const corsConfig = { methods: 'GET,OPTIONS' };
+  const corsConfig = { methods: 'GET,OPTIONS' } as const;
   applyCorsHeaders(res, corsConfig);
   applyStandardResponseHeaders(res);
 
@@ -30,69 +46,96 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader('Allow', ALLOW_HEADER_VALUE);
     sendJsonError(res, 405, {
       code: 'METHOD_NOT_ALLOWED',
-      message: 'Only GET method is allowed for session details',
+      message: 'Only GET method is allowed for session detail',
       requestId,
     });
     recordApiMetric(METRICS_PATH, 405, Date.now() - startedAt);
     return;
   }
 
+  let authContext: AuthContext | null = null;
   try {
-    const sessionIdParam = req.query.sessionId;
-    const sessionId = Array.isArray(sessionIdParam) ? sessionIdParam[0] : sessionIdParam;
-    if (!sessionId || sessionId.trim().length === 0) {
-      sendJsonError(res, 400, {
-        code: 'MISSING_SESSION_ID',
-        message: 'Session ID is required in URL path',
-        requestId,
-      });
-      recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
-      return;
-    }
+    authContext = await resolveAuthContext(req, { requireUser: true, requestId });
+  } catch (error) {
+    handleApiError(res, error, requestId, 401);
+    recordApiMetric(METRICS_PATH, res.statusCode || 401, Date.now() - startedAt);
+    return;
+  }
 
-    log('info', 'Session details requested', { requestId, sessionId });
+  if (!authContext) {
+    handleApiError(
+      res,
+      createApiError(
+        'UNAUTHENTICATED',
+        'Authentication required',
+        401,
+        { statusCode: 401 },
+        requestId
+      ),
+      requestId,
+      401
+    );
+    recordApiMetric(METRICS_PATH, 401, Date.now() - startedAt);
+    return;
+  }
 
-    const session = await getSession(sessionId);
+  let parsed: { data: SessionDetailRequest; requestId: string };
+  try {
+    parsed = await parseApiRequest<SessionDetailRequest>(req, sessionDetailRequestSchema, {
+      requireUser: true,
+    });
+  } catch (error) {
+    handleApiError(res, error, requestId, 400);
+    recordApiMetric(METRICS_PATH, res.statusCode || 400, Date.now() - startedAt);
+    return;
+  }
+
+  const { data: input } = parsed;
+  const supabaseAvailable = Boolean(
+    process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+
+  if (!supabaseAvailable) {
+    sendJsonError(res, 503, {
+      code: 'SUPABASE_UNAVAILABLE',
+      message: 'Session detail requires Supabase credentials.',
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 503, Date.now() - startedAt);
+    return;
+  }
+
+  try {
+    const session = await getSession(input.sessionId);
     if (!session) {
       sendJsonError(res, 404, {
         code: 'SESSION_NOT_FOUND',
-        message: 'Session not found or has been deleted',
+        message: 'Session not found.',
         requestId,
       });
       recordApiMetric(METRICS_PATH, 404, Date.now() - startedAt);
       return;
     }
 
-    let userTier: 'free' | 'premium' | 'premium_annual' = 'free';
-    try {
-      userTier = (await getUserTier(session.userId)) ?? 'free';
-    } catch (error) {}
+    if (session.userId !== authContext.userId) {
+      sendJsonError(res, 403, {
+        code: 'FORBIDDEN',
+        message: 'You are not allowed to view this session.',
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 403, Date.now() - startedAt);
+      return;
+    }
 
-    const responseBody = {
-      ...session,
-      _premium:
-        userTier === 'premium' || userTier === 'premium_annual'
-          ? { analyticsEnabled: true, exportAvailable: true, shareableLinks: true }
-          : undefined,
-    };
-
-    const duration = Date.now() - startedAt;
-    res
-      .status(200)
-      .json(createApiResponse(responseBody, { processingTimeMs: duration, requestId }));
-    recordApiMetric(METRICS_PATH, 200, duration);
-  } catch (error: unknown) {
-    const duration = Date.now() - startedAt;
-    log('error', 'Session details retrieval failed', {
-      requestId,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    sendJsonError(res, 500, {
-      code: 'INTERNAL_ERROR',
-      message: 'Failed to retrieve session details',
-      details: { message: error instanceof Error ? error.message : String(error) },
+    const response = createApiResponse(session, {
+      processingTimeMs: Date.now() - startedAt,
       requestId,
     });
-    recordApiMetric(METRICS_PATH, 500, duration);
+
+    res.status(200).json(response);
+    recordApiMetric(METRICS_PATH, 200, Date.now() - startedAt);
+  } catch (error) {
+    handleApiError(res, error, requestId);
+    recordApiMetric(METRICS_PATH, res.statusCode || 500, Date.now() - startedAt);
   }
 }

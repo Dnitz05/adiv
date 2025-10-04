@@ -1,0 +1,48 @@
+name: Flutter Tarot CI
+
+on:
+  push:
+    paths:
+      - 'smart-divination/apps/tarot/**'
+      - 'smart-divination/packages/**'
+      - '.github/workflows/flutter-tarot-ci.yml'
+  pull_request:
+    paths:
+      - 'smart-divination/apps/tarot/**'
+      - 'smart-divination/packages/**'
+      - '.github/workflows/flutter-tarot-ci.yml'
+
+jobs:
+  tarot-ci:
+    name: Analyze, test and build Smart Tarot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Install Melos
+        run: dart pub global activate melos
+
+      - name: Bootstrap workspace
+        working-directory: smart-divination
+        run: melos bootstrap
+
+      - name: Flutter analyze (tarot)
+        working-directory: smart-divination/apps/tarot
+        run: flutter analyze
+
+      - name: Flutter tests (tarot)
+        working-directory: smart-divination/apps/tarot
+        run: flutter test
+
+      - name: Build release APK (tarot)
+        working-directory: smart-divination/apps/tarot
+        env:
+          API_BASE_URL: ${{ secrets.API_BASE_URL || 'https://api.example.com' }}
+        run: flutter build apk --release

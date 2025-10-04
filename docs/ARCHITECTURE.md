@@ -1,32 +1,37 @@
-Smart Divination – Architecture Overview
+# Smart Divination Architecture Overview
 
-Monorepo Structure
-- `smart-divination/` (canonical workspace)
-  - `backend/` – Next.js serverless (API routes under `pages/api`, shared code under `lib`)
-  - `apps/` – Flutter apps (`iching/`, `runes/`, `tarot/` (WIP))
-  - `packages/common/` – Shared Flutter code (UI, localization, models)
-- `supabase/` – Project configuration and SQL migrations (enums, tables, RLS, functions)
-- `docs/` – Guides and status
+## Monorepo Structure
+- `backend/` - Next.js API routes (Node runtime) with shared logic under `lib/`.
+- `apps/` - Flutter apps (`tarot`, `iching`, `runes`) managed by Melos.
+- `packages/common/` - Shared localisation bundles (ca/en/es) and Flutter utilities.
+- `supabase/` - SQL migrations, seeds, and CLI scripts.
+- `docs/` - Living documentation (status, architecture, migration guide, schema notes).
 
-Backend (Next.js + TypeScript)
-- API: serverless routes exposing health, draw (cards/coins/runes), sessions, packs, users, chat.
-- Type system: strict TS desired; align with Supabase schema via generated or hand-maintained types.
-- Observability: lightweight in-memory metrics with optional Datadog provider (to be ported into canonical).
-- Security: CORS headers via `vercel.json`, DB RLS policies; add auth middleware and schema validation (Zod/Joi).
+## Backend
+- Framework: Next.js API routes written in TypeScript, targeting Node 18.
+- Persistence: Supabase (`users`, `sessions`, `session_artifacts`, `session_messages`, `user_stats`, `api_usage`).
+- Validation: Zod schemas in `lib/utils/api.ts`, shared auth helpers, and feature gating via env vars.
+- Content packs: `lib/packs/manifestRegistry.ts` loads `data/packs/manifests.json`, validates checksums, and exposes premium metadata per pack.
+- Observability: In-memory metrics with optional console/Datadog providers, surfaced through `/api/metrics`.
+- Endpoints: tarot/I Ching/runes draws (`POST /api/draw/*`), interpretations (`POST /api/chat/interpret`), session management (`POST /api/sessions`, `GET /api/sessions/[userId]`), profile/eligibility (`GET /api/users/...`), metrics and health probes.
+- Feature flags: `ENABLE_ICHING` and `ENABLE_RUNES` gate their respective draw endpoints until ready.
 
-Database (Supabase)
-- Enums: `divination_technique`, `user_tier`.
-- Tables: `users`, `sessions`, `user_stats`, `api_usage` with constraints and indexes.
-- RLS: enabled across tables; policies for user and service roles.
-- Functions/Triggers: keep `last_activity` updated; stats refresh; cleanup for soft-deleted sessions.
+## Database
+- Enums: `divination_technique`, `user_tier`, `session_actor_type`, `session_artifact_type`.
+- Core tables: `users`, `sessions`, `session_artifacts`, `session_messages`, `user_stats`, `api_usage`.
+- Views and triggers: `session_history_expanded`, `touch_session_history()` keep aggregates fresh.
+- Seeds: `supabase/seeds/dev_seed.sql` provides demo user, sessions, and artefacts.
+- Policies: RLS enabled on artefacts/messages; production hardening still pending.
 
-Flutter Workspace (Melos)
-- Apps share `packages/common` for localization and common code.
-- Scripts: analyze, test, coverage, l10n generation.
+## Flutter Workspace
+- Melos orchestrates dependencies between apps and shared packages.
+- `apps/tarot` integrates draws, history, interpretations, eligibility, and pack metadata.
+- `apps/iching` and `apps/runes` share networking/state layers and target the new endpoints once feature flags flip; UX polish and entitlement handling are work in progress.
+- Testing focus: expand widget/integration coverage with HTTP mocks, Supabase fixtures, and golden tests.
 
-CI/CD
-- Backend CI (canonical): lint, type-check, tests, build.
-- Legacy backend CI: maintained until canonical parity.
-- Flutter CI: l10n, analyze, tests, coverage and threshold enforcement.
-- Deploy (target): Vercel from canonical backend with preview (PR) and prod (main) stages.
+## Deployment Considerations
+- Backend deploys cleanly to Vercel/Node 18 but still needs environment bootstrap scripts and monitoring.
+- Mobile release automation exists (`flutter-release.yml`) yet relies on manual secrets; store metadata and entitlements remain TODO.
+- Supabase provisioning currently executes via scripts; plan managed environments and secret rotation before GA.
 
+Use this overview alongside `docs/MIGRATION_GUIDE.md` to sequence upcoming milestones without relying on archived reports.

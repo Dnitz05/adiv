@@ -20,7 +20,12 @@
     "test:coverage": "jest --coverage",
     "gen:db:types:dburl": "supabase gen types typescript --db-url \"$SUPABASE_DB_URL\" --schema public > lib/types/generated/supabase.ts",
     "gen:db:types:proj": "supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" --schema public > lib/types/generated/supabase.ts",
-    "gen:db:types": "npm run gen:db:types:dburl"
+    "gen:db:types": "npm run gen:db:types:dburl",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset --linked",
+    "supabase:db:push": "bash ../../scripts/supabase/db_push.sh",
+    "supabase:types:ci": "bash ../../scripts/supabase/generate_types.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
@@ -57,11 +62,11 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "globals": {
-      "ts-jest": {
+    "transform": {
+      "^.+\\.ts$": ["ts-jest", {
         "diagnostics": false,
         "tsconfig": "./tsconfig.json"
-      }
+      }]
     },
     "roots": [
       "<rootDir>/__tests__"

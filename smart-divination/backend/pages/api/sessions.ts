@@ -1,24 +1,44 @@
+/**
+ * Sessions Management Endpoint - Ultra-Professional Implementation
+ *
+ * Handles divination session creation and storage with comprehensive
+ * validation, Supabase integration, and professional error handling.
+ */
+
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { z } from 'zod';
-import { nanoid } from 'nanoid';
-import { createApiResponse, log } from '../../lib/utils/api';
+import { randomUUID } from 'crypto';
+import {
+  createApiResponse,
+  handleApiError,
+  log,
+  parseApiRequest,
+  baseRequestSchema,
+  generateSecureSeed,
+  createRequestId,
+} from '../../lib/utils/api';
 import {
   applyCorsHeaders,
   applyStandardResponseHeaders,
   handleCorsPreflight,
-  parseRequestBody,
   sendJsonError,
 } from '../../lib/utils/nextApi';
-import { createSession, getUserTier } from '../../lib/utils/supabase';
+import { createSession } from '../../lib/utils/supabase';
 import { recordApiMetric } from '../../lib/utils/metrics';
+import type { SessionMetadata } from '../../lib/types/api';
+import { z } from 'zod';
+const METRICS_PATH = '/api/sessions';
+const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
 
-const SessionRequestSchema = z.object({
-  session_id: z.string().optional(),
-  user_id: z.string().min(1, 'user_id is required'),
+// =============================================================================
+// SESSION REQUEST VALIDATION SCHEMAS
+// =============================================================================
+
+const SessionRequestSchema = baseRequestSchema.extend({
+  session_id: z.string().uuid().optional(),
+  user_id: z.string().min(1, 'User ID is required'),
   technique: z.enum(['tarot', 'iching', 'runes']).optional(),
   locale: z.string().min(2).default('en'),
   topic: z.string().optional(),
-  question: z.string().optional(),
   messages: z
     .array(
       z.object({
@@ -28,16 +48,17 @@ const SessionRequestSchema = z.object({
       })
     )
     .default([]),
-  is_premium: z.boolean().optional().default(false),
+  is_premium: z.boolean().default(false),
   created_at: z.string().optional(),
   last_activity: z.string().optional(),
+  question: z.string().optional(),
   results: z.record(z.any()).optional(),
   interpretation: z.string().optional(),
   summary: z.string().optional(),
   metadata: z
     .object({
-      seed: z.string().optional(),
-      method: z.string().optional(),
+      seed: z.string(),
+      method: z.string(),
       signature: z.string().optional(),
       duration: z.number().optional(),
       rating: z.number().min(1).max(5).optional(),
@@ -45,14 +66,17 @@ const SessionRequestSchema = z.object({
     .optional(),
 });
 
-const METRICS_PATH = '/api/sessions';
-const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
+type SessionRequest = z.infer<typeof SessionRequestSchema>;
+
+// =============================================================================
+// SESSIONS API HANDLER
+// =============================================================================
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const startedAt = Date.now();
-  const requestId = nanoid();
+  let requestId = createRequestId();
 
-  const corsConfig = { methods: 'POST,OPTIONS' };
+  const corsConfig = { methods: 'POST,OPTIONS' } as const;
   applyCorsHeaders(res, corsConfig);
   applyStandardResponseHeaders(res);
 
@@ -73,74 +97,50 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
+    const { data: parsedData, requestId: parsedRequestId } = await parseApiRequest(
+      req,
+      SessionRequestSchema
+    );
+    requestId = parsedRequestId;
+    const input = parsedData as SessionRequest;
+
     log('info', 'Session creation requested', {
-      method: req.method,
       requestId,
-      userAgent: req.headers['user-agent'],
+      userId: input.user_id,
+      technique: input.technique,
+      hasMessages: input.messages.length > 0,
     });
 
-    const payload = parseRequestBody(req);
-    const input = SessionRequestSchema.parse(payload);
-
-    let userTier: 'free' | 'premium' | 'premium_annual' = 'free';
-    try {
-      userTier = (await getUserTier(input.user_id)) ?? 'free';
-    } catch (error) {
-      log('warn', 'getUserTier failed, defaulting to free', { requestId, userId: input.user_id });
-    }
-
-    const sessionId = input.session_id || `session_${nanoid()}`;
+    const sessionId = input.session_id ?? randomUUID();
     const nowIso = new Date().toISOString();
 
-    const saved = await createSession({
+    const metadata = input.metadata
+      ? (input.metadata as SessionMetadata)
+      : ({ seed: generateSecureSeed(), method: 'unknown' } as SessionMetadata);
+
+    const created = await createSession({
       id: sessionId,
       userId: input.user_id,
-      technique: input.technique ?? 'tarot',
+      technique: input.technique || 'tarot',
       locale: input.locale,
       createdAt: input.created_at || nowIso,
       lastActivity: input.last_activity || nowIso,
-      question: input.question || input.topic,
+      question: input.question || input.topic || null,
       results: input.results ?? null,
       interpretation: input.interpretation ?? null,
       summary: input.summary ?? null,
-      metadata: input.metadata ?? undefined,
-    });
-
-    log('info', 'Session created successfully', {
-      requestId,
-      sessionId: saved.id,
-      userId: saved.userId,
-      technique: saved.technique,
-      userTier,
+      metadata,
     });
 
     const duration = Date.now() - startedAt;
-    res.status(201).json(createApiResponse(saved, { processingTimeMs: duration, requestId }));
+    const response = createApiResponse(created, { processingTimeMs: duration, requestId });
+
+    res.status(201).json(response);
     recordApiMetric(METRICS_PATH, 201, duration);
-  } catch (error: unknown) {
-    const duration = Date.now() - startedAt;
-
-    if (error instanceof z.ZodError) {
-      sendJsonError(res, 400, {
-        code: 'VALIDATION_ERROR',
-        message: 'Invalid session data provided',
-        details: error.errors,
-        requestId,
-      });
-      recordApiMetric(METRICS_PATH, 400, duration);
-      return;
-    }
-
-    log('error', 'Session creation failed', {
-      requestId,
-      error: error instanceof Error ? error.message : String(error),
-    });
-    sendJsonError(res, 500, {
-      code: 'INTERNAL_ERROR',
-      message: 'Failed to create session',
-      details: { message: error instanceof Error ? error.message : String(error) },
-      requestId,
-    });
-    recordApiMetric(METRICS_PATH, 500, duration);
+  } catch (error) {
+    handleApiError(res, error, requestId);
+    recordApiMetric(METRICS_PATH, res.statusCode || 500, Date.now() - startedAt);
   }
 }
+
+// =============================================================================

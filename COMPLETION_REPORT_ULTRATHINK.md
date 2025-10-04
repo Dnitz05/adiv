@@ -1,3 +1,5 @@
+*** Archived: This report documents a previous audit and is not representative of the current state of the Smart Divination repository. Refer to docs/STATUS.md for up-to-date information.***
+
 ﻿# Archived Report Notice
 
 This document is an archived completion report. The canonical backend now lives under `smart-divination/backend/`, and migration (Option B) is in progress. For current status and instructions, see `smart-divination/README.md`.

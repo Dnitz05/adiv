@@ -1,14 +1,14 @@
-# Backend CI for smart-divination-production
+# Backend CI for smart-divination/backend
 name: Backend CI
 
 on:
   push:
     paths:
-      - 'smart-divination-production/**'
+      - 'smart-divination/backend/**'
       - '.github/workflows/backend-ci.yml'
   pull_request:
     paths:
-      - 'smart-divination-production/**'
+      - 'smart-divination/backend/**'
       - '.github/workflows/backend-ci.yml'
 
 concurrency:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: smart-divination-production
+        working-directory: smart-divination/backend
 
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '18'
           cache: npm
-          cache-dependency-path: smart-divination-production/package-lock.json
+          cache-dependency-path: smart-divination/backend/package-lock.json
 
       - name: Install dependencies
         run: npm ci

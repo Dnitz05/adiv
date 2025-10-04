@@ -1,6 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { nanoid } from 'nanoid';
-import { createApiResponse, log } from '../../../../lib/utils/api';
+import {
+  createApiResponse,
+  log,
+  createRequestId,
+  resolveAuthContext,
+  createApiError,
+  type AuthContext,
+  handleApiError,
+} from '../../../../lib/utils/api';
 import {
   applyCorsHeaders,
   applyStandardResponseHeaders,
@@ -83,7 +90,7 @@ const ALLOW_HEADER_VALUE = 'OPTIONS, GET';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const startedAt = Date.now();
-  const requestId = nanoid();
+  const requestId = createRequestId();
 
   const corsConfig = { methods: 'GET,OPTIONS' };
   applyCorsHeaders(res, corsConfig);
@@ -105,6 +112,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  let authContext: AuthContext | null = null;
+  try {
+    authContext = await resolveAuthContext(req, { requireUser: true, requestId });
+  } catch (error) {
+    handleApiError(res, error, requestId, 401);
+    recordApiMetric(METRICS_PATH, res.statusCode || 401, Date.now() - startedAt);
+    return;
+  }
+
+  if (!authContext) {
+    handleApiError(
+      res,
+      createApiError(
+        'UNAUTHENTICATED',
+        'Authentication required',
+        401,
+        { statusCode: 401 },
+        requestId
+      ),
+      requestId,
+      401
+    );
+    recordApiMetric(METRICS_PATH, 401, Date.now() - startedAt);
+    return;
+  }
+
   try {
     const userIdParam = req.query.userId;
     const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam;
@@ -115,6 +148,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         requestId,
       });
       recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
+      return;
+    }
+
+    if (authContext.userId !== userId) {
+      sendJsonError(res, 403, {
+        code: 'FORBIDDEN',
+        message: 'You can only retrieve your own premium status.',
+        requestId,
+      });
+      recordApiMetric(METRICS_PATH, 403, Date.now() - startedAt);
       return;
     }
 

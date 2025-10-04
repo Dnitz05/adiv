@@ -1,10 +1,92 @@
-/**
+﻿/**
  * API Types - Canonical Backend Type System
  */
 
+export type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | JsonRecord
+  | JsonValue[];
+
+export interface JsonRecord {
+  [key: string]: JsonValue | undefined;
+}
+
+export type HttpStatusCode =
+  | 200
+  | 201
+  | 202
+  | 204
+  | 400
+  | 401
+  | 403
+  | 404
+  | 409
+  | 429
+  | 500
+  | 502
+  | 503;
+
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'fatal';
+
+type ServiceHealthState = 'healthy' | 'degraded' | 'unhealthy';
+
+export interface ServiceStatus {
+  name: string;
+  status: ServiceHealthState;
+  responseTime?: number;
+  lastCheck: string;
+  error?: string;
+}
+
+export interface SystemMetrics {
+  requestsPerMinute: number;
+  averageResponseTime: number;
+  errorRate: number;
+  memoryUsage: number;
+}
+
+export interface UptimeInfo {
+  startTime: string;
+  uptimeSeconds: number;
+  uptimePercentage: number;
+}
+
+export interface HealthStatus {
+  status: ServiceHealthState;
+  services: ServiceStatus[];
+  metrics: SystemMetrics;
+  uptime: UptimeInfo;
+}
+
+export interface DeepSeekMessage {
+  role?: string;
+  content?: string;
+}
+
+export interface DeepSeekChoice {
+  index?: number;
+  message?: DeepSeekMessage;
+  finish_reason?: string;
+}
+
+export interface DeepSeekUsage {
+  prompt_tokens?: number;
+  completion_tokens?: number;
+  total_tokens?: number;
+}
+
+export interface DeepSeekResponse {
+  id?: string;
+  choices: DeepSeekChoice[];
+  usage?: DeepSeekUsage;
+  [key: string]: unknown;
+}
 // Core API
 export interface ApiRequest {
-  timestamp: string;
+  timestamp?: string;
   requestId?: string;
   userId?: string;
   locale?: string;
@@ -47,7 +129,8 @@ export interface ApiResponse<T = any> {
   meta?: ResponseMetadata;
 }
 
-// Divination
+export type HealthResponse = ApiResponse<HealthStatus>;
+
 export type DivinationTechnique = 'tarot' | 'iching' | 'runes';
 
 export interface DivinationRequest extends ApiRequest {
@@ -146,3 +229,67 @@ export interface InterpretationResponse extends ApiResponse<string> {
   followUpQuestions?: string[];
   tokensUsed?: number;
 }
+// Sessions
+export interface SessionMetadata {
+  seed?: string;
+  method?: string;
+  signature?: string;
+  duration?: number;
+  rating?: number;
+  history?: {
+    artifacts: number;
+    messages: number;
+    updatedAt: string;
+  };
+}
+
+export interface SessionArtifact {
+  id: string;
+  type: 'tarot_draw' | 'iching_cast' | 'rune_cast' | 'interpretation' | 'message_bundle' | 'note';
+  source: 'user' | 'assistant' | 'system';
+  createdAt: string;
+  version: number;
+  payload: Record<string, any>;
+  metadata?: Record<string, any>;
+}
+
+export interface SessionMessage {
+  id: string;
+  sender: 'user' | 'assistant' | 'system';
+  sequence: number;
+  createdAt: string;
+  content: string;
+  metadata?: Record<string, any>;
+}
+
+export interface DivinationSession {
+  id: string;
+  userId: string;
+  technique: DivinationTechnique;
+  locale: string;
+  createdAt: string;
+  lastActivity: string;
+  question: string | null;
+  results?: Record<string, any>;
+  interpretation?: string | null;
+  summary?: string | null;
+  metadata: SessionMetadata | Record<string, any> | null;
+  artifacts?: SessionArtifact[];
+  messages?: SessionMessage[];
+  keywords?: string[];
+}
+export function isApiError(obj: unknown): obj is ApiError {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'code' in obj &&
+    'message' in obj &&
+    typeof (obj as any).code === 'string' &&
+    typeof (obj as any).message === 'string'
+  );
+}
+
+
+
+
+

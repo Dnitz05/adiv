@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:smart_iching/main.dart';
 
 void main() {
-  testWidgets('I Ching home shows Start New Session button (en)', (tester) async {
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: SmartIChingApp(),
-      ),
-    );
-
-    // Let router settle
+  testWidgets('renders I Ching placeholder', (tester) async {
+    SharedPreferences.setMockInitialValues(const {});
+    await tester.pumpWidget(const SmartIChingApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('Start New Session'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
+    expect(find.text('Cast the coins to receive guidance.'), findsOneWidget);
+    expect(find.byIcon(Icons.change_circle_outlined), findsOneWidget);
   });
 }
-

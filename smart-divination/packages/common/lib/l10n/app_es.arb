@@ -11,10 +11,10 @@
   "tarotDescription": "Cartas para orientación y reflexión",
   "ichingDescription": "Sabiduría ancestral china",
   "runesDescription": "Símbolos nórdicos de poder",
-  "startSession": "Iniciar Sesión",
-  "continueSession": "Continuar Sesión",
-  "endSession": "Finalizar Sesión",
-  "history": "Historial de Sesiones",
+  "startSession": "Iniciar sesión",
+  "continueSession": "Continuar sesión",
+  "endSession": "Finalizar sesión",
+  "history": "Historial de sesiones",
   "askQuestion": "Formula tu pregunta...",
   "networkError": "Error de conexión de red. Por favor verifica tu conexión.",
   "sessionLimitReached": "Límite de sesiones alcanzado. Mejora a premium para sesiones ilimitadas.",
@@ -23,9 +23,139 @@
   "unlimitedSessions": "Sesiones ilimitadas",
   "settings": "Configuración",
   "language": "Idioma",
-  "darkMode": "Modo Oscuro",
+  "darkMode": "Modo oscuro",
   "ok": "OK",
   "cancel": "Cancelar",
   "save": "Guardar",
-  "close": "Cerrar"
+  "close": "Cerrar",
+  "allowReversed": "Permitir cartas invertidas",
+  "drawingInProgress": "Sacando cartas...",
+  "seedOptionalLabel": "Semilla (opcional)",
+  "generateSeed": "Generar semilla",
+  "latestDrawTitle": "Última tirada ({count} cartas)",
+  "@latestDrawTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "spreadLabel": "Tirada: {spread}",
+  "@spreadLabel": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "methodSeedLabel": "Método: {method} • Semilla: {seed}",
+  "@methodSeedLabel": {
+    "placeholders": {
+      "method": {},
+      "seed": {}
+    }
+  },
+  "methodLabel": "Método: {method}",
+  "@methodLabel": {
+    "placeholders": {
+      "method": {}
+    }
+  },
+  "seedLabel": "Semilla: {seed}",
+  "@seedLabel": {
+    "placeholders": {
+      "seed": {}
+    }
+  },
+  "interpretationHeading": "Interpretación",
+  "historyHeading": "Tiradas anteriores",
+  "drawPlaceholder": "Saca cartas para recibir orientación.",
+  "cardOrientationUpright": "Al derecho",
+  "cardOrientationReversed": "Invertida",
+  "tierLabel": "Nivel: {tier}",
+  "@tierLabel": {
+    "placeholders": {
+      "tier": {}
+    }
+  },
+  "usageToday": "Hoy: {used}/{limit}",
+  "@usageToday": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "usageWeek": "Esta semana: {used}/{limit}",
+  "@usageWeek": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "usageMonth": "Este mes: {used}/{limit}",
+  "@usageMonth": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "remainingToday": "Restantes hoy: {remaining}",
+  "@remainingToday": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "nextWindow": "Próxima ventana: {timestamp}",
+  "@nextWindow": {
+    "placeholders": {
+      "timestamp": {}
+    }
+  },
+  "authSignInTitle": "Inicia sesión en Smart Tarot",
+  "authSignUpTitle": "Crea tu cuenta de Smart Tarot",
+  "authEmailLabel": "Correo electrónico",
+  "authPasswordLabel": "Contraseña",
+  "authPasswordLabelWithHint": "Contraseña (mínimo 6 caracteres)",
+  "authSignInButton": "Iniciar sesión",
+  "authSignUpButton": "Crear cuenta",
+  "authToggleToSignIn": "¿Ya tienes cuenta? Inicia sesión",
+  "authToggleToSignUp": "¿Necesitas una cuenta? Créala",
+  "authValidationError": "Introduce un correo válido y una contraseña de al menos 6 caracteres.",
+  "authSignInSuccess": "Sesión iniciada correctamente.",
+  "authSignUpConfirmationSent": "Revisa tu bandeja de entrada para confirmar la cuenta antes de iniciar sesión.",
+  "authSignUpSuccess": "Cuenta creada correctamente.",
+  "authForgotPasswordLink": "¿Has olvidado la contraseña?",
+  "authForgotPasswordTitle": "Restablecer contraseña",
+  "authForgotPasswordDescription": "Introduce el correo asociado a tu cuenta y te enviaremos instrucciones para restablecerla.",
+  "authForgotPasswordSubmit": "Enviar correo",
+  "authForgotPasswordSuccess": "Hemos enviado un correo para restablecer la contraseña. Revisa tu bandeja de entrada.",
+  "authForgotPasswordMissingEmail": "Introduce un correo electrónico válido para continuar.",
+  "authPasswordResetTitle": "Define una nueva contraseña",
+  "authPasswordResetDescription": "Introduce una nueva contraseña para completar el proceso.",
+  "authPasswordResetNewPasswordLabel": "Nueva contraseña",
+  "authPasswordResetConfirmPasswordLabel": "Confirmar contraseña",
+  "authPasswordResetButton": "Actualizar contraseña",
+  "authPasswordResetSuccess": "Contraseña actualizada. Puedes iniciar sesión con la nueva contraseña.",
+  "authPasswordResetMismatch": "Las contraseñas deben coincidir y tener al menos 6 caracteres.",
+  "authPasswordResetError": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
+  "authPasswordResetSignOutNotice": "Por seguridad, se cerrará la sesión después de actualizar la contraseña.",
+  "authGenericError": "Error de autenticación.",
+  "authUnexpectedError": "Error inesperado: {error}",
+  "@authUnexpectedError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
 }
