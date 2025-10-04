@@ -1,0 +1,64 @@
+# General
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# Node/Next
+node_modules/
+.next/
+.vercel/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Flutter/Dart
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/pubspec.lock
+
+# Temporary files
+tmp_*.md
+tmp_*
+
+# Windows artifact
+nul
+
+# IDE artifacts
+*.iml
+
+
+# Supabase CLI binaries
+supabase_cli/
+supabase_windows_amd64*.tar.gz
+
+# Local env backups
+.env.local.*
+
+.vercel
+
+# Sensitive files
+.env.production
+*.jks
+**/github-secrets-output.txt
+
+# Temporary downloads and JDK
+temp/
+*.zip
+
+# Android keystore
+upload-keystore.jks
+key.properties
+
+# Pubspec overrides (local dev only)
+pubspec_overrides.yaml

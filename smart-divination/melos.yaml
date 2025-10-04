@@ -55,6 +55,20 @@ scripts:
     packageFilters:
       flutter: true
   
+  # Test with coverage across all Flutter packages
+  test:coverage:
+    run: flutter test --coverage
+    exec:
+      concurrency: 3
+    packageFilters:
+      flutter: true
+  
+  # Enforce a basic coverage threshold using very_good_coverage
+  enforce:coverage:
+    run: very_good_coverage --min-coverage 60
+    packageFilters:
+      flutter: true
+  
   # Generate localizations (run before analyze/test)
   gen:l10n:
     run: flutter gen-l10n

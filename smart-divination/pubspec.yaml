@@ -1,0 +1,13 @@
+name: smart_divination_workspace
+description: Melos monorepo workspace for Smart Divination platform
+publish_to: none
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+# This is a workspace root - no actual dependencies
+# Individual packages have their own pubspec.yaml
+dependencies:
+
+dev_dependencies:
+  melos: ^6.1.0

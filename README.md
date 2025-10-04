@@ -1,48 +1,79 @@
-Smart Divination Monorepo
+# Smart Divination Platform
 
-Professional divination platform (Tarot, I Ching, Runes) built as a polyglot monorepo:
-- Flutter apps per technique, with a shared `common` package
-- Next.js serverless backend (Vercel) with Supabase integration
+## Overview
+Release focus: tarot backend plus Flutter client in private beta. I Ching and runes pipelines now exist end-to-end but stay behind feature flags until UX, content packs, and QA catch up. The root repo wraps the canonical workspace in `smart-divination/` together with Supabase tooling and runbooks. The system is functional as of October 2025 but remains pre-launch: expect active work on UX polish, observability, pack distribution, and release automation.
 
-Quick Links
-- Backend overview: `smart-divination/README.md`
-- Workspace manager: `smart-divination/melos.yaml`
-- Supabase config & migrations: `supabase/`
-- Docs index: `docs/README.md`
+## Repository Layout
+- `smart-divination/backend` - Next.js API routes for tarot, I Ching, and runes with Supabase integration, feature gating, metrics, and Jest/unit plus Supabase integration tests.
+- `smart-divination/apps` - Flutter apps (`tarot`, `iching`, `runes`) managed by Melos; tarot is the beta target, the others are hidden builds until feature flags flip on.
+- `smart-divination/packages/common` - Shared localisation (ca/en/es) and client utilities.
+- `supabase/` - Database migrations, seeds, and helper scripts (`scripts/supabase/*`).
+- `docs/` - Living architecture notes, migration guide, and current status.
 
-Repository Layout (canonical)
-- `smart-divination/` — Next.js backend + Flutter workspace (Melos)
-  - `apps/` — Flutter apps: `tarot/`, `iching/`, `runes/`
-  - `packages/common/` — Shared Flutter code (UI, services, models)
-  - `pages/api/` — Serverless endpoints (draw, chat/interpret, sessions, packs)
-  - `lib/utils/` and `lib/types/` — Backend utilities and types (TypeScript)
-- `supabase/` — Project config and SQL migrations (rate limiting, sessions)
-- `docs/` — Guides, reports, ADRs, and archives
+## Development Setup
+### Backend (Next.js)
+```bash
+cd smart-divination/backend
+npm ci
+cp .env.production.example .env.local
+# Required: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
+# Required for AI: DEEPSEEK_API_KEY
+# Feature flags: ENABLE_ICHING, ENABLE_RUNES (default: false)
+# Optional: RANDOM_ORG_KEY, METRICS_PROVIDER, DATADOG_* overrides
+npm run dev
+```
+The dev server listens on `http://localhost:3001`. See `.env.production.example` for full configuration options.
 
-Deprecated/Legacy (kept temporarily)
-- `smart_tarot/`, `i_ching_app/`, `runes_app/`, `smart-divination-production/`
-  These are earlier experiments or frozen builds. They will be archived/removed once the migration is complete.
+#### Endpoints
+- `POST /api/draw/cards` - tarot draws with Supabase persistence and pack metadata.
+- `POST /api/draw/coins` - I Ching throws. Returns 503 unless `ENABLE_ICHING=true`; when enabled it delivers full 64-hexagram analysis, session persistence, and artefact stubs.
+- `POST /api/draw/runes` - Elder Futhark rune casts. Returns 503 unless `ENABLE_RUNES=true`; when enabled it outputs rune metadata, orientation, and persists the session envelope.
+- `POST /api/chat/interpret` - AI interpretation pipeline (DeepSeek). Persists generated messages and artefacts when Supabase credentials are present.
+- `POST /api/sessions` - canonical session creation endpoint for mobile clients and background jobs.
+- `GET /api/sessions/[userId]`, `GET /api/users/[userId]/profile`, `GET /api/users/[userId]/can-start-session` - session history and eligibility backed by the `session_history_expanded` view.
+- `GET /api/metrics`, `GET /api/health` - local observability endpoints (in-memory metrics with optional Datadog forwarder).
 
-Getting Started
-1) Backend (Node 18+)
-   - Copy `smart-divination/.env.example` to `.env.local` and fill values
-   - `cd smart-divination && npm ci && npm run dev` (serves on :3001)
+Supabase credentials are optional for local smoke runs: endpoints fall back to non-persistent responses when service keys are absent.
 
-2) Flutter workspace
-   - Install Flutter 3.24+, Dart 3.5+
-   - `dart pub global activate melos`
-   - `cd smart-divination && melos bootstrap`
-   - Run Tarot app: `cd apps/tarot && flutter run`
+#### Testing
+- `npm test`, `npm run lint`, and `npm run type-check` remain required for CI.
+- Supabase integration specs live in `__tests__/integration/*`. To exercise them locally export `SUPABASE_DB_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY` and ensure `supabase` CLI plus `psql` are on PATH. The harness runs `scripts/supabase/apply.sh` to migrate and seed before tests.
+- Use `npm run supabase:types:ci` to regenerate TypeScript types after changing migrations.
 
-CI/CD
-- GitHub Actions for Next.js and Flutter (workflows under `smart-divination/.github/workflows/`)
-- Coverage and analysis enforced via Melos scripts
+### Flutter Workspace (Melos)
+```bash
+cd smart-divination
+dart pub global activate melos
+melos bootstrap
+melos run analyze:all
+melos run test:all
+```
 
-Security & Legal
-- Security policy: `SECURITY.md`
-- Code of conduct: `CODE_OF_CONDUCT.md`
-- License: MIT (see `LICENSE`)
+Running tarot on an Android emulator:
+```bash
+cd smart-divination/apps/tarot
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3001   --dart-define=SUPABASE_URL=https://<project>.supabase.co   --dart-define=SUPABASE_ANON_KEY=<public-anon-key>
+```
+The tarot client consumes live Supabase history and interpretations. The I Ching and runes apps compile but stay hidden/off by default until the feature flags are enabled and content packs ship.
 
-Status
-This repo is under active consolidation. The canonical code lives under `smart-divination/`. Older folders will be deprecated and removed after a final pass.
+### Supabase
+- Apply migrations in `supabase/migrations` via `scripts/supabase/apply.sh` (requires Supabase CLI plus `psql`) to provision schemas, views, and the demo seed (`supabase/seeds/dev_seed.sql`).
+- Continuous integration calls `scripts/supabase/db_push.sh` and `npm run supabase:types:ci` to keep backend types aligned with the database.
+- The backend uses the service-role key; do not expose it in Flutter apps. The clients authenticate with anon keys only.
 
+## Testing & Tooling
+- Backend unit tests mock Supabase; integration suites verify persistence when credentials exist.
+- Flutter projects currently have smoke/widget coverage. Expand HTTP mocking and Supabase-aware tests before launch.
+- Metrics module (`lib/utils/metrics.ts`) can emit to stdout (`METRICS_PROVIDER=console`) or Datadog (`METRICS_PROVIDER=datadog` with `DATADOG_*` env vars).
+- Pack metadata lives in `backend/data/packs/manifests.json` and is loaded through `lib/packs/manifestRegistry.ts` with checksum validation.
+
+## Release Status & Next Steps
+- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore, key.properties), release APK tested (48.3MB). iOS signing and store metadata pending.
+- **Backend**: Production environment configuration complete (`.env.production`, error handling standardized, health/metrics endpoints operational).
+- **Security**: Comprehensive secrets management guide in `docs/SECRETS.md` covering GitHub Actions, Vercel, Supabase, and rotation procedures.
+- **I Ching and runes**: Server endpoints complete behind feature flags; Flutter clients need UX, localisation, entitlement gating, and QA before exposure.
+- **Content packs**: Manifest registry in place; distribution hosting, entitlement checks, and purchase flows are still TODO.
+- **Observability**: In-memory metrics available; connect Datadog or Grafana before production.
+- **CI/CD**: Secrets documented but not yet configured in GitHub Actions.
+
+Consult `docs/STATUS.md` for the current sprint focus, `docs/MIGRATION_GUIDE.md` for migration checklist progress, and `docs/SECRETS.md` for comprehensive secrets management.

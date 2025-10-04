@@ -1,0 +1,114 @@
+[
+  {
+    "id": "tarot-rider-waite",
+    "name": "Rider-Waite Tarot Deck",
+    "description": "The classic and most widely recognized tarot deck, featuring traditional artwork.",
+    "version": "1.0.0",
+    "technique": "tarot",
+    "author": "Smart Divination Team",
+    "license": "CC BY-NC-SA 4.0",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-01-01T00:00:00Z",
+    "languages": ["en", "es", "ca", "fr", "de", "it"],
+    "content": {
+      "cards": 78,
+      "hexagrams": 0,
+      "runes": 0,
+      "spreads": ["single", "three-card", "celtic-cross", "five-card"]
+    },
+    "assets": {
+      "images": {
+        "format": "PNG",
+        "resolution": "400x700",
+        "count": 78
+      }
+    },
+    "compatibility": {
+      "min_app_version": "1.0.0",
+      "supported_platforms": ["ios", "android", "web"]
+    },
+    "premium_required": false,
+    "required_entitlements": [],
+    "distribution": {
+      "uri": "https://cdn.smartdivination.test/packs/tarot-rider-waite-1.0.0.zip",
+      "format": "zip",
+      "size": 15728640
+    }
+  },
+  {
+    "id": "iching-classic",
+    "name": "Classic I Ching",
+    "description": "Traditional I Ching pack with the complete 64 hexagrams and classical commentaries.",
+    "version": "1.0.0",
+    "technique": "iching",
+    "author": "Smart Divination Team",
+    "license": "CC BY-NC-SA 4.0",
+    "created_at": "2024-01-01T00:00:00Z",
+    "updated_at": "2024-02-14T00:00:00Z",
+    "languages": ["en", "zh", "es", "ca"],
+    "content": {
+      "cards": 0,
+      "hexagrams": 64,
+      "runes": 0,
+      "spreads": []
+    },
+    "assets": {
+      "images": {
+        "format": "SVG",
+        "resolution": "vector",
+        "count": 64
+      }
+    },
+    "compatibility": {
+      "min_app_version": "1.0.0",
+      "supported_platforms": ["ios", "android", "web"]
+    },
+    "premium_required": false,
+    "required_entitlements": [],
+    "distribution": {
+      "uri": "https://cdn.smartdivination.test/packs/iching-classic-1.0.0.zip",
+      "format": "zip",
+      "size": 2097152
+    }
+  },
+  {
+    "id": "runes-elder-futhark",
+    "name": "Elder Futhark Runes",
+    "description": "Premium rune set with curated interpretations for modern practice.",
+    "version": "1.1.0",
+    "technique": "runes",
+    "author": "Smart Divination Team",
+    "license": "Smart Divination Premium License",
+    "created_at": "2024-01-15T00:00:00Z",
+    "updated_at": "2024-08-30T00:00:00Z",
+    "languages": ["en", "no", "sv", "da", "es", "ca"],
+    "content": {
+      "cards": 0,
+      "hexagrams": 0,
+      "runes": 24,
+      "spreads": ["one-rune", "three-rune", "world-tree"]
+    },
+    "assets": {
+      "images": {
+        "format": "PNG",
+        "resolution": "512x512",
+        "count": 24
+      },
+      "audio": {
+        "format": "MP3",
+        "count": 24
+      }
+    },
+    "compatibility": {
+      "min_app_version": "1.2.0",
+      "supported_platforms": ["ios", "android", "web"]
+    },
+    "premium_required": true,
+    "required_entitlements": ["premium"],
+    "distribution": {
+      "uri": "https://cdn.smartdivination.test/packs/runes-elder-futhark-1.1.0.zip",
+      "format": "zip",
+      "size": 10485760
+    }
+  }
+]

@@ -1,0 +1,105 @@
+# Backend CI for canonical backend under smart-divination/backend
+name: Backend Canonical CI
+
+on:
+  push:
+    paths:
+      - 'smart-divination/backend/**'
+      - '.github/workflows/backend-canonical-ci.yml'
+  pull_request:
+    paths:
+      - 'smart-divination/backend/**'
+      - '.github/workflows/backend-canonical-ci.yml'
+
+concurrency:
+  group: backend-canonical-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  supabase-migrate:
+    name: Apply Supabase migrations and seeds
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SUPABASE_DB_URL != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Run migrations and seed data
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          chmod +x scripts/supabase/*.sh
+          scripts/supabase/apply.sh
+  ci:
+    needs: supabase-migrate
+    name: Lint, Type Check, and Test (canonical)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: smart-divination/backend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: npm
+          cache-dependency-path: smart-divination/backend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm i --no-audit --no-fund; fi
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: |
+          if [ -d "__tests__" ]; then npm test; else echo "No tests yet"; fi
+
+  db-types-check:
+    needs: supabase-migrate
+    name: Verify Supabase types up-to-date
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SUPABASE_DB_URL || (secrets.SUPABASE_PROJECT_ID && secrets.SUPABASE_ACCESS_TOKEN) }}
+    defaults:
+      run:
+        working-directory: smart-divination/backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+
+      - name: Generate types and check diff
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          npm run supabase:types:ci
+          git diff --exit-code lib/types/generated/supabase.ts || (echo "::error file=lib/types/generated/supabase.ts::Supabase types out of date. Run npm run supabase:types:ci locally and commit changes."; exit 1)
+
+
+
+
+
+

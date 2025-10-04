@@ -1,0 +1,159 @@
+name: Flutter Release Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_android:
+        description: "Build Android App Bundle (AAB)"
+        type: boolean
+        default: true
+      build_ios:
+        description: "Build iOS archive (IPA)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  android:
+    if: ${{ inputs.build_android }}
+    runs-on: ubuntu-latest
+    env:
+      FLUTTER_VERSION: "3.24.0"
+      API_BASE_URL: ${{ secrets.ANDROID_API_BASE_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.24.0"
+
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      - name: Install Melos
+        run: |
+          dart pub global activate melos
+          echo "${HOME}/.pub-cache/bin" >> "${GITHUB_PATH}"
+
+      - name: Bootstrap workspace
+        working-directory: smart-divination
+        run: melos bootstrap
+
+      - name: Prepare Android signing configuration
+        working-directory: smart-divination/apps/tarot/android
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_ALIAS_PASSWORD: ${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}
+        run: |
+          mkdir -p app
+          if [ -n "${ANDROID_KEYSTORE_BASE64}" ] && [ -n "${ANDROID_KEYSTORE_PASSWORD}" ] && [ -n "${ANDROID_KEY_ALIAS}" ] && [ -n "${ANDROID_KEY_ALIAS_PASSWORD}" ]; then
+            echo "Using provided Android keystore"
+            echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > app/upload-keystore.jks
+            store_pass=${ANDROID_KEYSTORE_PASSWORD}
+            key_pass=${ANDROID_KEY_ALIAS_PASSWORD}
+            alias=${ANDROID_KEY_ALIAS}
+          else
+            echo "No Android keystore secret provided, generating ephemeral signing key"
+            store_pass=password
+            key_pass=password
+            alias=upload
+            keytool -genkey -v -keystore app/upload-keystore.jks -storepass "${store_pass}" -keypass "${key_pass}" -alias "${alias}" -dname "CN=CI, OU=Automation, O=Smart Divination, L=Barcelona, S=Catalunya, C=ES" -keyalg RSA -keysize 2048 -validity 10000
+          fi
+          cat <<EOF > key.properties
+storePassword=${store_pass}
+keyPassword=${key_pass}
+keyAlias=${alias}
+storeFile=upload-keystore.jks
+EOF
+
+      - name: Build Android App Bundle
+        working-directory: smart-divination/apps/tarot
+        env:
+          API_BASE_URL: ${{ env.API_BASE_URL }}
+        run: |
+          API_URL="${API_BASE_URL:-https://api.smartdivination.dev}"
+          flutter build appbundle             --release             --dart-define=API_BASE_URL=${API_URL}
+
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarot-android-aab
+          path: smart-divination/apps/tarot/build/app/outputs/bundle/release/app-release.aab
+
+  ios:
+    if: ${{ inputs.build_ios }}
+    runs-on: macos-latest
+    env:
+      FLUTTER_VERSION: "3.24.0"
+      API_BASE_URL: ${{ secrets.IOS_API_BASE_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.24.0"
+
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      - name: Install Melos
+        run: |
+          dart pub global activate melos
+          echo "${HOME}/.pub-cache/bin" >> "${GITHUB_PATH}"
+
+      - name: Bootstrap workspace
+        working-directory: smart-divination
+        run: melos bootstrap
+
+      - name: Configure signing (if secrets present)
+        env:
+          IOS_CERTIFICATE_P12_BASE64: ${{ secrets.IOS_CERTIFICATE_P12_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+        run: |
+          if [ -n "${IOS_CERTIFICATE_P12_BASE64}" ]; then
+            echo "Importing signing certificate"
+            echo "${IOS_CERTIFICATE_P12_BASE64}" | base64 --decode > ios_certificate.p12
+            security create-keychain -p "" build.keychain
+            security import ios_certificate.p12 -k build.keychain -P "${IOS_CERTIFICATE_PASSWORD}" -T /usr/bin/codesign
+            security list-keychain -d user -s build.keychain login.keychain
+            security unlock-keychain -p "" build.keychain
+          else
+            echo "No iOS certificate provided; build will run without codesign"
+          fi
+
+      - name: Build iOS archive
+        working-directory: smart-divination/apps/tarot
+        env:
+          API_BASE_URL: ${{ env.API_BASE_URL }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_KEY_BASE64 }}
+        run: |
+          API_URL="${API_BASE_URL:-https://api.smartdivination.dev}"
+          if [ -n "${APP_STORE_CONNECT_KEY_BASE64}" ]; then
+            echo "${APP_STORE_CONNECT_KEY_BASE64}" | base64 --decode > AuthKey.p8
+            flutter build ipa               --release               --export-options-plist=ios/ci_export_options.plist               --dart-define=API_BASE_URL=${API_URL}
+          else
+            flutter build ipa               --no-codesign               --dart-define=API_BASE_URL=${API_URL}
+          fi
+
+      - name: Upload iOS artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarot-ios-ipa
+          path: |
+            smart-divination/apps/tarot/build/ios/ipa/*.ipa
+            smart-divination/apps/tarot/build/ios/archive/*.xcarchive

@@ -11,10 +11,10 @@
   "tarotDescription": "Cartes per a orientació i reflexió",
   "ichingDescription": "Saviesa ancestral xinesa",
   "runesDescription": "Símbols nòrdics de poder",
-  "startSession": "Iniciar Sessió",
-  "continueSession": "Continuar Sessió",
-  "endSession": "Finalitzar Sessió",
-  "history": "Historial de Sessions",
+  "startSession": "Iniciar sessió",
+  "continueSession": "Continuar sessió",
+  "endSession": "Finalitzar sessió",
+  "history": "Historial de sessions",
   "askQuestion": "Fes la teva pregunta...",
   "networkError": "Error de connexió de xarxa. Comprova la teva connexió.",
   "sessionLimitReached": "Límit de sessions assolit. Actualitza a premium per a sessions il·limitades.",
@@ -23,9 +23,139 @@
   "unlimitedSessions": "Sessions il·limitades",
   "settings": "Configuració",
   "language": "Idioma",
-  "darkMode": "Mode Fosc",
+  "darkMode": "Mode fosc",
   "ok": "D'acord",
   "cancel": "Cancel·lar",
   "save": "Desar",
-  "close": "Tancar"
+  "close": "Tancar",
+  "allowReversed": "Permet cartes invertides",
+  "drawingInProgress": "Extraient cartes...",
+  "seedOptionalLabel": "Llavor (opcional)",
+  "generateSeed": "Genera una llavor",
+  "latestDrawTitle": "Darrera tirada ({count} cartes)",
+  "@latestDrawTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "spreadLabel": "Tirada: {spread}",
+  "@spreadLabel": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "methodSeedLabel": "Mètode: {method} • Llavor: {seed}",
+  "@methodSeedLabel": {
+    "placeholders": {
+      "method": {},
+      "seed": {}
+    }
+  },
+  "methodLabel": "Mètode: {method}",
+  "@methodLabel": {
+    "placeholders": {
+      "method": {}
+    }
+  },
+  "seedLabel": "Llavor: {seed}",
+  "@seedLabel": {
+    "placeholders": {
+      "seed": {}
+    }
+  },
+  "interpretationHeading": "Interpretació",
+  "historyHeading": "Tirades anteriors",
+  "drawPlaceholder": "Extreu cartes per rebre orientació.",
+  "cardOrientationUpright": "Dreta",
+  "cardOrientationReversed": "Invertida",
+  "tierLabel": "Nivell: {tier}",
+  "@tierLabel": {
+    "placeholders": {
+      "tier": {}
+    }
+  },
+  "usageToday": "Avui: {used}/{limit}",
+  "@usageToday": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "usageWeek": "Aquesta setmana: {used}/{limit}",
+  "@usageWeek": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "usageMonth": "Aquest mes: {used}/{limit}",
+  "@usageMonth": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
+    }
+  },
+  "remainingToday": "Restants avui: {remaining}",
+  "@remainingToday": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      }
+    }
+  },
+  "nextWindow": "Pròxima franja: {timestamp}",
+  "@nextWindow": {
+    "placeholders": {
+      "timestamp": {}
+    }
+  },
+  "authSignInTitle": "Inicia sessió a Smart Tarot",
+  "authSignUpTitle": "Crea el teu compte de Smart Tarot",
+  "authEmailLabel": "Correu electrònic",
+  "authPasswordLabel": "Contrasenya",
+  "authPasswordLabelWithHint": "Contrasenya (mínim 6 caràcters)",
+  "authSignInButton": "Inicia sessió",
+  "authSignUpButton": "Crea un compte",
+  "authToggleToSignIn": "Ja tens compte? Inicia sessió",
+  "authToggleToSignUp": "Necessites un compte? Crea’l",
+  "authValidationError": "Introdueix un correu vàlid i una contrasenya d’almenys 6 caràcters.",
+  "authSignInSuccess": "Has iniciat sessió correctament.",
+  "authSignUpConfirmationSent": "Revisa la safata d’entrada per confirmar el compte abans d’iniciar sessió.",
+  "authSignUpSuccess": "Compte creat correctament.",
+  "authForgotPasswordLink": "Has oblidat la contrasenya?",
+  "authForgotPasswordTitle": "Restableix la contrasenya",
+  "authForgotPasswordDescription": "Introdueix el correu associat al teu compte i t’enviarem instruccions per restablir-la.",
+  "authForgotPasswordSubmit": "Envia el correu",
+  "authForgotPasswordSuccess": "Hem enviat el correu per restablir la contrasenya. Revisa la safata d’entrada.",
+  "authForgotPasswordMissingEmail": "Introdueix un correu electrònic vàlid per continuar.",
+  "authPasswordResetTitle": "Defineix una contrasenya nova",
+  "authPasswordResetDescription": "Introdueix una contrasenya nova per completar el procés.",
+  "authPasswordResetNewPasswordLabel": "Nova contrasenya",
+  "authPasswordResetConfirmPasswordLabel": "Confirma la contrasenya",
+  "authPasswordResetButton": "Actualitza la contrasenya",
+  "authPasswordResetSuccess": "Contrasenya actualitzada. Pots iniciar sessió amb la nova contrasenya.",
+  "authPasswordResetMismatch": "Les contrasenyes han de coincidir i tenir almenys 6 caràcters.",
+  "authPasswordResetError": "No s’ha pogut actualitzar la contrasenya. Torna-ho a provar.",
+  "authPasswordResetSignOutNotice": "Per seguretat, es tancarà la sessió després d’actualitzar la contrasenya.",
+  "authGenericError": "Error d’autenticació.",
+  "authUnexpectedError": "Error inesperat: {error}",
+  "@authUnexpectedError": {
+    "placeholders": {
+      "error": {}
+    }
+  }
 }
