@@ -127,7 +127,6 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
         home = const _Home();
         break;
       case _AuthFlow.signedOut:
-      default:
         home = const _SignInView();
         break;
     }
@@ -620,32 +619,6 @@ class _PasswordResetViewState extends State<_PasswordResetView> {
       ),
     );
   }
-}
-
-class _TarotDrawRecord {
-  _TarotDrawRecord({
-    required this.moment,
-    required this.cards,
-    required this.spread,
-    required this.seed,
-    required this.method,
-    this.question,
-    this.interpretation,
-    this.summary,
-    this.keywords = const <String>[],
-    this.sessionId,
-  });
-
-  final DateTime moment;
-  final List<CardResult> cards;
-  final String spread;
-  final String seed;
-  final String method;
-  final String? question;
-  final String? interpretation;
-  final String? summary;
-  final List<String> keywords;
-  final String? sessionId;
 }
 
 class _Home extends StatefulWidget {
