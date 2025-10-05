@@ -202,7 +202,9 @@ function resolveProviderFromEnv(): MetricsProvider {
       env: process.env.DATADOG_ENV,
       metricPrefix: process.env.DATADOG_METRIC_PREFIX || 'smart_divination',
       defaultTags: parseTags(process.env.DATADOG_TAGS),
-      timeoutMs: process.env.DATADOG_TIMEOUT_MS ? Number(process.env.DATADOG_TIMEOUT_MS) : undefined,
+      timeoutMs: process.env.DATADOG_TIMEOUT_MS
+        ? Number(process.env.DATADOG_TIMEOUT_MS)
+        : undefined,
     });
   }
   return new NoopProvider();
@@ -246,7 +248,9 @@ export function recordApiMetric(endpoint: string, status: number, durationMs: nu
 
   // fire-and-forget provider emission (non-blocking)
   const evt: MetricEvent = { endpoint, status, durationMs, ts: now };
-  void getMetricsProvider().send(evt).catch(() => undefined);
+  void getMetricsProvider()
+    .send(evt)
+    .catch(() => undefined);
 }
 
 function percentile(sortedValues: number[], p: number): number {

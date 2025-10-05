@@ -5,13 +5,7 @@
  * `npm run supabase:types:ci` and update any additional fields below.
  */
 
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 type TableRow<T> = {
   Row: T;

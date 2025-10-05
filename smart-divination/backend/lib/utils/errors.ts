@@ -1,6 +1,18 @@
 ﻿import type { HttpStatusCode } from '../types/api';
 
-type HttpStatusMeta = HttpStatusCode | 400 | 401 | 403 | 404 | 409 | 429 | 500 | 502 | 503 | 200 | 201;
+type HttpStatusMeta =
+  | HttpStatusCode
+  | 400
+  | 401
+  | 403
+  | 404
+  | 409
+  | 429
+  | 500
+  | 502
+  | 503
+  | 200
+  | 201;
 
 export type ErrorSeverity = 'info' | 'warn' | 'error';
 

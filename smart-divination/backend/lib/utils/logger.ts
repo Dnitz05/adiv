@@ -1,10 +1,6 @@
 import type { ApiError, LogLevel } from '../types/api';
 
-export function log(
-  level: LogLevel,
-  message: string,
-  ctx?: Record<string, unknown>
-): void {
+export function log(level: LogLevel, message: string, ctx?: Record<string, unknown>): void {
   const entry = {
     level,
     message,

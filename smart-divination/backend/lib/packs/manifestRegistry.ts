@@ -95,7 +95,11 @@ function validateDefinition(definition: PackManifestDefinition): ManifestValidat
     issues.push({ packId: definition.id, message: 'languages array is empty', severity: 'warn' });
   }
   if (!definition.distribution.uri.startsWith('https://')) {
-    issues.push({ packId: definition.id, message: 'distribution.uri must be https', severity: 'error' });
+    issues.push({
+      packId: definition.id,
+      message: 'distribution.uri must be https',
+      severity: 'error',
+    });
   }
   if (definition.premium_required && !definition.required_entitlements.includes('premium')) {
     issues.push({

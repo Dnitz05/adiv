@@ -2,13 +2,7 @@
  * API Types - Canonical Backend Type System
  */
 
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonRecord
-  | JsonValue[];
+export type JsonValue = string | number | boolean | null | JsonRecord | JsonValue[];
 
 export interface JsonRecord {
   [key: string]: JsonValue | undefined;
@@ -288,8 +282,3 @@ export function isApiError(obj: unknown): obj is ApiError {
     typeof (obj as any).message === 'string'
   );
 }
-
-
-
-
-

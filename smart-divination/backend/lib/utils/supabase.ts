@@ -58,7 +58,13 @@ interface SessionRow {
 interface SessionArtifactRow {
   id: string;
   session_id: string;
-  artifact_type: 'tarot_draw' | 'iching_cast' | 'rune_cast' | 'interpretation' | 'message_bundle' | 'note';
+  artifact_type:
+    | 'tarot_draw'
+    | 'iching_cast'
+    | 'rune_cast'
+    | 'interpretation'
+    | 'message_bundle'
+    | 'note';
   source: 'user' | 'assistant' | 'system';
   created_at: string;
   payload: Record<string, any>;
@@ -87,7 +93,6 @@ interface UserStatsRow {
   sessions_this_week: number | null;
   sessions_this_month: number | null;
 }
-
 
 function hasServiceCredentials(): boolean {
   return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);

@@ -206,7 +206,10 @@ function parseBearerToken(value?: string | null): string | null {
 }
 
 function getCachedAuthContext(req: NextApiRequest): AuthContext | null | undefined {
-  return (req as unknown as Record<string, unknown>)[AUTH_CONTEXT_KEY] as AuthContext | null | undefined;
+  return (req as unknown as Record<string, unknown>)[AUTH_CONTEXT_KEY] as
+    | AuthContext
+    | null
+    | undefined;
 }
 
 function cacheAuthContext(req: NextApiRequest, context: AuthContext | null): void {
@@ -222,8 +225,15 @@ export function createErrorFromCode(
     requestId?: string;
   }
 ): ApiError {
-  return createApiError(code, options?.message, options?.statusCode, options?.details, options?.requestId);
-}export function createApiResponse<T = any>(
+  return createApiError(
+    code,
+    options?.message,
+    options?.statusCode,
+    options?.details,
+    options?.requestId
+  );
+}
+export function createApiResponse<T = any>(
   data?: T,
   meta?: Partial<ResponseMetadata>,
   requestId?: string
@@ -327,8 +337,6 @@ export function handleApiError(
   logError(fallback, status);
   sendApiError(res, fallback, status);
 }
-
-
 
 export function sanitizeInput(input: string): string {
   return input.trim().replace(/[<>]/g, '').slice(0, 1000);
@@ -489,7 +497,3 @@ function normaliseQueryValue(value: string | string[] | undefined): string | und
   }
   return undefined;
 }
-
-
-
-
