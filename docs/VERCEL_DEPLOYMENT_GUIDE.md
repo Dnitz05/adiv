@@ -4,9 +4,9 @@ This guide walks you through deploying the Smart Divination backend to Vercel pr
 
 ## Prerequisites
 
-- [done] Vercel account created: https://vercel.com
-- [done] `.env.production` filled with all credentials
-- [done] Vercel CLI installed: `npm install -g vercel`
+- [X] Vercel account created: https://vercel.com ✅
+- [X] `.env.production` filled with all credentials ✅ (2025-10-05)
+- [X] Vercel CLI installed: `npm install -g vercel` ✅ (v46.0.1)
 
 ## Step 1: Install Vercel CLI
 
@@ -29,21 +29,25 @@ This will open a browser to authenticate. Choose your preferred method (GitHub, 
 
 ## Step 3: Link Project to Vercel
 
+**Status**: [X] Complete ✅ (2025-10-02)
+
 ```bash
 cd C:\tarot\smart-divination\backend
 vercel link
 ```
 
-**Prompts**:
-1. **Set up and deploy?** -> `Y`
-2. **Which scope?** -> Select your personal account or team
-3. **Link to existing project?** -> `N` (first time) or `Y` (if already created)
-4. **What's your project's name?** -> `smart-divination-backend`
-5. **In which directory is your code located?** -> `./` (press Enter)
-
-This creates `.vercel/` directory with `project.json` containing your org/project IDs.
+**Completed**:
+- ✅ Project linked: `backend`
+- ✅ Project ID: `prj_1W7dSxmVE6qwzuX4xaqr9EkoCbAC`
+- ✅ Org ID: `team_4XuuNZAQVCaHrPaESHalLBde`
+- ✅ `.vercel/project.json` created with org/project IDs
+- ✅ GitHub Secrets configured: VERCEL_ORG_ID, VERCEL_PROJECT_ID
 
 ## Step 4: Configure Environment Variables in Vercel
+
+**Status**: [ ] NOT COMPLETE ❌ (Environment variables not yet added to Vercel)
+
+**Current Issue**: `vercel env ls` returns "No Environment Variables found"
 
 ### Option A: Via Vercel Dashboard (Recommended)
 
@@ -115,7 +119,16 @@ Vercel should auto-detect Next.js. Verify settings in Dashboard:
 
 ## Step 6: Deploy to Production
 
-### First Deployment
+**Status**: [ ] NOT DEPLOYED ❌
+
+**Current Status**:
+- ⚠️ Project linked but not deployed
+- ❌ Environment variables not configured in Vercel
+- ❌ `https://smart-divination.vercel.app` returns 404 NOT_FOUND
+
+**Required Actions**:
+1. Add environment variables to Vercel Dashboard (Step 4)
+2. Run first deployment:
 
 ```bash
 cd C:\tarot\smart-divination\backend
@@ -126,13 +139,13 @@ This will:
 1. Build your application
 2. Upload to Vercel
 3. Deploy to production URL
-4. Output the production URL (e.g., `https://smart-divination-backend.vercel.app`)
+4. Output the production URL (e.g., `https://smart-divination.vercel.app`)
 
 **Expected output**:
 ```
-Vercel CLI 33.x.x
+Vercel CLI 46.x.x
 (search)  Inspect: https://vercel.com/...
-[done]  Production: https://smart-divination-backend.vercel.app [1m]
+[done]  Production: https://smart-divination.vercel.app [1m]
 ```
 
 ### Subsequent Deployments
@@ -328,12 +341,22 @@ vercel rollback [deployment-url]
 
 ## Next Steps
 
-After successful deployment:
-1. [done] Update Flutter apps with production backend URL
-2. [done] Test all endpoints with real data
-3. -> Task 5: QA manual completa
-4. -> Configure monitoring and alerts
-5. -> Set up automated deployments via GitHub Actions
+**Current Progress**:
+1. [X] Vercel CLI installed ✅
+2. [X] Project linked ✅
+3. [X] .env.production configured locally ✅
+4. [ ] Add environment variables to Vercel Dashboard ❌ **BLOCKER**
+5. [ ] Deploy backend: `vercel --prod` ❌ **BLOCKER**
+6. [ ] Verify endpoints: /api/health, /api/metrics ❌
+7. [ ] Create VERCEL_TOKEN for GitHub Actions auto-deploy ⚠️
+8. [ ] Configure Git integration for auto-deploy on push ⚠️
+9. [ ] Update Flutter app with production URL ⚠️
+10. [ ] QA manual testing ⚠️
+
+**Immediate Action Required**:
+- Go to Vercel Dashboard → Settings → Environment Variables
+- Add all variables from .env.production (see Step 4 table above)
+- Run `vercel --prod` to deploy
 
 ## References
 

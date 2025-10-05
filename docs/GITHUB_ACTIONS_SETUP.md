@@ -170,17 +170,16 @@ These are the same values from your `.env.production` file:
 
 ## Complete Secrets List Summary
 
-Here's the full list of secrets to add (26 total, or 20 if skipping optionals):
+**Status**: 13/16 secrets configured (2025-10-05)
 
-**Android (6)**:
-- [x] ANDROID_KEYSTORE_BASE64
-- [x] ANDROID_KEYSTORE_PASSWORD
-- [x] ANDROID_KEY_ALIAS
-- [x] ANDROID_KEY_PASSWORD
-- [x] ANDROID_STORE_FILE
-- [x] ANDROID_BUNDLE_ID
+**Android (5/5)** ✅:
+- [X] ANDROID_KEYSTORE_BASE64 (2025-10-03)
+- [X] ANDROID_KEYSTORE_PASSWORD (2025-10-03)
+- [X] ANDROID_KEY_ALIAS (2025-10-03)
+- [X] ANDROID_KEY_PASSWORD (2025-10-03)
+- [X] ANDROID_STORE_FILE (2025-10-03)
 
-**iOS (6)**:
+**iOS (0/6)** ⏸️ Deferred (Mac required):
 - [ ] IOS_CERTIFICATE_BASE64
 - [ ] IOS_CERTIFICATE_PASSWORD
 - [ ] IOS_PROVISIONING_PROFILE_BASE64
@@ -188,21 +187,21 @@ Here's the full list of secrets to add (26 total, or 20 if skipping optionals):
 - [ ] APP_STORE_CONNECT_ISSUER_ID
 - [ ] APP_STORE_CONNECT_KEY_BASE64
 
-**Vercel (3)**:
-- [ ] VERCEL_TOKEN
-- [ ] VERCEL_ORG_ID
-- [ ] VERCEL_PROJECT_ID
+**Vercel (2/3)** ⚠️:
+- [ ] VERCEL_TOKEN (TODO: create at vercel.com/account/tokens)
+- [X] VERCEL_ORG_ID (2025-10-03)
+- [X] VERCEL_PROJECT_ID (2025-10-03)
 
-**Backend (5)**:
-- [ ] SUPABASE_URL
-- [ ] SUPABASE_ANON_KEY
-- [ ] SUPABASE_SERVICE_ROLE_KEY
-- [ ] DEEPSEEK_API_KEY
-- [ ] RANDOM_ORG_KEY (optional)
+**Backend (5/5)** ✅:
+- [X] SUPABASE_URL (2025-09-25)
+- [X] SUPABASE_ANON_KEY (2025-09-25)
+- [X] SUPABASE_SERVICE_ROLE_KEY (2025-09-25)
+- [X] DEEPSEEK_API_KEY (2025-10-03)
+- [X] RANDOM_ORG_KEY (2025-10-03)
 
-**Observability (2, optional)**:
-- [ ] DATADOG_API_KEY
-- [ ] DATADOG_SITE
+**Observability (1/2)** ⚪ Optional:
+- [ ] DATADOG_API_KEY (skipped, using console logging)
+- [X] DATADOG_SITE (2025-10-03, for future use)
 
 ## Verification Script
 
@@ -266,11 +265,20 @@ Run via: **Actions** tab -> **Verify Secrets** -> **Run workflow**
 
 ## Next Steps
 
-After configuring all secrets:
-1. [x] Run verification workflow
-2. -> Task 4: Deploy backend to Vercel
-3. -> Configure CI/CD workflows to use these secrets
-4. -> Test automated builds for Android/iOS
+**Current Status**:
+1. [X] Android secrets configured ✅
+2. [X] Backend secrets configured ✅
+3. [X] Vercel project IDs configured ✅
+4. [ ] Create VERCEL_TOKEN (only missing secret for auto-deploy)
+5. [ ] iOS secrets (deferred until Mac available)
+
+**To enable automatic deployments**:
+- Create VERCEL_TOKEN at https://vercel.com/account/tokens
+- Add to GitHub Secrets
+- Push to master will auto-deploy backend
+
+**Manual deployment still works**:
+- `cd smart-divination/backend && vercel --prod`
 
 ## References
 

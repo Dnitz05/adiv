@@ -1,4 +1,4 @@
-# Script to verify Vercel deployment endpoints
+﻿# Script to verify Vercel deployment endpoints
 # Usage: .\verify-deployment.ps1 <backend-url>
 # Example: .\verify-deployment.ps1 https://smart-divination-backend.vercel.app
 
@@ -65,7 +65,7 @@ try {
     } | ConvertTo-Json
 
     $response = Invoke-WebRequest -Uri "$BackendUrl/api/draw/cards" -Method POST `
-        -ContentType "application/json" -Body $body -TimeoutSec 10 -SkipHttpErrorCheck
+        -ContentType "application/json" -Body $body -TimeoutSec 10 
 
     if ($response.StatusCode -eq 401) {
         $json = $response.Content | ConvertFrom-Json
@@ -90,7 +90,7 @@ try {
     } | ConvertTo-Json
 
     $response = Invoke-WebRequest -Uri "$BackendUrl/api/draw/coins" -Method POST `
-        -ContentType "application/json" -Body $body -TimeoutSec 10 -SkipHttpErrorCheck
+        -ContentType "application/json" -Body $body -TimeoutSec 10 
 
     if ($response.StatusCode -eq 503 -or $response.StatusCode -eq 401) {
         Write-Host "  [ok] Feature disabled or auth required (expected)" -ForegroundColor Green
@@ -160,3 +160,4 @@ if ($failCount -eq 0 -and $warnCount -eq 0) {
     Write-Host "[fail] Deployment has failures. Please investigate." -ForegroundColor Red
     exit 1
 }
+

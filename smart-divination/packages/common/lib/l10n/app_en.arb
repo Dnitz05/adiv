@@ -1,38 +1,18 @@
 {
   "@@locale": "en",
-  "appTitleTarot": "Smart Tarot",
-  "appTitleIching": "Smart I Ching",
-  "appTitleRunes": "Smart Runes",
-  "welcome": "Welcome!",
-  "selectTechnique": "Which technique would you like to explore today?",
-  "tarot": "Tarot",
-  "iching": "I Ching",
-  "runes": "Runes",
-  "tarotDescription": "Cards for guidance and reflection",
-  "ichingDescription": "Ancient Chinese wisdom",
-  "runesDescription": "Nordic symbols of power",
-  "startSession": "Start Session",
-  "continueSession": "Continue Session",
-  "endSession": "End Session",
-  "history": "Session History",
-  "askQuestion": "Ask your question...",
-  "networkError": "Network connection error. Please check your connection.",
-  "sessionLimitReached": "Session limit reached. Upgrade to premium for unlimited sessions.",
-  "premium": "Premium",
-  "upgradeToPremium": "Upgrade to Premium",
-  "unlimitedSessions": "Unlimited Sessions",
-  "settings": "Settings",
-  "language": "Language",
-  "darkMode": "Dark Mode",
-  "ok": "OK",
-  "cancel": "Cancel",
-  "save": "Save",
-  "close": "Close",
-  "allowReversed": "Allow reversed cards",
-  "drawingInProgress": "Drawing...",
-  "seedOptionalLabel": "Seed (optional)",
-  "generateSeed": "Generate seed",
-  "latestDrawTitle": "Latest draw ({count} cards)",
+  "@authUnexpectedError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@cardPositionLabel": {
+    "placeholders": {
+      "name": {},
+      "position": {
+        "type": "int"
+      }
+    }
+  },
   "@latestDrawTitle": {
     "placeholders": {
       "count": {
@@ -40,76 +20,22 @@
       }
     }
   },
-  "spreadLabel": "Spread: {spread}",
-  "@spreadLabel": {
+  "@methodLabel": {
     "placeholders": {
-      "spread": {}
+      "method": {}
     }
   },
-  "methodSeedLabel": "Method: {method} • Seed: {seed}",
   "@methodSeedLabel": {
     "placeholders": {
       "method": {},
       "seed": {}
     }
   },
-  "methodLabel": "Method: {method}",
-  "@methodLabel": {
+  "@nextWindow": {
     "placeholders": {
-      "method": {}
+      "timestamp": {}
     }
   },
-  "seedLabel": "Seed: {seed}",
-  "@seedLabel": {
-    "placeholders": {
-      "seed": {}
-    }
-  },
-  "interpretationHeading": "Interpretation",
-  "historyHeading": "Previous draws",
-  "drawPlaceholder": "Draw cards to receive guidance.",
-  "cardOrientationUpright": "Upright",
-  "cardOrientationReversed": "Reversed",
-  "tierLabel": "Tier: {tier}",
-  "@tierLabel": {
-    "placeholders": {
-      "tier": {}
-    }
-  },
-  "usageToday": "Today: {used}/{limit}",
-  "@usageToday": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "usageWeek": "This week: {used}/{limit}",
-  "@usageWeek": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "usageMonth": "This month: {used}/{limit}",
-  "@usageMonth": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "remainingToday": "Remaining today: {remaining}",
   "@remainingToday": {
     "placeholders": {
       "remaining": {
@@ -117,45 +43,131 @@
       }
     }
   },
-  "nextWindow": "Next window: {timestamp}",
-  "@nextWindow": {
+  "@seedLabel": {
     "placeholders": {
-      "timestamp": {}
+      "seed": {}
     }
   },
-  "authSignInTitle": "Sign in to Smart Tarot",
-  "authSignUpTitle": "Create your Smart Tarot account",
+  "@spreadLabel": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "@tierLabel": {
+    "placeholders": {
+      "tier": {}
+    }
+  },
+  "@usageMonth": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "@usageToday": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "@usageWeek": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "allowReversed": "Allow reversed cards",
+  "appTitleIching": "Smart I Ching",
+  "appTitleRunes": "Smart Runes",
+  "appTitleTarot": "Smart Tarot",
+  "askQuestion": "Ask your question...",
   "authEmailLabel": "Email",
-  "authPasswordLabel": "Password",
-  "authPasswordLabelWithHint": "Password (min 6 characters)",
-  "authSignInButton": "Sign in",
-  "authSignUpButton": "Create account",
-  "authToggleToSignIn": "Already have an account? Sign in",
-  "authToggleToSignUp": "Need an account? Create one",
-  "authValidationError": "Enter a valid email and a password of at least 6 characters.",
-  "authSignInSuccess": "Signed in successfully.",
-  "authSignUpConfirmationSent": "Check your inbox to confirm the account before signing in.",
-  "authSignUpSuccess": "Account created successfully.",
-  "authForgotPasswordLink": "Forgot password?",
-  "authForgotPasswordTitle": "Reset password",
   "authForgotPasswordDescription": "Enter the email associated with your account and we'll send reset instructions.",
+  "authForgotPasswordLink": "Forgot password?",
+  "authForgotPasswordMissingEmail": "Enter a valid email address to continue.",
   "authForgotPasswordSubmit": "Send email",
   "authForgotPasswordSuccess": "Password reset email sent. Check your inbox.",
-  "authForgotPasswordMissingEmail": "Enter a valid email address to continue.",
-  "authPasswordResetTitle": "Set a new password",
-  "authPasswordResetDescription": "Enter a new password to finish resetting your account.",
-  "authPasswordResetNewPasswordLabel": "New password",
-  "authPasswordResetConfirmPasswordLabel": "Confirm password",
-  "authPasswordResetButton": "Update password",
-  "authPasswordResetSuccess": "Password updated. You can sign in with the new password.",
-  "authPasswordResetMismatch": "Passwords must match and include at least 6 characters.",
-  "authPasswordResetError": "Failed to update password. Please try again.",
-  "authPasswordResetSignOutNotice": "For security reasons you will be signed out after updating the password.",
+  "authForgotPasswordTitle": "Reset password",
   "authGenericError": "Authentication failed.",
+  "authPasswordLabel": "Password",
+  "authPasswordLabelWithHint": "Password (min 6 characters)",
+  "authPasswordResetButton": "Update password",
+  "authPasswordResetConfirmPasswordLabel": "Confirm password",
+  "authPasswordResetDescription": "Enter a new password to finish resetting your account.",
+  "authPasswordResetError": "Failed to update password. Please try again.",
+  "authPasswordResetMismatch": "Passwords must match and include at least 6 characters.",
+  "authPasswordResetNewPasswordLabel": "New password",
+  "authPasswordResetSignOutNotice": "For security reasons you will be signed out after updating the password.",
+  "authPasswordResetSuccess": "Password updated. You can sign in with the new password.",
+  "authPasswordResetTitle": "Set a new password",
+  "authSignInButton": "Sign in",
+  "authSignInSuccess": "Signed in successfully.",
+  "authSignInTitle": "Sign in to Smart Tarot",
+  "authSignUpButton": "Create account",
+  "authSignUpConfirmationSent": "Check your inbox to confirm the account before signing in.",
+  "authSignUpSuccess": "Account created successfully.",
+  "authSignUpTitle": "Create your Smart Tarot account",
+  "authToggleToSignIn": "Already have an account? Sign in",
+  "authToggleToSignUp": "Need an account? Create one",
   "authUnexpectedError": "Unexpected error: {error}",
-  "@authUnexpectedError": {
-    "placeholders": {
-      "error": {}
-    }
-  }
+  "authValidationError": "Enter a valid email and a password of at least 6 characters.",
+  "cancel": "Cancel",
+  "cardOrientationReversed": "Reversed",
+  "cardOrientationUpright": "Upright",
+  "cardPositionLabel": "{position}. {name}",
+  "close": "Close",
+  "continueSession": "Continue Session",
+  "darkMode": "Dark Mode",
+  "drawPlaceholder": "Draw cards to receive guidance.",
+  "drawSuccessMessage": "Your reading is ready. Latest draw updated below.",
+  "drawingInProgress": "Drawing...",
+  "endSession": "End Session",
+  "generateSeed": "Generate seed",
+  "genericUnexpectedError": "Something went wrong. Please try again.",
+  "history": "Session History",
+  "historyHeading": "Previous draws",
+  "iching": "I Ching",
+  "ichingDescription": "Ancient Chinese wisdom",
+  "interpretationHeading": "Interpretation",
+  "language": "Language",
+  "latestDrawTitle": "Latest draw ({count} cards)",
+  "methodLabel": "Method: {method}",
+  "methodSeedLabel": "Method: {method} • Seed: {seed}",
+  "networkError": "Network connection error. Please check your connection.",
+  "nextWindow": "Next window: {timestamp}",
+  "ok": "OK",
+  "premium": "Premium",
+  "remainingToday": "Remaining today: {remaining}",
+  "runes": "Runes",
+  "runesDescription": "Nordic symbols of power",
+  "save": "Save",
+  "seedLabel": "Seed: {seed}",
+  "seedOptionalLabel": "Seed (optional)",
+  "selectTechnique": "Which technique would you like to explore today?",
+  "sessionLimitReached": "Session limit reached. Upgrade to premium for unlimited sessions.",
+  "settings": "Settings",
+  "spreadLabel": "Spread: {spread}",
+  "startSession": "Start Session",
+  "tarot": "Tarot",
+  "tarotDescription": "Cards for guidance and reflection",
+  "tierLabel": "Tier: {tier}",
+  "unknownCardName": "Unknown card",
+  "unlimitedSessions": "Unlimited Sessions",
+  "upgradeToPremium": "Upgrade to Premium",
+  "usageMonth": "This month: {used}/{limit}",
+  "usageToday": "Today: {used}/{limit}",
+  "usageWeek": "This week: {used}/{limit}",
+  "welcome": "Welcome!"
 }

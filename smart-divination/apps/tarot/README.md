@@ -1,4 +1,4 @@
-ï»¿# Smart Tarot (Prototype)
+Ã¯Â»Â¿# Smart Tarot (Prototype)
 
 The tarot app is the only Flutter client with partial functionality. It integrates with the Next.js backend to draw cards and display recent sessions. The experience is still a prototype: graphics, copy, localisation, and release polish remain pending.
 
@@ -31,14 +31,14 @@ flutter run \
 ```bash
 flutter test
 ```
-Tests currently include widget smoke coverage only. Expand before shipping features.
+Widget tests now cover the auth screen defaults, forgot-password affordance, and sign-up toggle copy. Extend this suite with mocked Supabase/HTTP flows before shipping new features.
 
 ## Release Configuration
 
 ### Android
-1. Copy `android/key.properties.sample` to `android/key.properties` and fill in the real keystore passwords and alias.
-2. Place your release keystore at `android/app/upload-keystore.jks` (or update `storeFile` accordingly).
-3. `build.gradle.kts` reads those values at build time; when missing, it falls back to debug signing so local release builds still run.
+1. Copy `android/key.properties.sample` to `android/key.properties` (the file is git-ignored) or rely entirely on environment variables. Never commit production credentials.
+2. Supply the keystore either via file-based properties (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`) or by exporting `ANDROID_KEYSTORE_BASE64`/`ANDROID_KEYSTORE_PATH` together with `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD`. The Gradle script will decode Base64 input into `build/keystore/upload-keystore.jks`.
+3. `build.gradle.kts` now fails fast when configuration is missing; configure one of the options above before running `flutter build appbundle --release`.
 4. Provide the same secrets to the `flutter-release.yml` workflow (`ANDROID_KEYSTORE_*`, `ANDROID_API_BASE_URL`) so CI can produce a signed AAB.
 
 ### iOS
@@ -55,6 +55,6 @@ Tests currently include widget smoke coverage only. Expand before shipping featu
 Treat this app as a starting point rather than a store-ready product.
 
 ## Authentication
-- El flux d'inici de sessió permet registre amb correu/contrasenya i canvi segur de contrasenya via enllaç de recuperació.
+- El flux d'inici de sessiÃ³ permet registre amb correu/contrasenya i canvi segur de contrasenya via enllaÃ§ de recuperaciÃ³.
 - Executeu les seeds de Supabase (`supabase/seeds/dev_seed.sql`) per obtenir l'usuari demo `demo-seeker@smartdivination.test / TarotDemo1!` ja confirmat.
-- Configureu correu transaccional (SMTP real o Inbucket local) per verificar que els correus de confirmació i de reset s'enviïn correctament.
+- Configureu correu transaccional (SMTP real o Inbucket local) per verificar que els correus de confirmaciÃ³ i de reset s'enviÃ¯n correctament.

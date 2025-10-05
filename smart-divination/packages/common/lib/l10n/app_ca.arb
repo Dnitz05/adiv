@@ -1,38 +1,18 @@
 {
   "@@locale": "ca",
-  "appTitleTarot": "Tarot Intel·ligent",
-  "appTitleIching": "I Ching Intel·ligent",
-  "appTitleRunes": "Runes Intel·ligents",
-  "welcome": "Benvingut/da!",
-  "selectTechnique": "Quina tècnica t'agradaria explorar avui?",
-  "tarot": "Tarot",
-  "iching": "I Ching",
-  "runes": "Runes",
-  "tarotDescription": "Cartes per a orientació i reflexió",
-  "ichingDescription": "Saviesa ancestral xinesa",
-  "runesDescription": "Símbols nòrdics de poder",
-  "startSession": "Iniciar sessió",
-  "continueSession": "Continuar sessió",
-  "endSession": "Finalitzar sessió",
-  "history": "Historial de sessions",
-  "askQuestion": "Fes la teva pregunta...",
-  "networkError": "Error de connexió de xarxa. Comprova la teva connexió.",
-  "sessionLimitReached": "Límit de sessions assolit. Actualitza a premium per a sessions il·limitades.",
-  "premium": "Premium",
-  "upgradeToPremium": "Actualitza a Premium",
-  "unlimitedSessions": "Sessions il·limitades",
-  "settings": "Configuració",
-  "language": "Idioma",
-  "darkMode": "Mode fosc",
-  "ok": "D'acord",
-  "cancel": "Cancel·lar",
-  "save": "Desar",
-  "close": "Tancar",
-  "allowReversed": "Permet cartes invertides",
-  "drawingInProgress": "Extraient cartes...",
-  "seedOptionalLabel": "Llavor (opcional)",
-  "generateSeed": "Genera una llavor",
-  "latestDrawTitle": "Darrera tirada ({count} cartes)",
+  "@authUnexpectedError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@cardPositionLabel": {
+    "placeholders": {
+      "name": {},
+      "position": {
+        "type": "int"
+      }
+    }
+  },
   "@latestDrawTitle": {
     "placeholders": {
       "count": {
@@ -40,76 +20,22 @@
       }
     }
   },
-  "spreadLabel": "Tirada: {spread}",
-  "@spreadLabel": {
+  "@methodLabel": {
     "placeholders": {
-      "spread": {}
+      "method": {}
     }
   },
-  "methodSeedLabel": "Mètode: {method} • Llavor: {seed}",
   "@methodSeedLabel": {
     "placeholders": {
       "method": {},
       "seed": {}
     }
   },
-  "methodLabel": "Mètode: {method}",
-  "@methodLabel": {
+  "@nextWindow": {
     "placeholders": {
-      "method": {}
+      "timestamp": {}
     }
   },
-  "seedLabel": "Llavor: {seed}",
-  "@seedLabel": {
-    "placeholders": {
-      "seed": {}
-    }
-  },
-  "interpretationHeading": "Interpretació",
-  "historyHeading": "Tirades anteriors",
-  "drawPlaceholder": "Extreu cartes per rebre orientació.",
-  "cardOrientationUpright": "Dreta",
-  "cardOrientationReversed": "Invertida",
-  "tierLabel": "Nivell: {tier}",
-  "@tierLabel": {
-    "placeholders": {
-      "tier": {}
-    }
-  },
-  "usageToday": "Avui: {used}/{limit}",
-  "@usageToday": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "usageWeek": "Aquesta setmana: {used}/{limit}",
-  "@usageWeek": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "usageMonth": "Aquest mes: {used}/{limit}",
-  "@usageMonth": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "remainingToday": "Restants avui: {remaining}",
   "@remainingToday": {
     "placeholders": {
       "remaining": {
@@ -117,45 +43,131 @@
       }
     }
   },
-  "nextWindow": "Pròxima franja: {timestamp}",
-  "@nextWindow": {
+  "@seedLabel": {
     "placeholders": {
-      "timestamp": {}
+      "seed": {}
     }
   },
-  "authSignInTitle": "Inicia sessió a Smart Tarot",
-  "authSignUpTitle": "Crea el teu compte de Smart Tarot",
+  "@spreadLabel": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "@tierLabel": {
+    "placeholders": {
+      "tier": {}
+    }
+  },
+  "@usageMonth": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "@usageToday": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "@usageWeek": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "allowReversed": "Permet cartes invertides",
+  "appTitleIching": "I Ching Intel·ligent",
+  "appTitleRunes": "Runes Intel·ligents",
+  "appTitleTarot": "Tarot Intel·ligent",
+  "askQuestion": "Fes la teva pregunta...",
   "authEmailLabel": "Correu electrònic",
-  "authPasswordLabel": "Contrasenya",
-  "authPasswordLabelWithHint": "Contrasenya (mínim 6 caràcters)",
-  "authSignInButton": "Inicia sessió",
-  "authSignUpButton": "Crea un compte",
-  "authToggleToSignIn": "Ja tens compte? Inicia sessió",
-  "authToggleToSignUp": "Necessites un compte? Crea’l",
-  "authValidationError": "Introdueix un correu vàlid i una contrasenya d’almenys 6 caràcters.",
-  "authSignInSuccess": "Has iniciat sessió correctament.",
-  "authSignUpConfirmationSent": "Revisa la safata d’entrada per confirmar el compte abans d’iniciar sessió.",
-  "authSignUpSuccess": "Compte creat correctament.",
-  "authForgotPasswordLink": "Has oblidat la contrasenya?",
-  "authForgotPasswordTitle": "Restableix la contrasenya",
   "authForgotPasswordDescription": "Introdueix el correu associat al teu compte i t’enviarem instruccions per restablir-la.",
+  "authForgotPasswordLink": "Has oblidat la contrasenya?",
+  "authForgotPasswordMissingEmail": "Introdueix un correu electrònic vàlid per continuar.",
   "authForgotPasswordSubmit": "Envia el correu",
   "authForgotPasswordSuccess": "Hem enviat el correu per restablir la contrasenya. Revisa la safata d’entrada.",
-  "authForgotPasswordMissingEmail": "Introdueix un correu electrònic vàlid per continuar.",
-  "authPasswordResetTitle": "Defineix una contrasenya nova",
-  "authPasswordResetDescription": "Introdueix una contrasenya nova per completar el procés.",
-  "authPasswordResetNewPasswordLabel": "Nova contrasenya",
-  "authPasswordResetConfirmPasswordLabel": "Confirma la contrasenya",
-  "authPasswordResetButton": "Actualitza la contrasenya",
-  "authPasswordResetSuccess": "Contrasenya actualitzada. Pots iniciar sessió amb la nova contrasenya.",
-  "authPasswordResetMismatch": "Les contrasenyes han de coincidir i tenir almenys 6 caràcters.",
-  "authPasswordResetError": "No s’ha pogut actualitzar la contrasenya. Torna-ho a provar.",
-  "authPasswordResetSignOutNotice": "Per seguretat, es tancarà la sessió després d’actualitzar la contrasenya.",
+  "authForgotPasswordTitle": "Restableix la contrasenya",
   "authGenericError": "Error d’autenticació.",
+  "authPasswordLabel": "Contrasenya",
+  "authPasswordLabelWithHint": "Contrasenya (mínim 6 caràcters)",
+  "authPasswordResetButton": "Actualitza la contrasenya",
+  "authPasswordResetConfirmPasswordLabel": "Confirma la contrasenya",
+  "authPasswordResetDescription": "Introdueix una contrasenya nova per completar el procés.",
+  "authPasswordResetError": "No s’ha pogut actualitzar la contrasenya. Torna-ho a provar.",
+  "authPasswordResetMismatch": "Les contrasenyes han de coincidir i tenir almenys 6 caràcters.",
+  "authPasswordResetNewPasswordLabel": "Nova contrasenya",
+  "authPasswordResetSignOutNotice": "Per seguretat, es tancarà la sessió després d’actualitzar la contrasenya.",
+  "authPasswordResetSuccess": "Contrasenya actualitzada. Pots iniciar sessió amb la nova contrasenya.",
+  "authPasswordResetTitle": "Defineix una contrasenya nova",
+  "authSignInButton": "Inicia sessió",
+  "authSignInSuccess": "Has iniciat sessió correctament.",
+  "authSignInTitle": "Inicia sessió a Smart Tarot",
+  "authSignUpButton": "Crea un compte",
+  "authSignUpConfirmationSent": "Revisa la safata d’entrada per confirmar el compte abans d’iniciar sessió.",
+  "authSignUpSuccess": "Compte creat correctament.",
+  "authSignUpTitle": "Crea el teu compte de Smart Tarot",
+  "authToggleToSignIn": "Ja tens compte? Inicia sessió",
+  "authToggleToSignUp": "Necessites un compte? Crea’l",
   "authUnexpectedError": "Error inesperat: {error}",
-  "@authUnexpectedError": {
-    "placeholders": {
-      "error": {}
-    }
-  }
+  "authValidationError": "Introdueix un correu vàlid i una contrasenya d’almenys 6 caràcters.",
+  "cancel": "Cancel·lar",
+  "cardOrientationReversed": "Invertida",
+  "cardOrientationUpright": "Dreta",
+  "cardPositionLabel": "{position}. {name}",
+  "close": "Tancar",
+  "continueSession": "Continuar sessió",
+  "darkMode": "Mode fosc",
+  "drawPlaceholder": "Extreu cartes per rebre orientació.",
+  "drawSuccessMessage": "Lectura preparada. Revisa l'última tirada a continuació.",
+  "drawingInProgress": "Extraient cartes...",
+  "endSession": "Finalitzar sessió",
+  "generateSeed": "Genera una llavor",
+  "genericUnexpectedError": "Hi ha hagut un problema. Torna-ho a intentar.",
+  "history": "Historial de sessions",
+  "historyHeading": "Tirades anteriors",
+  "iching": "I Ching",
+  "ichingDescription": "Saviesa ancestral xinesa",
+  "interpretationHeading": "Interpretació",
+  "language": "Idioma",
+  "latestDrawTitle": "Darrera tirada ({count} cartes)",
+  "methodLabel": "Mètode: {method}",
+  "methodSeedLabel": "Mètode: {method} • Llavor: {seed}",
+  "networkError": "Error de connexió de xarxa. Comprova la teva connexió.",
+  "nextWindow": "Pròxima franja: {timestamp}",
+  "ok": "D'acord",
+  "premium": "Premium",
+  "remainingToday": "Restants avui: {remaining}",
+  "runes": "Runes",
+  "runesDescription": "Símbols nòrdics de poder",
+  "save": "Desar",
+  "seedLabel": "Llavor: {seed}",
+  "seedOptionalLabel": "Llavor (opcional)",
+  "selectTechnique": "Quina tècnica t'agradaria explorar avui?",
+  "sessionLimitReached": "Límit de sessions assolit. Actualitza a premium per a sessions il·limitades.",
+  "settings": "Configuració",
+  "spreadLabel": "Tirada: {spread}",
+  "startSession": "Iniciar sessió",
+  "tarot": "Tarot",
+  "tarotDescription": "Cartes per a orientació i reflexió",
+  "tierLabel": "Nivell: {tier}",
+  "unknownCardName": "Carta desconeguda",
+  "unlimitedSessions": "Sessions il·limitades",
+  "upgradeToPremium": "Actualitza a Premium",
+  "usageMonth": "Aquest mes: {used}/{limit}",
+  "usageToday": "Avui: {used}/{limit}",
+  "usageWeek": "Aquesta setmana: {used}/{limit}",
+  "welcome": "Benvingut/da!"
 }

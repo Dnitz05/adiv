@@ -1,38 +1,18 @@
 {
   "@@locale": "es",
-  "appTitleTarot": "Tarot Inteligente",
-  "appTitleIching": "I Ching Inteligente",
-  "appTitleRunes": "Runas Inteligentes",
-  "welcome": "¡Bienvenido/a!",
-  "selectTechnique": "¿Qué técnica te gustaría explorar hoy?",
-  "tarot": "Tarot",
-  "iching": "I Ching",
-  "runes": "Runas",
-  "tarotDescription": "Cartas para orientación y reflexión",
-  "ichingDescription": "Sabiduría ancestral china",
-  "runesDescription": "Símbolos nórdicos de poder",
-  "startSession": "Iniciar sesión",
-  "continueSession": "Continuar sesión",
-  "endSession": "Finalizar sesión",
-  "history": "Historial de sesiones",
-  "askQuestion": "Formula tu pregunta...",
-  "networkError": "Error de conexión de red. Por favor verifica tu conexión.",
-  "sessionLimitReached": "Límite de sesiones alcanzado. Mejora a premium para sesiones ilimitadas.",
-  "premium": "Premium",
-  "upgradeToPremium": "Actualizar a Premium",
-  "unlimitedSessions": "Sesiones ilimitadas",
-  "settings": "Configuración",
-  "language": "Idioma",
-  "darkMode": "Modo oscuro",
-  "ok": "OK",
-  "cancel": "Cancelar",
-  "save": "Guardar",
-  "close": "Cerrar",
-  "allowReversed": "Permitir cartas invertidas",
-  "drawingInProgress": "Sacando cartas...",
-  "seedOptionalLabel": "Semilla (opcional)",
-  "generateSeed": "Generar semilla",
-  "latestDrawTitle": "Última tirada ({count} cartas)",
+  "@authUnexpectedError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "@cardPositionLabel": {
+    "placeholders": {
+      "name": {},
+      "position": {
+        "type": "int"
+      }
+    }
+  },
   "@latestDrawTitle": {
     "placeholders": {
       "count": {
@@ -40,76 +20,22 @@
       }
     }
   },
-  "spreadLabel": "Tirada: {spread}",
-  "@spreadLabel": {
+  "@methodLabel": {
     "placeholders": {
-      "spread": {}
+      "method": {}
     }
   },
-  "methodSeedLabel": "Método: {method} • Semilla: {seed}",
   "@methodSeedLabel": {
     "placeholders": {
       "method": {},
       "seed": {}
     }
   },
-  "methodLabel": "Método: {method}",
-  "@methodLabel": {
+  "@nextWindow": {
     "placeholders": {
-      "method": {}
+      "timestamp": {}
     }
   },
-  "seedLabel": "Semilla: {seed}",
-  "@seedLabel": {
-    "placeholders": {
-      "seed": {}
-    }
-  },
-  "interpretationHeading": "Interpretación",
-  "historyHeading": "Tiradas anteriores",
-  "drawPlaceholder": "Saca cartas para recibir orientación.",
-  "cardOrientationUpright": "Al derecho",
-  "cardOrientationReversed": "Invertida",
-  "tierLabel": "Nivel: {tier}",
-  "@tierLabel": {
-    "placeholders": {
-      "tier": {}
-    }
-  },
-  "usageToday": "Hoy: {used}/{limit}",
-  "@usageToday": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "usageWeek": "Esta semana: {used}/{limit}",
-  "@usageWeek": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "usageMonth": "Este mes: {used}/{limit}",
-  "@usageMonth": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      },
-      "limit": {
-        "type": "int"
-      }
-    }
-  },
-  "remainingToday": "Restantes hoy: {remaining}",
   "@remainingToday": {
     "placeholders": {
       "remaining": {
@@ -117,45 +43,131 @@
       }
     }
   },
-  "nextWindow": "Próxima ventana: {timestamp}",
-  "@nextWindow": {
+  "@seedLabel": {
     "placeholders": {
-      "timestamp": {}
+      "seed": {}
     }
   },
-  "authSignInTitle": "Inicia sesión en Smart Tarot",
-  "authSignUpTitle": "Crea tu cuenta de Smart Tarot",
+  "@spreadLabel": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "@tierLabel": {
+    "placeholders": {
+      "tier": {}
+    }
+  },
+  "@usageMonth": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "@usageToday": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "@usageWeek": {
+    "placeholders": {
+      "limit": {
+        "type": "int"
+      },
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "allowReversed": "Permitir cartas invertidas",
+  "appTitleIching": "I Ching Inteligente",
+  "appTitleRunes": "Runas Inteligentes",
+  "appTitleTarot": "Tarot Inteligente",
+  "askQuestion": "Formula tu pregunta...",
   "authEmailLabel": "Correo electrónico",
-  "authPasswordLabel": "Contraseña",
-  "authPasswordLabelWithHint": "Contraseña (mínimo 6 caracteres)",
-  "authSignInButton": "Iniciar sesión",
-  "authSignUpButton": "Crear cuenta",
-  "authToggleToSignIn": "¿Ya tienes cuenta? Inicia sesión",
-  "authToggleToSignUp": "¿Necesitas una cuenta? Créala",
-  "authValidationError": "Introduce un correo válido y una contraseña de al menos 6 caracteres.",
-  "authSignInSuccess": "Sesión iniciada correctamente.",
-  "authSignUpConfirmationSent": "Revisa tu bandeja de entrada para confirmar la cuenta antes de iniciar sesión.",
-  "authSignUpSuccess": "Cuenta creada correctamente.",
-  "authForgotPasswordLink": "¿Has olvidado la contraseña?",
-  "authForgotPasswordTitle": "Restablecer contraseña",
   "authForgotPasswordDescription": "Introduce el correo asociado a tu cuenta y te enviaremos instrucciones para restablecerla.",
+  "authForgotPasswordLink": "¿Has olvidado la contraseña?",
+  "authForgotPasswordMissingEmail": "Introduce un correo electrónico válido para continuar.",
   "authForgotPasswordSubmit": "Enviar correo",
   "authForgotPasswordSuccess": "Hemos enviado un correo para restablecer la contraseña. Revisa tu bandeja de entrada.",
-  "authForgotPasswordMissingEmail": "Introduce un correo electrónico válido para continuar.",
-  "authPasswordResetTitle": "Define una nueva contraseña",
-  "authPasswordResetDescription": "Introduce una nueva contraseña para completar el proceso.",
-  "authPasswordResetNewPasswordLabel": "Nueva contraseña",
-  "authPasswordResetConfirmPasswordLabel": "Confirmar contraseña",
-  "authPasswordResetButton": "Actualizar contraseña",
-  "authPasswordResetSuccess": "Contraseña actualizada. Puedes iniciar sesión con la nueva contraseña.",
-  "authPasswordResetMismatch": "Las contraseñas deben coincidir y tener al menos 6 caracteres.",
-  "authPasswordResetError": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
-  "authPasswordResetSignOutNotice": "Por seguridad, se cerrará la sesión después de actualizar la contraseña.",
+  "authForgotPasswordTitle": "Restablecer contraseña",
   "authGenericError": "Error de autenticación.",
+  "authPasswordLabel": "Contraseña",
+  "authPasswordLabelWithHint": "Contraseña (mínimo 6 caracteres)",
+  "authPasswordResetButton": "Actualizar contraseña",
+  "authPasswordResetConfirmPasswordLabel": "Confirmar contraseña",
+  "authPasswordResetDescription": "Introduce una nueva contraseña para completar el proceso.",
+  "authPasswordResetError": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
+  "authPasswordResetMismatch": "Las contraseñas deben coincidir y tener al menos 6 caracteres.",
+  "authPasswordResetNewPasswordLabel": "Nueva contraseña",
+  "authPasswordResetSignOutNotice": "Por seguridad, se cerrará la sesión después de actualizar la contraseña.",
+  "authPasswordResetSuccess": "Contraseña actualizada. Puedes iniciar sesión con la nueva contraseña.",
+  "authPasswordResetTitle": "Define una nueva contraseña",
+  "authSignInButton": "Iniciar sesión",
+  "authSignInSuccess": "Sesión iniciada correctamente.",
+  "authSignInTitle": "Inicia sesión en Smart Tarot",
+  "authSignUpButton": "Crear cuenta",
+  "authSignUpConfirmationSent": "Revisa tu bandeja de entrada para confirmar la cuenta antes de iniciar sesión.",
+  "authSignUpSuccess": "Cuenta creada correctamente.",
+  "authSignUpTitle": "Crea tu cuenta de Smart Tarot",
+  "authToggleToSignIn": "¿Ya tienes cuenta? Inicia sesión",
+  "authToggleToSignUp": "¿Necesitas una cuenta? Créala",
   "authUnexpectedError": "Error inesperado: {error}",
-  "@authUnexpectedError": {
-    "placeholders": {
-      "error": {}
-    }
-  }
+  "authValidationError": "Introduce un correo válido y una contraseña de al menos 6 caracteres.",
+  "cancel": "Cancelar",
+  "cardOrientationReversed": "Invertida",
+  "cardOrientationUpright": "Al derecho",
+  "cardPositionLabel": "{position}. {name}",
+  "close": "Cerrar",
+  "continueSession": "Continuar sesión",
+  "darkMode": "Modo oscuro",
+  "drawPlaceholder": "Saca cartas para recibir orientación.",
+  "drawSuccessMessage": "Lectura lista. Consulta la última tirada a continuación.",
+  "drawingInProgress": "Sacando cartas...",
+  "endSession": "Finalizar sesión",
+  "generateSeed": "Generar semilla",
+  "genericUnexpectedError": "Algo ha fallado. Inténtalo de nuevo.",
+  "history": "Historial de sesiones",
+  "historyHeading": "Tiradas anteriores",
+  "iching": "I Ching",
+  "ichingDescription": "Sabiduría ancestral china",
+  "interpretationHeading": "Interpretación",
+  "language": "Idioma",
+  "latestDrawTitle": "Última tirada ({count} cartas)",
+  "methodLabel": "Método: {method}",
+  "methodSeedLabel": "Método: {method} • Semilla: {seed}",
+  "networkError": "Error de conexión de red. Por favor verifica tu conexión.",
+  "nextWindow": "Próxima ventana: {timestamp}",
+  "ok": "OK",
+  "premium": "Premium",
+  "remainingToday": "Restantes hoy: {remaining}",
+  "runes": "Runas",
+  "runesDescription": "Símbolos nórdicos de poder",
+  "save": "Guardar",
+  "seedLabel": "Semilla: {seed}",
+  "seedOptionalLabel": "Semilla (opcional)",
+  "selectTechnique": "¿Qué técnica te gustaría explorar hoy?",
+  "sessionLimitReached": "Límite de sesiones alcanzado. Mejora a premium para sesiones ilimitadas.",
+  "settings": "Configuración",
+  "spreadLabel": "Tirada: {spread}",
+  "startSession": "Iniciar sesión",
+  "tarot": "Tarot",
+  "tarotDescription": "Cartas para orientación y reflexión",
+  "tierLabel": "Nivel: {tier}",
+  "unknownCardName": "Carta desconocida",
+  "unlimitedSessions": "Sesiones ilimitadas",
+  "upgradeToPremium": "Actualizar a Premium",
+  "usageMonth": "Este mes: {used}/{limit}",
+  "usageToday": "Hoy: {used}/{limit}",
+  "usageWeek": "Esta semana: {used}/{limit}",
+  "welcome": "¡Bienvenido/a!"
 }

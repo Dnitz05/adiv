@@ -100,11 +100,11 @@ abstract class CommonStrings {
     Locale('ca')
   ];
 
-  /// No description provided for @appTitleTarot.
+  /// No description provided for @allowReversed.
   ///
   /// In en, this message translates to:
-  /// **'Smart Tarot'**
-  String get appTitleTarot;
+  /// **'Allow reversed cards'**
+  String get allowReversed;
 
   /// No description provided for @appTitleIching.
   ///
@@ -118,77 +118,11 @@ abstract class CommonStrings {
   /// **'Smart Runes'**
   String get appTitleRunes;
 
-  /// No description provided for @welcome.
+  /// No description provided for @appTitleTarot.
   ///
   /// In en, this message translates to:
-  /// **'Welcome!'**
-  String get welcome;
-
-  /// No description provided for @selectTechnique.
-  ///
-  /// In en, this message translates to:
-  /// **'Which technique would you like to explore today?'**
-  String get selectTechnique;
-
-  /// No description provided for @tarot.
-  ///
-  /// In en, this message translates to:
-  /// **'Tarot'**
-  String get tarot;
-
-  /// No description provided for @iching.
-  ///
-  /// In en, this message translates to:
-  /// **'I Ching'**
-  String get iching;
-
-  /// No description provided for @runes.
-  ///
-  /// In en, this message translates to:
-  /// **'Runes'**
-  String get runes;
-
-  /// No description provided for @tarotDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Cards for guidance and reflection'**
-  String get tarotDescription;
-
-  /// No description provided for @ichingDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Ancient Chinese wisdom'**
-  String get ichingDescription;
-
-  /// No description provided for @runesDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Nordic symbols of power'**
-  String get runesDescription;
-
-  /// No description provided for @startSession.
-  ///
-  /// In en, this message translates to:
-  /// **'Start Session'**
-  String get startSession;
-
-  /// No description provided for @continueSession.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue Session'**
-  String get continueSession;
-
-  /// No description provided for @endSession.
-  ///
-  /// In en, this message translates to:
-  /// **'End Session'**
-  String get endSession;
-
-  /// No description provided for @history.
-  ///
-  /// In en, this message translates to:
-  /// **'Session History'**
-  String get history;
+  /// **'Smart Tarot'**
+  String get appTitleTarot;
 
   /// No description provided for @askQuestion.
   ///
@@ -196,275 +130,17 @@ abstract class CommonStrings {
   /// **'Ask your question...'**
   String get askQuestion;
 
-  /// No description provided for @networkError.
-  ///
-  /// In en, this message translates to:
-  /// **'Network connection error. Please check your connection.'**
-  String get networkError;
-
-  /// No description provided for @sessionLimitReached.
-  ///
-  /// In en, this message translates to:
-  /// **'Session limit reached. Upgrade to premium for unlimited sessions.'**
-  String get sessionLimitReached;
-
-  /// No description provided for @premium.
-  ///
-  /// In en, this message translates to:
-  /// **'Premium'**
-  String get premium;
-
-  /// No description provided for @upgradeToPremium.
-  ///
-  /// In en, this message translates to:
-  /// **'Upgrade to Premium'**
-  String get upgradeToPremium;
-
-  /// No description provided for @unlimitedSessions.
-  ///
-  /// In en, this message translates to:
-  /// **'Unlimited Sessions'**
-  String get unlimitedSessions;
-
-  /// No description provided for @settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
-
-  /// No description provided for @language.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get language;
-
-  /// No description provided for @darkMode.
-  ///
-  /// In en, this message translates to:
-  /// **'Dark Mode'**
-  String get darkMode;
-
-  /// No description provided for @ok.
-  ///
-  /// In en, this message translates to:
-  /// **'OK'**
-  String get ok;
-
-  /// No description provided for @cancel.
-  ///
-  /// In en, this message translates to:
-  /// **'Cancel'**
-  String get cancel;
-
-  /// No description provided for @save.
-  ///
-  /// In en, this message translates to:
-  /// **'Save'**
-  String get save;
-
-  /// No description provided for @close.
-  ///
-  /// In en, this message translates to:
-  /// **'Close'**
-  String get close;
-
-  /// No description provided for @allowReversed.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow reversed cards'**
-  String get allowReversed;
-
-  /// No description provided for @drawingInProgress.
-  ///
-  /// In en, this message translates to:
-  /// **'Drawing...'**
-  String get drawingInProgress;
-
-  /// No description provided for @seedOptionalLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Seed (optional)'**
-  String get seedOptionalLabel;
-
-  /// No description provided for @generateSeed.
-  ///
-  /// In en, this message translates to:
-  /// **'Generate seed'**
-  String get generateSeed;
-
-  /// No description provided for @latestDrawTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Latest draw ({count} cards)'**
-  String latestDrawTitle(int count);
-
-  /// No description provided for @spreadLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Spread: {spread}'**
-  String spreadLabel(Object spread);
-
-  /// No description provided for @methodSeedLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Method: {method} • Seed: {seed}'**
-  String methodSeedLabel(Object method, Object seed);
-
-  /// No description provided for @methodLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Method: {method}'**
-  String methodLabel(Object method);
-
-  /// No description provided for @seedLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Seed: {seed}'**
-  String seedLabel(Object seed);
-
-  /// No description provided for @interpretationHeading.
-  ///
-  /// In en, this message translates to:
-  /// **'Interpretation'**
-  String get interpretationHeading;
-
-  /// No description provided for @historyHeading.
-  ///
-  /// In en, this message translates to:
-  /// **'Previous draws'**
-  String get historyHeading;
-
-  /// No description provided for @drawPlaceholder.
-  ///
-  /// In en, this message translates to:
-  /// **'Draw cards to receive guidance.'**
-  String get drawPlaceholder;
-
-  /// No description provided for @cardOrientationUpright.
-  ///
-  /// In en, this message translates to:
-  /// **'Upright'**
-  String get cardOrientationUpright;
-
-  /// No description provided for @cardOrientationReversed.
-  ///
-  /// In en, this message translates to:
-  /// **'Reversed'**
-  String get cardOrientationReversed;
-
-  /// No description provided for @tierLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Tier: {tier}'**
-  String tierLabel(Object tier);
-
-  /// No description provided for @usageToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Today: {used}/{limit}'**
-  String usageToday(int used, int limit);
-
-  /// No description provided for @usageWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'This week: {used}/{limit}'**
-  String usageWeek(int used, int limit);
-
-  /// No description provided for @usageMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'This month: {used}/{limit}'**
-  String usageMonth(int used, int limit);
-
-  /// No description provided for @remainingToday.
-  ///
-  /// In en, this message translates to:
-  /// **'Remaining today: {remaining}'**
-  String remainingToday(int remaining);
-
-  /// No description provided for @nextWindow.
-  ///
-  /// In en, this message translates to:
-  /// **'Next window: {timestamp}'**
-  String nextWindow(Object timestamp);
-
-  /// No description provided for @authSignInTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in to Smart Tarot'**
-  String get authSignInTitle;
-
-  /// No description provided for @authSignUpTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Create your Smart Tarot account'**
-  String get authSignUpTitle;
-
   /// No description provided for @authEmailLabel.
   ///
   /// In en, this message translates to:
   /// **'Email'**
   String get authEmailLabel;
 
-  /// No description provided for @authPasswordLabel.
+  /// No description provided for @authForgotPasswordDescription.
   ///
   /// In en, this message translates to:
-  /// **'Password'**
-  String get authPasswordLabel;
-
-  /// No description provided for @authPasswordLabelWithHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Password (min 6 characters)'**
-  String get authPasswordLabelWithHint;
-
-  /// No description provided for @authSignInButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in'**
-  String get authSignInButton;
-
-  /// No description provided for @authSignUpButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Create account'**
-  String get authSignUpButton;
-
-  /// No description provided for @authToggleToSignIn.
-  ///
-  /// In en, this message translates to:
-  /// **'Already have an account? Sign in'**
-  String get authToggleToSignIn;
-
-  /// No description provided for @authToggleToSignUp.
-  ///
-  /// In en, this message translates to:
-  /// **'Need an account? Create one'**
-  String get authToggleToSignUp;
-
-  /// No description provided for @authValidationError.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a valid email and a password of at least 6 characters.'**
-  String get authValidationError;
-
-  /// No description provided for @authSignInSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Signed in successfully.'**
-  String get authSignInSuccess;
-
-  /// No description provided for @authSignUpConfirmationSent.
-  ///
-  /// In en, this message translates to:
-  /// **'Check your inbox to confirm the account before signing in.'**
-  String get authSignUpConfirmationSent;
-
-  /// No description provided for @authSignUpSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Account created successfully.'**
-  String get authSignUpSuccess;
+  /// **'Enter the email associated with your account and we\'ll send reset instructions.'**
+  String get authForgotPasswordDescription;
 
   /// No description provided for @authForgotPasswordLink.
   ///
@@ -472,17 +148,11 @@ abstract class CommonStrings {
   /// **'Forgot password?'**
   String get authForgotPasswordLink;
 
-  /// No description provided for @authForgotPasswordTitle.
+  /// No description provided for @authForgotPasswordMissingEmail.
   ///
   /// In en, this message translates to:
-  /// **'Reset password'**
-  String get authForgotPasswordTitle;
-
-  /// No description provided for @authForgotPasswordDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the email associated with your account and we\'ll send reset instructions.'**
-  String get authForgotPasswordDescription;
+  /// **'Enter a valid email address to continue.'**
+  String get authForgotPasswordMissingEmail;
 
   /// No description provided for @authForgotPasswordSubmit.
   ///
@@ -496,65 +166,11 @@ abstract class CommonStrings {
   /// **'Password reset email sent. Check your inbox.'**
   String get authForgotPasswordSuccess;
 
-  /// No description provided for @authForgotPasswordMissingEmail.
+  /// No description provided for @authForgotPasswordTitle.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid email address to continue.'**
-  String get authForgotPasswordMissingEmail;
-
-  /// No description provided for @authPasswordResetTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Set a new password'**
-  String get authPasswordResetTitle;
-
-  /// No description provided for @authPasswordResetDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a new password to finish resetting your account.'**
-  String get authPasswordResetDescription;
-
-  /// No description provided for @authPasswordResetNewPasswordLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'New password'**
-  String get authPasswordResetNewPasswordLabel;
-
-  /// No description provided for @authPasswordResetConfirmPasswordLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm password'**
-  String get authPasswordResetConfirmPasswordLabel;
-
-  /// No description provided for @authPasswordResetButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Update password'**
-  String get authPasswordResetButton;
-
-  /// No description provided for @authPasswordResetSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Password updated. You can sign in with the new password.'**
-  String get authPasswordResetSuccess;
-
-  /// No description provided for @authPasswordResetMismatch.
-  ///
-  /// In en, this message translates to:
-  /// **'Passwords must match and include at least 6 characters.'**
-  String get authPasswordResetMismatch;
-
-  /// No description provided for @authPasswordResetError.
-  ///
-  /// In en, this message translates to:
-  /// **'Failed to update password. Please try again.'**
-  String get authPasswordResetError;
-
-  /// No description provided for @authPasswordResetSignOutNotice.
-  ///
-  /// In en, this message translates to:
-  /// **'For security reasons you will be signed out after updating the password.'**
-  String get authPasswordResetSignOutNotice;
+  /// **'Reset password'**
+  String get authForgotPasswordTitle;
 
   /// No description provided for @authGenericError.
   ///
@@ -562,11 +178,419 @@ abstract class CommonStrings {
   /// **'Authentication failed.'**
   String get authGenericError;
 
+  /// No description provided for @authPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get authPasswordLabel;
+
+  /// No description provided for @authPasswordLabelWithHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Password (min 6 characters)'**
+  String get authPasswordLabelWithHint;
+
+  /// No description provided for @authPasswordResetButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update password'**
+  String get authPasswordResetButton;
+
+  /// No description provided for @authPasswordResetConfirmPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get authPasswordResetConfirmPasswordLabel;
+
+  /// No description provided for @authPasswordResetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new password to finish resetting your account.'**
+  String get authPasswordResetDescription;
+
+  /// No description provided for @authPasswordResetError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update password. Please try again.'**
+  String get authPasswordResetError;
+
+  /// No description provided for @authPasswordResetMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords must match and include at least 6 characters.'**
+  String get authPasswordResetMismatch;
+
+  /// No description provided for @authPasswordResetNewPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get authPasswordResetNewPasswordLabel;
+
+  /// No description provided for @authPasswordResetSignOutNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'For security reasons you will be signed out after updating the password.'**
+  String get authPasswordResetSignOutNotice;
+
+  /// No description provided for @authPasswordResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password updated. You can sign in with the new password.'**
+  String get authPasswordResetSuccess;
+
+  /// No description provided for @authPasswordResetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a new password'**
+  String get authPasswordResetTitle;
+
+  /// No description provided for @authSignInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get authSignInButton;
+
+  /// No description provided for @authSignInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in successfully.'**
+  String get authSignInSuccess;
+
+  /// No description provided for @authSignInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Smart Tarot'**
+  String get authSignInTitle;
+
+  /// No description provided for @authSignUpButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create account'**
+  String get authSignUpButton;
+
+  /// No description provided for @authSignUpConfirmationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your inbox to confirm the account before signing in.'**
+  String get authSignUpConfirmationSent;
+
+  /// No description provided for @authSignUpSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully.'**
+  String get authSignUpSuccess;
+
+  /// No description provided for @authSignUpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your Smart Tarot account'**
+  String get authSignUpTitle;
+
+  /// No description provided for @authToggleToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get authToggleToSignIn;
+
+  /// No description provided for @authToggleToSignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Need an account? Create one'**
+  String get authToggleToSignUp;
+
   /// No description provided for @authUnexpectedError.
   ///
   /// In en, this message translates to:
   /// **'Unexpected error: {error}'**
   String authUnexpectedError(Object error);
+
+  /// No description provided for @authValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email and a password of at least 6 characters.'**
+  String get authValidationError;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @cardOrientationReversed.
+  ///
+  /// In en, this message translates to:
+  /// **'Reversed'**
+  String get cardOrientationReversed;
+
+  /// No description provided for @cardOrientationUpright.
+  ///
+  /// In en, this message translates to:
+  /// **'Upright'**
+  String get cardOrientationUpright;
+
+  /// No description provided for @cardPositionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{position}. {name}'**
+  String cardPositionLabel(Object name, int position);
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @continueSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Session'**
+  String get continueSession;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @drawPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw cards to receive guidance.'**
+  String get drawPlaceholder;
+
+  /// No description provided for @drawSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your reading is ready. Latest draw updated below.'**
+  String get drawSuccessMessage;
+
+  /// No description provided for @drawingInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Drawing...'**
+  String get drawingInProgress;
+
+  /// No description provided for @endSession.
+  ///
+  /// In en, this message translates to:
+  /// **'End Session'**
+  String get endSession;
+
+  /// No description provided for @generateSeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate seed'**
+  String get generateSeed;
+
+  /// No description provided for @genericUnexpectedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get genericUnexpectedError;
+
+  /// No description provided for @history.
+  ///
+  /// In en, this message translates to:
+  /// **'Session History'**
+  String get history;
+
+  /// No description provided for @historyHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous draws'**
+  String get historyHeading;
+
+  /// No description provided for @iching.
+  ///
+  /// In en, this message translates to:
+  /// **'I Ching'**
+  String get iching;
+
+  /// No description provided for @ichingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Ancient Chinese wisdom'**
+  String get ichingDescription;
+
+  /// No description provided for @interpretationHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Interpretation'**
+  String get interpretationHeading;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @latestDrawTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest draw ({count} cards)'**
+  String latestDrawTitle(int count);
+
+  /// No description provided for @methodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Method: {method}'**
+  String methodLabel(Object method);
+
+  /// No description provided for @methodSeedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Method: {method} • Seed: {seed}'**
+  String methodSeedLabel(Object method, Object seed);
+
+  /// No description provided for @networkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network connection error. Please check your connection.'**
+  String get networkError;
+
+  /// No description provided for @nextWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Next window: {timestamp}'**
+  String nextWindow(Object timestamp);
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @premium.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
+  /// No description provided for @remainingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining today: {remaining}'**
+  String remainingToday(int remaining);
+
+  /// No description provided for @runes.
+  ///
+  /// In en, this message translates to:
+  /// **'Runes'**
+  String get runes;
+
+  /// No description provided for @runesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Nordic symbols of power'**
+  String get runesDescription;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @seedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed: {seed}'**
+  String seedLabel(Object seed);
+
+  /// No description provided for @seedOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed (optional)'**
+  String get seedOptionalLabel;
+
+  /// No description provided for @selectTechnique.
+  ///
+  /// In en, this message translates to:
+  /// **'Which technique would you like to explore today?'**
+  String get selectTechnique;
+
+  /// No description provided for @sessionLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Session limit reached. Upgrade to premium for unlimited sessions.'**
+  String get sessionLimitReached;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @spreadLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Spread: {spread}'**
+  String spreadLabel(Object spread);
+
+  /// No description provided for @startSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Session'**
+  String get startSession;
+
+  /// No description provided for @tarot.
+  ///
+  /// In en, this message translates to:
+  /// **'Tarot'**
+  String get tarot;
+
+  /// No description provided for @tarotDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards for guidance and reflection'**
+  String get tarotDescription;
+
+  /// No description provided for @tierLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tier: {tier}'**
+  String tierLabel(Object tier);
+
+  /// No description provided for @unknownCardName.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown card'**
+  String get unknownCardName;
+
+  /// No description provided for @unlimitedSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Sessions'**
+  String get unlimitedSessions;
+
+  /// No description provided for @upgradeToPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get upgradeToPremium;
+
+  /// No description provided for @usageMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month: {used}/{limit}'**
+  String usageMonth(int limit, int used);
+
+  /// No description provided for @usageToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: {used}/{limit}'**
+  String usageToday(int limit, int used);
+
+  /// No description provided for @usageWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week: {used}/{limit}'**
+  String usageWeek(int limit, int used);
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome!'**
+  String get welcome;
 }
 
 class _CommonStringsDelegate extends LocalizationsDelegate<CommonStrings> {

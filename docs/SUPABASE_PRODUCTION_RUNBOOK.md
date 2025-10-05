@@ -25,34 +25,36 @@ If the commands are missing, install them before proceeding.
 
 ## 2. Collect Required Values (no API calls)
 
-Prepare the following placeholders before anyone logs into the Supabase dashboard. Capture them in a secure document (e.g., Bitwarden note):
+**Status**: [X] Complete ✅ (2025-10-05)
 
-| Key                         | Notes                                               |
-|-----------------------------|-----------------------------------------------------|
-| `SUPABASE_PROJECT_NAME`     | Human-friendly project label (e.g., `smart-tarot`) |
-| `SUPABASE_PROJECT_REF`      | Supabase project reference (shown in dashboard URL) |
-| `SUPABASE_DB_PASSWORD`      | Random strong password for the Postgres instance    |
-| `SUPABASE_URL`              | `https://<project-ref>.supabase.co`                 |
-| `SUPABASE_ANON_KEY`         | Generated after project creation                    |
-| `SUPABASE_SERVICE_ROLE_KEY` | Generated in dashboard -> Settings -> API           |
-| `SUPABASE_DB_URL`           | Service-role connection string                      |
+All values collected and securely stored:
 
-> ⛔️ Do **not** paste real secrets into source control. Store them only in the team secret manager.
+| Key                         | Status | Notes                                               |
+|-----------------------------|--------|-----------------------------------------------------|
+| `SUPABASE_PROJECT_NAME`     | ✅     | `smart-tarot` |
+| `SUPABASE_PROJECT_REF`      | ✅     | `vanrixxzaawybszeuivb` |
+| `SUPABASE_DB_PASSWORD`      | ✅     | Stored in GitHub Secrets |
+| `SUPABASE_URL`              | ✅     | `https://vanrixxzaawybszeuivb.supabase.co` |
+| `SUPABASE_ANON_KEY`         | ✅     | Configured in .env.production + GitHub Secrets |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅     | Configured in .env.production + GitHub Secrets |
+| `SUPABASE_DB_URL`           | ✅     | Available from dashboard |
+
+✅ All secrets stored in GitHub Secrets and .env.production (not in source control)
 
 ---
 
 ## 3. Prepare Environment Files (local only)
 
-Create a working copy of `.env.production` (do **not** commit):
+**Status**: [X] Complete ✅ (2025-10-05)
 
-```bash
-cp .env.example .env.production
-# Fill in the Supabase placeholders when the real values are available
-```
+✅ `.env.production` exists at `C:\tarot\smart-divination\backend\.env.production`
+✅ All real Supabase values configured (no placeholders)
+✅ File is git-ignored (in `.gitignore`)
 
-Add the same values to `smart-divination/backend/.env.production` so the Next.js app can read them when deployed.
-
-> Tip: keep placeholders in the format `CHANGE_ME_<NAME>` until secrets are issued to avoid accidental usage.
+**Configured values**:
+- SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co
+- SUPABASE_ANON_KEY (full JWT)
+- SUPABASE_SERVICE_ROLE_KEY (full JWT)
 
 ---
 
@@ -84,22 +86,32 @@ Update the environment variables once actual secrets are available; do not store
 
 ---
 
-## 5. Planned Production Workflow (execute later)
+## 5. Production Workflow (READY TO EXECUTE)
 
-Once the actual Supabase project is provisioned, run the following **from a secure machine**:
+**Status**: [ ] NOT COMPLETE ❌ (migrations not yet applied)
 
-1. Link the local repo to the project (one time):
+**Blocker**: Local repo not yet linked to production project
+
+The Supabase production project is provisioned and ready. Execute the following steps:
+
+**Step 1**: Link the local repo to the project (one time):
 
    ```bash
    cd C:\tarot\supabase
-   supabase link --project-ref <SUPABASE_PROJECT_REF>
+   supabase link --project-ref vanrixxzaawybszeuivb
    ```
 
-2. Push migrations without seeds (recommended for production):
+**Step 2**: Push migrations without seeds (recommended for production):
 
    ```bash
    supabase db push --linked
    ```
+
+   This will apply:
+   - `20250101000001_initial_schema.sql`
+   - `20250922090000_session_history_schema.sql`
+
+   Expected tables: `users`, `sessions`, `session_artifacts`, `session_messages`
 
 3. For controlled seed data (optional):
 
@@ -153,5 +165,16 @@ Document results in the team runbook or ticket, including timestamps and operato
 
 ## 8. Next Actions
 
-- Blocked until the Supabase project is provisioned and secrets are issued.
-- Once available, follow the "Planned Production Workflow" section and record the outcome in this repo's runbook folder.
+**Current Status**: ⚠️ READY TO EXECUTE
+
+- [X] Supabase project provisioned ✅
+- [X] Secrets issued and configured ✅
+- [X] .env.production configured ✅
+- [X] GitHub Secrets configured ✅
+- [ ] Link local repo: `supabase link --project-ref vanrixxzaawybszeuivb` ❌ **BLOCKER**
+- [ ] Push migrations: `supabase db push --linked` ❌ **BLOCKER**
+- [ ] Verify tables in Supabase Dashboard ❌
+
+**Immediate Action**: Execute Section 5 (Production Workflow) to apply migrations
+
+

@@ -158,6 +158,29 @@ Next steps:
 
 ---
 
+### 4. `supabase/check_env.ps1` / `supabase/check_env.sh`
+
+Validates that the mandatory Supabase environment variables are present before running migrations or deployment scripts.
+
+**Usage**:
+```powershell
+.\supabase\check_env.ps1
+```
+
+```bash
+./supabase/check_env.sh
+```
+
+**Checks**:
+- SUPABASE_DB_URL
+- SUPABASE_URL
+- SUPABASE_SERVICE_ROLE_KEY
+- SUPABASE_ANON_KEY
+
+Exit code `1` indicates at least one variable is missing; `0` means the environment is ready.
+
+---
+
 ## Workflow
 
 ### Before Deployment

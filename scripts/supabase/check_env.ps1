@@ -1,19 +1,24 @@
-﻿[CmdletBinding()]
-param (
-  [string[]] = @('SUPABASE_DB_URL','SUPABASE_URL','SUPABASE_SERVICE_ROLE_KEY','SUPABASE_ANON_KEY')
+[CmdletBinding()]
+param(
+    [string[]]$Variables = @(
+        'SUPABASE_DB_URL',
+        'SUPABASE_URL',
+        'SUPABASE_SERVICE_ROLE_KEY',
+        'SUPABASE_ANON_KEY'
+    )
 )
 
- = @()
-foreach ( in ) {
-   = [Environment]::GetEnvironmentVariable()
-  if ([string]::IsNullOrWhiteSpace()) {
-     += 
-  }
+$missing = @()
+foreach ($var in $Variables) {
+    $value = [Environment]::GetEnvironmentVariable($var)
+    if ([string]::IsNullOrWhiteSpace($value)) {
+        $missing += $var
+    }
 }
 
-if (.Count -gt 0) {
-  Write-Warning "Missing environment variables: "
-  exit 1
+if ($missing.Count -gt 0) {
+    Write-Warning ("Missing environment variables: {0}" -f ($missing -join ', '))
+    exit 1
 }
 
 Write-Output 'Supabase environment variables detected.'

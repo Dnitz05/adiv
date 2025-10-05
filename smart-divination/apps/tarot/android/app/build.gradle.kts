@@ -1,4 +1,22 @@
-﻿import java.util.Properties
+import java.io.File
+import java.util.Base64
+import org.gradle.api.GradleException
+import java.util.Properties
+
+fun Properties.overrideFromEnv(propertyKey: String, envKey: String) {
+    System.getenv(envKey)?.takeIf { it.isNotBlank() }?.let { value ->
+        setProperty(propertyKey, value)
+    }
+}
+
+fun Properties.valueOrNull(propertyKey: String): String? {
+    val direct = getProperty(propertyKey)
+    if (!direct.isNullOrBlank()) {
+        return direct
+    }
+    val raw = get(propertyKey) as? String
+    return raw?.takeIf { it.isNotBlank() }
+}
 
 plugins {
     id("com.android.application")
@@ -12,6 +30,34 @@ val keystoreProperties = Properties().apply {
     if (keystorePropertiesFile.exists()) {
         keystorePropertiesFile.inputStream().use { load(it) }
     }
+}
+
+keystoreProperties.overrideFromEnv("storePassword", "ANDROID_KEYSTORE_PASSWORD")
+keystoreProperties.overrideFromEnv("keyPassword", "ANDROID_KEY_PASSWORD")
+keystoreProperties.overrideFromEnv("keyAlias", "ANDROID_KEY_ALIAS")
+
+System.getenv("ANDROID_KEYSTORE_PATH")?.trim()?.takeIf { it.isNotEmpty() }?.let { path ->
+    keystoreProperties.setProperty("storeFile", path)
+}
+
+System.getenv("ANDROID_KEYSTORE_BASE64")?.trim()?.takeIf { it.isNotEmpty() }?.let { encoded ->
+    val keystoreOutputDir = File(buildDir, "keystore")
+    if (!keystoreOutputDir.exists()) {
+        keystoreOutputDir.mkdirs()
+    }
+
+    val generatedKeystore = File(keystoreOutputDir, "upload-keystore.jks")
+    val decodedKeystore = try {
+        Base64.getDecoder().decode(encoded)
+    } catch (error: IllegalArgumentException) {
+        throw GradleException("ANDROID_KEYSTORE_BASE64 is not valid Base64 data.", error)
+    }
+
+    if (!generatedKeystore.exists() || !generatedKeystore.readBytes().contentEquals(decodedKeystore)) {
+        generatedKeystore.writeBytes(decodedKeystore)
+    }
+
+    keystoreProperties.setProperty("storeFile", generatedKeystore.absolutePath)
 }
 
 android {
@@ -40,19 +86,33 @@ android {
 
     signingConfigs {
         create("release") {
-            val storeFilePath = keystoreProperties["storeFile"] as String?
-            val storePasswordValue = keystoreProperties["storePassword"] as String?
-            val keyAliasValue = keystoreProperties["keyAlias"] as String?
-            val keyPasswordValue = keystoreProperties["keyPassword"] as String?
+            val storeFilePath = keystoreProperties.valueOrNull("storeFile")
+            val storePasswordValue = keystoreProperties.valueOrNull("storePassword")
+            val keyAliasValue = keystoreProperties.valueOrNull("keyAlias")
+            val keyPasswordValue = keystoreProperties.valueOrNull("keyPassword")
 
             if (storeFilePath != null && storePasswordValue != null && keyAliasValue != null && keyPasswordValue != null) {
-                storeFile = file(storeFilePath)
+                val candidateStoreFile = File(storeFilePath)
+                val resolvedStoreFile = if (candidateStoreFile.isAbsolute) {
+                    candidateStoreFile
+                } else {
+                    rootProject.file(storeFilePath)
+                }
+
+                if (!resolvedStoreFile.exists()) {
+                    throw GradleException(
+                        "Release keystore not found at ${resolvedStoreFile.path}. Provide key.properties or set ANDROID_KEYSTORE_PATH / ANDROID_KEYSTORE_BASE64."
+                    )
+                }
+
+                storeFile = resolvedStoreFile
                 storePassword = storePasswordValue
                 keyAlias = keyAliasValue
                 keyPassword = keyPasswordValue
             } else {
-                // Fallback to debug signing so local release builds still run.
-                initWith(signingConfigs.getByName("debug"))
+                throw GradleException(
+                    "Missing release keystore configuration. Provide key.properties or set ANDROID_KEYSTORE_* environment variables."
+                )
             }
         }
     }
@@ -67,4 +127,3 @@ android {
 flutter {
     source = "../.."
 }
-

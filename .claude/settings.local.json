@@ -67,7 +67,13 @@
       "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch -r temp/' --prune-empty --tag-name-filter cat -- chore/update-vercel-deps)",
       "Bash(git gc:*)",
       "Bash(git reset:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(git mv:*)",
+      "Bash(tasklist)",
+      "Bash(.gradlew:*)",
+      "Bash(./gradlew.bat assembleDebug:*)",
+      "Bash(gh run watch:*)",
+      "Bash(gh secret:*)"
     ],
     "deny": [],
     "ask": []
