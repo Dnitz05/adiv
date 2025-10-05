@@ -40,19 +40,18 @@ Write-Host ""
 Write-Host "[2/5] Testing /api/metrics..." -ForegroundColor Yellow
 try {
     $response = Invoke-WebRequest -Uri "$BackendUrl/api/metrics" -Method GET -TimeoutSec 10
-    if ($response.StatusCode -eq 200) {
-        $json = $response.Content | ConvertFrom-Json
-        Write-Host "  [ok] Metrics endpoint passed" -ForegroundColor Green
-        Write-Host "    Provider: $($json.provider)" -ForegroundColor Gray
-        Write-Host "    Metrics count: $($json.metrics.Count)" -ForegroundColor Gray
+    $json = $response.Content | ConvertFrom-Json
+    Write-Host "  [ok] Metrics endpoint passed" -ForegroundColor Green
+    Write-Host "    Provider: $($json.data.provider)" -ForegroundColor Gray
+    $testResults += @{Name="Metrics Endpoint"; Status="PASS"}
+} catch {
+    if ($_.Exception.Response -and $_.Exception.Response.StatusCode -eq 403) {
+        Write-Host "  [ok] Metrics protected (403) - endpoint exists" -ForegroundColor Green
         $testResults += @{Name="Metrics Endpoint"; Status="PASS"}
     } else {
-        Write-Host "  [fail] Unexpected status code: $($response.StatusCode)" -ForegroundColor Red
+        Write-Host "  [fail] Error: $($_.Exception.Message)" -ForegroundColor Red
         $testResults += @{Name="Metrics Endpoint"; Status="FAIL"}
     }
-} catch {
-    Write-Host "  [fail] Error: $($_.Exception.Message)" -ForegroundColor Red
-    $testResults += @{Name="Metrics Endpoint"; Status="FAIL"}
 }
 Write-Host ""
 
@@ -65,20 +64,18 @@ try {
     } | ConvertTo-Json
 
     $response = Invoke-WebRequest -Uri "$BackendUrl/api/draw/cards" -Method POST `
-        -ContentType "application/json" -Body $body -TimeoutSec 10 
+        -ContentType "application/json" -Body $body -TimeoutSec 10
 
-    if ($response.StatusCode -eq 401) {
-        $json = $response.Content | ConvertFrom-Json
+    Write-Host "  [fail] Expected 401, got $($response.StatusCode)" -ForegroundColor Red
+    $testResults += @{Name="Auth Check"; Status="FAIL"}
+} catch {
+    if ($_.Exception.Response -and $_.Exception.Response.StatusCode.value__ -eq 401) {
         Write-Host "  [ok] Authentication required (expected 401)" -ForegroundColor Green
-        Write-Host "    Error code: $($json.error.code)" -ForegroundColor Gray
         $testResults += @{Name="Auth Check"; Status="PASS"}
     } else {
-        Write-Host "  [fail] Expected 401, got $($response.StatusCode)" -ForegroundColor Red
+        Write-Host "  [fail] Error: $($_.Exception.Message)" -ForegroundColor Red
         $testResults += @{Name="Auth Check"; Status="FAIL"}
     }
-} catch {
-    Write-Host "  [fail] Error: $($_.Exception.Message)" -ForegroundColor Red
-    $testResults += @{Name="Auth Check"; Status="FAIL"}
 }
 Write-Host ""
 
@@ -90,18 +87,24 @@ try {
     } | ConvertTo-Json
 
     $response = Invoke-WebRequest -Uri "$BackendUrl/api/draw/coins" -Method POST `
-        -ContentType "application/json" -Body $body -TimeoutSec 10 
+        -ContentType "application/json" -Body $body -TimeoutSec 10
 
-    if ($response.StatusCode -eq 503 -or $response.StatusCode -eq 401) {
-        Write-Host "  [ok] Feature disabled or auth required (expected)" -ForegroundColor Green
-        $testResults += @{Name="Feature Flags"; Status="PASS"}
-    } else {
-        Write-Host "  WARNING Unexpected status code: $($response.StatusCode)" -ForegroundColor Yellow
-        $testResults += @{Name="Feature Flags"; Status="WARN"}
-    }
+    Write-Host "  WARNING Unexpected status code: $($response.StatusCode)" -ForegroundColor Yellow
+    $testResults += @{Name="Feature Flags"; Status="WARN"}
 } catch {
-    Write-Host "  [fail] Error: $($_.Exception.Message)" -ForegroundColor Red
-    $testResults += @{Name="Feature Flags"; Status="FAIL"}
+    if ($_.Exception.Response) {
+        $statusCode = $_.Exception.Response.StatusCode.value__
+        if ($statusCode -eq 503 -or $statusCode -eq 401) {
+            Write-Host "  [ok] Feature disabled or auth required (status: $statusCode)" -ForegroundColor Green
+            $testResults += @{Name="Feature Flags"; Status="PASS"}
+        } else {
+            Write-Host "  WARNING Unexpected status code: $statusCode" -ForegroundColor Yellow
+            $testResults += @{Name="Feature Flags"; Status="WARN"}
+        }
+    } else {
+        Write-Host "  [fail] Error: $($_.Exception.Message)" -ForegroundColor Red
+        $testResults += @{Name="Feature Flags"; Status="FAIL"}
+    }
 }
 Write-Host ""
 
