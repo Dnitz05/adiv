@@ -1,4 +1,3 @@
-// ignore_for_file: unused_element, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -677,8 +676,9 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
+      final localisation = CommonStrings.of(context);
       setState(() {
-        _error = _formatError(error);
+        _error = _formatError(localisation, error);
         _initialising = false;
       });
     }
@@ -701,8 +701,9 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
+      final localisation = CommonStrings.of(context);
       setState(() {
-        _error ??= _formatError(error);
+        _error ??= _formatError(localisation, error);
       });
     }
   }
@@ -724,8 +725,9 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
+      final localisation = CommonStrings.of(context);
       setState(() {
-        _error ??= _formatError(error);
+        _error ??= _formatError(localisation, error);
       });
     }
   }
@@ -747,8 +749,9 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
+      final localisation = CommonStrings.of(context);
       setState(() {
-        _error ??= _formatError(error);
+        _error ??= _formatError(localisation, error);
       });
     }
   }
@@ -784,15 +787,19 @@ class _HomeState extends State<_Home> {
         _refreshEligibility(),
         _refreshProfile(),
       ]);
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(localisation.authSignInSuccess)),
+        SnackBar(content: Text(localisation.drawSuccessMessage)),
       );
+
     } catch (error) {
       if (!mounted) {
         return;
       }
       setState(() {
-        _error = _formatError(error);
+        _error = _formatError(localisation, error);
       });
     } finally {
       if (mounted) {
@@ -807,6 +814,7 @@ class _HomeState extends State<_Home> {
     if (_requestingInterpretation) {
       return;
     }
+    final localisation = CommonStrings.of(context);
     final draw = _latestDraw;
     final sessionId = draw?.sessionId;
     if (draw == null || sessionId == null || sessionId.isEmpty) {
@@ -838,7 +846,7 @@ class _HomeState extends State<_Home> {
         return;
       }
       setState(() {
-        _error = _formatError(error);
+        _error = _formatError(localisation, error);
       });
     } finally {
       if (mounted) {
@@ -853,17 +861,40 @@ class _HomeState extends State<_Home> {
     await UserIdentity.signOut();
   }
 
-  String _formatError(Object error) {
-    final message = error.toString().replaceFirst('Exception: ', '').trim();
-    if (message.isEmpty) {
-      return 'Unexpected error';
+  String _formatError(CommonStrings localisation, Object error) {
+    if (error is TimeoutException) {
+      return localisation.networkError;
     }
-    return message;
+    final raw = error.toString().trim();
+    if (raw.isEmpty || raw == 'Exception') {
+      return localisation.genericUnexpectedError;
+    }
+    if (raw.startsWith('Exception: ')) {
+      final cleaned = raw.substring('Exception: '.length).trim();
+      return cleaned.isEmpty
+          ? localisation.genericUnexpectedError
+          : cleaned;
+    }
+    if (raw.contains('SocketException') || raw.contains('NetworkException')) {
+      return localisation.networkError;
+    }
+    return raw;
   }
 
   String _formatTimestamp(DateTime time) {
     final formatter = DateFormat('yyyy-MM-dd HH:mm');
     return formatter.format(time.toLocal());
+  }
+
+  String _formatCardLabel(CardResult card, CommonStrings localisation) {
+    final rawName = card.name.trim();
+    final cardName = rawName.isEmpty ? localisation.unknownCardName : rawName;
+    final position = card.position + 1;
+    final label = localisation.cardPositionLabel(cardName, position);
+    if (!card.upright) {
+      return '$label (${localisation.cardOrientationReversed})';
+    }
+    return label;
   }
 
   Widget _buildEligibilityCard(
@@ -995,7 +1026,9 @@ class _HomeState extends State<_Home> {
               children: draw.result
                   .map(
                     (card) => Chip(
-                      label: Text(' ()'),
+                      label: Text(
+                        _formatCardLabel(card, localisation),
+                      ),
                     ),
                   )
                   .toList(),
@@ -1155,7 +1188,13 @@ class _HomeState extends State<_Home> {
                           spacing: 6,
                           runSpacing: 4,
                           children: session.cards
-                              .map((card) => Chip(label: Text(card.name)))
+                              .map(
+                                (card) => Chip(
+                                  label: Text(
+                                    _formatCardLabel(card, localisation),
+                                  ),
+                                ),
+                              )
                               .toList(),
                         ),
                         if (session.question != null &&

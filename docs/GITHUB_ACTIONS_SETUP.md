@@ -18,6 +18,7 @@ This guide shows you how to configure all secrets needed for CI/CD pipelines.
 ## Required Secrets
 
 ### Android Signing (6 secrets)
+> **Important:** The `flutter-release` workflow now fails fast if any of `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, or `ANDROID_KEY_PASSWORD` is missing. There is no longer an ephemeral keystore fallback in CI. Provide the production credentials before dispatching a release build.
 
 #### 1. `ANDROID_KEYSTORE_BASE64`
 **Value**: Base64-encoded keystore file

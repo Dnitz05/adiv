@@ -52,26 +52,26 @@ jobs:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_ALIAS_PASSWORD: ${{ secrets.ANDROID_KEY_ALIAS_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
+          set -eo pipefail
           mkdir -p app
-          if [ -n "${ANDROID_KEYSTORE_BASE64}" ] && [ -n "${ANDROID_KEYSTORE_PASSWORD}" ] && [ -n "${ANDROID_KEY_ALIAS}" ] && [ -n "${ANDROID_KEY_ALIAS_PASSWORD}" ]; then
-            echo "Using provided Android keystore"
-            echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > app/upload-keystore.jks
-            store_pass=${ANDROID_KEYSTORE_PASSWORD}
-            key_pass=${ANDROID_KEY_ALIAS_PASSWORD}
-            alias=${ANDROID_KEY_ALIAS}
-          else
-            echo "No Android keystore secret provided, generating ephemeral signing key"
-            store_pass=password
-            key_pass=password
-            alias=upload
-            keytool -genkey -v -keystore app/upload-keystore.jks -storepass "${store_pass}" -keypass "${key_pass}" -alias "${alias}" -dname "CN=CI, OU=Automation, O=Smart Divination, L=Barcelona, S=Catalunya, C=ES" -keyalg RSA -keysize 2048 -validity 10000
+          missing=""
+          for var in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            value=$(printenv "$var" || true)
+            if [ -z "$value" ]; then
+              missing="${missing} ${var}"
+            fi
+          done
+          if [ -n "$missing" ]; then
+            echo "Missing Android signing secrets:${missing}" >&2
+            exit 1
           fi
+          echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > app/upload-keystore.jks
           cat <<EOF > key.properties
-storePassword=${store_pass}
-keyPassword=${key_pass}
-keyAlias=${alias}
+storePassword=${ANDROID_KEYSTORE_PASSWORD}
+keyPassword=${ANDROID_KEY_PASSWORD}
+keyAlias=${ANDROID_KEY_ALIAS}
 storeFile=upload-keystore.jks
 EOF
 
@@ -82,6 +82,11 @@ EOF
         run: |
           API_URL="${API_BASE_URL:-https://api.smartdivination.dev}"
           flutter build appbundle             --release             --dart-define=API_BASE_URL=${API_URL}
+
+      - name: Verify Android App Bundle signature
+        working-directory: smart-divination/apps/tarot
+        run: |
+          jarsigner -verify -verbose -certs build/app/outputs/bundle/release/app-release.aab
 
       - name: Upload Android artifact
         uses: actions/upload-artifact@v4
