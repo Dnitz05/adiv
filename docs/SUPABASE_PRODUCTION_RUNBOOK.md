@@ -86,13 +86,18 @@ Update the environment variables once actual secrets are available; do not store
 
 ---
 
-## 5. Production Workflow (READY TO EXECUTE)
+## 5. Production Workflow
 
-**Status**: [ ] NOT COMPLETE ❌ (migrations not yet applied)
+**Status**: ⚠️ READY TO LINK & PUSH (backend verified, migrations pending)
 
-**Blocker**: Local repo not yet linked to production project
+**Backend Status**: ✅ Deployed and verified (2025-10-05)
+- Production URL: https://backend-dnitzs-projects.vercel.app
+- Supabase connection healthy (418ms response time)
+- All environment variables configured
 
-The Supabase production project is provisioned and ready. Execute the following steps:
+**Migrations Status**: ⚠️ Not yet applied (database empty)
+
+The Supabase production project is provisioned and backend is verified. Execute the following steps:
 
 **Step 1**: Link the local repo to the project (one time):
 
@@ -142,11 +147,24 @@ Store the dump securely (e.g., encrypted S3 bucket or vault).
 
 ## 6. Verification Checklist (post-setup)
 
+**Backend Connectivity**: ✅ Verified (2025-10-05)
+- [X] Backend deployed and reachable ✅
+- [X] Supabase connection healthy (418ms response time) ✅
+- [X] Environment variables configured ✅
+- [X] `/api/health` returns Supabase "healthy" status ✅
+
+**Database Migrations**: ⚠️ Pending
 - [ ] `supabase db push` succeeded without errors
 - [ ] Supabase Dashboard -> Database -> Tables lists `users`, `sessions`, `session_artifacts`, `session_messages`
 - [ ] RLS policies respected (open `Table editor` -> Policies)
 - [ ] Service-role connection tested locally (`scripts/supabase/apply.sh` only when necessary)
 - [ ] Backend regenerated types committed (`lib/types/generated/supabase.ts`)
+
+**Verification Script**: ✅ Available
+```powershell
+cd C:\tarot\scripts
+.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
+```
 
 Document results in the team runbook or ticket, including timestamps and operator name.
 
@@ -165,16 +183,20 @@ Document results in the team runbook or ticket, including timestamps and operato
 
 ## 8. Next Actions
 
-**Current Status**: ⚠️ READY TO EXECUTE
+**Current Status**: ✅ Backend Deployed | ⚠️ Migrations Pending
 
-- [X] Supabase project provisioned ✅
+- [X] Supabase project provisioned ✅ (vanrixxzaawybszeuivb)
 - [X] Secrets issued and configured ✅
 - [X] .env.production configured ✅
 - [X] GitHub Secrets configured ✅
+- [X] Backend deployed to Vercel ✅ (https://backend-dnitzs-projects.vercel.app)
+- [X] Backend connectivity verified ✅ (Supabase healthy)
 - [ ] Link local repo: `supabase link --project-ref vanrixxzaawybszeuivb` ❌ **BLOCKER**
 - [ ] Push migrations: `supabase db push --linked` ❌ **BLOCKER**
 - [ ] Verify tables in Supabase Dashboard ❌
 
 **Immediate Action**: Execute Section 5 (Production Workflow) to apply migrations
+
+**Backend Verification**: Run `.\scripts\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app`
 
 

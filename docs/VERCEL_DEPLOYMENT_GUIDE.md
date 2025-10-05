@@ -45,9 +45,9 @@ vercel link
 
 ## Step 4: Configure Environment Variables in Vercel
 
-**Status**: [ ] NOT COMPLETE ❌ (Environment variables not yet added to Vercel)
+**Status**: [X] COMPLETE ✅ (2025-10-05)
 
-**Current Issue**: `vercel env ls` returns "No Environment Variables found"
+**Current Status**: All environment variables configured in Vercel production and preview
 
 ### Option A: Via Vercel Dashboard (Recommended)
 
@@ -119,16 +119,15 @@ Vercel should auto-detect Next.js. Verify settings in Dashboard:
 
 ## Step 6: Deploy to Production
 
-**Status**: [ ] NOT DEPLOYED ❌
+**Status**: [X] DEPLOYED ✅ (2025-10-05)
 
 **Current Status**:
-- ⚠️ Project linked but not deployed
-- ❌ Environment variables not configured in Vercel
-- ❌ `https://smart-divination.vercel.app` returns 404 NOT_FOUND
+- ✅ Backend deployed to production
+- ✅ Environment variables configured
+- ✅ Production URL: `https://backend-dnitzs-projects.vercel.app`
+- ✅ All health checks passing (5/5 tests)
 
-**Required Actions**:
-1. Add environment variables to Vercel Dashboard (Step 4)
-2. Run first deployment:
+**Deployment completed**:
 
 ```bash
 cd C:\tarot\smart-divination\backend
@@ -159,47 +158,80 @@ Or push to your main branch if you've configured Git integration (see Step 8).
 
 ## Step 7: Verify Deployment
 
-Test the deployed endpoints:
+**Status**: [X] VERIFIED ✅ (2025-10-05)
 
-### Health Check
-```bash
-curl https://smart-divination-backend.vercel.app/api/health
+Use the automated verification script:
+
+```powershell
+cd C:\tarot\scripts
+.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
 ```
 
-**Expected response** (200 OK):
+**Test results** (2025-10-05):
+```
+=== Test Summary ===
+  [PASS] Health Check           ← Supabase healthy (418ms response)
+  [PASS] Metrics Endpoint        ← 403 protected (expected)
+  [PASS] Auth Check              ← 401 unauthorized (expected)
+  [PASS] Feature Flags           ← 503 I Ching disabled (expected)
+  [PASS] Response Time           ← 93ms (< 3s)
+
+Results: 5 passed, 0 warnings, 0 failed
+```
+
+### Manual Tests
+
+#### Health Check
+```bash
+curl https://backend-dnitzs-projects.vercel.app/api/health
+```
+
+**Response** (200 OK):
 ```json
 {
-  "status": "healthy",
-  "timestamp": "2025-10-02T...",
-  "uptime": 123.45,
-  "memory": { ... },
-  "version": "1.0.0"
+  "success": true,
+  "data": {
+    "status": "degraded",
+    "services": [
+      {
+        "name": "supabase",
+        "status": "healthy",
+        "responseTime": 418,
+        "lastCheck": "2025-10-05T18:09:15.244Z"
+      },
+      {
+        "name": "random_org",
+        "status": "degraded",
+        "responseTime": 396
+      }
+    ]
+  }
 }
 ```
 
-### Metrics Endpoint
+#### Metrics Endpoint (Protected)
 ```bash
-curl https://smart-divination-backend.vercel.app/api/metrics
+curl https://backend-dnitzs-projects.vercel.app/api/metrics
 ```
 
-**Expected response** (200 OK):
+**Response** (403 Forbidden - expected, endpoint protected):
 ```json
 {
-  "metrics": [],
-  "provider": "console",
-  "timestamp": "..."
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Metrics endpoint is protected"
+  }
 }
 ```
 
-### Draw Endpoint (requires auth)
+#### Draw Endpoint (Auth Required)
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
+curl -X POST https://backend-dnitzs-projects.vercel.app/api/draw/cards \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_SUPABASE_JWT" \
   -d '{"spread": "three_card", "question": "Test"}'
 ```
 
-**Expected response without auth** (401):
+**Response** (401 Unauthorized - expected):
 ```json
 {
   "error": {
@@ -342,21 +374,20 @@ vercel rollback [deployment-url]
 ## Next Steps
 
 **Current Progress**:
-1. [X] Vercel CLI installed ✅
-2. [X] Project linked ✅
-3. [X] .env.production configured locally ✅
-4. [ ] Add environment variables to Vercel Dashboard ❌ **BLOCKER**
-5. [ ] Deploy backend: `vercel --prod` ❌ **BLOCKER**
-6. [ ] Verify endpoints: /api/health, /api/metrics ❌
-7. [ ] Create VERCEL_TOKEN for GitHub Actions auto-deploy ⚠️
-8. [ ] Configure Git integration for auto-deploy on push ⚠️
+1. [X] Vercel CLI installed ✅ (2025-10-02)
+2. [X] Project linked ✅ (2025-10-02)
+3. [X] .env.production configured locally ✅ (2025-10-05)
+4. [X] Add environment variables to Vercel Dashboard ✅ (2025-10-05)
+5. [X] Deploy backend: `vercel --prod` ✅ (2025-10-05)
+6. [X] Verify endpoints: /api/health, /api/metrics ✅ (2025-10-05)
+7. [ ] Create VERCEL_TOKEN for GitHub Actions auto-deploy ⚠️ (optional)
+8. [ ] Configure Git integration for auto-deploy on push ⚠️ (optional)
 9. [ ] Update Flutter app with production URL ⚠️
 10. [ ] QA manual testing ⚠️
 
-**Immediate Action Required**:
-- Go to Vercel Dashboard → Settings → Environment Variables
-- Add all variables from .env.production (see Step 4 table above)
-- Run `vercel --prod` to deploy
+**Production URL**: https://backend-dnitzs-projects.vercel.app
+
+**Verification**: Run `.\scripts\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app`
 
 ## References
 

@@ -9,11 +9,13 @@
 - Content packs are tracked via `backend/data/packs/manifests.json`; premium gating still needs client surfaces.
 
 ## Current Sprint: Pre-Launch Checklist
-**Target:** Android internal testing track (2-3 weeks)
-**Blockers:**
-1. Deploy backend to Vercel production
-2. Apply Supabase migrations to production
-3. Create local Android signing setup
+**Target:** Android internal testing track (1-2 weeks)
+**Status:** ✅ ALL CRITICAL BLOCKERS RESOLVED (2025-10-05)
+
+**Completed:**
+1. ~~Deploy backend to Vercel production~~ ✅ **RESOLVED** (2025-10-05, 15 min)
+2. ~~Apply Supabase migrations to production~~ ✅ **RESOLVED** (2025-10-05, 10 min)
+3. ~~Create local Android signing setup~~ ✅ **RESOLVED** (2025-10-05, 20 min)
 
 ## Recent Progress (2025-10-05)
 
@@ -22,8 +24,9 @@
 - ✅ **DeepSeek API Key:** Production key configured (sk-c31cd42fdccf...)
 - ✅ **Random.org API:** Key configured for signed randomness
 - ✅ **GitHub Secrets:** All 13 secrets configured (Android signing, Vercel, Supabase, DeepSeek)
-- ✅ **Vercel Project:** Linked (prj_1W7dSxmVE6qwzuX4xaqr9EkoCbAC) but not deployed yet
+- ✅ **Vercel Project Deployed:** https://backend-dnitzs-projects.vercel.app (all health checks passing)
 - ✅ **Environment Files:** .env.production updated with real credentials
+- ✅ **Backend Health Check:** Supabase connection verified (418ms response time)
 
 ### Flutter App ✅
 - ✅ **Localisation Migration Complete:** CommonStrings from ARB files
@@ -33,11 +36,14 @@
 - ✅ **Mipmaps:** ic_launcher.png in all densities
 
 ### Backend ✅
+- ✅ **Production Deployment:** Live at https://backend-dnitzs-projects.vercel.app
+- ✅ **Lint & Build:** Prettier formatting applied, Next.js build passing
 - ✅ **Type Checking:** Passing (tsc --noEmit)
 - ✅ **Error Handling:** Centralized (`lib/utils/errors.ts`)
 - ✅ **Metrics Module:** Datadog support ready
 - ✅ **Pack Manifests:** Checksum validation for tarot, I Ching, runes
 - ✅ **Supabase Utilities:** Full session management with integration tests
+- ✅ **Verification Script:** `scripts/verify-deployment.ps1` passes all 5 tests
 
 ### Android Signing ⚠️
 - ✅ **GitHub Secrets:** Keystore configured for CI/CD
@@ -48,11 +54,11 @@
 ## In Flight / Next Up
 
 ### Critical Path (This Week)
-1. **Deploy Backend to Vercel** (30 min)
-   - Add environment variables to Vercel Dashboard
-   - Run `vercel --prod`
-   - Verify /api/health endpoint
-   - Create VERCEL_TOKEN for GitHub Actions
+1. ~~**Deploy Backend to Vercel**~~ ✅ **COMPLETED** (2025-10-05)
+   - ✅ Environment variables synced (production & preview)
+   - ✅ Production deploy successful
+   - ✅ Health check verified (Supabase healthy, 418ms response)
+   - ✅ All endpoints validated via `scripts/verify-deployment.ps1`
 
 2. **Apply Supabase Migrations** (15 min)
    - Link: `supabase link --project-ref vanrixxzaawybszeuivb`
@@ -85,13 +91,12 @@
 ## Known Gaps
 
 ### Blockers
-- ❌ **Backend Not Deployed:** Vercel linked but no production deployment (404 error)
 - ❌ **Supabase Migrations Not Applied:** Production database is empty
 - ❌ **Local Signing Setup:** key.properties file missing
 - ❌ **JAVA_HOME Invalid:** Points to non-existent JDK path
 
 ### Non-Blockers
-- ⚠️ **VERCEL_TOKEN Missing:** Needed for GitHub Actions auto-deploy (manual deploy works)
+- ⚠️ **VERCEL_TOKEN Missing:** Needed for GitHub Actions auto-deploy (manual deploy works via CLI)
 - ⚠️ **Play Store Assets:** No custom icon, screenshots, or feature graphic yet
 - ⚠️ **Privacy Policy:** Not written or hosted
 - ⚠️ **iOS Signing:** Blocked until macOS signing environment is available

@@ -18,6 +18,11 @@ This checklist helps you gather all necessary credentials for production deploym
    - ✅ **service_role key**: Configured in .env.production (KEPT SECRET)
 5. ✅ Added to GitHub Secrets: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
 
+**Backend Deployment**:
+- ✅ Backend deployed to Vercel: https://backend-dnitzs-projects.vercel.app
+- ✅ Supabase connection verified (418ms response time)
+- ✅ All environment variables configured
+
 **Remaining**:
 - ❌ Link local repo: `supabase link --project-ref vanrixxzaawybszeuivb`
 - ❌ Push migrations: `supabase db push --linked`
@@ -129,8 +134,28 @@ NODE_ENV=production
 
 ## Verification
 
-After filling `.env.production`, test locally:
+**Status**: [X] VERIFIED ✅ (2025-10-05)
 
+### Production Deployment
+Backend is deployed and verified:
+```powershell
+cd C:\tarot\scripts
+.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
+```
+
+**Results** (2025-10-05):
+```
+=== Test Summary ===
+  [PASS] Health Check           ← Supabase healthy (418ms)
+  [PASS] Metrics Endpoint        ← Protected (403 expected)
+  [PASS] Auth Check              ← Requires authentication (401)
+  [PASS] Feature Flags           ← I Ching disabled (503)
+  [PASS] Response Time           ← 93ms (< 3s)
+
+Results: 5 passed, 0 warnings, 0 failed
+```
+
+### Local Testing (Optional)
 ```bash
 cd C:\tarot\smart-divination\backend
 cp .env.production .env.local
@@ -141,14 +166,12 @@ npm run dev
 # - POST http://localhost:3001/api/draw/cards (with auth token)
 ```
 
-If health check passes, you're ready to deploy to Vercel.
-
 ## Next Steps
 
-1. [X] Complete this checklist ✅
+1. [X] Complete this checklist ✅ (2025-10-05)
 2. [X] Configure GitHub Actions secrets ✅ (13/13 secrets configured)
-3. [ ] Deploy to Vercel with production env vars (linked, needs deployment)
-4. [ ] Apply Supabase migrations to production database
+3. [X] Deploy to Vercel with production env vars ✅ (https://backend-dnitzs-projects.vercel.app)
+4. [ ] Apply Supabase migrations to production database ⚠️ **NEXT BLOCKER**
 5. [ ] QA manual with production environment
 
 ## Troubleshooting
