@@ -12,6 +12,10 @@ import 'api/interpretation_api.dart';
 import 'api/session_limits_api.dart';
 import 'api/user_profile_api.dart';
 import 'user_identity.dart';
+import 'models/tarot_spread.dart';
+import 'models/tarot_card.dart';
+import 'widgets/spread_selector.dart';
+import 'widgets/spread_layout.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
@@ -54,7 +58,7 @@ Future<void> main() async {
   runApp(const SmartTarotApp());
 }
 
-enum _AuthFlow { signedOut, passwordRecovery, signedIn }
+enum _AuthFlow { anonymous, signedOut, passwordRecovery, signedIn }
 
 class SmartTarotApp extends StatefulWidget {
   const SmartTarotApp({super.key});
@@ -65,7 +69,7 @@ class SmartTarotApp extends StatefulWidget {
 
 class _SmartTarotAppState extends State<SmartTarotApp> {
   Session? _session;
-  _AuthFlow _authFlow = _AuthFlow.signedOut;
+  _AuthFlow _authFlow = _AuthFlow.anonymous;
   StreamSubscription<AuthState>? _authSubscription;
 
   @override
@@ -73,7 +77,7 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
     super.initState();
     final client = Supabase.instance.client;
     _session = client.auth.currentSession;
-    _authFlow = _session == null ? _AuthFlow.signedOut : _AuthFlow.signedIn;
+    _authFlow = _session == null ? _AuthFlow.anonymous : _AuthFlow.signedIn;
     _authSubscription = client.auth.onAuthStateChange.listen((event) {
       if (!mounted) {
         return;
@@ -86,12 +90,12 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
             break;
           case AuthChangeEvent.signedOut:
             _session = null;
-            _authFlow = _AuthFlow.signedOut;
+            _authFlow = _AuthFlow.anonymous;
             break;
           default:
             _session = event.session;
             _authFlow =
-                _session == null ? _AuthFlow.signedOut : _AuthFlow.signedIn;
+                _session == null ? _AuthFlow.anonymous : _AuthFlow.signedIn;
             break;
         }
       });
@@ -111,7 +115,7 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
     }
     setState(() {
       _session = null;
-      _authFlow = _AuthFlow.signedOut;
+      _authFlow = _AuthFlow.anonymous;
     });
   }
 
@@ -123,6 +127,9 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
         home = _PasswordResetView(onFinished: _handlePasswordResetComplete);
         break;
       case _AuthFlow.signedIn:
+        home = const _Home();
+        break;
+      case _AuthFlow.anonymous:
         home = const _Home();
         break;
       case _AuthFlow.signedOut:
@@ -634,6 +641,7 @@ class _HomeState extends State<_Home> {
   bool _allowReversed = true;
   bool _drawing = false;
   bool _requestingInterpretation = false;
+  TarotSpread _selectedSpread = TarotSpreads.threeCard;
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
 
@@ -660,8 +668,18 @@ class _HomeState extends State<_Home> {
     try {
       final userId = await UserIdentity.obtain();
       final eligibility = await fetchSessionEligibility(userId: userId);
-      final profile = await fetchUserProfile(userId: userId);
-      final history = await fetchTarotSessions(userId: userId);
+
+      // Skip profile and history for anonymous users
+      final UserProfile? profile;
+      final List<TarotSession> history;
+      if (userId.startsWith('anon_')) {
+        profile = null;
+        history = <TarotSession>[];
+      } else {
+        profile = await fetchUserProfile(userId: userId);
+        history = await fetchTarotSessions(userId: userId);
+      }
+
       if (!mounted) {
         return;
       }
@@ -710,7 +728,7 @@ class _HomeState extends State<_Home> {
 
   Future<void> _refreshProfile() async {
     final userId = _userId;
-    if (userId == null) {
+    if (userId == null || userId.startsWith('anon_')) {
       return;
     }
     try {
@@ -735,6 +753,10 @@ class _HomeState extends State<_Home> {
   Future<void> _refreshHistory() async {
     final userId = _userId;
     if (userId == null) {
+      return;
+    }
+    // Skip history refresh for anonymous users
+    if (userId.startsWith('anon_')) {
       return;
     }
     try {
@@ -770,6 +792,8 @@ class _HomeState extends State<_Home> {
       final seed = _seedController.text.trim();
       final question = _questionController.text.trim();
       final response = await drawCards(
+        count: _selectedSpread.cardCount,
+        spread: _selectedSpread.id,
         allowReversed: _allowReversed,
         seed: seed.isEmpty ? null : seed,
         question: question.isEmpty ? null : question,
@@ -897,6 +921,110 @@ class _HomeState extends State<_Home> {
     return label;
   }
 
+  String? _getCardImagePath(CardResult card) {
+    final name = card.name.trim();
+    final suit = card.suit.trim();
+    final number = card.number;
+
+    // Major Arcana (0-21)
+    final majorArcanaMap = {
+      'The Fool': '00-TheFool',
+      'The Magician': '01-TheMagician',
+      'The High Priestess': '02-TheHighPriestess',
+      'The Empress': '03-TheEmpress',
+      'The Emperor': '04-TheEmperor',
+      'The Hierophant': '05-TheHierophant',
+      'The Lovers': '06-TheLovers',
+      'The Chariot': '07-TheChariot',
+      'Strength': '08-Strength',
+      'The Hermit': '09-TheHermit',
+      'Wheel of Fortune': '10-WheelOfFortune',
+      'Justice': '11-Justice',
+      'The Hanged Man': '12-TheHangedMan',
+      'Death': '13-Death',
+      'Temperance': '14-Temperance',
+      'The Devil': '15-TheDevil',
+      'The Tower': '16-TheTower',
+      'The Star': '17-TheStar',
+      'The Moon': '18-TheMoon',
+      'The Sun': '19-TheSun',
+      'Judgement': '20-Judgement',
+      'The World': '21-TheWorld',
+    };
+
+    if (majorArcanaMap.containsKey(name)) {
+      return 'assets/cards/${majorArcanaMap[name]}.jpg';
+    }
+
+    // Minor Arcana
+    if (number != null && suit.isNotEmpty) {
+      final suitPrefix = suit.substring(0, 1).toUpperCase() + suit.substring(1).toLowerCase();
+      final numberStr = number.toString().padLeft(2, '0');
+      return 'assets/cards/$suitPrefix$numberStr.jpg';
+    }
+
+    return null;
+  }
+
+  Widget _buildCardWidget(CardResult card, CommonStrings localisation) {
+    final imagePath = _getCardImagePath(card);
+    final cardName = _formatCardLabel(card, localisation);
+
+    if (imagePath == null) {
+      return Chip(label: Text(cardName));
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 120,
+          height: 180,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Transform(
+              alignment: Alignment.center,
+              transform: card.upright ? Matrix4.identity() : Matrix4.rotationZ(3.14159),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.grey[300],
+                    child: Center(
+                      child: Icon(Icons.broken_image, color: Colors.grey[600]),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        SizedBox(
+          width: 120,
+          child: Text(
+            cardName,
+            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildEligibilityCard(
     CommonStrings localisation,
     SessionEligibility eligibility,
@@ -952,19 +1080,23 @@ class _HomeState extends State<_Home> {
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
+            SpreadSelector(
+              selectedSpread: _selectedSpread,
+              onSpreadChanged: _drawing
+                  ? (_) {}
+                  : (spread) {
+                      setState(() {
+                        _selectedSpread = spread;
+                      });
+                    },
+            ),
+            const SizedBox(height: 12),
             TextField(
               controller: _questionController,
               decoration: InputDecoration(
                 labelText: localisation.askQuestion,
               ),
               maxLines: 2,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _seedController,
-              decoration: InputDecoration(
-                labelText: localisation.seedOptionalLabel,
-              ),
             ),
             const SizedBox(height: 12),
             SwitchListTile(
@@ -1019,33 +1151,32 @@ class _HomeState extends State<_Home> {
               localisation.spreadLabel(draw.spread),
               style: theme.textTheme.bodyMedium,
             ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 6,
-              runSpacing: 4,
-              children: draw.result
-                  .map(
-                    (card) => Chip(
-                      label: Text(
-                        _formatCardLabel(card, localisation),
-                      ),
-                    ),
-                  )
-                  .toList(),
+            const SizedBox(height: 12),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                // Get the selected spread or use threeCard as fallback
+                final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
+
+                // Convert CardResult to TarotCard
+                final tarotCards = draw.result.map((card) {
+                  final imagePath = _getCardImagePath(card);
+                  return TarotCard.fromCardResult(card, imagePath: imagePath);
+                }).toList();
+
+                return Center(
+                  child: SpreadLayout(
+                    spread: spread,
+                    cards: tarotCards,
+                    maxWidth: constraints.maxWidth,
+                    maxHeight: 500,
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  localisation.seedLabel(draw.seed),
-                  style: theme.textTheme.bodySmall,
-                ),
-                Text(
-                  localisation.methodLabel(draw.method),
-                  style: theme.textTheme.bodySmall,
-                ),
-              ],
+            Text(
+              localisation.methodLabel(draw.method),
+              style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 12),
             if (interpretation != null) ...[
@@ -1058,15 +1189,6 @@ class _HomeState extends State<_Home> {
                 Text(
                   interpretation.summary!,
                   style: theme.textTheme.bodySmall,
-                ),
-              ],
-              if (interpretation.keywords.isNotEmpty) ...[
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  children: interpretation.keywords
-                      .map((keyword) => Chip(label: Text(keyword)))
-                      .toList(),
                 ),
               ],
             ] else if (!_requestingInterpretation &&
@@ -1183,19 +1305,19 @@ class _HomeState extends State<_Home> {
                           _formatTimestamp(session.createdAt),
                           style: theme.textTheme.bodySmall,
                         ),
-                        const SizedBox(height: 4),
-                        Wrap(
-                          spacing: 6,
-                          runSpacing: 4,
-                          children: session.cards
-                              .map(
-                                (card) => Chip(
-                                  label: Text(
-                                    _formatCardLabel(card, localisation),
+                        const SizedBox(height: 8),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: session.cards
+                                .map(
+                                  (card) => Padding(
+                                    padding: const EdgeInsets.only(right: 12),
+                                    child: _buildCardWidget(card, localisation),
                                   ),
-                                ),
-                              )
-                              .toList(),
+                                )
+                                .toList(),
+                          ),
                         ),
                         if (session.question != null &&
                             session.question!.isNotEmpty) ...[
@@ -1245,15 +1367,20 @@ class _HomeState extends State<_Home> {
       );
     }
 
+    // Skip eligibility for anonymous users (they have unlimited sessions)
     final eligibility = _eligibility;
-    if (eligibility != null) {
+    if (eligibility != null && _userId != null && !_userId!.startsWith('anon_')) {
       children.add(_buildEligibilityCard(localisation, eligibility));
     }
 
     children.add(_buildDrawFormCard(localisation));
     children.add(_buildLatestDrawCard(localisation));
     children.add(_buildProfileCard(localisation));
-    children.add(_buildHistoryCard(localisation));
+
+    // Skip history for anonymous users
+    if (_userId != null && !_userId!.startsWith('anon_')) {
+      children.add(_buildHistoryCard(localisation));
+    }
 
     return Scaffold(
       appBar: AppBar(
