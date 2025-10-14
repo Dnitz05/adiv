@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/tarot_spread.dart';
 import '../models/tarot_card.dart';
+import '../utils/card_image_mapper.dart';
 
 class SpreadLayout extends StatelessWidget {
   final TarotSpread spread;
@@ -39,7 +40,8 @@ class SpreadLayout extends StatelessWidget {
 
     // Calculate card size based on spread
     final double cardHeight = _calculateCardHeight(spread, effectiveHeight);
-    final double cardWidth = cardHeight * 0.7; // Standard tarot card ratio
+    // Tarot card ratio: width/height ≈ 0.67 (2:3 ratio)
+    final double cardWidth = cardHeight * 0.67;
 
     return SizedBox(
       width: effectiveWidth,
@@ -107,6 +109,9 @@ class SpreadLayout extends StatelessWidget {
   }
 
   Widget _buildCardWidget(TarotCard card, double width, double height) {
+    // Get the local image path for this card
+    final imagePath = CardImageMapper.getCardImagePath(card.name, card.suit);
+
     return Container(
       width: width,
       height: height,
@@ -116,30 +121,20 @@ class SpreadLayout extends StatelessWidget {
         border: Border.all(color: Colors.grey.shade300, width: 2),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (card.imageUrl != null && card.imageUrl!.isNotEmpty)
-              Expanded(
-                child: Image.network(
-                  card.imageUrl!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return _buildCardFallback(card, width, height);
-                  },
-                ),
-              )
-            else
-              _buildCardFallback(card, width, height),
-          ],
+        child: Image.asset(
+          imagePath,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return _buildCardFallback(card, width, height);
+          },
         ),
       ),
     );
