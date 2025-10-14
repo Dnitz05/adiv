@@ -48,15 +48,22 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
   String? userId,
   Map<String, String>? additional,
 }) async {
-  final token = await _requireAccessToken();
-  final headers = <String, String>{
-    'authorization': 'Bearer $token',
-  };
+  final headers = <String, String>{};
+
+  // Anonymous users: skip authorization header
+  if (userId != null && userId.startsWith('anon_')) {
+    headers['x-user-id'] = userId;
+  } else {
+    // Registered users: include authorization token
+    final token = await _requireAccessToken();
+    headers['authorization'] = 'Bearer $token';
+    if (userId != null && userId.isNotEmpty) {
+      headers['x-user-id'] = userId;
+    }
+  }
+
   if (locale != null && locale.isNotEmpty) {
     headers['x-locale'] = locale;
-  }
-  if (userId != null && userId.isNotEmpty) {
-    headers['x-user-id'] = userId;
   }
   if (additional != null && additional.isNotEmpty) {
     headers.addAll(additional);

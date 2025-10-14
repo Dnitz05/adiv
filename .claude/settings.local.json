@@ -85,7 +85,11 @@
       "Bash(timeout 10 adb logcat:*)",
       "Bash(gh api:*)",
       "Bash(python:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(timeout 5 adb logcat:*)",
+      "Bash(echo:*)",
+      "Bash(nc localhost 52794)",
+      "Bash(timeout 5 nc localhost 52794)"
     ],
     "deny": [],
     "ask": []

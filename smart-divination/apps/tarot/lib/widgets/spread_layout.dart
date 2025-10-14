@@ -19,14 +19,23 @@ class SpreadLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate container dimensions based on aspect ratio and available space
-    final double containerWidth = maxWidth;
-    final double containerHeight = containerWidth / spread.aspectRatio;
+    // Try both width-constrained and height-constrained approaches and pick the larger one
+    final double widthBasedHeight = maxWidth / spread.aspectRatio;
+    final double heightBasedWidth = maxHeight * spread.aspectRatio;
 
-    // Ensure we don't exceed max height
-    final double effectiveHeight = containerHeight > maxHeight
-        ? maxHeight
-        : containerHeight;
-    final double effectiveWidth = effectiveHeight * spread.aspectRatio;
+    // Choose the dimension strategy that maximizes space utilization
+    final double effectiveWidth;
+    final double effectiveHeight;
+
+    if (widthBasedHeight <= maxHeight) {
+      // Width-constrained: use full width
+      effectiveWidth = maxWidth;
+      effectiveHeight = widthBasedHeight;
+    } else {
+      // Height-constrained: use full height
+      effectiveHeight = maxHeight;
+      effectiveWidth = heightBasedWidth;
+    }
 
     // Calculate card size based on spread
     final double cardHeight = _calculateCardHeight(spread, effectiveHeight);
@@ -53,25 +62,25 @@ class SpreadLayout extends StatelessWidget {
 
   double _calculateCardHeight(TarotSpread spread, double containerHeight) {
     // Calculate optimal card height based on number of cards and layout
-    // Optimized for better visual presentation across all spread sizes
+    // Maximized for better visual impact and space utilization
     if (spread.cardCount == 1) {
-      // Single card: Make it prominent and visually striking
-      return containerHeight * 0.85;
+      // Single card: Make it very prominent and visually striking
+      return containerHeight * 0.90;
     } else if (spread.cardCount == 3) {
-      // Three cards: Large enough to appreciate details
-      return containerHeight * 0.65;
+      // Three cards: Make them large and prominent to appreciate details
+      return containerHeight * 0.80;
     } else if (spread.cardCount <= 5) {
-      // Small spreads (4-5 cards): Comfortable viewing size
-      return containerHeight * 0.48;
+      // Small spreads (4-5 cards): Large and comfortable viewing size
+      return containerHeight * 0.58;
     } else if (spread.cardCount <= 7) {
-      // Medium spreads (6-7 cards): Balanced size
-      return containerHeight * 0.38;
+      // Medium spreads (6-7 cards): Balanced and well-sized
+      return containerHeight * 0.45;
     } else if (spread.cardCount <= 10) {
-      // Large spreads (8-10 cards): Compact but readable
-      return containerHeight * 0.30;
+      // Large spreads (8-10 cards): Still readable and detailed
+      return containerHeight * 0.35;
     } else {
-      // Very large spreads (11+ cards): Ensure everything fits
-      return containerHeight * 0.24;
+      // Very large spreads (11+ cards): Compact but ensure everything fits
+      return containerHeight * 0.28;
     }
   }
 
