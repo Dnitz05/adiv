@@ -138,6 +138,7 @@ function buildInterpretationPrompt(params: {
     'You are an empathetic divination guide. Provide ethical, supportive insight.',
     'Respond strictly as JSON with keys "interpretation" (string), "summary" (<=120 characters), and "keywords" (array of <=8 lowercase phrases).',
     'Avoid deterministic or harmful language. Suggest balanced, actionable guidance.',
+    'Do NOT include the keywords as visible tags or a list at the end of the interpretation text. The interpretation should be a complete, flowing narrative without explicitly showing keyword tags.',
     '',
     `Technique: ${technique}`,
     `Locale: ${locale}`,
