@@ -10,15 +10,26 @@ class UserIdentity {
 
   static Future<String> obtain() async {
     print('[UserIdentity] Starting obtain()');
-    final client = Supabase.instance.client;
-    final currentUser = client.auth.currentUser;
-    print('[UserIdentity] Current user: ${currentUser?.id}');
-    if (currentUser != null) {
-      return currentUser.id;
+
+    // For freemium/anonymous mode: first try to get/create a local guest ID
+    final prefs = await SharedPreferences.getInstance();
+    String? guestId = prefs.getString(_guestUserIdKey);
+
+    if (guestId != null && guestId.isNotEmpty) {
+      print('[UserIdentity] Using existing guest ID: $guestId');
+      return guestId;
     }
 
-    print('[UserIdentity] Attempting to refresh session');
+    // Try to get authenticated Supabase user if available
     try {
+      final client = Supabase.instance.client;
+      final currentUser = client.auth.currentUser;
+      print('[UserIdentity] Current user: ${currentUser?.id}');
+      if (currentUser != null) {
+        return currentUser.id;
+      }
+
+      print('[UserIdentity] Attempting to refresh session');
       final response = await client.auth.refreshSession();
       final refreshedUser = response.session?.user;
       print('[UserIdentity] Refresh result: ${refreshedUser?.id}');
@@ -26,28 +37,16 @@ class UserIdentity {
         return refreshedUser.id;
       }
     } catch (e) {
-      print('[UserIdentity] Refresh failed: $e');
-      // Ignore refresh failures; will sign in anonymously below
+      print('[UserIdentity] Supabase auth not available: $e');
+      // Continue to create guest ID below
     }
 
-    // Sign in anonymously to get a valid Supabase session
-    print('[UserIdentity] Attempting anonymous sign-in');
-    try {
-      final response = await client.auth.signInAnonymously();
-      print('[UserIdentity] signInAnonymously response received');
-      final anonUser = response.session?.user;
-      print('[UserIdentity] Anonymous user: ${anonUser?.id}');
-      if (anonUser != null) {
-        return anonUser.id;
-      }
-    } catch (e) {
-      print('[UserIdentity] ❌ FAILED to sign in anonymously: $e');
-      print('[UserIdentity] Error type: ${e.runtimeType}');
-      throw Exception('Could not authenticate: $e');
-    }
-
-    print('[UserIdentity] ❌ Could not obtain user identity - no error but no user');
-    throw Exception('Could not obtain user identity');
+    // Create and store a new guest ID for anonymous users
+    print('[UserIdentity] Creating new guest ID');
+    guestId = _uuid.v4();
+    await prefs.setString(_guestUserIdKey, guestId);
+    print('[UserIdentity] Created guest ID: $guestId');
+    return guestId;
   }
 
   static Future<void> signOut() async {

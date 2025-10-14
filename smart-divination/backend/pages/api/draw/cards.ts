@@ -1248,31 +1248,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       };
     });
 
-    const session = await createDivinationSession({
-      userId: requestUserId,
+    // Skip session creation for anonymous users (they don't exist in Supabase users table)
+    let session: { id: string } | null = null;
+    if (!isAnonymous) {
+      session = await createDivinationSession({
+        userId: requestUserId,
 
-      technique: 'tarot',
+        technique: 'tarot',
 
-      locale: requestData.locale || 'en',
+        locale: requestData.locale || 'en',
 
-      question: requestData.question || undefined,
+        question: requestData.question || undefined,
 
-      results: {
-        cards,
+        results: {
+          cards,
 
-        spread: selectedSpread?.id || 'custom',
+          spread: selectedSpread?.id || 'custom',
 
-        cardCount: requestData.count,
-      },
+          cardCount: requestData.count,
+        },
 
-      metadata: {
-        seed: randomResult.seed,
+        metadata: {
+          seed: randomResult.seed,
 
-        method: randomResult.method,
+          method: randomResult.method,
 
-        signature: randomResult.signature,
-      },
-    });
+          signature: randomResult.signature,
+        },
+      });
+    }
 
     const responseTimestamp = new Date().toISOString();
     const supabaseAvailable = Boolean(
