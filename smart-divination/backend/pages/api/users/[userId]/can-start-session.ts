@@ -71,6 +71,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  const userIdParam = req.query.userId;
+  const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam;
+  if (!userId || userId.trim().length === 0) {
+    sendJsonError(res, 400, {
+      code: 'MISSING_USER_ID',
+      message: 'User ID is required in URL path',
+      requestId,
+    });
+    recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
+    return;
+  }
+
+  // Anonymous users: return unlimited sessions
+  if (userId.startsWith('anon_')) {
+    const response = createApiResponse<SessionValidation>(
+      {
+        can_start: true,
+        tier: 'free',
+        limits: { sessionsPerDay: 999, sessionsPerWeek: 999, sessionsPerMonth: 999 },
+        usage: { sessionsToday: 0, sessionsThisWeek: 0, sessionsThisMonth: 0 },
+      },
+      { processingTimeMs: Date.now() - startedAt },
+      requestId
+    );
+    res.status(200).json(response);
+    recordApiMetric(METRICS_PATH, 200, Date.now() - startedAt);
+    return;
+  }
+
+  // Registered users: require authentication
   let authContext: AuthContext | null = null;
   try {
     authContext = await resolveAuthContext(req, { requireUser: true, requestId });
@@ -98,18 +128,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const userIdParam = req.query.userId;
-    const userId = Array.isArray(userIdParam) ? userIdParam[0] : userIdParam;
-    if (!userId || userId.trim().length === 0) {
-      sendJsonError(res, 400, {
-        code: 'MISSING_USER_ID',
-        message: 'User ID is required in URL path',
-        requestId,
-      });
-      recordApiMetric(METRICS_PATH, 400, Date.now() - startedAt);
-      return;
-    }
-
     if (authContext.userId !== userId) {
       sendJsonError(res, 403, {
         code: 'FORBIDDEN',
