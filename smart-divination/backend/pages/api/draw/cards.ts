@@ -18,6 +18,7 @@ import {
   parseApiRequest,
   drawCardsRequestSchema,
   createRequestId,
+  createApiError,
 } from '../../../lib/utils/api';
 
 import {
@@ -1130,7 +1131,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: parsedData,
       requestId: parsedRequestId,
       auth,
-    } = await parseApiRequest(req, drawCardsRequestSchema, { requireUser: false });
+    } = await parseApiRequest(req, drawCardsRequestSchema, { requireUser: true });
 
     requestId = parsedRequestId;
 
@@ -1139,23 +1140,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       spread?: string;
     };
 
-    // Allow anonymous users with user ID header for freemium model
-    const userIdHeader = req.headers['x-user-id'];
-    const requestUserId =
-      auth?.userId ??
-      requestData.userId ??
-      (Array.isArray(userIdHeader) ? userIdHeader[0] : userIdHeader);
-
-    const isAnonymous = !auth?.userId;
-
-    log('info', 'User authentication', {
-      requestId,
-      isAnonymous,
-      hasAuth: !!auth?.userId,
-      hasUserIdParam: !!requestData.userId,
-      hasUserIdHeader: !!req.headers['x-user-id'],
-      userId: requestUserId,
-    });
+    const requestUserId = auth?.userId ?? requestData.userId;
+    if (!requestUserId) {
+      throw createApiError(
+        'UNAUTHENTICATED',
+        'Authentication required',
+        401,
+        { statusCode: 401 },
+        requestId
+      );
+    }
 
     log('info', 'Tarot cards draw requested', {
       requestId,
@@ -1248,35 +1242,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       };
     });
 
-    // Skip session creation for anonymous users (they don't exist in Supabase users table)
-    let session: { id: string } | null = null;
-    if (!isAnonymous) {
-      session = await createDivinationSession({
-        userId: requestUserId,
+    const session = await createDivinationSession({
+      userId: requestUserId,
 
-        technique: 'tarot',
+      technique: 'tarot',
 
-        locale: requestData.locale || 'en',
+      locale: requestData.locale || 'en',
 
-        question: requestData.question || undefined,
+      question: requestData.question || undefined,
 
-        results: {
-          cards,
+      results: {
+        cards,
 
-          spread: selectedSpread?.id || 'custom',
+        spread: selectedSpread?.id || 'custom',
 
-          cardCount: requestData.count,
-        },
+        cardCount: requestData.count,
+      },
 
-        metadata: {
-          seed: randomResult.seed,
+      metadata: {
+        seed: randomResult.seed,
 
-          method: randomResult.method,
+        method: randomResult.method,
 
-          signature: randomResult.signature,
-        },
-      });
-    }
+        signature: randomResult.signature,
+      },
+    });
 
     const responseTimestamp = new Date().toISOString();
     const supabaseAvailable = Boolean(

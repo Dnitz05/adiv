@@ -48,16 +48,10 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
   String? userId,
   Map<String, String>? additional,
 }) async {
-  final headers = <String, String>{};
-
-  // Try to get token, but continue without it for anonymous users (freemium model)
-  try {
-    final token = await _requireAccessToken();
-    headers['authorization'] = 'Bearer $token';
-  } catch (_) {
-    // No token available - anonymous user mode
-  }
-
+  final token = await _requireAccessToken();
+  final headers = <String, String>{
+    'authorization': 'Bearer $token',
+  };
   if (locale != null && locale.isNotEmpty) {
     headers['x-locale'] = locale;
   }

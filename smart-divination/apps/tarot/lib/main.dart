@@ -27,20 +27,24 @@ const String _passwordResetRedirectUrl = String.fromEnvironment(
 );
 
 Future<void> _initialiseSupabase() async {
-  // Initialize Supabase for anonymous/freemium mode
-  // Authentication is optional - app works without valid credentials
   try {
+    Supabase.instance.client;
+    return;
+  } catch (_) {
+    final url = _supabaseUrl.trim();
+    final anonKey = _supabaseAnonKey.trim();
+    if (url.isEmpty || anonKey.isEmpty) {
+      throw StateError(
+        'Supabase configuration missing. Provide SUPABASE_URL and SUPABASE_ANON_KEY.',
+      );
+    }
     await Supabase.initialize(
-      url: _supabaseUrl,
-      anonKey: _supabaseAnonKey,
+      url: url,
+      anonKey: anonKey,
       authOptions: const FlutterAuthClientOptions(
-        authFlowType: AuthFlowType.pkce,
-        autoRefreshToken: false, // Disable auto-refresh for anonymous mode
+        autoRefreshToken: true,
       ),
     );
-  } catch (_) {
-    // Ignore initialization errors - app works in fully anonymous mode
-    // Token validation errors will be caught in buildAuthenticatedHeaders
   }
 }
 
@@ -67,13 +71,6 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
   @override
   void initState() {
     super.initState();
-    // TEMPORARY: Skip auth for design/UX testing
-    // TODO: Re-enable auth flow before production release
-    _authFlow = _AuthFlow.signedIn;
-    _session = null;
-
-    // Original auth flow (commented out for testing)
-    /*
     final client = Supabase.instance.client;
     _session = client.auth.currentSession;
     _authFlow = _session == null ? _AuthFlow.signedOut : _AuthFlow.signedIn;
@@ -99,7 +96,6 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
         }
       });
     });
-    */
   }
 
   @override
@@ -127,7 +123,7 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
         home = _PasswordResetView(onFinished: _handlePasswordResetComplete);
         break;
       case _AuthFlow.signedIn:
-        home = const _Home(); // Now works with guest mode
+        home = const _Home();
         break;
       case _AuthFlow.signedOut:
         home = const _SignInView();
@@ -135,7 +131,7 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
     }
 
     return MaterialApp(
-      title: 'Real Tarot',
+      title: 'Smart Tarot',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: CommonStrings.localizationsDelegates,
       supportedLocales: CommonStrings.supportedLocales,
@@ -639,6 +635,7 @@ class _HomeState extends State<_Home> {
   bool _drawing = false;
   bool _requestingInterpretation = false;
   final TextEditingController _questionController = TextEditingController();
+  final TextEditingController _seedController = TextEditingController();
 
   @override
   void initState() {
@@ -651,6 +648,7 @@ class _HomeState extends State<_Home> {
   @override
   void dispose() {
     _questionController.dispose();
+    _seedController.dispose();
     super.dispose();
   }
 
@@ -769,10 +767,11 @@ class _HomeState extends State<_Home> {
     });
 
     try {
+      final seed = _seedController.text.trim();
       final question = _questionController.text.trim();
       final response = await drawCards(
         allowReversed: _allowReversed,
-        seed: null,
+        seed: seed.isEmpty ? null : seed,
         question: question.isEmpty ? null : question,
         locale: Localizations.localeOf(context).languageCode,
       );
@@ -783,21 +782,6 @@ class _HomeState extends State<_Home> {
         _latestDraw = response;
         _latestInterpretation = null;
       });
-
-      // Start interpretation request immediately in background if we have a sessionId
-      Future<InterpretationResult?>? interpretationFuture;
-      if (response.sessionId != null && response.sessionId!.isNotEmpty) {
-        setState(() {
-          _requestingInterpretation = true;
-        });
-        interpretationFuture = submitInterpretation(
-          sessionId: response.sessionId!,
-          draw: response,
-          question: question.isEmpty ? null : question,
-          locale: Localizations.localeOf(context).languageCode,
-        );
-      }
-
       await Future.wait([
         _refreshHistory(),
         _refreshEligibility(),
@@ -809,29 +793,6 @@ class _HomeState extends State<_Home> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(localisation.drawSuccessMessage)),
       );
-
-      // Wait for interpretation to complete if it was started
-      if (interpretationFuture != null) {
-        try {
-          final interpretation = await interpretationFuture;
-          if (!mounted) {
-            return;
-          }
-          setState(() {
-            _latestInterpretation = interpretation;
-            _requestingInterpretation = false;
-          });
-        } catch (interpretationError) {
-          if (!mounted) {
-            return;
-          }
-          setState(() {
-            _requestingInterpretation = false;
-          });
-          // Don't show error for interpretation failure, just log it
-          print('Interpretation failed: $interpretationError');
-        }
-      }
 
     } catch (error) {
       if (!mounted) {
@@ -936,56 +897,6 @@ class _HomeState extends State<_Home> {
     return label;
   }
 
-  String? _getCardImagePath(CardResult card) {
-    // Major Arcana (0-21): 00-TheFool.jpg, 01-TheMagician.jpg, etc.
-    // Minor Arcana: Cups01.jpg, Pentacles01.jpg, Swords01.jpg, Wands01.jpg
-    final name = card.name.trim();
-    final suit = card.suit.trim().toLowerCase();
-    final number = card.number;
-
-    // Major Arcana detection
-    if (suit == 'major' || suit == 'major arcana' || suit.isEmpty && number != null && number >= 0 && number <= 21) {
-      // Map card names to filenames
-      final majorArcanaMap = {
-        'the fool': '00-TheFool',
-        'the magician': '01-TheMagician',
-        'the high priestess': '02-TheHighPriestess',
-        'the empress': '03-TheEmpress',
-        'the emperor': '04-TheEmperor',
-        'the hierophant': '05-TheHierophant',
-        'the lovers': '06-TheLovers',
-        'the chariot': '07-TheChariot',
-        'strength': '08-Strength',
-        'the hermit': '09-TheHermit',
-        'wheel of fortune': '10-WheelOfFortune',
-        'justice': '11-Justice',
-        'the hanged man': '12-TheHangedMan',
-        'death': '13-Death',
-        'temperance': '14-Temperance',
-        'the devil': '15-TheDevil',
-        'the tower': '16-TheTower',
-        'the star': '17-TheStar',
-        'the moon': '18-TheMoon',
-        'the sun': '19-TheSun',
-        'judgement': '20-Judgement',
-        'the world': '21-TheWorld',
-      };
-      final fileName = majorArcanaMap[name.toLowerCase()];
-      if (fileName != null) {
-        return 'assets/cards/$fileName.jpg';
-      }
-    }
-
-    // Minor Arcana detection
-    if (number != null && number >= 1 && number <= 14) {
-      final suitCapitalized = suit[0].toUpperCase() + suit.substring(1);
-      final numberFormatted = number.toString().padLeft(2, '0');
-      return 'assets/cards/$suitCapitalized$numberFormatted.jpg';
-    }
-
-    return null;
-  }
-
   Widget _buildEligibilityCard(
     CommonStrings localisation,
     SessionEligibility eligibility,
@@ -1049,6 +960,13 @@ class _HomeState extends State<_Home> {
               maxLines: 2,
             ),
             const SizedBox(height: 12),
+            TextField(
+              controller: _seedController,
+              decoration: InputDecoration(
+                labelText: localisation.seedOptionalLabel,
+              ),
+            ),
+            const SizedBox(height: 12),
             SwitchListTile(
               title: Text(localisation.allowReversed),
               value: _allowReversed,
@@ -1103,65 +1021,31 @@ class _HomeState extends State<_Home> {
             ),
             const SizedBox(height: 8),
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: 6,
+              runSpacing: 4,
               children: draw.result
                   .map(
-                    (card) {
-                      final imagePath = _getCardImagePath(card);
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (imagePath != null)
-                            Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.identity()
-                                ..rotateZ(card.upright ? 0 : 3.14159),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  imagePath,
-                                  width: 80,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      width: 80,
-                                      height: 120,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Icon(Icons.image_not_supported),
-                                    );
-                                  },
-                                ),
-                              ),
-                            )
-                          else
-                            Chip(
-                              label: Text(
-                                _formatCardLabel(card, localisation),
-                              ),
-                            ),
-                          if (imagePath != null) ...[
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              width: 80,
-                              child: Text(
-                                card.name,
-                                style: theme.textTheme.bodySmall,
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ],
-                      );
-                    },
+                    (card) => Chip(
+                      label: Text(
+                        _formatCardLabel(card, localisation),
+                      ),
+                    ),
                   )
                   .toList(),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  localisation.seedLabel(draw.seed),
+                  style: theme.textTheme.bodySmall,
+                ),
+                Text(
+                  localisation.methodLabel(draw.method),
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             if (interpretation != null) ...[
@@ -1185,28 +1069,17 @@ class _HomeState extends State<_Home> {
                       .toList(),
                 ),
               ],
-            ] else if (_requestingInterpretation) ...[
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 12),
-                      Text(
-                        'Generating interpretation...',
-                        style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ] else if (!_requestingInterpretation &&
                 (draw.sessionId != null && draw.sessionId!.isNotEmpty)) ...[
               FilledButton(
-                onPressed: _requestInterpretation,
+                onPressed:
+                    _requestingInterpretation ? null : _requestInterpretation,
                 child: Text(localisation.interpretationHeading),
+              ),
+            ] else if (_requestingInterpretation) ...[
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Center(child: CircularProgressIndicator()),
               ),
             ],
           ],
@@ -1312,50 +1185,15 @@ class _HomeState extends State<_Home> {
                         ),
                         const SizedBox(height: 4),
                         Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                          spacing: 6,
+                          runSpacing: 4,
                           children: session.cards
                               .map(
-                                (card) {
-                                  final imagePath = _getCardImagePath(card);
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      if (imagePath != null)
-                                        Transform(
-                                          alignment: Alignment.center,
-                                          transform: Matrix4.identity()
-                                            ..rotateZ(card.upright ? 0 : 3.14159),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(8),
-                                            child: Image.asset(
-                                              imagePath,
-                                              width: 60,
-                                              height: 90,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (context, error, stackTrace) {
-                                                return Container(
-                                                  width: 60,
-                                                  height: 90,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey[300],
-                                                    borderRadius: BorderRadius.circular(8),
-                                                  ),
-                                                  child: const Icon(Icons.image_not_supported, size: 20),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        )
-                                      else
-                                        Chip(
-                                          label: Text(
-                                            _formatCardLabel(card, localisation),
-                                          ),
-                                        ),
-                                    ],
-                                  );
-                                },
+                                (card) => Chip(
+                                  label: Text(
+                                    _formatCardLabel(card, localisation),
+                                  ),
+                                ),
                               )
                               .toList(),
                         ),
@@ -1440,293 +1278,6 @@ class _HomeState extends State<_Home> {
                 children: children,
               ),
             ),
-    );
-  }
-}
-
-// TEMPORARY: Design preview screen for UX testing
-class _DesignPreview extends StatefulWidget {
-  const _DesignPreview();
-
-  @override
-  State<_DesignPreview> createState() => _DesignPreviewState();
-}
-
-class _DesignPreviewState extends State<_DesignPreview> {
-  int _selectedIndex = 0;
-  final TextEditingController _questionController = TextEditingController();
-
-  @override
-  void dispose() {
-    _questionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final localisation = CommonStrings.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(localisation.appTitle('tarot')),
-        elevation: 0,
-      ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          _buildHomeTab(context, theme, localisation),
-          _buildHistoryTab(context, theme, localisation),
-          _buildProfileTab(context, theme, localisation),
-        ],
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: localisation.appTitle('tarot'),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.history_outlined),
-            selectedIcon: const Icon(Icons.history),
-            label: localisation.historyHeading,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: localisation.settings,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHomeTab(BuildContext context, ThemeData theme, CommonStrings localisation) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        // Hero section
-        Card(
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  theme.colorScheme.primaryContainer,
-                  theme.colorScheme.secondaryContainer,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.auto_awesome,
-                  size: 48,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  localisation.startSession,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  localisation.askQuestion,
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        // Question input
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextField(
-                  controller: _questionController,
-                  decoration: InputDecoration(
-                    labelText: localisation.askQuestion,
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.question_answer),
-                  ),
-                  maxLines: 3,
-                ),
-                const SizedBox(height: 16),
-                FilledButton.icon(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(localisation.drawSuccessMessage)),
-                    );
-                  },
-                  icon: const Icon(Icons.auto_awesome),
-                  label: Text(localisation.startSession),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        // Spread options
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Spread Types', // TODO: localize
-                  style: theme.textTheme.titleMedium,
-                ),
-                const SizedBox(height: 12),
-                _buildSpreadOption(theme, 'Single Card', 'Quick insight', Icons.filter_1),
-                const SizedBox(height: 8),
-                _buildSpreadOption(theme, 'Three Card', 'Past, present, future', Icons.filter_3),
-                const SizedBox(height: 8),
-                _buildSpreadOption(theme, 'Celtic Cross', 'Detailed reading', Icons.grid_on),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSpreadOption(ThemeData theme, String title, String subtitle, IconData icon) {
-    return ListTile(
-      leading: Icon(icon, color: theme.colorScheme.primary),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: () {},
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(color: theme.colorScheme.outline.withOpacity(0.2)),
-      ),
-    );
-  }
-
-  Widget _buildHistoryTab(BuildContext context, ThemeData theme, CommonStrings localisation) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Text(
-          localisation.historyHeading,
-          style: theme.textTheme.headlineSmall,
-        ),
-        const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.calendar_today, color: theme.colorScheme.primary),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Today, 10:30 AM', // Demo data
-                      style: theme.textTheme.bodySmall,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: [
-                    Chip(label: Text('The Fool')),
-                    Chip(label: Text('The Magician')),
-                    Chip(label: Text('The High Priestess')),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Your question: What should I focus on today?', // Demo data
-                  style: theme.textTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProfileTab(BuildContext context, ThemeData theme, CommonStrings localisation) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Text(
-          localisation.settings,
-          style: theme.textTheme.headlineSmall,
-        ),
-        const SizedBox(height: 16),
-        Card(
-          child: Column(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.language),
-                title: const Text('Language'),
-                subtitle: const Text('English'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {},
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.notifications),
-                title: const Text('Notifications'),
-                trailing: Switch(value: true, onChanged: (v) {}),
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.palette),
-                title: const Text('Theme'),
-                subtitle: const Text('System default'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        Card(
-          child: Column(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.help),
-                title: const Text('Help & Support'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {},
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.info),
-                title: const Text('About'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

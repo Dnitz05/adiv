@@ -140,13 +140,6 @@ export async function resolveAuthContext(
         error: error?.message ?? 'user_not_found',
         requestId: options.requestId,
       });
-
-      // For anonymous/freemium mode: if requireUser is false, return null instead of throwing
-      if (!options.requireUser) {
-        cacheAuthContext(req, null);
-        return null;
-      }
-
       throw createApiError(
         'UNAUTHENTICATED',
         'Authentication token is invalid',
