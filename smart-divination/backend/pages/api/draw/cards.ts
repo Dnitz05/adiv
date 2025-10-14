@@ -1085,6 +1085,118 @@ const TAROT_SPREADS: SpreadDefinition[] = [
       { id: 'guidance', name: 'Guidance', meaning: 'Next steps to take' },
     ],
   },
+
+  {
+    id: 'horseshoe',
+
+    name: 'Horseshoe',
+
+    description: '7-card guidance spread',
+
+    cardCount: 7,
+
+    positions: [
+      { id: 'past', name: 'Past', meaning: 'Past influences' },
+
+      { id: 'present', name: 'Present', meaning: 'Current situation' },
+
+      { id: 'hidden', name: 'Hidden Influences', meaning: 'Hidden factors affecting you' },
+
+      { id: 'obstacles', name: 'Obstacles', meaning: 'Challenges to overcome' },
+
+      { id: 'external', name: 'External Influences', meaning: 'Outside forces at play' },
+
+      { id: 'advice', name: 'Advice', meaning: 'Guidance for action' },
+
+      { id: 'outcome', name: 'Outcome', meaning: 'Likely outcome' },
+    ],
+  },
+
+  {
+    id: 'pyramid',
+
+    name: 'Pyramid',
+
+    description: '6-card pyramid layout',
+
+    cardCount: 6,
+
+    positions: [
+      { id: 'peak', name: 'Peak', meaning: 'The main issue or focus' },
+
+      { id: 'left2', name: 'Left Middle', meaning: 'Supporting factor (left)' },
+
+      { id: 'right2', name: 'Right Middle', meaning: 'Supporting factor (right)' },
+
+      { id: 'left3', name: 'Left Base', meaning: 'Foundation (left)' },
+
+      { id: 'center3', name: 'Center Base', meaning: 'Foundation (center)' },
+
+      { id: 'right3', name: 'Right Base', meaning: 'Foundation (right)' },
+    ],
+  },
+
+  {
+    id: 'star',
+
+    name: 'Star',
+
+    description: '7-card star pattern',
+
+    cardCount: 7,
+
+    positions: [
+      { id: 'top', name: 'Top', meaning: 'Higher purpose or spiritual guidance' },
+
+      { id: 'right1', name: 'Right Upper', meaning: 'External opportunities' },
+
+      { id: 'right2', name: 'Right Lower', meaning: 'Material resources' },
+
+      { id: 'bottom', name: 'Bottom', meaning: 'Foundation or grounding' },
+
+      { id: 'left2', name: 'Left Lower', meaning: 'Personal strengths' },
+
+      { id: 'left1', name: 'Left Upper', meaning: 'Inner wisdom' },
+
+      { id: 'center', name: 'Center', meaning: 'Core issue or yourself' },
+    ],
+  },
+
+  {
+    id: 'year_ahead',
+
+    name: 'Year Ahead',
+
+    description: '12 cards for each month',
+
+    cardCount: 12,
+
+    positions: [
+      { id: 'month1', name: 'Month 1', meaning: 'First month guidance' },
+
+      { id: 'month2', name: 'Month 2', meaning: 'Second month guidance' },
+
+      { id: 'month3', name: 'Month 3', meaning: 'Third month guidance' },
+
+      { id: 'month4', name: 'Month 4', meaning: 'Fourth month guidance' },
+
+      { id: 'month5', name: 'Month 5', meaning: 'Fifth month guidance' },
+
+      { id: 'month6', name: 'Month 6', meaning: 'Sixth month guidance' },
+
+      { id: 'month7', name: 'Month 7', meaning: 'Seventh month guidance' },
+
+      { id: 'month8', name: 'Month 8', meaning: 'Eighth month guidance' },
+
+      { id: 'month9', name: 'Month 9', meaning: 'Ninth month guidance' },
+
+      { id: 'month10', name: 'Month 10', meaning: 'Tenth month guidance' },
+
+      { id: 'month11', name: 'Month 11', meaning: 'Eleventh month guidance' },
+
+      { id: 'month12', name: 'Month 12', meaning: 'Twelfth month guidance' },
+    ],
+  },
 ];
 
 // =============================================================================
