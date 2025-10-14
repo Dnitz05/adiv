@@ -288,12 +288,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { data: input, auth } = parsed;
   const authContext = auth;
-  if (!authContext) {
+
+  // Use userId from request (supports both authenticated and anonymous users)
+  const authenticatedUserId = input.userId ?? authContext?.userId;
+
+  if (!authenticatedUserId) {
     handleApiError(
       res,
       createApiError(
         'UNAUTHENTICATED',
-        'Authentication required',
+        'User ID required',
         401,
         { statusCode: 401 },
         requestId
@@ -304,8 +308,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     recordApiMetric(METRICS_PATH, 401, Date.now() - startedAt);
     return;
   }
-
-  const authenticatedUserId = authContext.userId;
   const locale = input.locale ?? 'en';
   const technique = input.technique;
   const results = input.results ?? {};
