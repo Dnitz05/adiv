@@ -458,6 +458,11 @@ export async function createDivinationSession(params: {
     return buildFallbackSession(params);
   }
 
+  // Skip Supabase operations for anonymous users
+  if (params.userId.startsWith('anon_')) {
+    return buildFallbackSession(params);
+  }
+
   const metadata = params.metadata ?? null;
   const session = await createSession({
     userId: params.userId,

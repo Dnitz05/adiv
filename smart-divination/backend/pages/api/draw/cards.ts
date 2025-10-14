@@ -1131,7 +1131,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: parsedData,
       requestId: parsedRequestId,
       auth,
-    } = await parseApiRequest(req, drawCardsRequestSchema, { requireUser: true });
+    } = await parseApiRequest(req, drawCardsRequestSchema, { requireUser: false });
 
     requestId = parsedRequestId;
 
