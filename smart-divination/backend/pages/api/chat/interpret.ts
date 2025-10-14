@@ -295,13 +295,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!authenticatedUserId) {
     handleApiError(
       res,
-      createApiError(
-        'UNAUTHENTICATED',
-        'User ID required',
-        401,
-        { statusCode: 401 },
-        requestId
-      ),
+      createApiError('UNAUTHENTICATED', 'User ID required', 401, { statusCode: 401 }, requestId),
       requestId,
       401
     );
