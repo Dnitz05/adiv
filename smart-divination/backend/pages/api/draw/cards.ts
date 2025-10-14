@@ -1140,7 +1140,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
 
     // Allow anonymous users with user ID header for freemium model
-    const requestUserId = auth?.userId ?? requestData.userId ?? req.headers['x-user-id'];
+    const userIdHeader = req.headers['x-user-id'];
+    const requestUserId =
+      auth?.userId ??
+      requestData.userId ??
+      (Array.isArray(userIdHeader) ? userIdHeader[0] : userIdHeader);
 
     const isAnonymous = !auth?.userId;
 
