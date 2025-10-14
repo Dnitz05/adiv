@@ -355,7 +355,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  if (input.sessionId && supabaseAvailable) {
+  // Skip session validation for anonymous users (they don't have database sessions)
+  const isAnonymous = authenticatedUserId?.startsWith('anon_') ?? false;
+
+  if (input.sessionId && supabaseAvailable && !isAnonymous) {
     try {
       const existingSession = await getSession(input.sessionId);
       if (!existingSession) {
@@ -386,7 +389,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let artifactStored = false;
   let messageStored = false;
 
-  if (supabaseAvailable) {
+  // Skip database storage for anonymous users
+  if (supabaseAvailable && !isAnonymous) {
     try {
       await createSessionArtifact({
         sessionId: input.sessionId,
@@ -435,6 +439,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         error: messageError instanceof Error ? messageError.message : String(messageError),
       });
     }
+  } else if (isAnonymous) {
+    log('info', 'Skipping interpretation persistence for anonymous user', {
+      requestId,
+      sessionId: input.sessionId,
+      userId: authenticatedUserId,
+    });
   } else {
     log('warn', 'Supabase credentials missing, skipping interpretation persistence', {
       requestId,
