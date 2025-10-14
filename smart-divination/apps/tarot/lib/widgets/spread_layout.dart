@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../models/tarot_spread.dart';
 import '../models/tarot_card.dart';
@@ -99,19 +100,67 @@ class SpreadLayout extends StatelessWidget {
     final double left = (position.x * containerWidth) - (cardWidth / 2);
     final double top = (position.y * containerHeight) - (cardHeight / 2);
 
-    // Calculate total rotation: position rotation + 180° if card is reversed
-    final double totalRotation = position.rotation + (card.upright == false ? 180 : 0);
+    final bool isReversed = card.upright == false;
+    final double baseRotation = position.rotation;
+    // Reversed cards should be shown upside-down (180° rotation)
+    final double cardRotation = isReversed ? 180 : 0;
+
+    final cardStack = SizedBox(
+      width: cardWidth,
+      height: cardHeight,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Transform.rotate(
+            angle: cardRotation * math.pi / 180,
+            child: _buildCardWidget(card, cardWidth, cardHeight),
+          ),
+          if (isReversed)
+            Positioned(
+              top: 8,
+              right: 8,
+              child: _buildReversedBadge(cardWidth),
+            ),
+        ],
+      ),
+    );
 
     return Positioned(
       left: left,
       top: top,
       child: Transform.rotate(
-        angle: totalRotation * 3.14159 / 180, // Convert degrees to radians
-        child: _buildCardWidget(card, cardWidth, cardHeight),
+        angle: baseRotation * math.pi / 180,
+        child: cardStack,
       ),
     );
   }
 
+  Widget _buildReversedBadge(double cardWidth) {
+    final double fontSize = ((cardWidth * 0.12).clamp(10.0, 16.0)).toDouble();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.rotate_left, size: 14, color: Colors.white),
+          const SizedBox(width: 4),
+          Text(
+            'REV',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: fontSize,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   Widget _buildCardWidget(TarotCard card, double width, double height) {
     // Get the local image path for this card
     final imagePath = CardImageMapper.getCardImagePath(card.name, card.suit);
@@ -184,3 +233,4 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 }
+
