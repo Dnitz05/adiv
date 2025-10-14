@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/tarot_spread.dart';
 import '../models/tarot_card.dart';
 import '../utils/card_image_mapper.dart';
+import '../theme/tarot_theme.dart';
 
 class SpreadLayout extends StatelessWidget {
   final TarotSpread spread;
@@ -117,18 +118,15 @@ class SpreadLayout extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: TarotTheme.moonGold.withOpacity(0.4),
+          width: 2,
+        ),
+        boxShadow: TarotTheme.cardShadow,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(10),
         child: Image.asset(
           imagePath,
           fit: BoxFit.contain,

@@ -16,6 +16,7 @@ import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
 import 'widgets/spread_selector.dart';
 import 'widgets/spread_layout.dart';
+import 'theme/tarot_theme.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
@@ -142,10 +143,7 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: CommonStrings.localizationsDelegates,
       supportedLocales: CommonStrings.supportedLocales,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6C5CE7)),
-        useMaterial3: true,
-      ),
+      theme: TarotTheme.darkTheme,
       home: home,
     );
   }
