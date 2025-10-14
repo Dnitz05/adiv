@@ -278,7 +278,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let parsed: { data: InterpretationRequestBody; requestId: string; auth?: AuthContext };
   try {
     parsed = await parseApiRequest<InterpretationRequestBody>(req, interpretationRequestSchema, {
-      requireUser: true,
+      requireUser: false,
     });
   } catch (error) {
     handleApiError(res, error, requestId, 400);
