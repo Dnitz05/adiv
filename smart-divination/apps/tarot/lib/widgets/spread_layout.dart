@@ -99,11 +99,14 @@ class SpreadLayout extends StatelessWidget {
     final double left = (position.x * containerWidth) - (cardWidth / 2);
     final double top = (position.y * containerHeight) - (cardHeight / 2);
 
+    // Calculate total rotation: position rotation + 180° if card is reversed
+    final double totalRotation = position.rotation + (card.upright == false ? 180 : 0);
+
     return Positioned(
       left: left,
       top: top,
       child: Transform.rotate(
-        angle: position.rotation * 3.14159 / 180, // Convert degrees to radians
+        angle: totalRotation * 3.14159 / 180, // Convert degrees to radians
         child: _buildCardWidget(card, cardWidth, cardHeight),
       ),
     );

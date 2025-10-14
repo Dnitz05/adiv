@@ -89,7 +89,8 @@
       "Bash(timeout 5 adb logcat:*)",
       "Bash(echo:*)",
       "Bash(nc localhost 52794)",
-      "Bash(timeout 5 nc localhost 52794)"
+      "Bash(timeout 5 nc localhost 52794)",
+      "Bash(nc localhost 55640)"
     ],
     "deny": [],
     "ask": []
