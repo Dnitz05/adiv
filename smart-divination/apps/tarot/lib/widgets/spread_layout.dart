@@ -131,7 +131,7 @@ class SpreadLayout extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         child: Image.asset(
           imagePath,
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
             return _buildCardFallback(card, width, height);
           },

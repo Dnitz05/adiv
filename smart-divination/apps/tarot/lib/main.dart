@@ -1216,15 +1216,8 @@ class _HomeState extends State<_Home> {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
-    final keywordChips = profile.topKeywords
-        .take(6)
-        .map((keyword) => Chip(
-              label: Text(keyword.value),
-              avatar: CircleAvatar(
-                child: Text(''),
-              ),
-            ))
-        .toList();
+    // Keyword chips hidden per request
+    final List<Widget> keywordChips = const [];
 
     return Card(
       child: Padding(
@@ -1408,3 +1401,4 @@ class _HomeState extends State<_Home> {
     );
   }
 }
+
