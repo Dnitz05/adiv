@@ -120,15 +120,55 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
 
-    const tier = await getUserTier(userId);
+    let tier = await getUserTier(userId);
     if (!tier) {
-      sendJsonError(res, 404, {
-        code: 'USER_NOT_FOUND',
-        message: 'User not found in database',
-        requestId,
-      });
-      recordApiMetric(METRICS_PATH, 404, Date.now() - startedAt);
-      return;
+      // Auto-create user with free tier if they don't exist yet
+      log('info', 'Auto-creating user with free tier', { userId, requestId });
+      try {
+        const { createClient } = await import('@supabase/supabase-js');
+        const supabaseUrl = process.env.SUPABASE_URL;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+        if (!supabaseUrl || !supabaseServiceKey) {
+          throw new Error('Supabase configuration missing');
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert({ id: userId, tier: 'free' });
+
+        if (insertError) {
+          log('error', 'Failed to auto-create user', {
+            userId,
+            error: insertError.message,
+            requestId,
+          });
+          sendJsonError(res, 500, {
+            code: 'USER_CREATION_FAILED',
+            message: 'Failed to create user record',
+            requestId,
+          });
+          recordApiMetric(METRICS_PATH, 500, Date.now() - startedAt);
+          return;
+        }
+
+        tier = 'free';
+        log('info', 'User auto-created successfully', { userId, requestId });
+      } catch (error) {
+        log('error', 'Error during user auto-creation', {
+          userId,
+          error: error instanceof Error ? error.message : String(error),
+          requestId,
+        });
+        sendJsonError(res, 500, {
+          code: 'USER_CREATION_ERROR',
+          message: 'Error creating user record',
+          requestId,
+        });
+        recordApiMetric(METRICS_PATH, 500, Date.now() - startedAt);
+        return;
+      }
     }
 
     let stats = { totalSessions: 0, sessionsThisWeek: 0, sessionsThisMonth: 0 };

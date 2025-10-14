@@ -41,6 +41,8 @@ Widget tests now cover the auth screen defaults, forgot-password affordance, and
 3. `build.gradle.kts` now fails fast when configuration is missing; configure one of the options above before running `flutter build appbundle --release`.
 4. Provide the same secrets to the `flutter-release.yml` workflow (`ANDROID_KEYSTORE_*`, `ANDROID_API_BASE_URL`) so CI can produce a signed AAB.
 
+5. Launcher icon artwork lives at `assets/app_icon/icon.png` (1024x1024). After editing the asset, run `flutter pub run flutter_launcher_icons` to regenerate adaptive icons and mipmaps.
+
 ### iOS
 1. The bundle identifier is `com.smartdivination.tarot` (tests use `com.smartdivination.tarot.RunnerTests`).
 2. Create a distribution certificate and provisioning profile for that identifier, then let Xcode manage signing or import them before running `flutter build ipa`.
@@ -50,7 +52,7 @@ Widget tests now cover the auth screen defaults, forgot-password affordance, and
 - Replace default Material theming and add tarot-specific assets.
 - Surface interpretation content when Supabase artefacts are available.
 - Handle offline states, backend errors, and eligibility failures gracefully.
-- Finalise store metadata (icons, splash screens, copy) and extend automated tests.
+- Finalise store metadata (splash screen, feature graphic, store copy) and extend automated tests.
 
 Treat this app as a starting point rather than a store-ready product.
 

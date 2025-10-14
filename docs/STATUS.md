@@ -1,111 +1,103 @@
 # Project Status (October 2025)
 
-**Last Updated:** 2025-10-05
+Last Updated: 2025-10-13
+
+## Current Status: Testing & Design Phase
+**Focus:** Run the app on a physical Android phone to capture the real UI/UX state before finalising Play Store assets.
 
 ## Release Focus
-- Android internal testing is the immediate launch path; iOS release is deferred until a macOS signing environment is available.
-- Tarot backend and Flutter app remain the launch vehicle (private beta).
-- I Ching and runes pipelines are implemented but hidden behind `ENABLE_ICHING` / `ENABLE_RUNES` until UX, entitlement checks, and localisation are ready.
-- Content packs are tracked via `backend/data/packs/manifests.json`; premium gating still needs client surfaces.
+- Android internal testing is the immediate launch path; iOS is deferred until Mac signing hardware is available.
+- Tarot backend and Flutter app stay as the launch vehicle (private beta).
+- I Ching and runes pipelines exist but remain behind ENABLE_ICHING / ENABLE_RUNES until UX, entitlements, and localisation are ready.
+- Content packs live in backend/data/packs/manifests.json; the client entitlement surface is still pending.
 
 ## Current Sprint: Pre-Launch Checklist
-**Target:** Android internal testing track (1-2 weeks)
-**Status:** ✅ ALL CRITICAL BLOCKERS RESOLVED (2025-10-05)
+Target: Android internal testing track (1-2 weeks)
+Status: critical blockers cleared on 2025-10-05
 
-**Completed:**
-1. ~~Deploy backend to Vercel production~~ ✅ **RESOLVED** (2025-10-05, 15 min)
-2. ~~Apply Supabase migrations to production~~ ✅ **RESOLVED** (2025-10-05, 10 min)
-3. ~~Create local Android signing setup~~ ✅ **RESOLVED** (2025-10-05, 20 min)
+Completed work (total ~45 minutes once secrets were available):
+1. Deploy backend to Vercel production (15 min)
+2. Apply Supabase migrations to production (10 min)
+3. Configure Android signing for CI/CD (20 min)
+4. Fix Android build failure (app_links compileSdk)
+5. Finish localisation migration to CommonStrings
 
-## Recent Progress (2025-10-05)
+## Recent Progress (2025-10-13)
 
-### Infrastructure & Deployment ✅
-- ✅ **Supabase Production Configured:** Project vanrixxzaawybszeuivb.supabase.co with real credentials
-- ✅ **DeepSeek API Key:** Production key configured (sk-c31cd42fdccf...)
-- ✅ **Random.org API:** Key configured for signed randomness
-- ✅ **GitHub Secrets:** All 13 secrets configured (Android signing, Vercel, Supabase, DeepSeek)
-- ✅ **Vercel Project Deployed:** https://backend-dnitzs-projects.vercel.app (all health checks passing)
-- ✅ **Environment Files:** .env.production updated with real credentials
-- ✅ **Backend Health Check:** Supabase connection verified (418ms response time)
+### Infrastructure & Deployment
+- Backend production URL: https://backend-4sircya71-dnitzs-projects.vercel.app (health check OK)
+- Supabase project vanrixxzaawybszeuivb.supabase.co linked and migrated
+- Tables: users, sessions, session_artifacts, session_messages (created via migrations)
+- GitHub secrets: 13/13 configured (Android signing, Vercel IDs, Supabase, DeepSeek, Random.org)
+- Vercel environment variables: production set in dashboard/CLI
+- DeepSeek and Random.org integrations tested (Random.org marked degraded but fallback available)
 
-### Flutter App ✅
-- ✅ **Localisation Migration Complete:** CommonStrings from ARB files
-- ✅ **Tests Passing:** 5/5 widget tests (auth screen, localisation)
-- ✅ **Flutter Analyze:** No issues found (39.0s)
-- ✅ **Android Build:** Compiles successfully (compileSdk=34, intl 0.20.0)
-- ✅ **Mipmaps:** ic_launcher.png in all densities
+### Flutter Workspace
+- Localisation migration complete; all apps use `CommonStrings`
+- Widget tests: 5/5 passing
+- `flutter analyze`: clean run (39 s)
+- Android build: succeeds with compileSdk 34 and `intl` 0.20.0
+- Launcher icon refreshed via `flutter_launcher_icons` (asset at `apps/tarot/assets/app_icon/icon.png`, adaptive background `#8C52FF`)
+- Splash artwork and theming polish still pending
 
-### Backend ✅
-- ✅ **Production Deployment:** Live at https://backend-dnitzs-projects.vercel.app
-- ✅ **Lint & Build:** Prettier formatting applied, Next.js build passing
-- ✅ **Type Checking:** Passing (tsc --noEmit)
-- ✅ **Error Handling:** Centralized (`lib/utils/errors.ts`)
-- ✅ **Metrics Module:** Datadog support ready
-- ✅ **Pack Manifests:** Checksum validation for tarot, I Ching, runes
-- ✅ **Supabase Utilities:** Full session management with integration tests
-- ✅ **Verification Script:** `scripts/verify-deployment.ps1` passes all 5 tests
+### Backend
+- Production deployment verified via `scripts/verify-deployment.ps1`
+- Lint, build, and type-check pass (`npm run lint`, `npm run build`, `npm run type-check`)
+- Centralised error handling in `lib/utils/errors.ts`
+- Metrics module ready for Datadog but currently running in console mode
+- Supabase session utilities covered by integration tests
 
-### Android Signing ⚠️
-- ✅ **GitHub Secrets:** Keystore configured for CI/CD
-- ✅ **build.gradle.kts:** Fail-fast configuration
-- ⚠️ **Local Setup:** Needs key.properties file
-- ⚠️ **JAVA_HOME:** Points to invalid JDK path
+### Android Signing
+- CI/CD secrets cover keystore, passwords, and alias
+- `build.gradle.kts` fails fast if signing config missing
+- Helper scripts: `scripts/android/setup_local_signing.ps1` and `scripts/android/decode_keystore.ps1`
+- `JAVA_HOME` still needs to be corrected locally before running release builds
+- `android/key.properties` contains placeholders; populate from secrets before building locally
 
-## In Flight / Next Up
+## Next Actions
 
-### Critical Path (This Week)
-1. ~~**Deploy Backend to Vercel**~~ ✅ **COMPLETED** (2025-10-05)
-   - ✅ Environment variables synced (production & preview)
-   - ✅ Production deploy successful
-   - ✅ Health check verified (Supabase healthy, 418ms response)
-   - ✅ All endpoints validated via `scripts/verify-deployment.ps1`
+Short term (immediate - testing phase):
+- [x] Custom launcher icon integrated (adaptive icons regenerated across mipmaps)
+- [x] Update `AndroidManifest.xml` label to "Smart Tarot"
+- [ ] Document physical-device testing workflow (`docs/RUN_ON_PHONE.md`)
+- [ ] **Current priority:** Run the app on a physical phone and capture the real UI/UX state
+- [ ] Identify and prioritise design/UX improvements needed before Play Store screenshots
+- [ ] Implement design iterations with hot reload testing
+- [ ] Capture screenshots once design is ready (minimum 2 at 1080x1920; aim for 4-8)
+- [ ] Create a 1024x500 feature graphic with final branding
+- [ ] Produce a 1920x1080 splash artwork and wire up `flutter_native_splash`
+- [ ] Host privacy policy and terms of service (EN/ES/CA) and link in Play Console
+- [ ] Finalise and localise Play Store listing copy (see `docs/store-metadata/play_store_copy.md`)
+- [ ] Configure Google Play Console developer account and Internal Testing track
+- [ ] Run full manual QA against production backend (signup, draws, interpretations, history, limits)
 
-2. **Apply Supabase Migrations** (15 min)
-   - Link: `supabase link --project-ref vanrixxzaawybszeuivb`
-   - Push: `supabase db push --linked`
-   - Verify tables in Supabase Dashboard
-
-3. **Local Android Signing** (15 min)
-   - Create key.properties file
-   - Fix JAVA_HOME environment variable
-   - Build signed AAB
-
-4. **AndroidManifest Updates** (10 min)
-   - Change label to "Smart Tarot"
-   - Add versionCode and versionName
-   - Add Supabase deep links
-
-### Short Term (1-2 Weeks)
-- Create Play Store assets (screenshots, feature graphic, custom icon)
-- Write and host Privacy Policy + Terms of Service
-- Complete Play Store metadata (descriptions in EN/ES/CA)
-- Manual QA testing with production backend
-- Set up Google Play Console account + Internal Testing track
-
-### Medium Term (Deferred)
-- iOS signing configuration **on hold until Mac hardware is available**
-- Wire premium entitlements and storefront presentation for content packs
-- Connect backend metrics to Datadog/Grafana and define alert thresholds
-- Expand Flutter coverage with HTTP mocks and offline handling
+Medium term:
+- Implement premium entitlement flows and storefront surfaces
+- Connect metrics to Datadog/Grafana and establish alert thresholds
+- Expand Flutter test coverage with HTTP mocks and offline scenarios
+- Resume iOS signing once Mac hardware is available
 
 ## Known Gaps
+- `VERCEL_TOKEN` still missing (manual CLI deploys work; token needed to automate deploy-on-push)
+- Play Store assets and metadata outstanding (screenshots, feature graphic, splash art)
+- Privacy policy and terms not yet written or hosted
+- I Ching and runes remain feature-flagged until UX and entitlements are finished
+- Observability limited to console metrics; Datadog not yet configured
+- Row level security policy review pending once entitlement flows land
 
-### Blockers
-- ❌ **Supabase Migrations Not Applied:** Production database is empty
-- ❌ **Local Signing Setup:** key.properties file missing
-- ❌ **JAVA_HOME Invalid:** Points to non-existent JDK path
+## Recent Security Actions
+- 2025-10-06: Rotated all secrets exposed during deployment automation (Supabase, DeepSeek, Random.org)
+- Updated GitHub Secrets and Vercel environment variables with new credentials
+- Redeployed backend and re-ran `scripts/verify-deployment.ps1`
 
-### Non-Blockers
-- ⚠️ **VERCEL_TOKEN Missing:** Needed for GitHub Actions auto-deploy (manual deploy works via CLI)
-- ⚠️ **Play Store Assets:** No custom icon, screenshots, or feature graphic yet
-- ⚠️ **Privacy Policy:** Not written or hosted
-- ⚠️ **iOS Signing:** Blocked until macOS signing environment is available
-- ⚠️ **I Ching/Runes:** Lack production-ready UX and entitlement enforcement (feature-flagged off)
-- ⚠️ **Observability:** In-memory metrics until Datadog configured
-- ⚠️ **RLS Policies:** Need production review once entitlement flows land
+## Manual QA Checklist (Tarot) - to schedule after assets/metadata
+- Create production test accounts in Supabase
+- Exercise signup, login, logout
+- Run tarot draw and verify AI interpretation persists
+- Check session history and limits (with and without credentials)
+- Build release APK/AAB with production defines and corrected `JAVA_HOME`
+- Smoke test on physical Android hardware
+- Validate backend endpoints with `scripts/verify-deployment.ps1`
 
-## Manual QA Checklist (Tarot)
-- Run `scripts/supabase/apply.sh` to migrate/seed, then confirm tarot draws, interpretations, and history for the demo account.
-- Validate session limits and error messages with and without Supabase credentials.
-- Exercise `flutter build apk --release` from `apps/tarot` (ensure `JAVA_HOME` points to a JDK 17 install) and smoke test on device/emulator.
-- When feature flags are enabled, sanity-check I Ching and runes endpoints with seeded accounts before exposing them in builds.
+## Security Note
+Secrets were briefly committed during automation on 2025-10-05. All exposed credentials (Supabase, DeepSeek, Random.org) were rotated on 2025-10-06. See `SECURITY_INCIDENT_RESPONSE.md` for full details.

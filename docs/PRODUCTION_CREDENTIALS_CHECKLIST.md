@@ -49,7 +49,7 @@ supabase db push
 
 **Completed**:
 1. ✅ Account created at https://platform.deepseek.com/
-2. ✅ API Key created: sk-c31cd42fdccf4b46a383d721b996e94f
+2. ✅ API Key created: sk-... (rotate immediately)
 3. ✅ Key saved securely
 4. ✅ Configured in .env.production
 5. ✅ Added to GitHub Secret: DEEPSEEK_API_KEY

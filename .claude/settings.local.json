@@ -73,7 +73,19 @@
       "Bash(.gradlew:*)",
       "Bash(./gradlew.bat assembleDebug:*)",
       "Bash(gh run watch:*)",
-      "Bash(gh secret:*)"
+      "Bash(gh secret:*)",
+      "Bash(npx prettier:*)",
+      "Bash(supabase link:*)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe link --project-ref vanrixxzaawybszeuivb)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe db push --linked)",
+      "Bash(powershell.exe:*)",
+      "Bash(npm run build:*)",
+      "Bash(adb:*)",
+      "Bash(nc localhost 12345)",
+      "Bash(timeout 10 adb logcat:*)",
+      "Bash(gh api:*)",
+      "Bash(python:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []

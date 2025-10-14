@@ -154,6 +154,11 @@ async function generateInterpretationFromDeepSeek(
   params: DeepSeekParams
 ): Promise<GeneratedInterpretation | null> {
   const apiKey = process.env.DEEPSEEK_API_KEY;
+  log('info', 'DeepSeek API key check', {
+    sessionId: params.sessionId,
+    hasApiKey: !!apiKey,
+    keyLength: apiKey?.length || 0,
+  });
   if (!apiKey) {
     log('warn', 'DeepSeek API key missing; skipping interpretation generation', {
       sessionId: params.sessionId,
@@ -183,6 +188,12 @@ async function generateInterpretationFromDeepSeek(
     ],
   };
 
+  log('info', 'Calling DeepSeek API', {
+    sessionId: params.sessionId,
+    url: DEEPSEEK_URL,
+    model: params.model ?? DEFAULT_MODEL,
+  });
+
   const response = await fetch(DEEPSEEK_URL, {
     method: 'POST',
     headers: {
@@ -192,8 +203,19 @@ async function generateInterpretationFromDeepSeek(
     body: JSON.stringify(requestBody),
   });
 
+  log('info', 'DeepSeek API response', {
+    sessionId: params.sessionId,
+    status: response.status,
+    ok: response.ok,
+  });
+
   if (!response.ok) {
     const errorText = await response.text().catch(() => '');
+    log('error', 'DeepSeek request failed', {
+      sessionId: params.sessionId,
+      status: response.status,
+      errorText,
+    });
     throw new Error(`DeepSeek request failed (${response.status}): ${errorText}`);
   }
 

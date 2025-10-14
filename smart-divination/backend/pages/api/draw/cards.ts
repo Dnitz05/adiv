@@ -18,7 +18,6 @@ import {
   parseApiRequest,
   drawCardsRequestSchema,
   createRequestId,
-  createApiError,
 } from '../../../lib/utils/api';
 
 import {
@@ -1131,7 +1130,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: parsedData,
       requestId: parsedRequestId,
       auth,
-    } = await parseApiRequest(req, drawCardsRequestSchema, { requireUser: true });
+    } = await parseApiRequest(req, drawCardsRequestSchema, { requireUser: false });
 
     requestId = parsedRequestId;
 
@@ -1140,16 +1139,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       spread?: string;
     };
 
-    const requestUserId = auth?.userId ?? requestData.userId;
-    if (!requestUserId) {
-      throw createApiError(
-        'UNAUTHENTICATED',
-        'Authentication required',
-        401,
-        { statusCode: 401 },
-        requestId
-      );
-    }
+    // Allow anonymous users with user ID header for freemium model
+    const requestUserId = auth?.userId ?? requestData.userId ?? req.headers['x-user-id'];
+
+    const isAnonymous = !auth?.userId;
+
+    log('info', 'User authentication', {
+      requestId,
+      isAnonymous,
+      hasAuth: !!auth?.userId,
+      hasUserIdParam: !!requestData.userId,
+      hasUserIdHeader: !!req.headers['x-user-id'],
+      userId: requestUserId,
+    });
 
     log('info', 'Tarot cards draw requested', {
       requestId,

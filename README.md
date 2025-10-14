@@ -69,11 +69,14 @@ The tarot client consumes live Supabase history and interpretations. The I Ching
 
 ## Release Status & Next Steps
 - **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore, key.properties), release APK tested (48.3MB). Build blockers resolved (app_links compileSdk, intl 0.20.0) and documented in `ANDROID_LAUNCH_CHECKLIST.md`. iOS signing and store metadata pending.
-- **Backend**: Production environment configuration complete (`.env.production`, error handling standardized, health/metrics endpoints operational).
-- **Security**: Comprehensive secrets management guide in `docs/SECRETS.md` covering GitHub Actions, Vercel, Supabase, and rotation procedures.
+- **Backend**: Production environment live at `https://backend-4sircya71-dnitzs-projects.vercel.app` with health/metrics endpoints operational. Deployed on 2025-10-05.
+- **Database**: Supabase production migrations applied. Schema complete with RLS policies active.
+- **Security**: All credentials secure. Security incident from 2025-10-05 resolved on 2025-10-06 (all exposed secrets rotated). See `SECURITY_INCIDENT_RESPONSE.md` for details.
+- **Visual assets**: App icon complete (1024x1024 with adaptive icon and all mipmaps). Screenshots (2-8 required), feature graphic (1024x500), and splash customization remain pending.
+- **Store metadata**: Templates drafted for Play Store descriptions (EN/ES/CA), privacy policy, and terms. Need finalization, legal review, and public hosting.
 - **I Ching and runes**: Server endpoints complete behind feature flags; Flutter clients need UX, localisation, entitlement gating, and QA before exposure.
 - **Content packs**: Manifest registry in place; distribution hosting, entitlement checks, and purchase flows are still TODO.
-- **Observability**: In-memory metrics available; connect Datadog or Grafana before production.
-- **CI/CD**: Secrets documented but not yet configured in GitHub Actions. Use `CRITICAL_BLOCKERS_PLAN.md` to track the remaining launch-critical tasks.
+- **Observability**: In-memory metrics available; connect Datadog or Grafana before production scale-up.
+- **CI/CD**: GitHub Actions configured with 13 secrets (Android signing, Vercel, Supabase, DeepSeek, Random.org). Manual trigger ready.
 
-Consult `docs/STATUS.md` for the current sprint focus, `docs/MIGRATION_GUIDE.md` for migration checklist progress, and `docs/SECRETS.md` for comprehensive secrets management.
+Consult `docs/STATUS.md` for the current sprint focus and `ANDROID_LAUNCH_CHECKLIST.md` for detailed asset status and remaining pre-launch tasks.

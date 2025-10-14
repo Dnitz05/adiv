@@ -25,7 +25,9 @@ Future<InterpretationResult?> submitInterpretation({
   String? question,
   String locale = 'en',
 }) async {
+  print('[InterpretationAPI] Starting submitInterpretation');
   final uri = buildApiUri('api/chat/interpret');
+  print('[InterpretationAPI] URI: $uri');
   final cardsPayload = draw.result
       .map((card) => <String, dynamic>{
             'id': card.id,
@@ -62,11 +64,15 @@ Future<InterpretationResult?> submitInterpretation({
     },
   );
 
+  print('[InterpretationAPI] Sending POST request...');
   final response = await http.post(
     uri,
     headers: headers,
     body: jsonEncode(requestBody),
   );
+
+  print('[InterpretationAPI] Response status: ${response.statusCode}');
+  print('[InterpretationAPI] Response body: ${response.body}');
 
   if (response.statusCode != 200) {
     throw Exception('Interpretation request failed (${response.statusCode}): ${response.body}');

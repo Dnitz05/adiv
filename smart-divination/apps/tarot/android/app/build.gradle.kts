@@ -84,14 +84,15 @@ android {
         versionName = flutter.versionName
     }
 
-    signingConfigs {
-        create("release") {
-            val storeFilePath = keystoreProperties.valueOrNull("storeFile")
-            val storePasswordValue = keystoreProperties.valueOrNull("storePassword")
-            val keyAliasValue = keystoreProperties.valueOrNull("keyAlias")
-            val keyPasswordValue = keystoreProperties.valueOrNull("keyPassword")
+    val hasSigningConfig = keystoreProperties.valueOrNull("storeFile") != null &&
+                          keystoreProperties.valueOrNull("storePassword") != null &&
+                          keystoreProperties.valueOrNull("keyAlias") != null &&
+                          keystoreProperties.valueOrNull("keyPassword") != null
 
-            if (storeFilePath != null && storePasswordValue != null && keyAliasValue != null && keyPasswordValue != null) {
+    if (hasSigningConfig) {
+        signingConfigs {
+            create("release") {
+                val storeFilePath = keystoreProperties["storeFile"] as String
                 val candidateStoreFile = File(storeFilePath)
                 val resolvedStoreFile = if (candidateStoreFile.isAbsolute) {
                     candidateStoreFile
@@ -99,27 +100,21 @@ android {
                     rootProject.file(storeFilePath)
                 }
 
-                if (!resolvedStoreFile.exists()) {
-                    throw GradleException(
-                        "Release keystore not found at ${resolvedStoreFile.path}. Provide key.properties or set ANDROID_KEYSTORE_PATH / ANDROID_KEYSTORE_BASE64."
-                    )
-                }
-
                 storeFile = resolvedStoreFile
-                storePassword = storePasswordValue
-                keyAlias = keyAliasValue
-                keyPassword = keyPasswordValue
-            } else {
-                throw GradleException(
-                    "Missing release keystore configuration. Provide key.properties or set ANDROID_KEYSTORE_* environment variables."
-                )
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
             }
         }
+    } else {
+        println("WARNING: Release signing not configured. Debug builds will work, but release builds will fail.")
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            if (hasSigningConfig) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 }
