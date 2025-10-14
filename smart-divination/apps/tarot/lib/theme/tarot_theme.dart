@@ -48,7 +48,7 @@ class TarotTheme {
       ),
 
       // Card
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: royalPurple,
         elevation: 8,
         shadowColor: Colors.black.withOpacity(0.5),
