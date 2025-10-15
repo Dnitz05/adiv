@@ -701,6 +701,14 @@ class _HomeState extends State<_Home> {
     }
   }
 
+  void _resetToHome() {
+    setState(() {
+      _latestDraw = null;
+      _latestInterpretation = null;
+      _error = null;
+    });
+  }
+
   Future<void> _refreshEligibility() async {
     final userId = _userId;
     if (userId == null) {
@@ -1364,38 +1372,35 @@ class _HomeState extends State<_Home> {
       bodyContent = const Center(child: CircularProgressIndicator());
     } else if (!hasDraw) {
       // Initial state: centered logo and draw form
-      bodyContent = RefreshIndicator(
-        onRefresh: _loadAll,
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Draw form card
+      bodyContent = CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Draw form card
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _buildDrawFormCard(localisation),
+                ),
+                if (_error != null) ...[
+                  const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _buildDrawFormCard(localisation),
-                  ),
-                  if (_error != null) ...[
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        _error!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Theme.of(context).colorScheme.error),
-                      ),
+                    child: Text(
+                      _error!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Theme.of(context).colorScheme.error),
                     ),
-                  ],
+                  ),
                 ],
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       );
     } else {
       // After draw: show question at top and spread below
@@ -1418,31 +1423,22 @@ class _HomeState extends State<_Home> {
 
       children.add(_buildLatestDrawCard(localisation));
 
-      bodyContent = RefreshIndicator(
-        onRefresh: _loadAll,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: children,
-        ),
+      bodyContent = ListView(
+        padding: const EdgeInsets.all(16),
+        children: children,
       );
     }
 
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _initialising ? null : _loadAll,
+          onTap: _initialising ? null : _resetToHome,
           child: Image.asset(
             'assets/branding/logo-header.png',
             height: 40,
             fit: BoxFit.contain,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: _initialising ? null : _loadAll,
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
       ),
       body: Stack(
         children: [

@@ -94,7 +94,9 @@
       "Bash(timeout 5 nc localhost 55640)",
       "Bash(timeout 30 adb logcat:*)",
       "Bash(timeout:*)",
-      "Bash(nc localhost 54969)"
+      "Bash(nc localhost 54969)",
+      "Bash(identify:*)",
+      "Bash(convert:*)"
     ],
     "deny": [],
     "ask": []
