@@ -1463,8 +1463,8 @@ class _HomeState extends State<_Home> {
       body: Stack(
         children: [
           Positioned.fill(
-            child: SvgPicture.asset(
-              'assets/backgrounds/mystic_background.svg',
+            child: Image.asset(
+              'assets/backgrounds/fondo.jpg',
               fit: BoxFit.cover,
             ),
           ),
