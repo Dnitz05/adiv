@@ -1389,12 +1389,6 @@ class _HomeState extends State<_Home> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo
-                  Image.asset(
-                    'assets/branding/logo-header.png',
-                    height: 80,
-                  ),
-                  const SizedBox(height: 40),
                   // Draw form card
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
