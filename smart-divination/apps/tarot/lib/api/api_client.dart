@@ -8,19 +8,23 @@ const String kApiBaseUrl = String.fromEnvironment(
 );
 
 Uri buildApiUri(String path, [Map<String, String>? queryParameters]) {
+  print('🌐 DEBUG: Building API URI with base: $kApiBaseUrl');
   final normalisedBase =
       kApiBaseUrl.endsWith('/') ? kApiBaseUrl : '$kApiBaseUrl/';
   final trimmedPath = path.startsWith('/') ? path.substring(1) : path;
   final baseUri = Uri.parse(normalisedBase);
   final resolved = baseUri.resolveUri(Uri(path: trimmedPath));
   if (queryParameters == null || queryParameters.isEmpty) {
+    print('🌐 DEBUG: Final URI: $resolved');
     return resolved;
   }
   final mergedQuery = <String, String>{
     ...resolved.queryParameters,
     ...queryParameters,
   };
-  return resolved.replace(queryParameters: mergedQuery);
+  final finalUri = resolved.replace(queryParameters: mergedQuery);
+  print('🌐 DEBUG: Final URI with query: $finalUri');
+  return finalUri;
 }
 
 Future<String> _requireAccessToken() async {

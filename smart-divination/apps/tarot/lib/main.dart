@@ -1451,13 +1451,13 @@ class _HomeState extends State<_Home> {
               children: [
                 // Draw form card
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: _buildDrawFormCard(localisation),
                 ),
                 if (_error != null) ...[
                   const SizedBox(height: 16),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
                       _error!,
                       style: Theme.of(context)
@@ -1495,7 +1495,7 @@ class _HomeState extends State<_Home> {
       children.add(_buildLatestDrawCard(localisation));
 
       bodyContent = ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(8),
         children: children,
       );
     }

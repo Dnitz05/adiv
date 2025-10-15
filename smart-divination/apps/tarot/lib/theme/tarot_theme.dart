@@ -34,10 +34,17 @@ class TarotTheme {
 
       // AppBar
       appBarTheme: AppBarTheme(
-        backgroundColor: deepPurple,
+        backgroundColor: royalPurple,
         foregroundColor: moonGold,
-        elevation: 0,
+        elevation: 8,
+        shadowColor: Colors.black.withOpacity(0.5),
         centerTitle: true,
+        shape: Border(
+          bottom: BorderSide(
+            color: moonGold.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
         titleTextStyle: TextStyle(
           fontFamily: 'Cinzel',
           fontSize: 24,

@@ -81,30 +81,47 @@ class SessionEligibility {
 
 Future<SessionEligibility> fetchSessionEligibility(
     {required String userId}) async {
+  print('✅ DEBUG: fetchSessionEligibility called for userId: $userId');
   final uri = buildApiUri('api/users/$userId/can-start-session');
-  final headers = await buildAuthenticatedHeaders(
-    userId: userId,
-    additional: {
-      'accept': 'application/json',
-    },
-  );
-  final res = await http.get(
-    uri,
-    headers: headers,
-  );
+  print('✅ DEBUG: URI: $uri');
 
-  if (res.statusCode != 200) {
-    throw Exception(
-        'Session eligibility failed (${res.statusCode}): ${res.body}');
+  try {
+    final headers = await buildAuthenticatedHeaders(
+      userId: userId,
+      additional: {
+        'accept': 'application/json',
+      },
+    );
+    print('✅ DEBUG: Headers built successfully');
+
+    print('✅ DEBUG: Making GET request...');
+    final res = await http.get(
+      uri,
+      headers: headers,
+    );
+    print('✅ DEBUG: Response received, status: ${res.statusCode}');
+
+    if (res.statusCode != 200) {
+      print('✅ DEBUG: Non-200 status code: ${res.statusCode}, body: ${res.body}');
+      throw Exception(
+          'Session eligibility failed (${res.statusCode}): ${res.body}');
+    }
+
+    print('✅ DEBUG: Parsing response body...');
+    final Map<String, dynamic> payload =
+        jsonDecode(res.body) as Map<String, dynamic>;
+    if (payload['success'] != true) {
+      final error = payload['error'];
+      print('✅ DEBUG: Success=false in response: $error');
+      throw Exception('Session eligibility failed: ${error ?? payload}');
+    }
+
+    final data = payload['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
+    print('✅ DEBUG: Parsed successfully, returning data');
+    return SessionEligibility.fromJson(data);
+  } catch (e, stackTrace) {
+    print('✅ DEBUG: ERROR in fetchSessionEligibility: $e');
+    print('✅ DEBUG: Stack trace: $stackTrace');
+    rethrow;
   }
-
-  final Map<String, dynamic> payload =
-      jsonDecode(res.body) as Map<String, dynamic>;
-  if (payload['success'] != true) {
-    final error = payload['error'];
-    throw Exception('Session eligibility failed: ${error ?? payload}');
-  }
-
-  final data = payload['data'] as Map<String, dynamic>? ?? <String, dynamic>{};
-  return SessionEligibility.fromJson(data);
 }
