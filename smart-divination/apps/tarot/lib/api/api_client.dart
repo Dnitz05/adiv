@@ -1,21 +1,49 @@
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
 
 import '../auth/auth_exceptions.dart';
 
-const String kApiBaseUrl = String.fromEnvironment(
+const String _environmentApiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://localhost:3001',
+  defaultValue: '',
 );
 
+const String _localDevelopmentApiBase = 'http://10.0.2.2:3001';
+const String _productionApiBase =
+    'https://backend-4sircya71-dnitzs-projects.vercel.app';
+
+String? _runtimeApiBaseOverride;
+
+String _resolveApiBaseUrl() {
+  final override = _runtimeApiBaseOverride;
+  if (override != null && override.isNotEmpty) {
+    return override;
+  }
+
+  if (_environmentApiBaseUrl.isNotEmpty) {
+    return _environmentApiBaseUrl;
+  }
+
+  if (kReleaseMode) {
+    return _productionApiBase;
+  }
+
+  return _localDevelopmentApiBase;
+}
+
+void setApiBaseUrlOverride(String? override) {
+  _runtimeApiBaseOverride = override?.trim();
+}
+
 Uri buildApiUri(String path, [Map<String, String>? queryParameters]) {
-  print('🌐 DEBUG: Building API URI with base: $kApiBaseUrl');
-  final normalisedBase =
-      kApiBaseUrl.endsWith('/') ? kApiBaseUrl : '$kApiBaseUrl/';
+  final baseUrl = _resolveApiBaseUrl();
+  print('[API] Building URI with base: $baseUrl');
+  final normalisedBase = baseUrl.endsWith('/') ? baseUrl : '$baseUrl/';
   final trimmedPath = path.startsWith('/') ? path.substring(1) : path;
   final baseUri = Uri.parse(normalisedBase);
   final resolved = baseUri.resolveUri(Uri(path: trimmedPath));
   if (queryParameters == null || queryParameters.isEmpty) {
-    print('🌐 DEBUG: Final URI: $resolved');
+    print('[API] Final URI: $resolved');
     return resolved;
   }
   final mergedQuery = <String, String>{
@@ -23,7 +51,7 @@ Uri buildApiUri(String path, [Map<String, String>? queryParameters]) {
     ...queryParameters,
   };
   final finalUri = resolved.replace(queryParameters: mergedQuery);
-  print('🌐 DEBUG: Final URI with query: $finalUri');
+  print('[API] Final URI with query: $finalUri');
   return finalUri;
 }
 

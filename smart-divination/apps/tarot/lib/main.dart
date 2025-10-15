@@ -690,13 +690,17 @@ class _HomeState extends State<_Home> {
         _history = history;
         _initialising = false;
       });
-    } catch (error) {
+    } catch (error, stackTrace) {
+      print('❌ ERROR in _loadAll: $error');
+      print('❌ Stack trace: $stackTrace');
       if (!mounted) {
         return;
       }
       final localisation = CommonStrings.of(context);
+      final formattedError = _formatError(localisation, error);
+      print('❌ Formatted error message: $formattedError');
       setState(() {
-        _error = _formatError(localisation, error);
+        _error = formattedError;
         _initialising = false;
       });
     }
@@ -1189,13 +1193,13 @@ class _HomeState extends State<_Home> {
         constraints: const BoxConstraints(maxWidth: 280),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primaryContainer,
+          color: const Color(0xFF4A2C6F),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           question,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onPrimaryContainer,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ),
@@ -1207,40 +1211,26 @@ class _HomeState extends State<_Home> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(
-              localisation.spreadLabel(draw.spread),
-              style: theme.textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 12),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                // Get the selected spread or use threeCard as fallback
-                final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Get the selected spread or use threeCard as fallback
+            final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
 
-                // Convert CardResult to TarotCard
-                final tarotCards = draw.result.map((card) {
-                  final imagePath = _getCardImagePath(card);
-                  return TarotCard.fromCardResult(card, imagePath: imagePath);
-                }).toList();
+            // Convert CardResult to TarotCard
+            final tarotCards = draw.result.map((card) {
+              final imagePath = _getCardImagePath(card);
+              return TarotCard.fromCardResult(card, imagePath: imagePath);
+            }).toList();
 
-                return Center(
-                  child: SpreadLayout(
-                    spread: spread,
-                    cards: tarotCards,
-                    maxWidth: constraints.maxWidth,
-                    maxHeight: 500,
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 12),
-            Text(
-              localisation.methodLabel(draw.method),
-              style: theme.textTheme.bodySmall,
-            ),
-          ],
+            return Center(
+              child: SpreadLayout(
+                spread: spread,
+                cards: tarotCards,
+                maxWidth: constraints.maxWidth,
+                maxHeight: 500,
+              ),
+            );
+          },
         ),
       ),
     );
@@ -1256,7 +1246,7 @@ class _HomeState extends State<_Home> {
         constraints: const BoxConstraints(maxWidth: 320),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: theme.colorScheme.surfaceContainerHighest,
+          color: const Color(0xFF4A2C6F),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -1274,7 +1264,7 @@ class _HomeState extends State<_Home> {
                 Text(
                   interpretation.summary!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -1447,8 +1437,8 @@ class _HomeState extends State<_Home> {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Spacer(flex: 2),
                 // Draw form card
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -1467,6 +1457,7 @@ class _HomeState extends State<_Home> {
                     ),
                   ),
                 ],
+                const Spacer(flex: 3),
               ],
             ),
           ),
