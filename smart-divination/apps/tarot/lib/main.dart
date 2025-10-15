@@ -813,9 +813,6 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(localisation.drawSuccessMessage)),
-      );
 
     } catch (error) {
       if (!mounted) {
