@@ -1047,15 +1047,18 @@ class _HomeState extends State<_Home> {
 
   Widget _buildMiniReversedBadge() {
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.6),
-        borderRadius: BorderRadius.circular(4),
+        color: const Color(0xFFB597FF).withOpacity(0.85),
+        borderRadius: BorderRadius.circular(6),
       ),
-      child: const Icon(
-        Icons.rotate_left,
-        size: 16,
-        color: Colors.white,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Icon(Icons.visibility, size: 14, color: Colors.white),
+          SizedBox(width: 4),
+          Text('REV', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
+        ],
       ),
     );
   }
@@ -1520,4 +1523,5 @@ class _HomeState extends State<_Home> {
     );
   }
 }
+
 
