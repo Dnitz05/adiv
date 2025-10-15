@@ -814,6 +814,7 @@ class _HomeState extends State<_Home> {
       setState(() {
         _latestDraw = response;
         _latestInterpretation = null;
+        _currentQuestion = question.isEmpty ? null : question;
       });
       await Future.wait([
         _refreshHistory(),
@@ -1155,20 +1156,53 @@ class _HomeState extends State<_Home> {
     if (draw == null) {
       return const SizedBox.shrink();
     }
-    final theme = Theme.of(context);
-    final interpretation = _latestInterpretation;
 
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // User question message (right-aligned)
+        if (_currentQuestion != null && _currentQuestion!.isNotEmpty)
+          _buildUserQuestionBubble(_currentQuestion!),
+        const SizedBox(height: 16),
+
+        // Cards display (centered)
+        _buildCardsMessage(draw, localisation),
+        const SizedBox(height: 16),
+
+        // AI interpretation message (left-aligned)
+        _buildAIInterpretationBubble(draw, localisation),
+      ],
+    );
+  }
+
+  Widget _buildUserQuestionBubble(String question) {
+    final theme = Theme.of(context);
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 280),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          question,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onPrimaryContainer,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardsMessage(CardsDrawResponse draw, CommonStrings localisation) {
+    final theme = Theme.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              localisation.historyHeading,
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
             Text(
               localisation.spreadLabel(draw.spread),
               style: theme.textTheme.bodyMedium,
@@ -1200,17 +1234,42 @@ class _HomeState extends State<_Home> {
               localisation.methodLabel(draw.method),
               style: theme.textTheme.bodySmall,
             ),
-            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAIInterpretationBubble(CardsDrawResponse draw, CommonStrings localisation) {
+    final theme = Theme.of(context);
+    final interpretation = _latestInterpretation;
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 320),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             if (interpretation != null) ...[
               Text(
                 interpretation.interpretation,
-                style: theme.textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
               if (interpretation.summary != null) ...[
                 const SizedBox(height: 8),
                 Text(
                   interpretation.summary!,
-                  style: theme.textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ] else if (!_requestingInterpretation &&
