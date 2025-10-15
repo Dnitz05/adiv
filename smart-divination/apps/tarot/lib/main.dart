@@ -638,7 +638,6 @@ class _HomeState extends State<_Home> {
   List<TarotSession> _history = <TarotSession>[];
   CardsDrawResponse? _latestDraw;
   InterpretationResult? _latestInterpretation;
-  bool _allowReversed = true;
   bool _drawing = false;
   bool _requestingInterpretation = false;
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
@@ -794,7 +793,7 @@ class _HomeState extends State<_Home> {
       final response = await drawCards(
         count: _selectedSpread.cardCount,
         spread: _selectedSpread.id,
-        allowReversed: _allowReversed,
+        allowReversed: true,
         seed: seed.isEmpty ? null : seed,
         question: question.isEmpty ? null : question,
         locale: Localizations.localeOf(context).languageCode,
@@ -1126,19 +1125,7 @@ class _HomeState extends State<_Home> {
               ),
               maxLines: 2,
             ),
-            const SizedBox(height: 12),
-            SwitchListTile(
-              title: Text(localisation.allowReversed),
-              value: _allowReversed,
-              onChanged: _drawing
-                  ? null
-                  : (value) {
-                      setState(() {
-                        _allowReversed = value;
-                      });
-                    },
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 24),
             FilledButton.icon(
               onPressed: _drawing ? null : _drawCards,
               icon: _drawing
