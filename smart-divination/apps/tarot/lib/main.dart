@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
 
@@ -1045,7 +1046,7 @@ class _HomeState extends State<_Home> {
         borderRadius: BorderRadius.circular(4),
       ),
       child: const Icon(
-        Icons.refresh,
+        Icons.rotate_left,
         size: 16,
         color: Colors.white,
       ),
@@ -1450,19 +1451,37 @@ class _HomeState extends State<_Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(localisation.appTitle('tarot')),
+        title: GestureDetector(
+          onTap: _initialising ? null : _loadAll,
+          child: Image.asset(
+            'assets/branding/logo-header.png',
+            height: 40,
+            fit: BoxFit.contain,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: _initialising ? null : _loadAll,
             icon: const Icon(Icons.refresh),
           ),
-          IconButton(
-            onPressed: _signOut,
-            icon: const Icon(Icons.logout),
-          ),
         ],
       ),
-      body: bodyContent,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: SvgPicture.asset(
+              'assets/backgrounds/mystic_background.svg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ),
+          bodyContent,
+        ],
+      ),
     );
   }
 }
