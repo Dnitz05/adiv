@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
@@ -1033,6 +1034,21 @@ class _HomeState extends State<_Home> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildMiniReversedBadge() {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: const Icon(
+        Icons.refresh,
+        size: 16,
+        color: Colors.white,
+      ),
     );
   }
 
