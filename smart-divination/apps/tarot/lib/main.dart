@@ -965,12 +965,26 @@ class _HomeState extends State<_Home> {
   }
 
   Widget _buildCardWidget(CardResult card, CommonStrings localisation) {
-    final imagePath = _getCardImagePath(card);
+    final bool isReversed = !card.upright;
+    final String? imagePath = _getCardImagePath(card);
     final cardName = _formatCardLabel(card, localisation);
 
     if (imagePath == null) {
       return Chip(label: Text(cardName));
     }
+
+    final Widget cardFace = Image.asset(
+      imagePath,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) {
+        return Container(
+          color: Colors.grey[300],
+          child: Center(
+            child: Icon(Icons.broken_image, color: Colors.grey[600]),
+          ),
+        );
+      },
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -990,21 +1004,20 @@ class _HomeState extends State<_Home> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Transform(
-              alignment: Alignment.center,
-              transform: card.upright ? Matrix4.identity() : Matrix4.rotationZ(3.14159),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[300],
-                    child: Center(
-                      child: Icon(Icons.broken_image, color: Colors.grey[600]),
-                    ),
-                  );
-                },
-              ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Transform.rotate(
+                  angle: isReversed ? math.pi : 0,
+                  child: cardFace,
+                ),
+                if (isReversed)
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: _buildMiniReversedBadge(),
+                  ),
+              ],
             ),
           ),
         ),

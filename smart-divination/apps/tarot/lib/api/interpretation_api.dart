@@ -49,10 +49,14 @@ Future<InterpretationResult?> submitInterpretation({
   final requestBody = <String, dynamic>{
     'sessionId': sessionId,
     'results': resultsPayload,
-    'question': question,
     'technique': 'tarot',
     'locale': locale,
   };
+
+  // Only include question if it's not null
+  if (question != null) {
+    requestBody['question'] = question;
+  }
 
   final userId = await UserIdentity.obtain();
   final headers = await buildAuthenticatedHeaders(

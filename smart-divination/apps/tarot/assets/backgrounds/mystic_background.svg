@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440" height="2560" viewBox="0 0 1440 2560" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)" />
+      <stop offset="70%" stop-color="rgba(255,255,255,0.05)" />
+      <stop offset="95%" stop-color="rgba(255,255,255,0.0)" />
+    </radialGradient>
+    <pattern id="constellation" width="160" height="160" patternUnits="userSpaceOnUse">
+      <path d="M20 20 L40 60 L80 45 L120 110" stroke="rgba(255,255,255,0.12)" stroke-width="1" fill="none" stroke-linecap="round" />
+      <circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.2)" />
+      <circle cx="40" cy="60" r="1.6" fill="rgba(255,255,255,0.15)" />
+      <circle cx="80" cy="45" r="2.1" fill="rgba(255,255,255,0.25)" />
+      <circle cx="120" cy="110" r="1.4" fill="rgba(255,255,255,0.18)" />
+      <path d="M25 120 Q40 140 70 135" stroke="rgba(255,255,255,0.08)" stroke-width="1" fill="none" />
+      <path d="M90 10 C110 35 120 55 130 80" stroke="rgba(255,255,255,0.06)" stroke-width="0.8" fill="none" />
+      <circle cx="90" cy="10" r="1.5" fill="rgba(255,255,255,0.15)" />
+      <circle cx="130" cy="80" r="1.2" fill="rgba(255,255,255,0.12)" />
+    </pattern>
+  </defs>
+
+  <rect width="1440" height="2560" fill="url(#constellation)" />
+  <g opacity="0.55">
+    <circle cx="1080" cy="-180" r="620" fill="url(#glow)" />
+    <circle cx="260" cy="520" r="420" fill="url(#glow)" />
+    <circle cx="1220" cy="980" r="480" fill="url(#glow)" />
+    <circle cx="440" cy="1780" r="540" fill="url(#glow)" />
+  </g>
+
+  <g stroke="rgba(255,255,255,0.12)" stroke-width="0.6" fill="none">
+    <path d="M120 220 Q280 120 420 260 T720 260 T1020 220 T1340 320" />
+    <path d="M80 860 Q240 720 400 820 T720 860 T1040 800 T1360 940" opacity="0.7" />
+    <path d="M200 1460 Q360 1320 520 1400 T760 1440 T1000 1380 T1240 1500" opacity="0.55" />
+    <path d="M160 2080 Q360 1940 560 2060 T920 2100 T1280 2040" opacity="0.45" />
+  </g>
+
+  <g fill="rgba(255,255,255,0.16)">
+    <circle cx="180" cy="180" r="2" />
+    <circle cx="420" cy="340" r="1.6" />
+    <circle cx="760" cy="220" r="1.9" />
+    <circle cx="1020" cy="440" r="1.7" />
+    <circle cx="1320" cy="260" r="2.2" />
+    <circle cx="240" cy="960" r="1.5" />
+    <circle cx="540" cy="1120" r="2.1" />
+    <circle cx="860" cy="940" r="1.8" />
+    <circle cx="1180" cy="1080" r="1.6" />
+    <circle cx="320" cy="1600" r="1.9" />
+    <circle cx="620" cy="1820" r="2.0" />
+    <circle cx="940" cy="1680" r="1.7" />
+    <circle cx="1240" cy="1880" r="2.3" />
+    <circle cx="200" cy="2300" r="1.4" />
+    <circle cx="520" cy="2460" r="1.9" />
+    <circle cx="860" cy="2280" r="1.6" />
+    <circle cx="1180" cy="2420" r="1.8" />
+  </g>
+</svg>

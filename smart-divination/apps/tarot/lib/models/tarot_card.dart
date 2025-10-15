@@ -22,11 +22,22 @@ class TarotCard {
   factory TarotCard.fromCardResult(CardResult card, {String? imagePath}) {
     return TarotCard(
       name: card.name,
-      suit: card.suit.isNotEmpty ? card.suit : null,
+      suit: _normaliseSuit(card.suit),
       number: card.number,
       upright: card.upright,
       position: card.position,
       imageUrl: imagePath,
     );
+  }
+  static String? _normaliseSuit(String rawSuit) {
+    final trimmed = rawSuit.trim();
+    if (trimmed.isEmpty) {
+      return null;
+    }
+    final lower = trimmed.toLowerCase();
+    if (lower == 'major arcana' || lower == 'major-arcana' || lower == 'major') {
+      return null;
+    }
+    return trimmed;
   }
 }

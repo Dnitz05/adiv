@@ -532,6 +532,12 @@ abstract class CommonStrings {
   /// **'Start Session'**
   String get startSession;
 
+  /// No description provided for @revealCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal cards'**
+  String get revealCards;
+
   /// No description provided for @tarot.
   ///
   /// In en, this message translates to:

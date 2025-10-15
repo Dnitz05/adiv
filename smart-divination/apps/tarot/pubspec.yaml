@@ -31,11 +31,13 @@ flutter:
   generate: true
   assets:
     - assets/cards/
+    - assets/branding/
 
 
 flutter_launcher_icons:
   android: true
   ios: false
   image_path: assets/app_icon/icon.png
-  adaptive_icon_background: "#35173B"
+  adaptive_icon_background: "#4A2C6F"
   adaptive_icon_foreground: assets/app_icon/icon.png
+  flutter_svg: ^2.0.10

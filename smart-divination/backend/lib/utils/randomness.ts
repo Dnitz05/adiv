@@ -410,7 +410,8 @@ export async function generateTarotCards(options: {
 
   // Encode cards with reversal information
   const encodedValues = cardIndices.map((cardIndex, position) => {
-    const isReversed = allowReversed && reversalValues[position % reversalValues.length] % 2 === 1;
+    // 30% probability of reversal: use modulo 10 and check if < 3 (gives 0,1,2 out of 0-9)
+    const isReversed = allowReversed && reversalValues[position % reversalValues.length] % 10 < 3;
 
     // Encode: [31-bit card index][1-bit reversal]
     return (cardIndex << 1) | (isReversed ? 1 : 0);

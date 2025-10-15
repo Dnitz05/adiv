@@ -253,7 +253,10 @@ class CommonStringsEs extends CommonStrings {
   }
 
   @override
-  String get startSession => 'Iniciar sesión';
+  String get startSession => 'Consulta';
+
+  @override
+  String get revealCards => 'Revelar cartas';
 
   @override
   String get tarot => 'Tarot';

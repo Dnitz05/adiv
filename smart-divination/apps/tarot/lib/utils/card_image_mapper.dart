@@ -2,59 +2,59 @@
 class CardImageMapper {
   /// Get the asset path for a card based on its name and suit
   static String getCardImagePath(String cardName, String? suit) {
-    final normalized = cardName.toLowerCase().trim();
+    final normalizedName = cardName.toLowerCase().trim();
+    final suitValue = suit?.trim().toLowerCase();
+    final isMajorArcana = suitValue == null || suitValue.isEmpty || suitValue == "major arcana" || suitValue == "major-arcana" || suitValue == "major";
 
-    // Major Arcana
-    if (suit == null || suit.isEmpty) {
-      return _getMajorArcanaPath(normalized);
+    if (isMajorArcana) {
+      return _getMajorArcanaPath(normalizedName);
     }
 
-    // Minor Arcana
-    return _getMinorArcanaPath(normalized, suit);
+    return _getMinorArcanaPath(normalizedName, suitValue!);
   }
 
   static String _getMajorArcanaPath(String cardName) {
     final majorArcanaMap = {
-      'the fool': '00-TheFool',
-      'fool': '00-TheFool',
-      'the magician': '01-TheMagician',
-      'magician': '01-TheMagician',
-      'the high priestess': '02-TheHighPriestess',
-      'high priestess': '02-TheHighPriestess',
-      'the empress': '03-TheEmpress',
-      'empress': '03-TheEmpress',
-      'the emperor': '04-TheEmperor',
-      'emperor': '04-TheEmperor',
-      'the hierophant': '05-TheHierophant',
-      'hierophant': '05-TheHierophant',
-      'the lovers': '06-TheLovers',
-      'lovers': '06-TheLovers',
-      'the chariot': '07-TheChariot',
-      'chariot': '07-TheChariot',
-      'strength': '08-Strength',
-      'the hermit': '09-TheHermit',
-      'hermit': '09-TheHermit',
-      'wheel of fortune': '10-WheelOfFortune',
-      'the wheel of fortune': '10-WheelOfFortune',
-      'justice': '11-Justice',
-      'the hanged man': '12-TheHangedMan',
-      'hanged man': '12-TheHangedMan',
-      'death': '13-Death',
-      'temperance': '14-Temperance',
-      'the devil': '15-TheDevil',
-      'devil': '15-TheDevil',
-      'the tower': '16-TheTower',
-      'tower': '16-TheTower',
-      'the star': '17-TheStar',
-      'star': '17-TheStar',
-      'the moon': '18-TheMoon',
-      'moon': '18-TheMoon',
-      'the sun': '19-TheSun',
-      'sun': '19-TheSun',
-      'judgement': '20-Judgement',
-      'judgment': '20-Judgement',
-      'the world': '21-TheWorld',
-      'world': '21-TheWorld',
+      "the fool": "00-TheFool",
+      "fool": "00-TheFool",
+      "the magician": "01-TheMagician",
+      "magician": "01-TheMagician",
+      "the high priestess": "02-TheHighPriestess",
+      "high priestess": "02-TheHighPriestess",
+      "the empress": "03-TheEmpress",
+      "empress": "03-TheEmpress",
+      "the emperor": "04-TheEmperor",
+      "emperor": "04-TheEmperor",
+      "the hierophant": "05-TheHierophant",
+      "hierophant": "05-TheHierophant",
+      "the lovers": "06-TheLovers",
+      "lovers": "06-TheLovers",
+      "the chariot": "07-TheChariot",
+      "chariot": "07-TheChariot",
+      "strength": "08-Strength",
+      "the hermit": "09-TheHermit",
+      "hermit": "09-TheHermit",
+      "wheel of fortune": "10-WheelOfFortune",
+      "the wheel of fortune": "10-WheelOfFortune",
+      "justice": "11-Justice",
+      "the hanged man": "12-TheHangedMan",
+      "hanged man": "12-TheHangedMan",
+      "death": "13-Death",
+      "temperance": "14-Temperance",
+      "the devil": "15-TheDevil",
+      "devil": "15-TheDevil",
+      "the tower": "16-TheTower",
+      "tower": "16-TheTower",
+      "the star": "17-TheStar",
+      "star": "17-TheStar",
+      "the moon": "18-TheMoon",
+      "moon": "18-TheMoon",
+      "the sun": "19-TheSun",
+      "sun": "19-TheSun",
+      "judgement": "20-Judgement",
+      "judgment": "20-Judgement",
+      "the world": "21-TheWorld",
+      "world": "21-TheWorld",
     };
 
     final fileName = majorArcanaMap[cardName];
@@ -69,19 +69,24 @@ class CardImageMapper {
   static String _getMinorArcanaPath(String cardName, String suit) {
     // Normalize suit name
     final suitMap = {
-      'wands': 'Wands',
-      'wand': 'Wands',
-      'cups': 'Cups',
-      'cup': 'Cups',
-      'swords': 'Swords',
-      'sword': 'Swords',
-      'pentacles': 'Pentacles',
-      'pentacle': 'Pentacles',
-      'coins': 'Pentacles',
-      'coin': 'Pentacles',
+      "wands": "Wands",
+      "wand": "Wands",
+      "rods": "Wands",
+      "staves": "Wands",
+      "clubs": "Wands",
+      "cups": "Cups",
+      "cup": "Cups",
+      "chalices": "Cups",
+      "swords": "Swords",
+      "sword": "Swords",
+      "blades": "Swords",
+      "pentacles": "Pentacles",
+      "pentacle": "Pentacles",
+      "coins": "Pentacles",
+      "coin": "Pentacles",
     };
 
-    final normalizedSuit = suitMap[suit.toLowerCase().trim()] ?? suit;
+    final normalizedSuit = suitMap[suit] ?? suit[0].toUpperCase() + suit.substring(1).toLowerCase();
 
     // Extract card number or court card name
     String? cardNumber;
@@ -100,8 +105,14 @@ class CardImageMapper {
     } else {
       // Try to extract number from card name
       final numbers = {
-        'two': '02', 'three': '03', 'four': '04', 'five': '05',
-        'six': '06', 'seven': '07', 'eight': '08', 'nine': '09',
+        'two': '02',
+        'three': '03',
+        'four': '04',
+        'five': '05',
+        'six': '06',
+        'seven': '07',
+        'eight': '08',
+        'nine': '09',
         'ten': '10',
       };
 
@@ -114,11 +125,11 @@ class CardImageMapper {
 
       // Try numeric extraction
       if (cardNumber == null) {
-        final match = RegExp(r'\d+').firstMatch(cardName);
+        final match = RegExp(r'\\d+').firstMatch(cardName);
         if (match != null) {
-          final num = int.tryParse(match.group(0)!);
-          if (num != null && num >= 1 && num <= 10) {
-            cardNumber = num.toString().padLeft(2, '0');
+          final value = int.tryParse(match.group(0)!);
+          if (value != null && value >= 1 && value <= 10) {
+            cardNumber = value.toString().padLeft(2, '0');
           }
         }
       }

@@ -10,6 +10,7 @@ class SpreadLayout extends StatelessWidget {
   final List<TarotCard> cards;
   final double maxWidth;
   final double maxHeight;
+  final bool showCardBacks; // Si és true, mostra el dors de les cartes
 
   const SpreadLayout({
     super.key,
@@ -17,6 +18,7 @@ class SpreadLayout extends StatelessWidget {
     required this.cards,
     required this.maxWidth,
     required this.maxHeight,
+    this.showCardBacks = false, // Per defecte mostra les cartes
   });
 
   @override
@@ -58,6 +60,7 @@ class SpreadLayout extends StatelessWidget {
               effectiveHeight,
               cardWidth,
               cardHeight,
+              showCardBacks, // Passar el paràmetre
             ),
         ],
       ),
@@ -95,6 +98,7 @@ class SpreadLayout extends StatelessWidget {
     double containerHeight,
     double cardWidth,
     double cardHeight,
+    bool showCardBack, // Nou paràmetre
   ) {
     // Convert relative position (0.0-1.0) to absolute position
     final double left = (position.x * containerWidth) - (cardWidth / 2);
@@ -103,7 +107,9 @@ class SpreadLayout extends StatelessWidget {
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
     // Reversed cards should be shown upside-down (180° rotation)
-    final double cardRotation = isReversed ? 180 : 0;
+    // Però si es mostra el dors, no aplicar rotació de carta invertida
+    final double cardRotation = (showCardBack || !isReversed) ? 0 : 180;
+
 
     final cardStack = SizedBox(
       width: cardWidth,
@@ -113,13 +119,14 @@ class SpreadLayout extends StatelessWidget {
         children: [
           Transform.rotate(
             angle: cardRotation * math.pi / 180,
-            child: _buildCardWidget(card, cardWidth, cardHeight),
+            child: _buildCardWidget(card, cardWidth, cardHeight, showCardBack),
           ),
-          if (isReversed)
+          // Només mostrar badge d'invertida si la carta està revelada
+          if (!showCardBack && isReversed)
             Positioned(
-              top: 8,
-              right: 8,
-              child: _buildReversedBadge(cardWidth),
+              top: 6,
+              right: 6,
+              child: _buildReversedIcon(),
             ),
         ],
       ),
@@ -135,35 +142,38 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildReversedBadge(double cardWidth) {
-    final double fontSize = ((cardWidth * 0.12).clamp(10.0, 16.0)).toDouble();
+  Widget _buildReversedIcon() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      width: 24,
+      height: 24,
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.rotate_left, size: 14, color: Colors.white),
-          const SizedBox(width: 4),
-          Text(
-            'REV',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: fontSize,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.1,
-            ),
+        color: TarotTheme.deepPurple.withOpacity(0.85),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: TarotTheme.moonGold.withOpacity(0.6),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: TarotTheme.moonGold.withOpacity(0.3),
+            blurRadius: 4,
+            spreadRadius: 1,
           ),
         ],
       ),
+      child: Icon(
+        Icons.sync,
+        size: 14,
+        color: TarotTheme.moonGold,
+      ),
     );
   }
-  Widget _buildCardWidget(TarotCard card, double width, double height) {
-    // Get the local image path for this card
-    final imagePath = CardImageMapper.getCardImagePath(card.name, card.suit);
+
+  Widget _buildCardWidget(TarotCard card, double width, double height, bool showCardBack) {
+    // Si volem mostrar el dors, usar la imatge del dors
+    final String imagePath = showCardBack
+        ? 'assets/cards/CardBacks.jpg'
+        : (card.imageUrl ?? CardImageMapper.getCardImagePath(card.name, card.suit));
 
     return Container(
       width: width,
@@ -183,6 +193,15 @@ class SpreadLayout extends StatelessWidget {
           imagePath,
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
+            // Si és el dors i hi ha error, mostrar contenidor fosc
+            if (showCardBack) {
+              return Container(
+                color: TarotTheme.deepPurple,
+                child: Center(
+                  child: Icon(Icons.back_hand, color: TarotTheme.moonGold, size: width * 0.3),
+                ),
+              );
+            }
             return _buildCardFallback(card, width, height);
           },
         ),
@@ -233,4 +252,5 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 }
+
 

@@ -255,7 +255,10 @@ class CommonStringsEn extends CommonStrings {
   }
 
   @override
-  String get startSession => 'Start Session';
+  String get startSession => 'Reading';
+
+  @override
+  String get revealCards => 'Reveal cards';
 
   @override
   String get tarot => 'Tarot';
