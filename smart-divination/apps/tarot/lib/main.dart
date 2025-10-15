@@ -703,11 +703,14 @@ class _HomeState extends State<_Home> {
   }
 
   void _resetToHome() {
+    print('🏠 DEBUG: _resetToHome() called');
+    print('🏠 DEBUG: Before reset - _latestDraw: $_latestDraw');
     setState(() {
       _latestDraw = null;
       _latestInterpretation = null;
       _currentQuestion = null;
       _error = null;
+      print('🏠 DEBUG: After reset - all state cleared');
     });
   }
 
@@ -1428,13 +1431,16 @@ class _HomeState extends State<_Home> {
   Widget build(BuildContext context) {
     final localisation = CommonStrings.of(context);
     final hasDraw = _latestDraw != null;
+    print('🏠 DEBUG: build() - hasDraw: $hasDraw, _initialising: $_initialising');
 
     // Build content based on whether there's a draw or not
     Widget bodyContent;
 
     if (_initialising) {
+      print('🏠 DEBUG: Showing loading indicator');
       bodyContent = const Center(child: CircularProgressIndicator());
     } else if (!hasDraw) {
+      print('🏠 DEBUG: Showing initial home view (draw form)');
       // Initial state: centered logo and draw form
       bodyContent = CustomScrollView(
         slivers: [
@@ -1467,6 +1473,7 @@ class _HomeState extends State<_Home> {
         ],
       );
     } else {
+      print('🏠 DEBUG: Showing interpretation view (with draw)');
       // After draw: show question at top and spread below
       final children = <Widget>[];
 
@@ -1495,7 +1502,7 @@ class _HomeState extends State<_Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: GestureDetector(
+        title: InkWell(
           onTap: _initialising ? null : _resetToHome,
           child: Image.asset(
             'assets/branding/logo-header.png',
