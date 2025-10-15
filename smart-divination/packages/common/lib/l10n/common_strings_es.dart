@@ -180,7 +180,7 @@ class CommonStringsEs extends CommonStrings {
   String get ichingDescription => 'Sabiduría ancestral china';
 
   @override
-  String get interpretationHeading => 'Interpretación';
+  String get interpretationHeading => 'Consulta';
 
   @override
   String get language => 'Idioma';

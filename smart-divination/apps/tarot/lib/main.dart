@@ -1370,36 +1370,82 @@ class _HomeState extends State<_Home> {
   @override
   Widget build(BuildContext context) {
     final localisation = CommonStrings.of(context);
-    final children = <Widget>[];
+    final hasDraw = _latestDraw != null;
 
-    if (_error != null) {
-      children.add(
-        Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Text(
-            _error!,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: Theme.of(context).colorScheme.error),
-          ),
+    // Build content based on whether there's a draw or not
+    Widget bodyContent;
+
+    if (_initialising) {
+      bodyContent = const Center(child: CircularProgressIndicator());
+    } else if (!hasDraw) {
+      // Initial state: centered logo and draw form
+      bodyContent = RefreshIndicator(
+        onRefresh: _loadAll,
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo
+                  Image.asset(
+                    'assets/branding/logo-header.png',
+                    height: 80,
+                  ),
+                  const SizedBox(height: 40),
+                  // Draw form card
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildDrawFormCard(localisation),
+                  ),
+                  if (_error != null) ...[
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        _error!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Theme.of(context).colorScheme.error),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
         ),
       );
-    }
+    } else {
+      // After draw: show question at top and spread below
+      final children = <Widget>[];
 
-    // Skip eligibility for anonymous users (they have unlimited sessions)
-    final eligibility = _eligibility;
-    if (eligibility != null && _userId != null && !_userId!.startsWith('anon_')) {
-      children.add(_buildEligibilityCard(localisation, eligibility));
-    }
+      if (_error != null) {
+        children.add(
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Text(
+              _error!,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+        );
+      }
 
-    children.add(_buildDrawFormCard(localisation));
-    children.add(_buildLatestDrawCard(localisation));
-    children.add(_buildProfileCard(localisation));
+      children.add(_buildLatestDrawCard(localisation));
 
-    // Skip history for anonymous users
-    if (_userId != null && !_userId!.startsWith('anon_')) {
-      children.add(_buildHistoryCard(localisation));
+      bodyContent = RefreshIndicator(
+        onRefresh: _loadAll,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: children,
+        ),
+      );
     }
 
     return Scaffold(
@@ -1416,15 +1462,7 @@ class _HomeState extends State<_Home> {
           ),
         ],
       ),
-      body: _initialising
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _loadAll,
-              child: ListView(
-                padding: const EdgeInsets.all(16),
-                children: children,
-              ),
-            ),
+      body: bodyContent,
     );
   }
 }

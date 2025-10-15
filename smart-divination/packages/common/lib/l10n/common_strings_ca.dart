@@ -181,7 +181,7 @@ class CommonStringsCa extends CommonStrings {
   String get ichingDescription => 'Saviesa ancestral xinesa';
 
   @override
-  String get interpretationHeading => 'Interpretació';
+  String get interpretationHeading => 'Consulta';
 
   @override
   String get language => 'Idioma';
