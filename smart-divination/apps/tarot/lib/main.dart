@@ -638,6 +638,7 @@ class _HomeState extends State<_Home> {
   List<TarotSession> _history = <TarotSession>[];
   CardsDrawResponse? _latestDraw;
   InterpretationResult? _latestInterpretation;
+  String? _currentQuestion;
   bool _drawing = false;
   bool _requestingInterpretation = false;
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
@@ -705,6 +706,7 @@ class _HomeState extends State<_Home> {
     setState(() {
       _latestDraw = null;
       _latestInterpretation = null;
+      _currentQuestion = null;
       _error = null;
     });
   }
