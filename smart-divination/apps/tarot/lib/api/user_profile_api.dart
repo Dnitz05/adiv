@@ -102,7 +102,12 @@ Future<UserProfile?> fetchUserProfile({
     },
   );
 
-  final response = await http.get(uri, headers: headers);
+  final response = await http.get(uri, headers: headers).timeout(
+    const Duration(seconds: 30),
+    onTimeout: () {
+      throw Exception('Connection timeout: Server did not respond within 30 seconds');
+    },
+  );
 
   if (response.statusCode == 503) {
     // Supabase unavailable; treat as optional feature.

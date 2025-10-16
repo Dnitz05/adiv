@@ -73,6 +73,11 @@ Future<InterpretationResult?> submitInterpretation({
     uri,
     headers: headers,
     body: jsonEncode(requestBody),
+  ).timeout(
+    const Duration(seconds: 60),
+    onTimeout: () {
+      throw Exception('Connection timeout: Interpretation server did not respond within 60 seconds');
+    },
   );
 
   print('[InterpretationAPI] Response status: ${response.statusCode}');

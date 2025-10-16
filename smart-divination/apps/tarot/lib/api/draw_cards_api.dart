@@ -106,6 +106,11 @@ Future<CardsDrawResponse> drawCards({
     uri,
     headers: headers,
     body: body,
+  ).timeout(
+    const Duration(seconds: 30),
+    onTimeout: () {
+      throw Exception('Connection timeout: Server did not respond within 30 seconds');
+    },
   );
   print('🎴 DEBUG: Response status: ${res.statusCode}');
 
@@ -176,6 +181,11 @@ Future<List<TarotSession>> fetchTarotSessions({
   final res = await http.get(
     uri,
     headers: historyHeaders,
+  ).timeout(
+    const Duration(seconds: 30),
+    onTimeout: () {
+      throw Exception('Connection timeout: Server did not respond within 30 seconds');
+    },
   );
 
   if (res.statusCode != 200) {

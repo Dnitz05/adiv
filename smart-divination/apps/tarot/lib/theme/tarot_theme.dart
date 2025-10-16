@@ -34,7 +34,7 @@ class TarotTheme {
 
       // AppBar
       appBarTheme: AppBarTheme(
-        backgroundColor: royalPurple,
+        backgroundColor: deepPurple,
         foregroundColor: moonGold,
         elevation: 8,
         shadowColor: Colors.black.withOpacity(0.5),
@@ -56,7 +56,7 @@ class TarotTheme {
 
       // Card
       cardTheme: CardThemeData(
-        color: royalPurple,
+        color: deepPurple,
         elevation: 8,
         shadowColor: Colors.black.withOpacity(0.5),
         shape: RoundedRectangleBorder(
@@ -173,7 +173,7 @@ class TarotTheme {
       // Input decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: royalPurple,
+        fillColor: deepPurple,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: moonGold.withOpacity(0.5)),

@@ -98,6 +98,11 @@ Future<SessionEligibility> fetchSessionEligibility(
     final res = await http.get(
       uri,
       headers: headers,
+    ).timeout(
+      const Duration(seconds: 30),
+      onTimeout: () {
+        throw Exception('Connection timeout: Server did not respond within 30 seconds');
+      },
     );
     print('✅ DEBUG: Response received, status: ${res.statusCode}');
 
