@@ -76,7 +76,7 @@ cd C:/tarot/smart-divination/apps/tarot
 flutter build apk --debug \
   --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app \
   --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc0NDMyMzIsImV4cCI6MjA0MzAxOTIzMn0.KfWe8d5ueKhAh3sZGOUjZ0kTzGq5f2LZ6oYOXPJl7o8
+  --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjYwNjM1NDcsImV4cCI6MjA0MTYzOTU0N30.4CgYdNbVYXHQQ28sNPwRiYdTkXy3W9VT9Ls4sQPMWiY
 
 # Instal·lar al telèfon
 adb install build/app/outputs/flutter-apk/app-debug.apk
@@ -351,5 +351,41 @@ I prem `r` després de cada canvi per veure'l a l'instant! 🎨
 
 ---
 
+## 📦 Instal·lar APK release (versió final signada)
+
+Si vols testar la versió exacta que es pujarà a Play Store:
+
+```bash
+cd C:/tarot/smart-divination/apps/tarot
+
+# L'APK release signat ja està generat a:
+# build/app/outputs/flutter-apk/app-release.apk (55MB)
+
+# IMPORTANT: Has de desinstal·lar primer versions debug anteriors per evitar conflictes de signatura
+adb uninstall com.smartdivination.tarot
+
+# Instal·lar APK release signat
+adb install build/app/outputs/flutter-apk/app-release.apk
+
+# Obrir l'app
+adb shell monkey -p com.smartdivination.tarot -c android.intent.category.LAUNCHER 1
+```
+
+**Diferències amb debug:**
+- ✅ Signat amb keystore de producció (`upload-keystore.jks`)
+- ✅ Optimitzacions de performance actives
+- ✅ Mida idèntica a la versió Play Store
+- ✅ No debugging overhead
+- ⚠️ No hot reload (has de rebuildar per veure canvis)
+
+**Estat actual (2025-10-16):**
+- Keystore generat: `android/upload-keystore.jks` (password: SmartTarot2025!, alias: upload)
+- `android/key.properties` configurat amb credencials de signatura
+- APK release: 55MB (`app-release.apk`)
+- AAB release: 45.7MB (`app-release.aab`)
+- App verificada en dispositiu físic Android
+
+---
+
 **Data creació:** 2025-10-13
-**Última actualització:** 2025-10-13
+**Última actualització:** 2025-10-16

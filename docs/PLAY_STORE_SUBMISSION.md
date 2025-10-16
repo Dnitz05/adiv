@@ -1,18 +1,36 @@
 # Play Store Submission Guide - Smart Divination Tarot
 
 ## Prerequisites
-- Active Google Play Console account with Release Manager access.
-- Signed APK or AAB generated via `melos` (see Task 1.6 in the consolidated plan).
-- Complete metadata: short name, short/long description, category, tags.
-- Artwork: 512x512 icon, 1024x500 feature graphic, minimum two screenshots per device type (phone, tablet optional).
-- Published privacy policy with accessible URL.
-- `android/app/src/main/AndroidManifest.xml` updated with correct `versionCode` and `versionName`.
+
+### ✅ Complete (as of 2025-10-16)
+- ✅ **Signed AAB generated**: `app-release.aab` (45.7MB) ready for upload
+- ✅ **Signed APK generated**: `app-release.apk` (55MB) tested on physical device
+- ✅ **Android signing configured**: keystore `upload-keystore.jks` with password/alias set
+- ✅ **App icon ready**: 1024x1024 icon with adaptive mipmaps integrated
+- ✅ **AndroidManifest.xml updated**: app label set to "Smart Tarot"
+- ✅ **Physical device testing**: app successfully installs and runs on Android device
+
+### ⏳ Pending
+- ⏳ Active Google Play Console account with Release Manager access
+- ⏳ Complete metadata: short name, short/long description, category, tags (drafts in `docs/store-metadata/play_store_copy.md`)
+- ⏳ Artwork: 1024x500 feature graphic (512x512 icon ready, need feature graphic)
+- ⏳ Screenshots: minimum two 1080x1920 screenshots per device type (phone required, tablet optional)
+- ⏳ Published privacy policy with accessible URL (template in `docs/store-metadata/privacy_policy_template.md`)
+- ⏳ Published terms of service (template in `docs/store-metadata/terms_template.md`)
+- ⏳ `versionCode` and `versionName` verified in `android/app/build.gradle.kts`
 
 ## Step-by-step
-1. **Prepare binary**
-   - `flutter build appbundle --release --dart-define=...`
-   - Verify signing with the production keystore.
-   - Keep the AAB at `apps/tarot/build/app/outputs/bundle/release/app-release.aab`.
+1. **Prepare binary** ✅ COMPLETE
+   - ✅ Signed AAB available at: `smart-divination/apps/tarot/build/app/outputs/bundle/release/app-release.aab` (45.7MB)
+   - ✅ Signing verified with production keystore: `upload-keystore.jks` (alias: upload)
+   - ✅ Build command for regeneration:
+     ```bash
+     cd smart-divination/apps/tarot
+     flutter build appbundle --release \
+       --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app \
+       --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co \
+       --dart-define=SUPABASE_ANON_KEY=<anon-key>
+     ```
 2. **Create draft in Google Play Console**
    - Go to *All apps* -> *Create app* (if it does not exist) or select the existing entry.
    - Choose primary language and confirm the app is free.
@@ -37,12 +55,21 @@
    - Record release ID and submission timestamp for tracking.
 
 ## Deliverable checklist
-- [ ] Signed AAB verified locally.
-- [ ] Store listing completed (name, descriptions, screenshots, artwork).
-- [ ] Privacy policy linked.
-- [ ] App content forms cleared.
-- [ ] Internal Testing track configured with invited testers.
-- [ ] Release notes ready.
+- [x] Signed AAB verified locally (45.7MB, tested on physical device)
+- [x] Android signing configured (keystore, key.properties, build.gradle.kts)
+- [x] App icon ready (1024x1024 with adaptive mipmaps)
+- [ ] Store listing completed (name, descriptions, screenshots, artwork)
+  - [x] Name: "Smart Tarot" set in AndroidManifest.xml
+  - [ ] Short description (<80 chars) - draft pending
+  - [ ] Full description (<4000 chars) - draft pending
+  - [ ] Screenshots (minimum 2x 1080x1920) - capture pending
+  - [ ] Feature graphic (1024x500) - creation pending
+- [ ] Privacy policy written and hosted with public URL
+- [ ] Terms of service written and hosted with public URL
+- [ ] App content forms cleared (age rating, ads declaration, target audience)
+- [ ] Google Play Console account created
+- [ ] Internal Testing track configured with invited testers
+- [ ] Release notes drafted
 
 ## Follow-up
 - Monitor *Publishing overview* (review typically 1-3 business days).

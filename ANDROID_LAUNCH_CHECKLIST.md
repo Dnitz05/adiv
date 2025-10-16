@@ -31,19 +31,20 @@ Status: complete (2025-10-05)
 - Health check: Supabase healthy (~1 s), endpoints verified
 
 ### 1.4 Android release signing setup
-Status: CI/CD ready, local setup pending
-- GitHub Secrets: ANDROID_KEYSTORE_BASE64 / PASSWORD / ALIAS / KEY_PASSWORD
-- `build.gradle.kts` fails fast if signing missing
+Status: ✅ Complete (2025-10-16)
+- GitHub Secrets: ANDROID_KEYSTORE_BASE64 / PASSWORD / ALIAS / KEY_PASSWORD configured
+- `build.gradle.kts` configured with signing (fails fast if config missing)
 - Helper scripts: `scripts/android/setup_local_signing.ps1`, `scripts/android/decode_keystore.ps1`
-- Local requirements:
-  * Place keystore at `android/upload-keystore.jks`
-  * Update `android/key.properties` with real credentials
-  * Export secrets as environment variables when building locally
-  * Ensure `JAVA_HOME` points to JDK 17 (current docs use `C:\tarot\temp\jdk\jdk-17.0.2`)
+- Local setup complete:
+  * Keystore generated: `android/upload-keystore.jks` (password: SmartTarot2025!, alias: upload)
+  * `android/key.properties` configured with signing credentials
+  * Signed release APK built and tested: 55MB (`app-release.apk`)
+  * Signed release AAB generated: 45.7MB (`app-release.aab`)
+  * App successfully installed and runs on physical Android device
 
-Build command after signing is configured:
+Build command for release:
 ```
-flutter build appbundle --release   --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app
+flutter build appbundle --release   --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app   --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co   --dart-define=SUPABASE_ANON_KEY=<anon-key>
 ```
 
 ### 1.5 Lint and polish
@@ -56,13 +57,13 @@ Status: clean
 ## Phase 2: assets and store content (high priority)
 
 ### 2.1 App icon and splash screen
-Status: in progress
-- Custom 1024x1024 launcher icon integrated (`smart-divination/apps/tarot/assets/app_icon/icon.png`) via `flutter_launcher_icons`.
-- Adaptive background color set to `#8C52FF`; regenerate with `flutter pub run flutter_launcher_icons`.
-- Master artwork stored at `docs/store-assets/icon.png` (export 512x512 for Play Console branding).
-- Produce 1920x1080 splash artwork
-- Configure flutter_native_splash or custom launch screen assets
-- Update `AndroidManifest.xml` label to "Smart Tarot"
+Status: ✅ Icon complete, splash pending
+- ✅ Custom 1024x1024 launcher icon integrated (`smart-divination/apps/tarot/assets/app_icon/icon.png`) via `flutter_launcher_icons`
+- ✅ Adaptive background color set to `#8C52FF`; all mipmaps regenerated
+- ✅ Master artwork stored at `docs/store-assets/icon.png` (export 512x512 for Play Console branding)
+- ✅ `AndroidManifest.xml` label updated to "Smart Tarot"
+- ⏳ Produce 1920x1080 splash artwork
+- ⏳ Configure flutter_native_splash or custom launch screen assets
 
 ### 2.2 Screenshots
 Status: not started

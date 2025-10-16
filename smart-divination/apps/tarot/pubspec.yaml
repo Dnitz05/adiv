@@ -35,6 +35,7 @@ flutter:
     - assets/cards/
     - assets/branding/
     - assets/backgrounds/
+    - assets/daily-quotes.csv
 
 
 flutter_launcher_icons:

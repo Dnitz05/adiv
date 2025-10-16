@@ -68,7 +68,7 @@ The tarot client consumes live Supabase history and interpretations. The I Ching
 - Pack metadata lives in `backend/data/packs/manifests.json` and is loaded through `lib/packs/manifestRegistry.ts` with checksum validation.
 
 ## Release Status & Next Steps
-- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore, key.properties), release APK tested (48.3MB). Build blockers resolved (app_links compileSdk, intl 0.20.0) and documented in `ANDROID_LAUNCH_CHECKLIST.md`. iOS signing and store metadata pending.
+- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore `upload-keystore.jks`, `key.properties` configured). Signed release APK/AAB generated and tested (55MB APK, 45.7MB AAB). Build blockers resolved (app_links compileSdk, intl 0.20.0). App successfully runs on physical device. iOS signing and store metadata pending.
 - **Backend**: Production environment live at `https://backend-4sircya71-dnitzs-projects.vercel.app` with health/metrics endpoints operational. Deployed on 2025-10-05.
 - **Database**: Supabase production migrations applied. Schema complete with RLS policies active.
 - **Security**: All credentials secure. Security incident from 2025-10-05 resolved on 2025-10-06 (all exposed secrets rotated). See `SECURITY_INCIDENT_RESPONSE.md` for details.

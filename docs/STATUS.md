@@ -1,9 +1,9 @@
 # Project Status (October 2025)
 
-Last Updated: 2025-10-13
+Last Updated: 2025-10-16
 
-## Current Status: Testing & Design Phase
-**Focus:** Run the app on a physical Android phone to capture the real UI/UX state before finalising Play Store assets.
+## Current Status: Android Release Ready
+**Focus:** Android signing complete. App successfully tested on physical device. Ready for Play Store assets creation and submission.
 
 ## Release Focus
 - Android internal testing is the immediate launch path; iOS is deferred until Mac signing hardware is available.
@@ -48,19 +48,24 @@ Completed work (total ~45 minutes once secrets were available):
 - Supabase session utilities covered by integration tests
 
 ### Android Signing
-- CI/CD secrets cover keystore, passwords, and alias
-- `build.gradle.kts` fails fast if signing config missing
-- Helper scripts: `scripts/android/setup_local_signing.ps1` and `scripts/android/decode_keystore.ps1`
-- `JAVA_HOME` still needs to be corrected locally before running release builds
-- `android/key.properties` contains placeholders; populate from secrets before building locally
+- ✅ CI/CD secrets cover keystore, passwords, and alias
+- ✅ `build.gradle.kts` configured with signing (fails fast if config missing)
+- ✅ Keystore generated: `upload-keystore.jks` (password: SmartTarot2025!, alias: upload)
+- ✅ `android/key.properties` configured with signing credentials
+- ✅ Release APK generated and tested: 55MB (`app-release.apk`)
+- ✅ Release AAB generated: 45.7MB (`app-release.aab`)
+- ✅ App successfully installed and runs on physical Android device
+- Helper scripts available: `scripts/android/setup_local_signing.ps1` and `scripts/android/decode_keystore.ps1`
 
 ## Next Actions
 
-Short term (immediate - testing phase):
+Short term (immediate - post-signing phase):
 - [x] Custom launcher icon integrated (adaptive icons regenerated across mipmaps)
 - [x] Update `AndroidManifest.xml` label to "Smart Tarot"
-- [ ] Document physical-device testing workflow (`docs/RUN_ON_PHONE.md`)
-- [ ] **Current priority:** Run the app on a physical phone and capture the real UI/UX state
+- [x] Document physical-device testing workflow (`docs/RUN_ON_PHONE.md`)
+- [x] Run the app on a physical phone and capture the real UI/UX state
+- [x] Android signing complete (keystore, key.properties, signed APK/AAB)
+- [x] App successfully tested on physical device
 - [ ] Identify and prioritise design/UX improvements needed before Play Store screenshots
 - [ ] Implement design iterations with hot reload testing
 - [ ] Capture screenshots once design is ready (minimum 2 at 1080x1920; aim for 4-8)

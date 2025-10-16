@@ -21,6 +21,7 @@ import 'widgets/spread_selector.dart';
 import 'widgets/spread_layout.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
+import 'services/daily_quote_service.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
@@ -1165,6 +1166,53 @@ class _HomeState extends State<_Home> {
     );
   }
 
+  Widget _buildDailyQuoteCard() {
+    final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+
+    return FutureBuilder<DailyQuote?>(
+      future: DailyQuoteService.getTodayQuote(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data == null) {
+          return const SizedBox.shrink();
+        }
+
+        final quote = snapshot.data!;
+        final text = quote.getText(locale);
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                text,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: Colors.white.withOpacity(0.9),
+                  fontWeight: FontWeight.bold,
+                  height: 1.5,
+                  fontSize: 18,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              if (quote.author.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Text(
+                  quote.author,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Colors.white.withOpacity(0.7),
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildDrawFormCard(CommonStrings localisation) {
     final theme = Theme.of(context);
     return Card(
@@ -1371,17 +1419,6 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Interpretation section title
-        Padding(
-          padding: const EdgeInsets.only(left: 16, top: 16, bottom: 12),
-          child: Text(
-            'Interpretació',
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
         // Summary as title
         if (interpretation.summary != null && interpretation.summary!.isNotEmpty) ...[
           Container(
@@ -1743,6 +1780,12 @@ class _HomeState extends State<_Home> {
             child: Column(
               children: [
                 const Spacer(flex: 2),
+                // Daily quote card
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: _buildDailyQuoteCard(),
+                ),
+                const SizedBox(height: 8),
                 // Draw form card
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
