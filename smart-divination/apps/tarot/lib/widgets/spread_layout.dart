@@ -240,9 +240,10 @@ class SpreadLayout extends StatelessWidget {
         ),
         boxShadow: TarotTheme.cardShadow,
       ),
+      clipBehavior: Clip.hardEdge,
       child: Image.asset(
           imagePath,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             // Si és el dors i hi ha error, mostrar contenidor fosc
             if (showCardBack) {

@@ -165,6 +165,8 @@ function buildInterpretationPrompt(params: {
     '',
     'STYLE: Flowing narrative, poetic yet clear, mystical + practical, specific not generic.',
     '',
+    `LANGUAGE: Respond in the SAME LANGUAGE as the question below. If unclear, use ${locale}.`,
+    '',
     `Technique: ${technique} | Locale: ${locale} | Spread: ${spread}`,
     `Question: ${questionText}`,
     '',
@@ -198,7 +200,7 @@ async function generateInterpretationFromDeepSeek(
       {
         role: 'system',
         content:
-          'You are a wise divination guide. Respond ONLY with strict JSON: {"interpretation":"markdown text","summary":"title","keywords":[]}. Use markdown: **bold** for section titles, *italic* for emphasis. Be concise but profound.',
+          `You are a wise divination guide. Respond ONLY with strict JSON: {"interpretation":"markdown text","summary":"title","keywords":[]}. Use markdown: **bold** for section titles, *italic* for emphasis. Be concise but profound. IMPORTANT: Respond in the SAME LANGUAGE as the user's question. If the question language cannot be determined, respond in the locale language: ${params.locale}.`,
       },
       {
         role: 'user',
