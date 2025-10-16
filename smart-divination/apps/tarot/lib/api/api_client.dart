@@ -82,15 +82,34 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
 }) async {
   final headers = <String, String>{};
 
-  // Anonymous users: skip authorization header
-  if (userId != null && userId.startsWith('anon_')) {
-    headers['x-user-id'] = userId;
-  } else {
-    // Registered users: include authorization token
-    final token = await _requireAccessToken();
-    headers['authorization'] = 'Bearer $token';
-    if (userId != null && userId.isNotEmpty) {
+  // Determine if user is anonymous
+  final isAnonymous = userId != null && userId.startsWith('anon_');
+
+  if (isAnonymous) {
+    // Anonymous users: only send x-user-id header
+    print('[API] Using anonymous authentication with userId: $userId');
+    headers['x-user-id'] = userId!;
+  } else if (userId != null && userId.isNotEmpty) {
+    // Registered users with explicit userId
+    print('[API] Using registered user authentication with userId: $userId');
+    try {
+      final token = await _requireAccessToken();
+      headers['authorization'] = 'Bearer $token';
       headers['x-user-id'] = userId;
+    } catch (e) {
+      print('[API] ⚠️ Failed to get access token: $e');
+      // Fall back to anonymous mode if token fetch fails
+      headers['x-user-id'] = userId;
+    }
+  } else {
+    // No userId provided - try to get token if available
+    print('[API] No userId provided, attempting to get token');
+    try {
+      final token = await _requireAccessToken();
+      headers['authorization'] = 'Bearer $token';
+    } catch (e) {
+      print('[API] ⚠️ No authentication available: $e');
+      // No authentication - API will handle this
     }
   }
 
@@ -100,5 +119,7 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
   if (additional != null && additional.isNotEmpty) {
     headers.addAll(additional);
   }
+
+  print('[API] Final headers keys: ${headers.keys.join(", ")}');
   return headers;
 }
