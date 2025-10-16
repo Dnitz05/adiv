@@ -1,0 +1,24 @@
+# Exclude Flutter apps
+apps/
+packages/
+
+# Exclude development files
+.claude/
+.git/
+.github/
+*.log
+*.md
+
+# Exclude build artifacts
+node_modules/
+.next/
+dist/
+build/
+
+# Exclude temp files
+temp/
+*.tmp
+*.cache
+
+# Keep only backend
+!backend/
