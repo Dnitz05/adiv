@@ -1352,6 +1352,17 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        // Interpretation section title
+        Padding(
+          padding: const EdgeInsets.only(left: 16, top: 16, bottom: 12),
+          child: Text(
+            'Interpretació',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
         // Summary as title
         if (interpretation.summary != null && interpretation.summary!.isNotEmpty) ...[
           Container(
