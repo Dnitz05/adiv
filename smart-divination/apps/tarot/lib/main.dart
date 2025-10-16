@@ -1352,12 +1352,6 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Divider line
-        Container(
-          height: 1,
-          color: moonGold.withOpacity(0.3),
-        ),
-        const SizedBox(height: 16),
         // Summary as title
         if (interpretation.summary != null && interpretation.summary!.isNotEmpty) ...[
           Container(

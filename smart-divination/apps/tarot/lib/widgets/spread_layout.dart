@@ -257,7 +257,6 @@ class SpreadLayout extends StatelessWidget {
             return _buildCardFallback(card, width, height);
           },
         ),
-      ),
     );
   }
 
