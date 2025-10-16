@@ -1252,13 +1252,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       spread?: string;
     };
 
+    // Allow both authenticated users and anonymous users (with x-user-id header)
     const requestUserId = auth?.userId ?? requestData.userId;
     if (!requestUserId) {
       throw createApiError(
-        'UNAUTHENTICATED',
-        'Authentication required',
-        401,
-        { statusCode: 401 },
+        'INVALID_REQUEST',
+        'User ID is required (either via Bearer token or x-user-id header)',
+        400,
+        { statusCode: 400 },
         requestId
       );
     }
