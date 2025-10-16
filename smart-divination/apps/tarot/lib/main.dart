@@ -19,6 +19,7 @@ import 'models/tarot_card.dart';
 import 'widgets/spread_selector.dart';
 import 'widgets/spread_layout.dart';
 import 'theme/tarot_theme.dart';
+import 'services/local_storage_service.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
@@ -879,6 +880,11 @@ class _HomeState extends State<_Home> {
         _latestInterpretation = result;
       });
       await _refreshHistory();
+
+      // Save conversation locally
+      if (result != null) {
+        await _saveConversationLocally(draw, result, question);
+      }
     } catch (error) {
       if (!mounted) {
         return;
@@ -897,6 +903,33 @@ class _HomeState extends State<_Home> {
 
   Future<void> _signOut() async {
     await UserIdentity.signOut();
+  }
+
+  Future<void> _saveConversationLocally(
+    CardsDrawResponse draw,
+    InterpretationResult interpretation,
+    String question,
+  ) async {
+    try {
+      // Convert cards to JSON format
+      final cardsJson = draw.result.map((card) => {
+        'name': card.name,
+        'suit': card.suit,
+        'number': card.number,
+        'upright': card.upright,
+        'position': card.position,
+      }).toList();
+
+      await LocalStorageService.saveConversation(
+        question: question.isEmpty ? 'No question' : question,
+        spread: draw.spread,
+        cards: cardsJson,
+        interpretation: interpretation.interpretation,
+        summary: interpretation.summary,
+      );
+    } catch (e) {
+      print('Error saving conversation locally: $e');
+    }
   }
 
   String _formatError(CommonStrings localisation, Object error) {
@@ -1167,12 +1200,16 @@ class _HomeState extends State<_Home> {
       return const SizedBox.shrink();
     }
 
+    // Always show question, use "Consulta general" if empty
+    final displayQuestion = (_currentQuestion != null && _currentQuestion!.isNotEmpty)
+        ? _currentQuestion!
+        : 'Consulta general';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // User question message (right-aligned)
-        if (_currentQuestion != null && _currentQuestion!.isNotEmpty)
-          _buildUserQuestionBubble(_currentQuestion!),
+        _buildUserQuestionBubble(displayQuestion),
         const SizedBox(height: 16),
 
         // Cards display (centered)
@@ -1193,7 +1230,7 @@ class _HomeState extends State<_Home> {
         constraints: const BoxConstraints(maxWidth: 280),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF4A2C6F),
+          color: const Color(0xFF2D1B4E),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -1208,29 +1245,49 @@ class _HomeState extends State<_Home> {
 
   Widget _buildCardsMessage(CardsDrawResponse draw, CommonStrings localisation) {
     final theme = Theme.of(context);
+    final interpretation = _latestInterpretation;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            // Get the selected spread or use threeCard as fallback
-            final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
+        child: Column(
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                // Get the selected spread or use threeCard as fallback
+                final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
 
-            // Convert CardResult to TarotCard
-            final tarotCards = draw.result.map((card) {
-              final imagePath = _getCardImagePath(card);
-              return TarotCard.fromCardResult(card, imagePath: imagePath);
-            }).toList();
+                // Convert CardResult to TarotCard
+                final tarotCards = draw.result.map((card) {
+                  final imagePath = _getCardImagePath(card);
+                  return TarotCard.fromCardResult(card, imagePath: imagePath);
+                }).toList();
 
-            return Center(
-              child: SpreadLayout(
-                spread: spread,
-                cards: tarotCards,
-                maxWidth: constraints.maxWidth,
-                maxHeight: 500,
-              ),
-            );
-          },
+                return Center(
+                  child: SpreadLayout(
+                    spread: spread,
+                    cards: tarotCards,
+                    maxWidth: constraints.maxWidth,
+                    maxHeight: 500,
+                  ),
+                );
+              },
+            ),
+            // Add button or loading indicator below the cards
+            if (interpretation == null) ...[
+              const SizedBox(height: 16),
+              if (_requestingInterpretation)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: CircularProgressIndicator(),
+                )
+              else if (draw.sessionId != null && draw.sessionId!.isNotEmpty)
+                FilledButton(
+                  onPressed: _requestingInterpretation ? null : _requestInterpretation,
+                  child: Text(localisation.interpretationHeading),
+                ),
+            ],
+          ],
         ),
       ),
     );
@@ -1240,45 +1297,36 @@ class _HomeState extends State<_Home> {
     final theme = Theme.of(context);
     final interpretation = _latestInterpretation;
 
+    // Only show if we have an interpretation
+    if (interpretation == null) {
+      return const SizedBox.shrink();
+    }
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
         constraints: const BoxConstraints(maxWidth: 320),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF4A2C6F),
+          color: const Color(0xFF2D1B4E),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (interpretation != null) ...[
+            Text(
+              interpretation.interpretation,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            if (interpretation.summary != null) ...[
+              const SizedBox(height: 8),
               Text(
-                interpretation.interpretation,
-                style: theme.textTheme.bodyMedium?.copyWith(
+                interpretation.summary!,
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurface,
                 ),
-              ),
-              if (interpretation.summary != null) ...[
-                const SizedBox(height: 8),
-                Text(
-                  interpretation.summary!,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                  ),
-                ),
-              ],
-            ] else if (!_requestingInterpretation &&
-                (draw.sessionId != null && draw.sessionId!.isNotEmpty)) ...[
-              FilledButton(
-                onPressed:
-                    _requestingInterpretation ? null : _requestInterpretation,
-                child: Text(localisation.interpretationHeading),
-              ),
-            ] else if (_requestingInterpretation) ...[
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Center(child: CircularProgressIndicator()),
               ),
             ],
           ],

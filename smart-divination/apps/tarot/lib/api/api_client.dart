@@ -8,7 +8,7 @@ const String _environmentApiBaseUrl = String.fromEnvironment(
   defaultValue: '',
 );
 
-const String _localDevelopmentApiBase = 'http://10.0.2.2:3001';
+const String _localDevelopmentApiBase = 'http://localhost:3001';
 const String _productionApiBase =
     'https://backend-4sircya71-dnitzs-projects.vercel.app';
 
