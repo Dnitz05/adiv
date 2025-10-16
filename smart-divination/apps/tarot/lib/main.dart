@@ -1208,12 +1208,8 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // User question message (right-aligned)
-        _buildUserQuestionBubble(displayQuestion),
-        const SizedBox(height: 16),
-
-        // Cards display (centered)
-        _buildCardsMessage(draw, localisation),
+        // Cards display with question as header (centered)
+        _buildCardsMessage(draw, localisation, displayQuestion),
         const SizedBox(height: 16),
 
         // AI interpretation message (left-aligned)
@@ -1243,52 +1239,109 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildCardsMessage(CardsDrawResponse draw, CommonStrings localisation) {
+  Widget _buildCardsMessage(CardsDrawResponse draw, CommonStrings localisation, String question) {
     final theme = Theme.of(context);
     final interpretation = _latestInterpretation;
+    final moonGold = const Color(0xFFD4AF37);
 
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-                // Get the selected spread or use threeCard as fallback
-                final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
-
-                // Convert CardResult to TarotCard
-                final tarotCards = draw.result.map((card) {
-                  final imagePath = _getCardImagePath(card);
-                  return TarotCard.fromCardResult(card, imagePath: imagePath);
-                }).toList();
-
-                return Center(
-                  child: SpreadLayout(
-                    spread: spread,
-                    cards: tarotCards,
-                    maxWidth: constraints.maxWidth,
-                    maxHeight: 500,
-                  ),
-                );
-              },
-            ),
-            // Add button or loading indicator below the cards
-            if (interpretation == null) ...[
-              const SizedBox(height: 16),
-              if (_requestingInterpretation)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: CircularProgressIndicator(),
-                )
-              else if (draw.sessionId != null && draw.sessionId!.isNotEmpty)
-                FilledButton(
-                  onPressed: _requestingInterpretation ? null : _requestInterpretation,
-                  child: Text(localisation.interpretationHeading),
+      child: Column(
+        children: [
+          // Question header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  moonGold.withOpacity(0.15),
+                  moonGold.withOpacity(0.08),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              border: Border(
+                bottom: BorderSide(
+                  color: moonGold.withOpacity(0.3),
+                  width: 1,
                 ),
-            ],
-          ],
-        ),
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '✨',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    question,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: moonGold,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '✨',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          // Cards
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    // Get the selected spread or use threeCard as fallback
+                    final spread = TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
+
+                    // Convert CardResult to TarotCard
+                    final tarotCards = draw.result.map((card) {
+                      final imagePath = _getCardImagePath(card);
+                      return TarotCard.fromCardResult(card, imagePath: imagePath);
+                    }).toList();
+
+                    return Center(
+                      child: SpreadLayout(
+                        spread: spread,
+                        cards: tarotCards,
+                        maxWidth: constraints.maxWidth,
+                        maxHeight: 500,
+                      ),
+                    );
+                  },
+                ),
+                // Add button or loading indicator below the cards
+                if (interpretation == null) ...[
+                  const SizedBox(height: 16),
+                  if (_requestingInterpretation)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: CircularProgressIndicator(),
+                    )
+                  else if (draw.sessionId != null && draw.sessionId!.isNotEmpty)
+                    FilledButton(
+                      onPressed: _requestingInterpretation ? null : _requestInterpretation,
+                      child: Text(localisation.interpretationHeading),
+                    ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1296,6 +1349,7 @@ class _HomeState extends State<_Home> {
   Widget _buildAIInterpretationBubble(CardsDrawResponse draw, CommonStrings localisation) {
     final theme = Theme.of(context);
     final interpretation = _latestInterpretation;
+    final moonGold = const Color(0xFFD4AF37);
 
     // Only show if we have an interpretation
     if (interpretation == null) {
@@ -1305,30 +1359,78 @@ class _HomeState extends State<_Home> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 320),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        constraints: const BoxConstraints(maxWidth: 340),
+        padding: const EdgeInsets.all(0),
         decoration: BoxDecoration(
           color: const Color(0xFF2D1B4E),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: moonGold.withOpacity(0.2),
+            width: 1,
+          ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              interpretation.interpretation,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
-            if (interpretation.summary != null) ...[
-              const SizedBox(height: 8),
-              Text(
-                interpretation.summary!,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface,
+            // Summary as prominent header/title
+            if (interpretation.summary != null && interpretation.summary!.isNotEmpty) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      moonGold.withOpacity(0.25),
+                      moonGold.withOpacity(0.15),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: moonGold.withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      color: moonGold,
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        interpretation.summary!,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: moonGold,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
+            // Full interpretation text
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                interpretation.interpretation,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurface,
+                  height: 1.5,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ),
           ],
         ),
       ),
