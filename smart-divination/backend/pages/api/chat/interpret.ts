@@ -251,11 +251,41 @@ async function generateInterpretationFromDeepSeek(
     throw new Error('DeepSeek response was empty.');
   }
 
+  log('info', 'DeepSeek raw content', {
+    sessionId: params.sessionId,
+    contentLength: content.length,
+    contentPreview: content.substring(0, 200),
+  });
+
+  // Clean up markdown code blocks if present
+  let cleanedContent = content.trim();
+  if (cleanedContent.startsWith('```json')) {
+    cleanedContent = cleanedContent.substring('```json'.length);
+  } else if (cleanedContent.startsWith('```')) {
+    cleanedContent = cleanedContent.substring('```'.length);
+  }
+  if (cleanedContent.endsWith('```')) {
+    cleanedContent = cleanedContent.substring(0, cleanedContent.length - '```'.length);
+  }
+  cleanedContent = cleanedContent.trim();
+
+  log('info', 'Cleaned content', {
+    sessionId: params.sessionId,
+    cleanedLength: cleanedContent.length,
+    cleanedPreview: cleanedContent.substring(0, 200),
+  });
+
   try {
-    const parsed = JSON.parse(content) as Record<string, unknown>;
+    const parsed = JSON.parse(cleanedContent) as Record<string, unknown>;
     const interpretationValue = parsed['interpretation'];
     const summaryValue = parsed['summary'];
     const keywordsValue = parsed['keywords'];
+
+    log('info', 'Parsed DeepSeek response', {
+      sessionId: params.sessionId,
+      interpretationType: typeof interpretationValue,
+      interpretationPreview: typeof interpretationValue === 'string' ? interpretationValue.substring(0, 100) : 'not a string',
+    });
 
     const interpretation =
       typeof interpretationValue === 'string' ? interpretationValue : content.trim();
@@ -271,7 +301,7 @@ async function generateInterpretationFromDeepSeek(
     return { interpretation, summary, keywords };
   } catch {
     return {
-      interpretation: content.trim(),
+      interpretation: cleanedContent,
       keywords: [],
     };
   }

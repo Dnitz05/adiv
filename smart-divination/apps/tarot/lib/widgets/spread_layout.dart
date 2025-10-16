@@ -85,7 +85,7 @@ class SpreadLayout extends StatelessWidget {
     double cardWidth = math.min(widthFromHeight, widthFromSpacing);
 
     if (spread.cardCount == 3) {
-      final double targetWidth = containerWidth / 3.05;
+      final double targetWidth = containerWidth / 2.5;
       cardWidth = math.min(cardWidth, targetWidth);
     }
 
