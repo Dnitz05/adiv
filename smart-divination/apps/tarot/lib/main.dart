@@ -22,6 +22,7 @@ import 'widgets/spread_layout.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
+import 'utils/card_image_mapper.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
@@ -1405,7 +1406,7 @@ class _HomeState extends State<_Home> {
                 // Show interpretation below cards if available
                 if (interpretation != null) ...[
                   const SizedBox(height: 24),
-                  _buildInterpretationSection(interpretation, theme, moonGold),
+                  _buildInterpretationSection(interpretation, theme, moonGold, draw.result),
                 ],
               ],
             ),
@@ -1415,7 +1416,13 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildInterpretationSection(InterpretationResult interpretation, ThemeData theme, Color moonGold) {
+  Widget _buildInterpretationSection(InterpretationResult interpretation, ThemeData theme, Color moonGold, List<CardResult> cards) {
+    // Create map of card names to their images for quick lookup
+    final cardImages = <String, String>{};
+    for (final card in cards) {
+      cardImages[card.name.toLowerCase()] = CardImageMapper.getCardImagePath(card.name, card.suit);
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1462,49 +1469,181 @@ class _HomeState extends State<_Home> {
           ),
           const SizedBox(height: 16),
         ],
-        // Full interpretation text
+        // Full interpretation text with card images
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: MarkdownBody(
-            data: interpretation.interpretation,
-            selectable: true,
-            styleSheet: MarkdownStyleSheet(
-              p: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface,
-                height: 1.5,
-                letterSpacing: 0.2,
-              ),
-              strong: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-                height: 1.5,
-              ),
-              em: theme.textTheme.bodyMedium?.copyWith(
-                color: moonGold.withOpacity(0.9),
-                fontStyle: FontStyle.italic,
-                height: 1.5,
-              ),
-              h1: theme.textTheme.titleLarge?.copyWith(
-                color: moonGold,
-                fontWeight: FontWeight.bold,
-              ),
-              h2: theme.textTheme.titleMedium?.copyWith(
-                color: moonGold,
-                fontWeight: FontWeight.bold,
-              ),
-              h3: theme.textTheme.titleSmall?.copyWith(
-                color: moonGold,
-                fontWeight: FontWeight.bold,
-              ),
-              blockSpacing: 8.0,
-              listBullet: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
+          child: _buildInterpretationWithCardImages(
+            interpretation.interpretation,
+            cardImages,
+            theme,
+            moonGold,
           ),
         ),
         const SizedBox(height: 16),
       ],
+    );
+  }
+
+  Widget _buildInterpretationWithCardImages(
+    String markdown,
+    Map<String, String> cardImages,
+    ThemeData theme,
+    Color moonGold,
+  ) {
+    // Parse markdown and identify card references
+    // Pattern: **🃏 Card Name** or **🃏 Card Name (Reversed)**
+    final cardReferencePattern = RegExp(r'\*\*🃏\s+([^*]+?)\*\*');
+    final matches = cardReferencePattern.allMatches(markdown);
+
+    if (matches.isEmpty) {
+      // No card references found, use regular markdown
+      return MarkdownBody(
+        data: markdown,
+        selectable: true,
+        styleSheet: _getMarkdownStyleSheet(theme, moonGold),
+      );
+    }
+
+    // Build widgets with card images
+    final List<Widget> widgets = [];
+    int lastIndex = 0;
+
+    for (final match in matches) {
+      // Add text before the card reference
+      if (match.start > lastIndex) {
+        final beforeText = markdown.substring(lastIndex, match.start);
+        widgets.add(
+          MarkdownBody(
+            data: beforeText,
+            selectable: true,
+            styleSheet: _getMarkdownStyleSheet(theme, moonGold),
+          ),
+        );
+      }
+
+      // Extract card name and check if it's reversed
+      final fullCardName = match.group(1)!.trim();
+      final isReversed = fullCardName.toLowerCase().contains('(reversed)') ||
+                         fullCardName.toLowerCase().contains('(invertida)') ||
+                         fullCardName.toLowerCase().contains('(invertit)');
+      final cardName = fullCardName
+          .replaceAll(RegExp(r'\s*\(reversed\)', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*\(invertida\)', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*\(invertit\)', caseSensitive: false), '')
+          .trim();
+
+      // Find card image
+      final cardImage = cardImages[cardName.toLowerCase()];
+
+      // Add card header with image
+      widgets.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Card image thumbnail
+              if (cardImage != null)
+                Container(
+                  width: 50,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: isReversed
+                          ? (Matrix4.identity()..rotateZ(math.pi))
+                          : Matrix4.identity(),
+                      child: Image.asset(
+                        cardImage,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(width: 12),
+              // Card name
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    fullCardName,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: moonGold,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+
+      lastIndex = match.end;
+    }
+
+    // Add remaining text
+    if (lastIndex < markdown.length) {
+      final remainingText = markdown.substring(lastIndex);
+      widgets.add(
+        MarkdownBody(
+          data: remainingText,
+          selectable: true,
+          styleSheet: _getMarkdownStyleSheet(theme, moonGold),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: widgets,
+    );
+  }
+
+  MarkdownStyleSheet _getMarkdownStyleSheet(ThemeData theme, Color moonGold) {
+    return MarkdownStyleSheet(
+      p: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.onSurface,
+        height: 1.5,
+        letterSpacing: 0.2,
+      ),
+      strong: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.onSurface,
+        fontWeight: FontWeight.bold,
+        height: 1.5,
+      ),
+      em: theme.textTheme.bodyMedium?.copyWith(
+        color: moonGold.withOpacity(0.9),
+        fontStyle: FontStyle.italic,
+        height: 1.5,
+      ),
+      h1: theme.textTheme.titleLarge?.copyWith(
+        color: moonGold,
+        fontWeight: FontWeight.bold,
+      ),
+      h2: theme.textTheme.titleMedium?.copyWith(
+        color: moonGold,
+        fontWeight: FontWeight.bold,
+      ),
+      h3: theme.textTheme.titleSmall?.copyWith(
+        color: moonGold,
+        fontWeight: FontWeight.bold,
+      ),
+      blockSpacing: 8.0,
+      listBullet: theme.textTheme.bodyMedium?.copyWith(
+        color: theme.colorScheme.onSurface,
+      ),
     );
   }
 
