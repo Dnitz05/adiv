@@ -1209,12 +1209,8 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Cards display with question as header (centered)
+        // Cards display with question as header and interpretation below (integrated)
         _buildCardsMessage(draw, localisation, displayQuestion),
-        const SizedBox(height: 16),
-
-        // AI interpretation message (left-aligned)
-        _buildAIInterpretationBubble(draw, localisation),
       ],
     );
   }
@@ -1339,11 +1335,115 @@ class _HomeState extends State<_Home> {
                       child: Text(localisation.interpretationHeading),
                     ),
                 ],
+                // Show interpretation below cards if available
+                if (interpretation != null) ...[
+                  const SizedBox(height: 24),
+                  _buildInterpretationSection(interpretation, theme, moonGold),
+                ],
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInterpretationSection(InterpretationResult interpretation, ThemeData theme, Color moonGold) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Divider line
+        Container(
+          height: 1,
+          color: moonGold.withOpacity(0.3),
+        ),
+        const SizedBox(height: 16),
+        // Summary as title
+        if (interpretation.summary != null && interpretation.summary!.isNotEmpty) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  moonGold.withOpacity(0.25),
+                  moonGold.withOpacity(0.15),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: moonGold.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.auto_awesome,
+                  color: moonGold,
+                  size: 18,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    interpretation.summary!,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: moonGold,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+        // Full interpretation text
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: MarkdownBody(
+            data: interpretation.interpretation,
+            selectable: true,
+            styleSheet: MarkdownStyleSheet(
+              p: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+                height: 1.5,
+                letterSpacing: 0.2,
+              ),
+              strong: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+                height: 1.5,
+              ),
+              em: theme.textTheme.bodyMedium?.copyWith(
+                color: moonGold.withOpacity(0.9),
+                fontStyle: FontStyle.italic,
+                height: 1.5,
+              ),
+              h1: theme.textTheme.titleLarge?.copyWith(
+                color: moonGold,
+                fontWeight: FontWeight.bold,
+              ),
+              h2: theme.textTheme.titleMedium?.copyWith(
+                color: moonGold,
+                fontWeight: FontWeight.bold,
+              ),
+              h3: theme.textTheme.titleSmall?.copyWith(
+                color: moonGold,
+                fontWeight: FontWeight.bold,
+              ),
+              blockSpacing: 8.0,
+              listBullet: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 
