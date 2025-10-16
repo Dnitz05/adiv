@@ -1425,6 +1425,7 @@ class _HomeState extends State<_Home> {
               padding: const EdgeInsets.all(16),
               child: MarkdownBody(
                 data: interpretation.interpretation,
+                selectable: true,
                 styleSheet: MarkdownStyleSheet(
                   p: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
@@ -1440,6 +1441,22 @@ class _HomeState extends State<_Home> {
                     color: moonGold.withOpacity(0.9),
                     fontStyle: FontStyle.italic,
                     height: 1.5,
+                  ),
+                  h1: theme.textTheme.titleLarge?.copyWith(
+                    color: moonGold,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  h2: theme.textTheme.titleMedium?.copyWith(
+                    color: moonGold,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  h3: theme.textTheme.titleSmall?.copyWith(
+                    color: moonGold,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  blockSpacing: 8.0,
+                  listBullet: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),
