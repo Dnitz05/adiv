@@ -234,16 +234,13 @@ class SpreadLayout extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: TarotTheme.moonGold.withOpacity(0.4),
           width: 2,
         ),
         boxShadow: TarotTheme.cardShadow,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Image.asset(
+      child: Image.asset(
           imagePath,
           fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) {
