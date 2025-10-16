@@ -96,7 +96,21 @@
       "Bash(timeout:*)",
       "Bash(nc localhost 54969)",
       "Bash(identify:*)",
-      "Bash(convert:*)"
+      "Bash(convert:*)",
+      "Bash(if [ -f .env ])",
+      "Bash(then cat .env)",
+      "Bash(else echo \"No .env file found\")",
+      "Bash(fi)",
+      "Bash(ipconfig:*)",
+      "Bash(nc:*)",
+      "Bash(git log:*)",
+      "Bash(netsh advfirewall firewall add rule name=\"Node.js Backend Port 3001\" dir=in action=allow protocol=TCP localport=3001)",
+      "Bash(if [ -f smart-divination/apps/tarot/.env ])",
+      "Bash(then cat smart-divination/apps/tarot/.env)",
+      "Bash(else echo \"No .env file in tarot app\")",
+      "Bash(test:*)",
+      "Bash(PORT=3001 npm run dev:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []

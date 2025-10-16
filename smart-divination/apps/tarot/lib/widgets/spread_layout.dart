@@ -101,7 +101,7 @@ class SpreadLayout extends StatelessWidget {
       return containerHeight * 0.90;
     } else if (spread.cardCount == 3) {
       // Three cards: Make them large and prominent to appreciate details
-      return containerHeight * 0.92;
+      return containerHeight * 0.98;
     } else if (spread.cardCount <= 5) {
       // Small spreads (4-5 cards): Large and comfortable viewing size
       return containerHeight * 0.58;

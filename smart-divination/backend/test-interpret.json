@@ -1,0 +1,17 @@
+{
+  "sessionId": "test-session-123",
+  "results": {
+    "cards": [
+      {"id": "the-fool", "name": "The Fool", "suit": "major", "number": 0, "upright": true, "position": 1},
+      {"id": "the-magician", "name": "The Magician", "suit": "major", "number": 1, "upright": true, "position": 2},
+      {"id": "the-high-priestess", "name": "The High Priestess", "suit": "major", "number": 2, "upright": false, "position": 3}
+    ],
+    "spread": "three-card",
+    "seed": "test123",
+    "method": "random"
+  },
+  "question": "What does the future hold for me?",
+  "technique": "tarot",
+  "locale": "en",
+  "userId": "anon_test_user"
+}
