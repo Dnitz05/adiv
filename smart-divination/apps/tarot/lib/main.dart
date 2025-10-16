@@ -663,35 +663,50 @@ class _HomeState extends State<_Home> {
   }
 
   Future<void> _loadAll() async {
+    print('🔍 DEBUG: _loadAll() START');
     setState(() {
       _initialising = true;
       _error = null;
     });
+    print('🔍 DEBUG: setState called, _initialising = true');
+
     try {
+      print('🔍 DEBUG: About to call UserIdentity.obtain()');
       final userId = await UserIdentity.obtain();
-      final eligibility = await fetchSessionEligibility(userId: userId);
+      print('🔍 DEBUG: UserIdentity.obtain() returned userId: $userId');
+
+      // Session eligibility check disabled - not needed for anonymous users
+      // final eligibility = await fetchSessionEligibility(userId: userId);
 
       // Skip profile and history for anonymous users
       final UserProfile? profile;
       final List<TarotSession> history;
       if (userId.startsWith('anon_')) {
+        print('🔍 DEBUG: Anonymous user detected, skipping profile/history');
         profile = null;
         history = <TarotSession>[];
       } else {
+        print('🔍 DEBUG: Registered user, fetching profile and history');
         profile = await fetchUserProfile(userId: userId);
+        print('🔍 DEBUG: Profile fetched');
         history = await fetchTarotSessions(userId: userId);
+        print('🔍 DEBUG: History fetched');
       }
 
       if (!mounted) {
+        print('🔍 DEBUG: Widget not mounted, returning early');
         return;
       }
+
+      print('🔍 DEBUG: About to call final setState with _initialising = false');
       setState(() {
         _userId = userId;
-        _eligibility = eligibility;
+        _eligibility = null; // Disabled session eligibility
         _profile = profile;
         _history = history;
         _initialising = false;
       });
+      print('🔍 DEBUG: _loadAll() COMPLETE - _initialising set to false');
     } catch (error, stackTrace) {
       print('❌ ERROR in _loadAll: $error');
       print('❌ Stack trace: $stackTrace');
@@ -721,6 +736,9 @@ class _HomeState extends State<_Home> {
   }
 
   Future<void> _refreshEligibility() async {
+    // Session eligibility check disabled - not needed for anonymous users
+    return;
+    /*
     final userId = _userId;
     if (userId == null) {
       return;
@@ -742,6 +760,7 @@ class _HomeState extends State<_Home> {
         _error ??= _formatError(localisation, error);
       });
     }
+    */
   }
 
   Future<void> _refreshProfile() async {

@@ -85,7 +85,7 @@ class SpreadLayout extends StatelessWidget {
     double cardWidth = math.min(widthFromHeight, widthFromSpacing);
 
     if (spread.cardCount == 3) {
-      final double targetWidth = containerWidth / 2.5;
+      final double targetWidth = containerWidth / 2.2;
       cardWidth = math.min(cardWidth, targetWidth);
     }
 
@@ -101,7 +101,7 @@ class SpreadLayout extends StatelessWidget {
       return containerHeight * 0.90;
     } else if (spread.cardCount == 3) {
       // Three cards: Make them large and prominent to appreciate details
-      return containerHeight * 0.98;
+      return containerHeight * 0.85;
     } else if (spread.cardCount <= 5) {
       // Small spreads (4-5 cards): Large and comfortable viewing size
       return containerHeight * 0.58;
