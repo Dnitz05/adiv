@@ -23,6 +23,7 @@ class SpreadLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double cardAspectRatio = 0.58;
     // Calculate container dimensions based on aspect ratio and available space
     // Try both width-constrained and height-constrained approaches and pick the larger one
     final double widthBasedHeight = maxWidth / spread.aspectRatio;
@@ -42,10 +43,14 @@ class SpreadLayout extends StatelessWidget {
       effectiveWidth = heightBasedWidth;
     }
 
-    // Calculate card size based on spread
-    final double cardHeight = _calculateCardHeight(spread, effectiveHeight);
-    // Tarot card ratio: width/height ≈ 0.67 (2:3 ratio)
-    final double cardWidth = cardHeight * 0.67;
+    final Size cardSize = _calculateCardSize(
+      spread,
+      effectiveWidth,
+      effectiveHeight,
+      cardAspectRatio,
+    );
+    final double cardWidth = cardSize.width;
+    final double cardHeight = cardSize.height;
 
     return SizedBox(
       width: effectiveWidth,
@@ -67,6 +72,27 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 
+  Size _calculateCardSize(
+    TarotSpread spread,
+    double containerWidth,
+    double containerHeight,
+    double cardAspectRatio,
+  ) {
+    final double verticalCardHeight = _calculateCardHeight(spread, containerHeight);
+    final double widthFromHeight = verticalCardHeight * cardAspectRatio;
+    final double widthFromSpacing = _maxCardWidthFromSpacing(spread, containerWidth);
+
+    double cardWidth = math.min(widthFromHeight, widthFromSpacing);
+
+    if (spread.cardCount == 3) {
+      final double targetWidth = containerWidth / 3.05;
+      cardWidth = math.min(cardWidth, targetWidth);
+    }
+
+    final double cardHeight = cardWidth / cardAspectRatio;
+    return Size(cardWidth, cardHeight);
+  }
+
   double _calculateCardHeight(TarotSpread spread, double containerHeight) {
     // Calculate optimal card height based on number of cards and layout
     // Maximized for better visual impact and space utilization
@@ -75,7 +101,7 @@ class SpreadLayout extends StatelessWidget {
       return containerHeight * 0.90;
     } else if (spread.cardCount == 3) {
       // Three cards: Make them large and prominent to appreciate details
-      return containerHeight * 0.80;
+      return containerHeight * 0.92;
     } else if (spread.cardCount <= 5) {
       // Small spreads (4-5 cards): Large and comfortable viewing size
       return containerHeight * 0.58;
@@ -89,6 +115,34 @@ class SpreadLayout extends StatelessWidget {
       // Very large spreads (11+ cards): Compact but ensure everything fits
       return containerHeight * 0.28;
     }
+  }
+
+  double _maxCardWidthFromSpacing(TarotSpread spread, double containerWidth) {
+    if (spread.positions.isEmpty) {
+      return containerWidth;
+    }
+
+    final double spacingFactor = spread.cardCount <= 3 ? 0.96 : 0.90;
+    double limit = containerWidth;
+
+    for (final position in spread.positions) {
+      final double availableLeft = position.x * containerWidth * 2;
+      final double availableRight = (1 - position.x) * containerWidth * 2;
+      limit = math.min(limit, availableLeft);
+      limit = math.min(limit, availableRight);
+    }
+
+    for (int i = 0; i < spread.positions.length - 1; i++) {
+      for (int j = i + 1; j < spread.positions.length; j++) {
+        final double centerDistance =
+            (spread.positions[i].x - spread.positions[j].x).abs() * containerWidth;
+        if (centerDistance > 0) {
+          limit = math.min(limit, centerDistance * spacingFactor);
+        }
+      }
+    }
+
+    return limit.clamp(0.0, containerWidth).toDouble();
   }
 
   Widget _buildPositionedCard(

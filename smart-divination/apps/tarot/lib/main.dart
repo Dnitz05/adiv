@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
 
@@ -1419,15 +1420,27 @@ class _HomeState extends State<_Home> {
                 ),
               ),
             ],
-            // Full interpretation text
+            // Full interpretation text with markdown support
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(
-                interpretation.interpretation,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                  height: 1.5,
-                  letterSpacing: 0.2,
+              child: MarkdownBody(
+                data: interpretation.interpretation,
+                styleSheet: MarkdownStyleSheet(
+                  p: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    height: 1.5,
+                    letterSpacing: 0.2,
+                  ),
+                  strong: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.bold,
+                    height: 1.5,
+                  ),
+                  em: theme.textTheme.bodyMedium?.copyWith(
+                    color: moonGold.withOpacity(0.9),
+                    fontStyle: FontStyle.italic,
+                    height: 1.5,
+                  ),
                 ),
               ),
             ),
