@@ -149,6 +149,8 @@ function buildInterpretationPrompt(params: {
     '',
     '## Card Analysis',
     'For each card (3-4 sentences per card):',
+    '- Start each card section with the card name in bold as a subheader, followed by 🃏 emoji as visual reference',
+    '- Example format: **🃏 The Fool** or **🃏 Three of Cups (Reversed)**',
     '- Traditional meaning and symbolism',
     '- Connection to the question',
     '- Upright/reversed significance',
@@ -199,8 +201,7 @@ async function generateInterpretationFromDeepSeek(
     messages: [
       {
         role: 'system',
-        content:
-          `You are a wise divination guide. Respond ONLY with strict JSON: {"interpretation":"markdown text","summary":"title","keywords":[]}. Use markdown: **bold** for section titles, *italic* for emphasis. Be concise but profound. IMPORTANT: Respond in the SAME LANGUAGE as the user's question. If the question language cannot be determined, respond in the locale language: ${params.locale}.`,
+        content: `You are a wise divination guide. Respond ONLY with strict JSON: {"interpretation":"markdown text","summary":"title","keywords":[]}. Use markdown: **bold** for section titles, *italic* for emphasis. Be concise but profound. IMPORTANT: Respond in the SAME LANGUAGE as the user's question. If the question language cannot be determined, respond in the locale language: ${params.locale}.`,
       },
       {
         role: 'user',
@@ -284,7 +285,10 @@ async function generateInterpretationFromDeepSeek(
     log('info', 'Parsed DeepSeek response', {
       sessionId: params.sessionId,
       interpretationType: typeof interpretationValue,
-      interpretationPreview: typeof interpretationValue === 'string' ? interpretationValue.substring(0, 100) : 'not a string',
+      interpretationPreview:
+        typeof interpretationValue === 'string'
+          ? interpretationValue.substring(0, 100)
+          : 'not a string',
     });
 
     const interpretation =
