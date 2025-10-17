@@ -45,7 +45,12 @@ class TarotSpreads {
     cardCount: 1,
     aspectRatio: 0.8,
     positions: [
-      CardPosition(x: 0.5, y: 0.5),
+      CardPosition(
+        x: 0.5,
+        y: 0.5,
+        label: 'Your Answer',
+        description: 'Direct guidance for your question',
+      ),
     ],
   );
 
@@ -155,13 +160,48 @@ class TarotSpreads {
     cardCount: 7,
     aspectRatio: 1.6,
     positions: [
-      CardPosition(x: 0.15, y: 0.7),
-      CardPosition(x: 0.25, y: 0.45),
-      CardPosition(x: 0.4, y: 0.25),
-      CardPosition(x: 0.5, y: 0.2),
-      CardPosition(x: 0.6, y: 0.25),
-      CardPosition(x: 0.75, y: 0.45),
-      CardPosition(x: 0.85, y: 0.7),
+      CardPosition(
+        x: 0.15,
+        y: 0.7,
+        label: 'Past',
+        description: 'Past influences on the situation',
+      ),
+      CardPosition(
+        x: 0.25,
+        y: 0.45,
+        label: 'Present',
+        description: 'Current circumstances',
+      ),
+      CardPosition(
+        x: 0.4,
+        y: 0.25,
+        label: 'Hidden Influences',
+        description: 'Unseen factors at play',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.2,
+        label: 'Obstacles',
+        description: 'Challenges to overcome',
+      ),
+      CardPosition(
+        x: 0.6,
+        y: 0.25,
+        label: 'External Influences',
+        description: 'Outside forces affecting you',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.45,
+        label: 'Advice',
+        description: 'Guidance for best action',
+      ),
+      CardPosition(
+        x: 0.85,
+        y: 0.7,
+        label: 'Outcome',
+        description: 'Likely result',
+      ),
     ],
   );
 
@@ -172,13 +212,48 @@ class TarotSpreads {
     cardCount: 7,
     aspectRatio: 1.4,
     positions: [
-      CardPosition(x: 0.25, y: 0.35),
-      CardPosition(x: 0.75, y: 0.35),
-      CardPosition(x: 0.5, y: 0.15),
-      CardPosition(x: 0.5, y: 0.55),
-      CardPosition(x: 0.5, y: 0.75),
-      CardPosition(x: 0.35, y: 0.9),
-      CardPosition(x: 0.65, y: 0.9),
+      CardPosition(
+        x: 0.25,
+        y: 0.35,
+        label: 'You',
+        description: 'Your position in the relationship',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.35,
+        label: 'Partner',
+        description: 'Their position in the relationship',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.15,
+        label: 'Strengths',
+        description: 'What binds you together',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.55,
+        label: 'Challenges',
+        description: 'What divides you',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.75,
+        label: 'Current Dynamic',
+        description: 'The present state of connection',
+      ),
+      CardPosition(
+        x: 0.35,
+        y: 0.9,
+        label: 'Your Needs',
+        description: 'What you require',
+      ),
+      CardPosition(
+        x: 0.65,
+        y: 0.9,
+        label: 'Their Needs',
+        description: 'What they require',
+      ),
     ],
   );
 
@@ -189,12 +264,42 @@ class TarotSpreads {
     cardCount: 6,
     aspectRatio: 1.3,
     positions: [
-      CardPosition(x: 0.5, y: 0.15),
-      CardPosition(x: 0.35, y: 0.45),
-      CardPosition(x: 0.65, y: 0.45),
-      CardPosition(x: 0.25, y: 0.75),
-      CardPosition(x: 0.5, y: 0.75),
-      CardPosition(x: 0.75, y: 0.75),
+      CardPosition(
+        x: 0.5,
+        y: 0.15,
+        label: 'Goal',
+        description: 'Ultimate aspiration',
+      ),
+      CardPosition(
+        x: 0.35,
+        y: 0.45,
+        label: 'Mind',
+        description: 'Mental approach',
+      ),
+      CardPosition(
+        x: 0.65,
+        y: 0.45,
+        label: 'Heart',
+        description: 'Emotional response',
+      ),
+      CardPosition(
+        x: 0.25,
+        y: 0.75,
+        label: 'Action',
+        description: 'What to do',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.75,
+        label: 'Resources',
+        description: 'Tools available',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.75,
+        label: 'Foundation',
+        description: 'Core support',
+      ),
     ],
   );
 
@@ -206,19 +311,79 @@ class TarotSpreads {
     aspectRatio: 2.0,
     positions: [
       // Top row
-      CardPosition(x: 0.08, y: 0.25),
-      CardPosition(x: 0.22, y: 0.25),
-      CardPosition(x: 0.36, y: 0.25),
-      CardPosition(x: 0.5, y: 0.25),
-      CardPosition(x: 0.64, y: 0.25),
-      CardPosition(x: 0.78, y: 0.25),
+      CardPosition(
+        x: 0.08,
+        y: 0.25,
+        label: 'January',
+        description: 'New beginnings and fresh starts',
+      ),
+      CardPosition(
+        x: 0.22,
+        y: 0.25,
+        label: 'February',
+        description: 'Love and connections',
+      ),
+      CardPosition(
+        x: 0.36,
+        y: 0.25,
+        label: 'March',
+        description: 'Growth and momentum',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.25,
+        label: 'April',
+        description: 'Action and initiative',
+      ),
+      CardPosition(
+        x: 0.64,
+        y: 0.25,
+        label: 'May',
+        description: 'Blossoming and abundance',
+      ),
+      CardPosition(
+        x: 0.78,
+        y: 0.25,
+        label: 'June',
+        description: 'Balance and harmony',
+      ),
       // Bottom row
-      CardPosition(x: 0.08, y: 0.7),
-      CardPosition(x: 0.22, y: 0.7),
-      CardPosition(x: 0.36, y: 0.7),
-      CardPosition(x: 0.5, y: 0.7),
-      CardPosition(x: 0.64, y: 0.7),
-      CardPosition(x: 0.78, y: 0.7),
+      CardPosition(
+        x: 0.08,
+        y: 0.7,
+        label: 'July',
+        description: 'Reflection and introspection',
+      ),
+      CardPosition(
+        x: 0.22,
+        y: 0.7,
+        label: 'August',
+        description: 'Power and strength',
+      ),
+      CardPosition(
+        x: 0.36,
+        y: 0.7,
+        label: 'September',
+        description: 'Harvest and rewards',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.7,
+        label: 'October',
+        description: 'Transformation and change',
+      ),
+      CardPosition(
+        x: 0.64,
+        y: 0.7,
+        label: 'November',
+        description: 'Gratitude and release',
+      ),
+      CardPosition(
+        x: 0.78,
+        y: 0.7,
+        label: 'December',
+        description: 'Completion and rest',
+      ),
     ],
   );
 
@@ -229,13 +394,48 @@ class TarotSpreads {
     cardCount: 7,
     aspectRatio: 1.0,
     positions: [
-      CardPosition(x: 0.5, y: 0.1),
-      CardPosition(x: 0.8, y: 0.3),
-      CardPosition(x: 0.85, y: 0.7),
-      CardPosition(x: 0.5, y: 0.85),
-      CardPosition(x: 0.15, y: 0.7),
-      CardPosition(x: 0.2, y: 0.3),
-      CardPosition(x: 0.5, y: 0.5),
+      CardPosition(
+        x: 0.5,
+        y: 0.1,
+        label: 'Spirit',
+        description: 'Higher guidance',
+      ),
+      CardPosition(
+        x: 0.8,
+        y: 0.3,
+        label: 'Abundance',
+        description: 'Prosperity and growth',
+      ),
+      CardPosition(
+        x: 0.85,
+        y: 0.7,
+        label: 'Love',
+        description: 'Emotional fulfillment',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.85,
+        label: 'Grounding',
+        description: 'Stability and roots',
+      ),
+      CardPosition(
+        x: 0.15,
+        y: 0.7,
+        label: 'Creativity',
+        description: 'Expression and passion',
+      ),
+      CardPosition(
+        x: 0.2,
+        y: 0.3,
+        label: 'Wisdom',
+        description: 'Knowledge and insight',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.5,
+        label: 'Core Self',
+        description: 'Your essential truth',
+      ),
     ],
   );
 
