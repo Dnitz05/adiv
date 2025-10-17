@@ -650,12 +650,17 @@ class _HomeState extends State<_Home> {
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
+  final FocusNode _questionFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadAll();
+      // Auto-focus on question field when on home (no draw active)
+      if (_latestDraw == null) {
+        _questionFocusNode.requestFocus();
+      }
     });
   }
 
@@ -663,6 +668,7 @@ class _HomeState extends State<_Home> {
   void dispose() {
     _questionController.dispose();
     _seedController.dispose();
+    _questionFocusNode.dispose();
     super.dispose();
   }
 
@@ -852,6 +858,12 @@ class _HomeState extends State<_Home> {
       _currentQuestion = null;
       _questionController.clear();
       _error = null;
+    });
+    // Auto-focus on question field after reset
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _questionFocusNode.requestFocus();
+      }
     });
   }
 
@@ -1256,6 +1268,7 @@ class _HomeState extends State<_Home> {
               children: [
                 TextField(
                   controller: _questionController,
+                  focusNode: _questionFocusNode,
                   decoration: InputDecoration(
                     labelText: localisation.askQuestion,
                   ),
@@ -2136,6 +2149,14 @@ class _HomeState extends State<_Home> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.grid_view_rounded,
+            color: Colors.white,
+          ),
+          onPressed: _showSpreadGallery,
+          tooltip: 'Seleccionar Tirada',
+        ),
         title: GestureDetector(
           onTap: _resetToHome,
           child: Image.asset(
@@ -2146,17 +2167,9 @@ class _HomeState extends State<_Home> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.grid_view_rounded,
-              color: TarotTheme.cosmicAccent,
-            ),
-            onPressed: _showSpreadGallery,
-            tooltip: 'Seleccionar Tirada',
-          ),
-          IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.history_rounded,
-              color: TarotTheme.twilightPurple,
+              color: Colors.white,
             ),
             onPressed: () {
               // TODO: Implementar historial
