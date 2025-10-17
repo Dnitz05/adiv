@@ -1463,6 +1463,7 @@ class _HomeState extends State<_Home> {
                         dealtCardCount: dealCount,
                         revealedCardCount: revealCount,
                         locale: localisation.localeName,
+                        hasInterpretation: _latestInterpretation != null,
                       ),
                     );
                   },

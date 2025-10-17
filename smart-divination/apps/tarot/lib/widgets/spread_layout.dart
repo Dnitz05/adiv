@@ -16,6 +16,7 @@ class SpreadLayout extends StatelessWidget {
   final int? revealedCardCount;
   final Duration flipDuration;
   final String locale;
+  final bool hasInterpretation;
 
   const SpreadLayout({
     super.key,
@@ -27,6 +28,7 @@ class SpreadLayout extends StatelessWidget {
     this.revealedCardCount,
     this.flipDuration = const Duration(milliseconds: 450),
     this.locale = 'es',
+    this.hasInterpretation = false,
   });
 
   @override
@@ -231,8 +233,8 @@ class SpreadLayout extends StatelessWidget {
           isFaceUp: isFaceUp,
           duration: flipDuration,
         ),
-        // Show card name only when revealed (face up)
-        if (isFaceUp) ...[
+        // Show card name only when revealed (face up) AND interpretation has been requested
+        if (isFaceUp && hasInterpretation) ...[
           const SizedBox(height: 6),
           SizedBox(
             width: cardWidth,
