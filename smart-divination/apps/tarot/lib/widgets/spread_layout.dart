@@ -155,45 +155,73 @@ class SpreadLayout extends StatelessWidget {
     double containerHeight,
     double cardWidth,
     double cardHeight,
-    bool showCardBack, // New parameter
+    bool showCardBack,
   ) {
-    // Convert relative position (0.0-1.0) to absolute position
     final double left = (position.x * containerWidth) - (cardWidth / 2);
     final double top = (position.y * containerHeight) - (cardHeight / 2);
 
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
-    // Reversed cards should be shown upside-down (180 deg rotation)
-    // Skip reversed rotation when showing card backs
-    final double cardRotation = (showCardBack || !isReversed) ? 0 : 180;
-
-    final cardStack = SizedBox(
-      width: cardWidth,
-      height: cardHeight,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Transform.rotate(
-            angle: cardRotation * math.pi / 180,
-            child: _buildCardWidget(card, cardWidth, cardHeight, showCardBack),
-          ),
-          // Show reversed badge only when the card is face up
-          if (!showCardBack && isReversed)
-            Positioned(
-              top: 6,
-              right: 6,
-              child: _buildReversedIcon(),
-            ),
-        ],
-      ),
-    );
 
     return Positioned(
       left: left,
       top: top,
       child: Transform.rotate(
         angle: baseRotation * math.pi / 180,
-        child: cardStack,
+        child: TweenAnimationBuilder<double>(
+          tween: Tween<double>(
+            begin: 0,
+            end: showCardBack ? math.pi : 0,
+          ),
+          duration: showCardBack
+              ? Duration.zero
+              : const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+          builder: (context, angle, child) {
+            final bool showFrontFace = angle <= math.pi / 2;
+            final Widget cardFace = showFrontFace
+                ? _buildCardWidget(card, cardWidth, cardHeight, false)
+                : _buildCardWidget(card, cardWidth, cardHeight, true);
+
+            final Widget rotatedFace = showFrontFace && isReversed
+                ? Transform.rotate(
+                    angle: math.pi,
+                    child: cardFace,
+                  )
+                : cardFace;
+
+            final Widget visibleFace = showFrontFace
+                ? rotatedFace
+                : Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..rotateY(math.pi),
+                    child: rotatedFace,
+                  );
+
+            return SizedBox(
+              width: cardWidth,
+              height: cardHeight,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateY(angle),
+                    child: visibleFace,
+                  ),
+                  if (showFrontFace && isReversed)
+                    Positioned(
+                      top: 6,
+                      right: 6,
+                      child: _buildReversedIcon(),
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -302,3 +330,4 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 }
+

@@ -29,9 +29,8 @@ class SpreadSelector extends StatelessWidget {
           isExpanded: true,
           icon: const Icon(Icons.arrow_drop_down),
           items: TarotSpreads.all.map((spread) {
-            final spreadName = localisation.spreadName(spread.id);
-            final spreadSummary =
-                '${localisation.spreadCardCount(spread.cardCount)} - ${localisation.spreadDescription(spread.id)}';
+            final spreadName = spread.name;
+            final spreadSummary = '${spread.cardCount} cards';
             return DropdownMenuItem<TarotSpread>(
               value: spread,
               child: Column(
