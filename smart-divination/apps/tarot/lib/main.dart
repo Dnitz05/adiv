@@ -1243,7 +1243,7 @@ class _HomeState extends State<_Home> {
           '¿Qué quieres consultar?',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.normal,
-            color: TarotTheme.moonlight,
+            color: TarotTheme.moonlight.withOpacity(0.85),
           ),
           textAlign: TextAlign.center,
         ),
@@ -1363,50 +1363,49 @@ class _HomeState extends State<_Home> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // Show spread info when showing placeholders
-                if (_dealtCardCount == 0) ...[
-                  Builder(
-                    builder: (context) {
-                      final spread = TarotSpreads.getById(draw.spread) ??
-                          TarotSpreads.threeCard;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: TarotTheme.moonlight,
-                                height: 1.5,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: 'Tirada escogida: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: TarotTheme.cosmicAccent,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: spread.name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+                // Show spread info always (not just when placeholders are visible)
+                Builder(
+                  builder: (context) {
+                    final spread = TarotSpreads.getById(draw.spread) ??
+                        TarotSpreads.threeCard;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: TarotTheme.moonlight,
+                              height: 1.5,
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: TarotTheme.moonlight,
-                                height: 1.5,
+                            children: [
+                              TextSpan(
+                                text: 'Tirada escogida: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: TarotTheme.cosmicAccent,
+                                ),
                               ),
-                              children: [
-                                TextSpan(
-                                  text: 'Motivo: ',
+                              TextSpan(
+                                text: spread.name,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: TarotTheme.moonlight,
+                              height: 1.5,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Motivo: ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: TarotTheme.cosmicAccent,
@@ -1426,7 +1425,6 @@ class _HomeState extends State<_Home> {
                       );
                     },
                   ),
-                ],
                 LayoutBuilder(
                   builder: (context, constraints) {
                     // Get the selected spread or use threeCard as fallback
