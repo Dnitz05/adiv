@@ -52,11 +52,11 @@ class TarotSpreads {
     name: 'Three Card Spread',
     description: 'Past, Present, Future',
     cardCount: 3,
-    aspectRatio: 2.5,
+    aspectRatio: 1.8,
     positions: [
-      CardPosition(x: 0.2, y: 0.5),
+      CardPosition(x: 0.15, y: 0.5),
       CardPosition(x: 0.5, y: 0.5),
-      CardPosition(x: 0.8, y: 0.5),
+      CardPosition(x: 0.85, y: 0.5),
     ],
   );
 

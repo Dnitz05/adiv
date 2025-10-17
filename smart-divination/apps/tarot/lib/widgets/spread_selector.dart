@@ -1,4 +1,6 @@
+import 'package:common/l10n/common_strings.dart';
 import 'package:flutter/material.dart';
+
 import '../models/tarot_spread.dart';
 
 class SpreadSelector extends StatelessWidget {
@@ -13,6 +15,8 @@ class SpreadSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localisation = CommonStrings.of(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -25,6 +29,9 @@ class SpreadSelector extends StatelessWidget {
           isExpanded: true,
           icon: const Icon(Icons.arrow_drop_down),
           items: TarotSpreads.all.map((spread) {
+            final spreadName = localisation.spreadName(spread.id);
+            final spreadSummary =
+                '${localisation.spreadCardCount(spread.cardCount)} - ${localisation.spreadDescription(spread.id)}';
             return DropdownMenuItem<TarotSpread>(
               value: spread,
               child: Column(
@@ -32,14 +39,14 @@ class SpreadSelector extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    spread.name,
+                    spreadName,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
                     ),
                   ),
                   Text(
-                    '${spread.cardCount} cards - ${spread.description}',
+                    spreadSummary,
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey.shade600,

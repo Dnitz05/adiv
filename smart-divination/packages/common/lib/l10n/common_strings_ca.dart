@@ -12,49 +12,50 @@ class CommonStringsCa extends CommonStrings {
   String get allowReversed => 'Permet cartes invertides';
 
   @override
-  String get appTitleIching => 'I Ching Intel·ligent';
+  String get appTitleIching => 'I Ching IntelÃ‚Â·ligent';
 
   @override
-  String get appTitleRunes => 'Runes Intel·ligents';
+  String get appTitleRunes => 'Runes IntelÃ‚Â·ligents';
 
   @override
-  String get appTitleTarot => 'Tarot Intel·ligent';
+  String get appTitleTarot => 'Tarot IntelÃ‚Â·ligent';
 
   @override
   String get askQuestion => 'Fes la teva pregunta...';
 
   @override
-  String get authEmailLabel => 'Correu electrònic';
+  String get authEmailLabel => 'Correu electrÃƒÂ²nic';
 
   @override
   String get authForgotPasswordDescription =>
-      'Introdueix el correu associat al teu compte i t’enviarem instruccions per restablir-la.';
+      'Introdueix el correu associat al teu compte i tÃ¢â‚¬â„¢enviarem instruccions per restablir-la.';
 
   @override
   String get authForgotPasswordLink => 'Has oblidat la contrasenya?';
 
   @override
   String get authForgotPasswordMissingEmail =>
-      'Introdueix un correu electrònic vàlid per continuar.';
+      'Introdueix un correu electrÃƒÂ²nic vÃƒÂ lid per continuar.';
 
   @override
   String get authForgotPasswordSubmit => 'Envia el correu';
 
   @override
   String get authForgotPasswordSuccess =>
-      'Hem enviat el correu per restablir la contrasenya. Revisa la safata d’entrada.';
+      'Hem enviat el correu per restablir la contrasenya. Revisa la safata dÃ¢â‚¬â„¢entrada.';
 
   @override
   String get authForgotPasswordTitle => 'Restableix la contrasenya';
 
   @override
-  String get authGenericError => 'Error d’autenticació.';
+  String get authGenericError => 'Error dÃ¢â‚¬â„¢autenticaciÃƒÂ³.';
 
   @override
   String get authPasswordLabel => 'Contrasenya';
 
   @override
-  String get authPasswordLabelWithHint => 'Contrasenya (mínim 6 caràcters)';
+  String get authPasswordLabelWithHint =>
+      'Contrasenya (mÃƒÂ­nim 6 carÃƒÂ cters)';
 
   @override
   String get authPasswordResetButton => 'Actualitza la contrasenya';
@@ -64,45 +65,45 @@ class CommonStringsCa extends CommonStrings {
 
   @override
   String get authPasswordResetDescription =>
-      'Introdueix una contrasenya nova per completar el procés.';
+      'Introdueix una contrasenya nova per completar el procÃƒÂ©s.';
 
   @override
   String get authPasswordResetError =>
-      'No s’ha pogut actualitzar la contrasenya. Torna-ho a provar.';
+      'No sÃ¢â‚¬â„¢ha pogut actualitzar la contrasenya. Torna-ho a provar.';
 
   @override
   String get authPasswordResetMismatch =>
-      'Les contrasenyes han de coincidir i tenir almenys 6 caràcters.';
+      'Les contrasenyes han de coincidir i tenir almenys 6 carÃƒÂ cters.';
 
   @override
   String get authPasswordResetNewPasswordLabel => 'Nova contrasenya';
 
   @override
   String get authPasswordResetSignOutNotice =>
-      'Per seguretat, es tancarà la sessió després d’actualitzar la contrasenya.';
+      'Per seguretat, es tancarÃƒÂ  la sessiÃƒÂ³ desprÃƒÂ©s dÃ¢â‚¬â„¢actualitzar la contrasenya.';
 
   @override
   String get authPasswordResetSuccess =>
-      'Contrasenya actualitzada. Pots iniciar sessió amb la nova contrasenya.';
+      'Contrasenya actualitzada. Pots iniciar sessiÃƒÂ³ amb la nova contrasenya.';
 
   @override
   String get authPasswordResetTitle => 'Defineix una contrasenya nova';
 
   @override
-  String get authSignInButton => 'Inicia sessió';
+  String get authSignInButton => 'Inicia sessiÃƒÂ³';
 
   @override
-  String get authSignInSuccess => 'Has iniciat sessió correctament.';
+  String get authSignInSuccess => 'Has iniciat sessiÃƒÂ³ correctament.';
 
   @override
-  String get authSignInTitle => 'Inicia sessió a Smart Tarot';
+  String get authSignInTitle => 'Inicia sessiÃƒÂ³ a Smart Tarot';
 
   @override
   String get authSignUpButton => 'Crea un compte';
 
   @override
   String get authSignUpConfirmationSent =>
-      'Revisa la safata d’entrada per confirmar el compte abans d’iniciar sessió.';
+      'Revisa la safata dÃ¢â‚¬â„¢entrada per confirmar el compte abans dÃ¢â‚¬â„¢iniciar sessiÃƒÂ³.';
 
   @override
   String get authSignUpSuccess => 'Compte creat correctament.';
@@ -111,10 +112,10 @@ class CommonStringsCa extends CommonStrings {
   String get authSignUpTitle => 'Crea el teu compte de Smart Tarot';
 
   @override
-  String get authToggleToSignIn => 'Ja tens compte? Inicia sessió';
+  String get authToggleToSignIn => 'Ja tens compte? Inicia sessiÃƒÂ³';
 
   @override
-  String get authToggleToSignUp => 'Necessites un compte? Crea’l';
+  String get authToggleToSignUp => 'Necessites un compte? CreaÃ¢â‚¬â„¢l';
 
   @override
   String authUnexpectedError(Object error) {
@@ -123,10 +124,10 @@ class CommonStringsCa extends CommonStrings {
 
   @override
   String get authValidationError =>
-      'Introdueix un correu vàlid i una contrasenya d’almenys 6 caràcters.';
+      'Introdueix un correu vÃƒÂ lid i una contrasenya dÃ¢â‚¬â„¢almenys 6 carÃƒÂ cters.';
 
   @override
-  String get cancel => 'Cancel·lar';
+  String get cancel => 'CancelÃ‚Â·lar';
 
   @override
   String get cardOrientationReversed => 'Invertida';
@@ -143,23 +144,23 @@ class CommonStringsCa extends CommonStrings {
   String get close => 'Tancar';
 
   @override
-  String get continueSession => 'Continuar sessió';
+  String get continueSession => 'Continuar sessiÃƒÂ³';
 
   @override
   String get darkMode => 'Mode fosc';
 
   @override
-  String get drawPlaceholder => 'Extreu cartes per rebre orientació.';
+  String get drawPlaceholder => 'Extreu cartes per rebre orientaciÃƒÂ³.';
 
   @override
   String get drawSuccessMessage =>
-      'Lectura preparada. Revisa l\'última tirada a continuació.';
+      'Lectura preparada. Revisa l\'ÃƒÂºltima tirada a continuaciÃƒÂ³.';
 
   @override
   String get drawingInProgress => 'Extraient cartes...';
 
   @override
-  String get endSession => 'Finalitzar sessió';
+  String get endSession => 'Finalitzar sessiÃƒÂ³';
 
   @override
   String get generateSeed => 'Genera una llavor';
@@ -193,21 +194,21 @@ class CommonStringsCa extends CommonStrings {
 
   @override
   String methodLabel(Object method) {
-    return 'Mètode: $method';
+    return 'MÃƒÂ¨tode: $method';
   }
 
   @override
   String methodSeedLabel(Object method, Object seed) {
-    return 'Mètode: $method • Llavor: $seed';
+    return 'MÃƒÂ¨tode: $method Ã¢â‚¬Â¢ Llavor: $seed';
   }
 
   @override
   String get networkError =>
-      'Error de connexió de xarxa. Comprova la teva connexió.';
+      'Error de connexiÃƒÂ³ de xarxa. Comprova la teva connexiÃƒÂ³.';
 
   @override
   String nextWindow(Object timestamp) {
-    return 'Pròxima franja: $timestamp';
+    return 'PrÃƒÂ²xima franja: $timestamp';
   }
 
   @override
@@ -225,7 +226,7 @@ class CommonStringsCa extends CommonStrings {
   String get runes => 'Runes';
 
   @override
-  String get runesDescription => 'Símbols nòrdics de poder';
+  String get runesDescription => 'SÃƒÂ­mbols nÃƒÂ²rdics de poder';
 
   @override
   String get save => 'Desar';
@@ -239,14 +240,72 @@ class CommonStringsCa extends CommonStrings {
   String get seedOptionalLabel => 'Llavor (opcional)';
 
   @override
-  String get selectTechnique => 'Quina tècnica t\'agradaria explorar avui?';
+  String get selectTechnique => 'Quina tÃƒÂ¨cnica t\'agradaria explorar avui?';
 
   @override
   String get sessionLimitReached =>
-      'Límit de sessions assolit. Actualitza a premium per a sessions il·limitades.';
+      'LÃƒÂ­mit de sessions assolit. Actualitza a premium per a sessions ilÃ‚Â·limitades.';
 
   @override
-  String get settings => 'Configuració';
+  String get settings => 'ConfiguraciÃƒÂ³';
+
+  @override
+  String spreadName(String spreadId) {
+    switch (spreadId) {
+      case 'single':
+        return 'Carta \u00fanica';
+      case 'three_card':
+        return 'Tirada de tres cartes';
+      case 'celtic_cross':
+        return 'Creu Celta';
+      case 'horseshoe':
+        return 'Tirada Ferradura';
+      case 'relationship':
+        return 'Relaci\u00f3';
+      case 'pyramid':
+        return 'Pir\u00e0mide';
+      case 'star':
+        return 'Estrella';
+      case 'year_ahead':
+        return 'Any per davant';
+      default:
+        return spreadId;
+    }
+  }
+
+  @override
+  String spreadDescription(String spreadId) {
+    switch (spreadId) {
+      case 'single':
+        return 'Una carta per a una visi\u00f3 r\u00e0pida';
+      case 'three_card':
+        return 'Passat, Present, Futur';
+      case 'celtic_cross':
+        return 'Tirada tradicional de 10 cartes';
+      case 'horseshoe':
+        return 'Tirada orientativa de 7 cartes';
+      case 'relationship':
+        return 'Visi\u00f3 de relaci\u00f3 en 7 cartes';
+      case 'pyramid':
+        return 'Disposici\u00f3 piramidal de 6 cartes';
+      case 'star':
+        return 'Patr\u00f3 estel\u00b7lar de 7 cartes';
+      case 'year_ahead':
+        return '12 cartes per a cada mes';
+      default:
+        return 'Tirada de tarot';
+    }
+  }
+
+  @override
+  String spreadCardCount(int count) {
+    return intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      one: '1 carta',
+      other: '$count cartes',
+    );
+  }
 
   @override
   String spreadLabel(Object spread) {
@@ -263,7 +322,7 @@ class CommonStringsCa extends CommonStrings {
   String get tarot => 'Tarot';
 
   @override
-  String get tarotDescription => 'Cartes per a orientació i reflexió';
+  String get tarotDescription => 'Cartes per a orientaciÃƒÂ³ i reflexiÃƒÂ³';
 
   @override
   String tierLabel(Object tier) {
@@ -274,7 +333,7 @@ class CommonStringsCa extends CommonStrings {
   String get unknownCardName => 'Carta desconeguda';
 
   @override
-  String get unlimitedSessions => 'Sessions il·limitades';
+  String get unlimitedSessions => 'Sessions ilÃ‚Â·limitades';
 
   @override
   String get upgradeToPremium => 'Actualitza a Premium';

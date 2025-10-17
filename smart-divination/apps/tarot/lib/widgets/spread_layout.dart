@@ -10,7 +10,7 @@ class SpreadLayout extends StatelessWidget {
   final List<TarotCard> cards;
   final double maxWidth;
   final double maxHeight;
-  final bool showCardBacks; // Si és true, mostra el dors de les cartes
+  final bool showCardBacks; // When true, show the card backs
 
   const SpreadLayout({
     super.key,
@@ -65,7 +65,7 @@ class SpreadLayout extends StatelessWidget {
               effectiveHeight,
               cardWidth,
               cardHeight,
-              showCardBacks, // Passar el paràmetre
+              showCardBacks, // Pass the parameter through
             ),
         ],
       ),
@@ -78,14 +78,16 @@ class SpreadLayout extends StatelessWidget {
     double containerHeight,
     double cardAspectRatio,
   ) {
-    final double verticalCardHeight = _calculateCardHeight(spread, containerHeight);
+    final double verticalCardHeight =
+        _calculateCardHeight(spread, containerHeight);
     final double widthFromHeight = verticalCardHeight * cardAspectRatio;
-    final double widthFromSpacing = _maxCardWidthFromSpacing(spread, containerWidth);
+    final double widthFromSpacing =
+        _maxCardWidthFromSpacing(spread, containerWidth);
 
     double cardWidth = math.min(widthFromHeight, widthFromSpacing);
 
     if (spread.cardCount == 3) {
-      final double targetWidth = containerWidth / 2.2;
+      final double targetWidth = containerWidth / 1.8;
       cardWidth = math.min(cardWidth, targetWidth);
     }
 
@@ -101,7 +103,7 @@ class SpreadLayout extends StatelessWidget {
       return containerHeight * 0.90;
     } else if (spread.cardCount == 3) {
       // Three cards: Make them large and prominent to appreciate details
-      return containerHeight * 0.85;
+      return containerHeight * 0.92;
     } else if (spread.cardCount <= 5) {
       // Small spreads (4-5 cards): Large and comfortable viewing size
       return containerHeight * 0.58;
@@ -122,7 +124,7 @@ class SpreadLayout extends StatelessWidget {
       return containerWidth;
     }
 
-    final double spacingFactor = spread.cardCount <= 3 ? 0.96 : 0.90;
+    final double spacingFactor = spread.cardCount <= 3 ? 1.0 : 0.90;
     double limit = containerWidth;
 
     for (final position in spread.positions) {
@@ -135,7 +137,8 @@ class SpreadLayout extends StatelessWidget {
     for (int i = 0; i < spread.positions.length - 1; i++) {
       for (int j = i + 1; j < spread.positions.length; j++) {
         final double centerDistance =
-            (spread.positions[i].x - spread.positions[j].x).abs() * containerWidth;
+            (spread.positions[i].x - spread.positions[j].x).abs() *
+                containerWidth;
         if (centerDistance > 0) {
           limit = math.min(limit, centerDistance * spacingFactor);
         }
@@ -152,7 +155,7 @@ class SpreadLayout extends StatelessWidget {
     double containerHeight,
     double cardWidth,
     double cardHeight,
-    bool showCardBack, // Nou paràmetre
+    bool showCardBack, // New parameter
   ) {
     // Convert relative position (0.0-1.0) to absolute position
     final double left = (position.x * containerWidth) - (cardWidth / 2);
@@ -160,10 +163,9 @@ class SpreadLayout extends StatelessWidget {
 
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
-    // Reversed cards should be shown upside-down (180° rotation)
-    // Però si es mostra el dors, no aplicar rotació de carta invertida
+    // Reversed cards should be shown upside-down (180 deg rotation)
+    // Skip reversed rotation when showing card backs
     final double cardRotation = (showCardBack || !isReversed) ? 0 : 180;
-
 
     final cardStack = SizedBox(
       width: cardWidth,
@@ -175,7 +177,7 @@ class SpreadLayout extends StatelessWidget {
             angle: cardRotation * math.pi / 180,
             child: _buildCardWidget(card, cardWidth, cardHeight, showCardBack),
           ),
-          // Només mostrar badge d'invertida si la carta està revelada
+          // Show reversed badge only when the card is face up
           if (!showCardBack && isReversed)
             Positioned(
               top: 6,
@@ -201,33 +203,29 @@ class SpreadLayout extends StatelessWidget {
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: TarotTheme.deepPurple.withOpacity(0.85),
+        color: TarotTheme.cosmicAccent.withOpacity(0.9),
         shape: BoxShape.circle,
         border: Border.all(
-          color: TarotTheme.moonGold.withOpacity(0.6),
+          color: TarotTheme.twilightPurple,
           width: 1.5,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: TarotTheme.moonGold.withOpacity(0.3),
-            blurRadius: 4,
-            spreadRadius: 1,
-          ),
-        ],
+        boxShadow: TarotTheme.subtleShadow,
       ),
       child: Icon(
         Icons.sync,
         size: 14,
-        color: TarotTheme.moonGold,
+        color: TarotTheme.deepNight,
       ),
     );
   }
 
-  Widget _buildCardWidget(TarotCard card, double width, double height, bool showCardBack) {
-    // Si volem mostrar el dors, usar la imatge del dors
+  Widget _buildCardWidget(
+      TarotCard card, double width, double height, bool showCardBack) {
+    // Use the back artwork when showing card backs
     final String imagePath = showCardBack
         ? 'assets/cards/CardBacks.jpg'
-        : (card.imageUrl ?? CardImageMapper.getCardImagePath(card.name, card.suit));
+        : (card.imageUrl ??
+            CardImageMapper.getCardImagePath(card.name, card.suit));
 
     return Container(
       width: width,
@@ -235,28 +233,29 @@ class SpreadLayout extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: TarotTheme.moonGold.withOpacity(0.4),
+          color: TarotTheme.twilightPurple.withOpacity(0.3),
           width: 2,
         ),
-        boxShadow: TarotTheme.cardShadow,
+        boxShadow: TarotTheme.elevatedShadow,
       ),
       clipBehavior: Clip.hardEdge,
       child: Image.asset(
-          imagePath,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            // Si és el dors i hi ha error, mostrar contenidor fosc
-            if (showCardBack) {
-              return Container(
-                color: TarotTheme.deepPurple,
-                child: Center(
-                  child: Icon(Icons.back_hand, color: TarotTheme.moonGold, size: width * 0.3),
-                ),
-              );
-            }
-            return _buildCardFallback(card, width, height);
-          },
-        ),
+        imagePath,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          // If the back image fails, display a dark fallback container
+          if (showCardBack) {
+            return Container(
+              color: TarotTheme.midnightBlue,
+              child: Center(
+                child: Icon(Icons.back_hand,
+                    color: TarotTheme.cosmicAccent, size: width * 0.3),
+              ),
+            );
+          }
+          return _buildCardFallback(card, width, height);
+        },
+      ),
     );
   }
 
@@ -303,5 +302,3 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 }
-
-

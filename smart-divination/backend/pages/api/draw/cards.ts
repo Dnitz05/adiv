@@ -39,23 +39,11 @@ import {
 import { recordApiMetric } from '../../../lib/utils/metrics';
 
 import type { DrawCardsRequest } from '../../../lib/types/api';
+import { extractKeywords } from '../../../lib/utils/text';
 
 const METRICS_PATH = '/api/draw/cards';
 
 const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
-
-function extractKeywords(source?: string | null): string[] {
-  if (!source) {
-    return [];
-  }
-  const words = source
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter((word) => word.length >= 4);
-  const unique = Array.from(new Set(words));
-  return unique.slice(0, 10);
-}
 
 function buildTarotMessageContent(params: {
   cards: Array<{

@@ -58,6 +58,7 @@ export interface HealthStatus {
 export interface DeepSeekMessage {
   role?: string;
   content?: string;
+  reasoning_content?: string; // For deepseek-reasoner model
 }
 
 export interface DeepSeekChoice {

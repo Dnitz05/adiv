@@ -1,153 +1,190 @@
 import 'package:flutter/material.dart';
 
-/// Professional tarot-themed design system
+/// Minimalist neutral design system for tarot readings
 class TarotTheme {
-  // Mystical color palette
-  static const Color deepPurple = Color(0xFF2D1B4E);
-  static const Color royalPurple = Color(0xFF4A2C6F);
-  static const Color mysticViolet = Color(0xFF6B4B9E);
-  static const Color celestialBlue = Color(0xFF5B7C99);
-  static const Color moonGold = Color(0xFFD4AF37);
-  static const Color starSilver = Color(0xFFE8E8E8);
-  static const Color darkVoid = Color(0xFF1A0F2E);
-  static const Color softGlow = Color(0xFFF5F0FF);
+  // Mystical neutral palette - subtle cosmic theme
+  static const Color deepNight = Color(0xFF0F0B1F);           // Main background (deep blue-black)
+  static const Color midnightBlue = Color(0xFF1A1530);        // Card surfaces
+  static const Color cosmicPurple = Color(0xFF2A2140);        // Elevated surfaces
+  static const Color twilightPurple = Color(0xFF3D3055);      // Borders, dividers
+  static const Color stardust = Color(0xFF8E8AA8);            // Secondary text (purple-gray)
+  static const Color moonlight = Color(0xFFF0EFF7);           // Primary text
+  static const Color subtleGold = Color(0xFFB8A280);          // Accent (warm gold)
+  static const Color cosmicAccent = Color(0xFF9B87D9);        // Secondary accent (soft purple)
+  static const Color starGlow = Color(0xFFE8E5F5);            // High contrast text
 
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
 
-      // Color scheme
+      // Color scheme - mystical and subtle
       colorScheme: ColorScheme.dark(
-        primary: moonGold,
-        secondary: mysticViolet,
-        surface: deepPurple,
-        background: darkVoid,
-        onPrimary: darkVoid,
-        onSecondary: starSilver,
-        onSurface: starSilver,
-        onBackground: starSilver,
+        primary: subtleGold,
+        secondary: cosmicAccent,
+        surface: midnightBlue,
+        background: deepNight,
+        onPrimary: deepNight,
+        onSecondary: moonlight,
+        onSurface: moonlight,
+        onBackground: moonlight,
+        error: Color(0xFFFF6B6B),
       ),
 
       // Scaffold
-      scaffoldBackgroundColor: darkVoid,
+      scaffoldBackgroundColor: deepNight,
 
-      // AppBar
+      // AppBar - mystical and elegant
       appBarTheme: AppBarTheme(
-        backgroundColor: deepPurple,
-        foregroundColor: moonGold,
-        elevation: 8,
-        shadowColor: Colors.black.withOpacity(0.5),
+        backgroundColor: midnightBlue.withOpacity(0.95),
+        foregroundColor: moonlight,
+        elevation: 0,
+        shadowColor: Colors.transparent,
         centerTitle: true,
-        shape: Border(
-          bottom: BorderSide(
-            color: moonGold.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
+        surfaceTintColor: Colors.transparent,
         titleTextStyle: TextStyle(
-          fontFamily: 'Cinzel',
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          color: moonGold,
-          letterSpacing: 2,
-        ),
-      ),
-
-      // Card
-      cardTheme: CardThemeData(
-        color: deepPurple,
-        elevation: 8,
-        shadowColor: Colors.black.withOpacity(0.5),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(
-            color: moonGold.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-      ),
-
-      // Text theme
-      textTheme: TextTheme(
-        displayLarge: TextStyle(
-          fontFamily: 'Cinzel',
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          color: moonGold,
-          letterSpacing: 1.5,
-        ),
-        displayMedium: TextStyle(
-          fontFamily: 'Cinzel',
-          fontSize: 28,
-          fontWeight: FontWeight.w600,
-          color: starSilver,
-          letterSpacing: 1.2,
-        ),
-        displaySmall: TextStyle(
-          fontFamily: 'Cinzel',
-          fontSize: 24,
-          fontWeight: FontWeight.w500,
-          color: starSilver,
-        ),
-        headlineMedium: TextStyle(
-          fontFamily: 'Cinzel',
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: moonGold,
-          letterSpacing: 1,
-        ),
-        titleLarge: TextStyle(
-          fontFamily: 'Lora',
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: starSilver,
+          color: moonlight,
+          letterSpacing: 0.5,
+        ),
+      ),
+
+      // Card - subtle mystical elevation
+      cardTheme: CardThemeData(
+        color: midnightBlue,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(
+            color: cosmicAccent.withOpacity(0.15),
+            width: 1,
+          ),
+        ),
+      ),
+
+      // Text theme - neutral and readable
+      textTheme: TextTheme(
+        displayLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          color: moonlight,
+          letterSpacing: -0.5,
+          height: 1.2,
+        ),
+        displayMedium: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w600,
+          color: moonlight,
+          letterSpacing: -0.3,
+          height: 1.3,
+        ),
+        displaySmall: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+          color: moonlight,
+          letterSpacing: 0,
+          height: 1.3,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: starGlow,
+          letterSpacing: 0.2,
+          height: 1.4,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: starGlow,
+          letterSpacing: 0.15,
+          height: 1.4,
         ),
         titleMedium: TextStyle(
-          fontFamily: 'Lora',
           fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: starSilver,
+          fontWeight: FontWeight.w600,
+          color: moonlight,
+          letterSpacing: 0.15,
+          height: 1.4,
+        ),
+        titleSmall: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: subtleGold,
+          letterSpacing: 0.1,
+          height: 1.4,
         ),
         bodyLarge: TextStyle(
-          fontFamily: 'Lora',
           fontSize: 16,
-          fontWeight: FontWeight.normal,
-          color: starSilver,
+          fontWeight: FontWeight.w400,
+          color: moonlight,
+          letterSpacing: 0.15,
           height: 1.6,
         ),
         bodyMedium: TextStyle(
-          fontFamily: 'Lora',
           fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: starSilver.withOpacity(0.9),
+          fontWeight: FontWeight.w400,
+          color: moonlight.withOpacity(0.9),
+          letterSpacing: 0.1,
           height: 1.5,
         ),
+        bodySmall: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: stardust,
+          letterSpacing: 0.1,
+          height: 1.4,
+        ),
         labelLarge: TextStyle(
-          fontFamily: 'Lora',
           fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: moonGold,
+          color: subtleGold,
           letterSpacing: 0.5,
+        ),
+        labelMedium: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: stardust,
+          letterSpacing: 0.5,
+        ),
+      ),
+
+      // Filled button - mystical accent
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: subtleGold,
+          foregroundColor: deepNight,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.3,
+          ),
         ),
       ),
 
       // Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: moonGold,
-          foregroundColor: darkVoid,
-          elevation: 4,
-          shadowColor: moonGold.withOpacity(0.5),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          backgroundColor: subtleGold,
+          foregroundColor: deepNight,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Cinzel',
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
-            letterSpacing: 1.5,
+            letterSpacing: 0.3,
           ),
         ),
       ),
@@ -155,109 +192,183 @@ class TarotTheme {
       // Outlined button
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: moonGold,
-          side: BorderSide(color: moonGold, width: 2),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          foregroundColor: cosmicAccent,
+          side: BorderSide(color: twilightPurple, width: 1.5),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
           ),
           textStyle: const TextStyle(
-            fontFamily: 'Cinzel',
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            letterSpacing: 1.2,
+            letterSpacing: 0.3,
           ),
         ),
       ),
 
-      // Input decoration
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: deepPurple,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: moonGold.withOpacity(0.5)),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: mysticViolet),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: moonGold, width: 2),
-        ),
-        labelStyle: TextStyle(
-          fontFamily: 'Lora',
-          color: starSilver.withOpacity(0.8),
-        ),
-        hintStyle: TextStyle(
-          fontFamily: 'Lora',
-          color: starSilver.withOpacity(0.5),
+      // Text button
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: subtleGold,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.2,
+          ),
         ),
       ),
 
-      // Divider
+      // Input decoration - mystical and elegant
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: cosmicPurple,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: twilightPurple.withOpacity(0.3)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: twilightPurple.withOpacity(0.3)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: cosmicAccent, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Color(0xFFFF6B6B)),
+        ),
+        labelStyle: TextStyle(
+          color: stardust,
+          fontSize: 14,
+        ),
+        hintStyle: TextStyle(
+          color: stardust.withOpacity(0.6),
+          fontSize: 14,
+        ),
+        floatingLabelStyle: TextStyle(
+          color: cosmicAccent,
+          fontSize: 14,
+        ),
+      ),
+
+      // Divider - subtle separation
       dividerTheme: DividerThemeData(
-        color: moonGold.withOpacity(0.3),
+        color: twilightPurple.withOpacity(0.2),
         thickness: 1,
-        space: 24,
+        space: 16,
       ),
 
       // Icon theme
       iconTheme: IconThemeData(
-        color: moonGold,
-        size: 24,
+        color: stardust,
+        size: 22,
+      ),
+
+      // SnackBar
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: cosmicPurple,
+        contentTextStyle: TextStyle(color: moonlight, fontSize: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        behavior: SnackBarBehavior.floating,
+      ),
+
+      // Dialog
+      dialogTheme: DialogThemeData(
+        backgroundColor: midnightBlue,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: cosmicAccent.withOpacity(0.2)),
+        ),
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: moonlight,
+        ),
+        contentTextStyle: TextStyle(
+          fontSize: 14,
+          color: moonlight.withOpacity(0.9),
+          height: 1.5,
+        ),
+      ),
+
+      // Progress indicator
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: cosmicAccent,
+        circularTrackColor: twilightPurple.withOpacity(0.3),
       ),
     );
   }
 
-  // Decorative gradients
-  static LinearGradient get mysticGradient {
-    return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [
-        deepPurple,
-        royalPurple,
-        mysticViolet,
-      ],
-    );
-  }
-
-  static LinearGradient get celestialGradient {
+  // Mystical cosmic gradients
+  static LinearGradient get subtleBackgroundGradient {
     return LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        darkVoid,
-        deepPurple,
+        Color(0xFF0A0515), // Deep space
+        deepNight,
+        midnightBlue.withOpacity(0.4),
+        cosmicPurple.withOpacity(0.2),
+      ],
+      stops: [0.0, 0.3, 0.7, 1.0],
+    );
+  }
+
+  static LinearGradient get cardGradient {
+    return LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        midnightBlue,
+        cosmicPurple.withOpacity(0.8),
       ],
     );
   }
 
-  // Box shadows
-  static List<BoxShadow> get cardShadow {
+  // Starry overlay gradient
+  static LinearGradient get starryOverlay {
+    return LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        cosmicAccent.withOpacity(0.03),
+        Colors.transparent,
+        cosmicAccent.withOpacity(0.02),
+      ],
+      stops: [0.0, 0.5, 1.0],
+    );
+  }
+
+  // Minimal shadows
+  static List<BoxShadow> get subtleShadow {
     return [
       BoxShadow(
-        color: Colors.black.withOpacity(0.3),
-        blurRadius: 12,
-        offset: const Offset(0, 6),
-      ),
-      BoxShadow(
-        color: moonGold.withOpacity(0.1),
-        blurRadius: 20,
-        offset: const Offset(0, 8),
+        color: Colors.black.withOpacity(0.15),
+        blurRadius: 8,
+        offset: const Offset(0, 2),
       ),
     ];
   }
 
-  static List<BoxShadow> get glowShadow {
+  static List<BoxShadow> get elevatedShadow {
     return [
       BoxShadow(
-        color: moonGold.withOpacity(0.3),
-        blurRadius: 16,
-        spreadRadius: 2,
+        color: Colors.black.withOpacity(0.25),
+        blurRadius: 12,
+        offset: const Offset(0, 4),
       ),
     ];
   }
+
+  // Utility colors
+  static Color get accentColor => subtleGold;
+  static Color get secondaryAccent => cosmicAccent;
+  static Color get backgroundColor => deepNight;
+  static Color get surfaceColor => midnightBlue;
+  static Color get textColor => moonlight;
+  static Color get subtleTextColor => stardust;
 }

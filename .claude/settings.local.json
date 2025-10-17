@@ -110,7 +110,10 @@
       "Bash(else echo \"No .env file in tarot app\")",
       "Bash(test:*)",
       "Bash(PORT=3001 npm run dev:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(\"$JAVA_HOME/bin/keytool.exe\" -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload -storepass \"SmartTarot2025!\" -keypass \"SmartTarot2025!\" -dname \"CN=Smart Divination, OU=Development, O=Smart Divination Platform, L=Barcelona, ST=Catalunya, C=ES\")",
+      "Bash(awk:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

@@ -198,7 +198,7 @@ class CommonStringsEn extends CommonStrings {
 
   @override
   String methodSeedLabel(Object method, Object seed) {
-    return 'Method: $method • Seed: $seed';
+    return 'Method: $method Ã¢â‚¬Â¢ Seed: $seed';
   }
 
   @override
@@ -248,6 +248,64 @@ class CommonStringsEn extends CommonStrings {
 
   @override
   String get settings => 'Settings';
+
+  @override
+  String spreadName(String spreadId) {
+    switch (spreadId) {
+      case 'single':
+        return 'Single Card';
+      case 'three_card':
+        return 'Three Card Spread';
+      case 'celtic_cross':
+        return 'Celtic Cross';
+      case 'horseshoe':
+        return 'Horseshoe';
+      case 'relationship':
+        return 'Relationship';
+      case 'pyramid':
+        return 'Pyramid';
+      case 'star':
+        return 'Star';
+      case 'year_ahead':
+        return 'Year Ahead';
+      default:
+        return spreadId;
+    }
+  }
+
+  @override
+  String spreadDescription(String spreadId) {
+    switch (spreadId) {
+      case 'single':
+        return 'One card for quick insight';
+      case 'three_card':
+        return 'Past, Present, Future';
+      case 'celtic_cross':
+        return 'Traditional 10-card spread';
+      case 'horseshoe':
+        return '7-card guidance spread';
+      case 'relationship':
+        return '7-card relationship insight';
+      case 'pyramid':
+        return '6-card pyramid layout';
+      case 'star':
+        return '7-card star pattern';
+      case 'year_ahead':
+        return '12 cards for each month';
+      default:
+        return 'Tarot spread';
+    }
+  }
+
+  @override
+  String spreadCardCount(int count) {
+    return intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      one: '1 card',
+      other: '$count cards',
+    );
+  }
 
   @override
   String spreadLabel(Object spread) {

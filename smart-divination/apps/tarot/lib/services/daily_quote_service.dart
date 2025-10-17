@@ -15,9 +15,26 @@ class DailyQuote {
   });
 
   String getText(String locale) {
-    if (locale.startsWith('ca')) return ca;
-    if (locale.startsWith('es')) return es;
-    return en;
+    final String raw;
+    if (locale.startsWith('ca')) {
+      raw = ca;
+    } else if (locale.startsWith('es')) {
+      raw = es;
+    } else {
+      raw = en;
+    }
+    return _trimTrailingPeriod(raw);
+  }
+
+  String _trimTrailingPeriod(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      return trimmed;
+    }
+    if (trimmed.endsWith('.')) {
+      return trimmed.substring(0, trimmed.length - 1).trimRight();
+    }
+    return trimmed;
   }
 }
 

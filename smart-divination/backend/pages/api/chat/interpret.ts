@@ -25,9 +25,11 @@ import {
   getSession,
 } from '../../../lib/utils/supabase';
 import { recordApiMetric } from '../../../lib/utils/metrics';
+import { extractKeywords } from '../../../lib/utils/text';
 
 const METRICS_PATH = '/api/chat/interpret';
 const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
+// Use DeepSeek Chat with aggressive speed optimizations
 const DEFAULT_MODEL = process.env.DEEPSEEK_MODEL ?? 'deepseek-chat';
 const DEEPSEEK_URL = process.env.DEEPSEEK_API_URL ?? 'https://api.deepseek.com/v1/chat/completions';
 
@@ -67,19 +69,6 @@ type DeepSeekParams = {
   model?: string;
   temperature?: number;
 };
-
-function extractKeywords(source?: string | null): string[] {
-  if (!source) {
-    return [];
-  }
-  const words = source
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter((word) => word.length >= 4);
-  const unique = Array.from(new Set(words));
-  return unique.slice(0, 12);
-}
 
 function cleanMetadata(source: Record<string, unknown>): Record<string, unknown> {
   const result: Record<string, unknown> = {};
@@ -131,41 +120,22 @@ function buildInterpretationPrompt(params: {
   results: JsonRecord;
 }): string {
   const { technique, locale, question, results } = params;
-  const questionText = question?.trim() ?? 'No specific question was provided.';
+  const questionText = question?.trim() ?? 'No specific question.';
   const spread = typeof results.spread === 'string' ? results.spread : 'unknown';
-  const method = typeof results.method === 'string' ? results.method : 'unspecified';
   const promptLines = [
-    'Provide profound, structured tarot insights.',
+    'JSON: {"interpretation": "markdown", "summary": "title <120 chars", "keywords": ["key1", "key2"]}',
     '',
-    'RESPOND AS JSON: {"interpretation": "markdown text", "summary": "title max 120 chars", "keywords": ["phrase1", "phrase2"]}',
+    'Brief tarot insight (250-350 words):',
+    '## Opening (1 sentence)',
+    '## Cards (2-3 sentences each, **🃏 Card Name** or **Reversed**)',
+    '## Synthesis (2 sentences)',
+    '## Guidance (2 sentences)',
     '',
-    'STRUCTURE (350-450 words):',
+    'Style: mystical + practical.',
+    `Lang: ${locale}`,
+    `Q: ${questionText}`,
+    `Spread: ${spread}`,
     '',
-    '## Opening',
-    '2 sentences honoring the question.',
-    '',
-    '## Card Analysis',
-    'For each card (3-4 sentences):',
-    '- Start with **🃏 Card Name** or **🃏 Card Name (Reversed)**',
-    '- Meaning, connection to question, upright/reversed significance',
-    '',
-    '## Synthesis',
-    'Weave cards into unified message (2-3 sentences).',
-    '',
-    '## Guidance',
-    'Actionable wisdom (2-3 sentences).',
-    '',
-    '## Closing',
-    'Uplifting insight (2 sentences).',
-    '',
-    'STYLE: Poetic yet clear, mystical + practical.',
-    '',
-    `LANGUAGE: Same as question. If unclear, use ${locale}.`,
-    '',
-    `Technique: ${technique} | Spread: ${spread}`,
-    `Question: ${questionText}`,
-    '',
-    'Cards:',
     formatResultsForPrompt(results, technique),
   ];
   return promptLines.join('\n');
@@ -189,8 +159,8 @@ async function generateInterpretationFromDeepSeek(
 
   const requestBody = {
     model: params.model ?? DEFAULT_MODEL,
-    temperature: params.temperature ?? 0.7,
-    max_tokens: 1000,
+    temperature: params.temperature ?? 0.8, // Higher temp = faster generation
+    max_tokens: 450, // Ultra-optimized for speed (was 1000, then 600)
     messages: [
       {
         role: 'system',
@@ -240,8 +210,18 @@ async function generateInterpretationFromDeepSeek(
   }
 
   const payload = (await response.json()) as DeepSeekResponse;
-  const content: unknown = payload?.choices?.[0]?.message?.content;
+  const message = payload?.choices?.[0]?.message;
+  const content: unknown = message?.content;
+
+  // For deepseek-chat, content should be present
+  // For deepseek-reasoner (R1), reasoning_content might be present but we ignore it
   if (typeof content !== 'string' || content.trim().length === 0) {
+    log('error', 'DeepSeek response has empty content', {
+      sessionId: params.sessionId,
+      hasMessage: !!message,
+      hasContent: !!message?.content,
+      hasReasoningContent: !!message?.reasoning_content,
+    });
     throw new Error('DeepSeek response was empty.');
   }
 
@@ -362,7 +342,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let interpretation = input.interpretation?.trim();
   let summary = input.summary?.trim();
-  const keywordSet = new Set<string>(extractKeywords(question));
+  const keywordSet = new Set<string>(extractKeywords(question, 12));
   let generatedByModel = false;
 
   if (!interpretation || interpretation.length === 0) {
@@ -397,7 +377,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     interpretation = 'Interpretation unavailable at this time.';
   }
 
-  extractKeywords(interpretation).forEach((keyword) => keywordSet.add(keyword));
+  extractKeywords(interpretation, 12).forEach((keyword) => keywordSet.add(keyword));
   const keywords = Array.from(keywordSet).slice(0, 12);
 
   if (!summary || summary.length === 0) {
