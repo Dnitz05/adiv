@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../models/tarot_spread.dart';
 import '../theme/tarot_theme.dart';
 
-/// Modal that displays all available spreads in a visual gallery grid
-class SpreadGalleryModal extends StatelessWidget {
+/// Full page that displays all available spreads in a visual gallery grid
+class SpreadGalleryPage extends StatelessWidget {
   final TarotSpread selectedSpread;
   final ValueChanged<TarotSpread> onSpreadSelected;
 
-  const SpreadGalleryModal({
+  const SpreadGalleryPage({
     super.key,
     required this.selectedSpread,
     required this.onSpreadSelected,
@@ -17,94 +17,71 @@ class SpreadGalleryModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: screenHeight * 0.75,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.deepNight,
-            TarotTheme.midnightBlue,
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.grid_view,
+              color: TarotTheme.cosmicAccent,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Selecciona tu Tirada',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: TarotTheme.moonlight,
+                letterSpacing: 0.5,
+              ),
+            ),
           ],
         ),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        boxShadow: [
-          BoxShadow(
-            color: TarotTheme.cosmicAccent.withOpacity(0.1),
-            blurRadius: 20,
-            spreadRadius: 5,
-          ),
-        ],
+        backgroundColor: TarotTheme.deepNight,
+        elevation: 0,
       ),
-      child: Column(
-        children: [
-          // Handle bar
-          Container(
-            margin: const EdgeInsets.only(top: 12, bottom: 8),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: TarotTheme.stardust.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(2),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              TarotTheme.deepNight,
+              TarotTheme.midnightBlue,
+            ],
           ),
-          // Title
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.grid_view,
-                  color: TarotTheme.cosmicAccent,
-                  size: 28,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Selecciona tu Tirada',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    color: TarotTheme.moonlight,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
+        ),
+        child: GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3, // Always 3 columns
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
           ),
-          // Grid
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: _getCrossAxisCount(screenWidth),
-                childAspectRatio: 0.80,
-                crossAxisSpacing: 14,
-                mainAxisSpacing: 14,
-              ),
-              itemCount: TarotSpreads.all.length,
-              itemBuilder: (context, index) {
-                final spread = TarotSpreads.all[index];
-                return _SpreadCard(
-                  spread: spread,
-                  isSelected: spread.id == selectedSpread.id,
-                  onTap: () => onSpreadSelected(spread),
-                );
+          itemCount: TarotSpreads.all.length,
+          itemBuilder: (context, index) {
+            final spread = TarotSpreads.all[index];
+            return _SpreadCard(
+              spread: spread,
+              isSelected: spread.id == selectedSpread.id,
+              onTap: () {
+                onSpreadSelected(spread);
+                Navigator.pop(context);
               },
-            ),
-          ),
-        ],
+            );
+          },
+        ),
       ),
     );
-  }
-
-  int _getCrossAxisCount(double width) {
-    if (width > 600) return 3; // Tablet landscape
-    if (width > 400) return 2; // Phone landscape
-    return 2; // Phone portrait
   }
 }
 

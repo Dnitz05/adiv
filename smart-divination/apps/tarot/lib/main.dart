@@ -830,18 +830,17 @@ class _HomeState extends State<_Home> {
   }
 
   void _showSpreadGallery() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => SpreadGalleryModal(
-        selectedSpread: _selectedSpread,
-        onSpreadSelected: (spread) {
-          setState(() {
-            _selectedSpread = spread;
-          });
-          Navigator.pop(context);
-        },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SpreadGalleryPage(
+          selectedSpread: _selectedSpread,
+          onSpreadSelected: (spread) {
+            setState(() {
+              _selectedSpread = spread;
+            });
+          },
+        ),
       ),
     );
   }
