@@ -10,7 +10,9 @@ class SpreadLayout extends StatelessWidget {
   final List<TarotCard> cards;
   final double maxWidth;
   final double maxHeight;
-  final bool showCardBacks; // When true, show the card backs
+  final int? dealtCardCount;
+  final int? revealedCardCount;
+  final Duration flipDuration;
 
   const SpreadLayout({
     super.key,
@@ -18,7 +20,9 @@ class SpreadLayout extends StatelessWidget {
     required this.cards,
     required this.maxWidth,
     required this.maxHeight,
-    this.showCardBacks = false, // Per defecte mostra les cartes
+    this.dealtCardCount,
+    this.revealedCardCount,
+    this.flipDuration = const Duration(milliseconds: 450),
   });
 
   @override
@@ -52,6 +56,9 @@ class SpreadLayout extends StatelessWidget {
     final double cardWidth = cardSize.width;
     final double cardHeight = cardSize.height;
 
+        final int dealtCards = dealtCardCount ?? cards.length;
+    final int visibleCards = revealedCardCount ?? cards.length;
+
     return SizedBox(
       width: effectiveWidth,
       height: effectiveHeight,
@@ -59,13 +66,15 @@ class SpreadLayout extends StatelessWidget {
         children: [
           for (int i = 0; i < cards.length && i < spread.positions.length; i++)
             _buildPositionedCard(
-              cards[i],
-              spread.positions[i],
-              effectiveWidth,
-              effectiveHeight,
-              cardWidth,
-              cardHeight,
-              showCardBacks, // Pass the parameter through
+              card: cards[i],
+              index: i,
+              position: spread.positions[i],
+              containerWidth: effectiveWidth,
+              containerHeight: effectiveHeight,
+              cardWidth: cardWidth,
+              cardHeight: cardHeight,
+              isDealt: i < dealtCards,
+              isFaceUp: i < visibleCards,
             ),
         ],
       ),
@@ -148,79 +157,61 @@ class SpreadLayout extends StatelessWidget {
     return limit.clamp(0.0, containerWidth).toDouble();
   }
 
-  Widget _buildPositionedCard(
-    TarotCard card,
-    CardPosition position,
-    double containerWidth,
-    double containerHeight,
-    double cardWidth,
-    double cardHeight,
-    bool showCardBack,
-  ) {
+  Widget _buildPositionedCard({
+    required TarotCard card,
+    required int index,
+    required CardPosition position,
+    required double containerWidth,
+    required double containerHeight,
+    required double cardWidth,
+    required double cardHeight,
+    required bool isDealt,
+    required bool isFaceUp,
+  }) {
     final double left = (position.x * containerWidth) - (cardWidth / 2);
-    final double top = (position.y * containerHeight) - (cardHeight / 2);
+    final double finalTop = (position.y * containerHeight) - (cardHeight / 2);
+    final double top = isDealt ? finalTop : -(cardHeight + 100);
 
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
 
-    return Positioned(
+    final Widget frontSurface =
+        _buildCardWidget(card, cardWidth, cardHeight, false);
+    final Widget orientedFront = isReversed
+        ? Transform.rotate(angle: math.pi, child: frontSurface)
+        : frontSurface;
+
+    final Widget frontFace = Stack(
+      clipBehavior: Clip.none,
+      children: [
+        orientedFront,
+        if (isReversed)
+          Positioned(
+            top: 6,
+            right: 6,
+            child: _buildReversedIcon(),
+          ),
+      ],
+    );
+
+    final Widget backFace =
+        _buildCardWidget(card, cardWidth, cardHeight, true);
+
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeOut,
       left: left,
       top: top,
       child: Transform.rotate(
         angle: baseRotation * math.pi / 180,
-        child: TweenAnimationBuilder<double>(
-          tween: Tween<double>(
-            begin: 0,
-            end: showCardBack ? math.pi : 0,
-          ),
-          duration: showCardBack
-              ? Duration.zero
-              : const Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-          builder: (context, angle, child) {
-            final bool showFrontFace = angle <= math.pi / 2;
-            final Widget cardFace = showFrontFace
-                ? _buildCardWidget(card, cardWidth, cardHeight, false)
-                : _buildCardWidget(card, cardWidth, cardHeight, true);
-
-            final Widget rotatedFace = showFrontFace && isReversed
-                ? Transform.rotate(
-                    angle: math.pi,
-                    child: cardFace,
-                  )
-                : cardFace;
-
-            final Widget visibleFace = showFrontFace
-                ? rotatedFace
-                : Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()..rotateY(math.pi),
-                    child: rotatedFace,
-                  );
-
-            return SizedBox(
-              width: cardWidth,
-              height: cardHeight,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateY(angle),
-                    child: visibleFace,
-                  ),
-                  if (showFrontFace && isReversed)
-                    Positioned(
-                      top: 6,
-                      right: 6,
-                      child: _buildReversedIcon(),
-                    ),
-                ],
-              ),
-            );
-          },
+        child: _AnimatedTarotCard(
+          key: ValueKey('tarot-card-$index-${card.name}'),
+          width: cardWidth,
+          height: cardHeight,
+          front: frontFace,
+          back: backFace,
+          isFaceUp: isFaceUp,
+          duration: flipDuration,
         ),
       ),
     );
@@ -331,3 +322,96 @@ class SpreadLayout extends StatelessWidget {
   }
 }
 
+class _AnimatedTarotCard extends StatefulWidget {
+  const _AnimatedTarotCard({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.front,
+    required this.back,
+    required this.isFaceUp,
+    required this.duration,
+  });
+
+  final double width;
+  final double height;
+  final Widget front;
+  final Widget back;
+  final bool isFaceUp;
+  final Duration duration;
+
+  @override
+  State<_AnimatedTarotCard> createState() => _AnimatedTarotCardState();
+}
+
+class _AnimatedTarotCardState extends State<_AnimatedTarotCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+    if (widget.isFaceUp) {
+      _controller.value = 1;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _AnimatedTarotCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isFaceUp != widget.isFaceUp) {
+      if (widget.isFaceUp) {
+        _controller.forward(from: 0);
+      } else {
+        _controller.reverse(from: 1);
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        final double angle = math.pi * (1 - _animation.value);
+        final bool showFront = angle <= math.pi / 2;
+
+        Widget display = showFront ? widget.front : widget.back;
+        if (!showFront) {
+          display = Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()..rotateY(math.pi),
+            child: display,
+          );
+        }
+
+        return SizedBox(
+          width: widget.width,
+          height: widget.height,
+          child: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(angle),
+            child: display,
+          ),
+        );
+      },
+    );
+  }
+}

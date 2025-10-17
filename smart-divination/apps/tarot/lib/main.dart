@@ -640,6 +640,8 @@ class _HomeState extends State<_Home> {
   List<TarotSession> _history = <TarotSession>[];
   CardsDrawResponse? _latestDraw;
   InterpretationResult? _latestInterpretation;
+  int _dealtCardCount = 0;
+  bool _dealingCards = false;
   int _revealedCardCount = 0;
   bool _revealingCards = false;
   String? _currentQuestion;
@@ -791,6 +793,8 @@ class _HomeState extends State<_Home> {
       setState(() {
         _latestDraw = response;
         _latestInterpretation = null;
+        _dealtCardCount = 0;
+        _dealingCards = false;
         _revealedCardCount = 0;
         _revealingCards = false;
         _requestingInterpretation = false;
@@ -817,6 +821,44 @@ class _HomeState extends State<_Home> {
         });
       }
     }
+  }
+
+  Future<void> _dealCardsSequentially() async {
+    final draw = _latestDraw;
+    if (draw == null || _dealingCards) {
+      return;
+    }
+    setState(() {
+      _dealingCards = true;
+    });
+
+    final totalCards = draw.result.length;
+    const Duration dealDelay = Duration(milliseconds: 250);
+
+    for (var i = 0; i < totalCards; i++) {
+      if (!mounted) {
+        return;
+      }
+      if (i > 0) {
+        await Future.delayed(dealDelay);
+      }
+      if (!mounted) {
+        return;
+      }
+      // Play card deal sound
+      AudioService().playCardDeal();
+      setState(() {
+        _dealtCardCount = i + 1;
+      });
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _dealingCards = false;
+    });
   }
 
   Future<void> _revealCardsSequentially() async {
@@ -1304,6 +1346,7 @@ class _HomeState extends State<_Home> {
                           imagePath: imagePath);
                     }).toList();
 
+                    final dealCount = math.max(0, math.min(_dealtCardCount, totalCards));
                     final revealCount = math.max(0, math.min(_revealedCardCount, totalCards));
 
                     return Center(
@@ -1312,34 +1355,65 @@ class _HomeState extends State<_Home> {
                         cards: tarotCards,
                         maxWidth: constraints.maxWidth,
                         maxHeight: 500,
+                        dealtCardCount: dealCount,
                         revealedCardCount: revealCount,
                       ),
                     );
                   },
                 ),
-                // Add button or loading indicator below the cards
-                if (_revealedCardCount == 0 && !_revealingCards) ...[
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: _revealCardsSequentially,
-                    child: Text(localisation.revealCards),
+                // Phase-based buttons with colors and icons
+                const SizedBox(height: 16),
+                // Phase 1: Deal cards (Repartir)
+                if (_dealtCardCount == 0 && !_dealingCards) ...[
+                  FilledButton.icon(
+                    onPressed: _dealCardsSequentially,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: TarotTheme.cosmicPurple,
+                      foregroundColor: TarotTheme.moonlight,
+                    ),
+                    icon: const Icon(Icons.style, size: 20),
+                    label: const Text('Repartir cartas'),
                   ),
                 ]
-                else if (_revealingCards) ...[
-                  const SizedBox(height: 16),
+                // Phase 1: Dealing in progress
+                else if (_dealingCards) ...[
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
                     child: CircularProgressIndicator(),
                   ),
                 ]
+                // Phase 2: Reveal cards (Revelar)
+                else if (_dealtCardCount > 0 && _revealedCardCount == 0 && !_revealingCards) ...[
+                  FilledButton.icon(
+                    onPressed: _revealCardsSequentially,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: TarotTheme.cosmicAccent,
+                      foregroundColor: TarotTheme.moonlight,
+                    ),
+                    icon: const Icon(Icons.flip_to_front, size: 20),
+                    label: Text(localisation.revealCards),
+                  ),
+                ]
+                // Phase 2: Revealing in progress
+                else if (_revealingCards) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: CircularProgressIndicator(),
+                  ),
+                ]
+                // Phase 3: Request interpretation (Interpretar)
                 else if (allCardsRevealed &&
                     interpretation == null &&
                     draw.sessionId != null &&
                     draw.sessionId!.isNotEmpty) ...[
-                  const SizedBox(height: 16),
-                  FilledButton(
+                  FilledButton.icon(
                     onPressed: _requestInterpretation,
-                    child: Text(localisation.interpretationHeading),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: TarotTheme.cosmicBlue,
+                      foregroundColor: Colors.white,
+                    ),
+                    icon: const Icon(Icons.auto_awesome, size: 20),
+                    label: Text(localisation.interpretationHeading),
                   ),
                 ],
                 // Show interpretation below cards if available
