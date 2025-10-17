@@ -113,7 +113,12 @@
       "Bash(git restore:*)",
       "Bash(\"$JAVA_HOME/bin/keytool.exe\" -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload -storepass \"SmartTarot2025!\" -keypass \"SmartTarot2025!\" -dname \"CN=Smart Divination, OU=Development, O=Smart Divination Platform, L=Barcelona, ST=Catalunya, C=ES\")",
       "Bash(awk:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node -e:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(cmd //c restart-backend.bat)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe status)",
+      "Bash(/dev/null)"
     ],
     "deny": [],
     "ask": []

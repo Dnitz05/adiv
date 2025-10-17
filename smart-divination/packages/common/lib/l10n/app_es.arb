@@ -169,5 +169,6 @@
   "usageMonth": "Este mes: {used}/{limit}",
   "usageToday": "Hoy: {used}/{limit}",
   "usageWeek": "Esta semana: {used}/{limit}",
-  "welcome": "¡Bienvenido/a!"
+  "welcome": "¡Bienvenido/a!",
+  "revealCards": "Revelar las cartas"
 }

@@ -169,5 +169,6 @@
   "usageMonth": "Aquest mes: {used}/{limit}",
   "usageToday": "Avui: {used}/{limit}",
   "usageWeek": "Aquesta setmana: {used}/{limit}",
-  "welcome": "Benvingut/da!"
+  "welcome": "Benvingut/da!",
+  "revealCards": "Revelar les cartes"
 }

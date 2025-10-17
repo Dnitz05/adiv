@@ -47,12 +47,12 @@ import 'common_strings_es.dart';
 ///
 /// iOS applications define key application metadata, including supported
 /// locales, in an Info.plist file that is built into the application bundle.
-/// To configure the locales supported by your app, youÃ¢â‚¬â„¢ll need to edit this
+/// To configure the locales supported by your app, you’ll need to edit this
 /// file.
 ///
-/// First, open your projectÃ¢â‚¬â„¢s ios/Runner.xcworkspace Xcode workspace file.
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
 /// Then, in the Project Navigator, open the Info.plist file under the Runner
-/// projectÃ¢â‚¬â„¢s Runner folder.
+/// project’s Runner folder.
 ///
 /// Next, select the Information Property List item, select Add Item from the
 /// Editor menu, then select Localizations from the pop-up menu.
@@ -439,7 +439,7 @@ abstract class CommonStrings {
   /// No description provided for @methodSeedLabel.
   ///
   /// In en, this message translates to:
-  /// **'Method: {method} Ã¢â‚¬Â¢ Seed: {seed}'**
+  /// **'Method: {method} • Seed: {seed}'**
   String methodSeedLabel(Object method, Object seed);
 
   /// No description provided for @networkError.
@@ -520,24 +520,6 @@ abstract class CommonStrings {
   /// **'Settings'**
   String get settings;
 
-  /// No description provided for @spreadName.
-  ///
-  /// In en, this message translates to:
-  /// **'{spreadId}'**
-  String spreadName(String spreadId);
-
-  /// No description provided for @spreadDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'{spreadId} description'**
-  String spreadDescription(String spreadId);
-
-  /// No description provided for @spreadCardCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, one {1 card} other {{count} cards}}'**
-  String spreadCardCount(int count);
-
   /// No description provided for @spreadLabel.
   ///
   /// In en, this message translates to:
@@ -549,12 +531,6 @@ abstract class CommonStrings {
   /// In en, this message translates to:
   /// **'Start Session'**
   String get startSession;
-
-  /// No description provided for @revealCards.
-  ///
-  /// In en, this message translates to:
-  /// **'Reveal cards'**
-  String get revealCards;
 
   /// No description provided for @tarot.
   ///
@@ -615,6 +591,12 @@ abstract class CommonStrings {
   /// In en, this message translates to:
   /// **'Welcome!'**
   String get welcome;
+
+  /// No description provided for @revealCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal the cards'**
+  String get revealCards;
 }
 
 class _CommonStringsDelegate extends LocalizationsDelegate<CommonStrings> {

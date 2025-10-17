@@ -1,0 +1,39 @@
+﻿<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="btnBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6D82CD" stop-opacity="1" />
+      <stop offset="100%" stop-color="#9B8FD9" stop-opacity="1" />
+    </linearGradient>
+    <linearGradient id="miniCard" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#F8F9FF" stop-opacity="0.95" />
+    </linearGradient>
+    <filter id="btnShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-opacity="0.2" />
+    </filter>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15" />
+    </filter>
+  </defs>
+  <g filter="url(#btnShadow)">
+    <rect x="10" y="10" width="180" height="180" rx="20" fill="url(#btnBg)" stroke="#FFFFFF" stroke-width="2" />
+    <rect x="14" y="14" width="172" height="172" rx="18" fill="none" stroke="#FFFFFF" stroke-width="0.5" opacity="0.3" />
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="86" y="75" width="28" height="42" rx="3" fill="url(#miniCard)" stroke="#6D82CD" stroke-width="1.2" />
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="86" y="21" width="28" height="42" rx="3" fill="url(#miniCard)" stroke="#6D82CD" stroke-width="1.2" />
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="86" y="129" width="28" height="42" rx="3" fill="url(#miniCard)" stroke="#6D82CD" stroke-width="1.2" />
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="46" y="75" width="28" height="42" rx="3" fill="url(#miniCard)" stroke="#6D82CD" stroke-width="1.2" />
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="126" y="75" width="28" height="42" rx="3" fill="url(#miniCard)" stroke="#6D82CD" stroke-width="1.2" />
+  </g>
+  <circle cx="100" cy="15" r="2.5" fill="#FFFFFF" opacity="0.6" />
+  <circle cx="100" cy="185" r="2.5" fill="#FFFFFF" opacity="0.6" />
+</svg>

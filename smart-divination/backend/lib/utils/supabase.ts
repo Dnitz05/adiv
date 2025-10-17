@@ -95,7 +95,9 @@ interface UserStatsRow {
 }
 
 function hasServiceCredentials(): boolean {
-  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const supabaseUrl = process.env.SUPABASE_URL?.trim();
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  return Boolean(supabaseUrl && serviceKey);
 }
 
 let supabaseClient: SupabaseClient | null = null;

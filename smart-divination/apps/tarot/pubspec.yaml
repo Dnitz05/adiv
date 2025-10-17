@@ -17,7 +17,7 @@ dependencies:
   supabase_flutter: ^2.1.0
   uuid: ^3.0.7
   shared_preferences: ^2.2.2
-  flutter_svg: ^2.0.10
+  flutter_svg: ^2.2.1
   flutter_markdown: ^0.7.4+1
   audioplayers: ^6.1.0
   common:
@@ -47,6 +47,6 @@ flutter_launcher_icons:
   android: true
   ios: false
   image_path: assets/app_icon/icon.png
-  adaptive_icon_background: "#6D82CD"
+  adaptive_icon_background: "#0F0B1F"
   adaptive_icon_foreground: assets/app_icon/icon.png
 

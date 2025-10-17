@@ -212,21 +212,21 @@ class _SpreadRow extends StatelessWidget {
   String _getSpreadUseCase(String spreadId) {
     switch (spreadId) {
       case 'single':
-        return 'La lectura más rápida y efectiva. Ideal para guía diaria, perspectivas instantáneas o cuando necesitas una respuesta directa y clara.';
+        return 'Tu guía diaria esencial. Corta el ruido y enfoca tu atención en un mensaje claro para las próximas 24 horas. Perfecta cuando buscas orientación rápida sin complejidades.';
       case 'three_card':
-        return 'Versátil y precisa. Perfecta para preguntas "sí o no", entender pasado-presente-futuro, o explorar la evolución de cualquier situación.';
+        return 'La más versátil del tarot. Revela pasado-presente-futuro o responde preguntas directas. Su simplicidad oculta una profundidad sorprendente para analizar cualquier situación.';
       case 'relationship':
-        return 'Especializada en dinámicas relacionales. Explora vínculos románticos, platónicos o familiares en los niveles físico, emocional, mental y espiritual.';
+        return 'Examina brutalmente tu relación. Descubre tensiones no habladas, patrones insanos y puntos ciegos. Ideal para parejas atascadas que necesitan claridad sobre la verdadera dinámica.';
       case 'pyramid':
-        return 'Tirada tradicional en dos partes. Ofrece una visión panorámica de tu situación actual y responde preguntas específicas con gran detalle.';
+        return 'La tirada de lujo. 21 cartas que describen detalles específicos, revelan intenciones ocultas y presentan opciones. También funciona como revisión periódica de tu camino vital.';
       case 'horseshoe':
-        return 'Equilibrio perfecto entre simplicidad y profundidad. Analiza pasado, presente, influencias ocultas, obstáculos, actitudes externas, consejos y resultado probable.';
+        return 'El equilibrio perfecto: profunda pero manejable. Siete cartas revelan pasado, presente, influencias ocultas, obstáculos, actitudes externas, consejos y resultado probable.';
       case 'celtic_cross':
-        return 'La más completa y detallada. Ideal para cuestiones complejas que requieren análisis profundo. No recomendada para principiantes por su complejidad.';
+        return 'La tirada maestra. Diez cartas que desglosan paso a paso cualquier situación compleja. Flexible: úsala con pregunta específica o para panorama general. Requiere práctica.';
       case 'star':
-        return 'Explora múltiples dimensiones de una pregunta. Revela influencias externas, sentimientos internos, esperanzas y resultados posibles desde diferentes ángulos.';
+        return 'Explora tu pregunta en múltiples dimensiones. Siete cartas en forma de estrella revelan aspectos espirituales, influencias externas, sentimientos internos y esperanzas futuras.';
       case 'year_ahead':
-        return 'Tirada astrológica de 12 cartas en círculo. Representa cada mes del año siguiendo los signos zodiacales, desde Aries hasta Piscis. Perfecta para planificación anual.';
+        return 'Tu mapa anual. Doce cartas representan cada mes siguiendo el ciclo zodiacal. Perfecta para planificación estratégica y entender las energías que te esperan.';
       default:
         return spread.description;
     }
