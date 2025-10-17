@@ -1236,42 +1236,48 @@ class _HomeState extends State<_Home> {
 
   Widget _buildDrawFormCard(CommonStrings localisation) {
     final theme = Theme.of(context);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              '¿Qué quieres consultar?',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.normal,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _questionController,
-              decoration: InputDecoration(
-                labelText: localisation.askQuestion,
-              ),
-              maxLines: 2,
-            ),
-            const SizedBox(height: 24),
-            FilledButton.icon(
-              onPressed: _drawing ? null : _drawCards,
-              icon: _drawing
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.auto_awesome),
-              label: const Text('Consulta'),
-            ),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          '¿Qué quieres consultar?',
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.normal,
+            color: TarotTheme.moonlight,
+          ),
+          textAlign: TextAlign.center,
         ),
-      ),
+        const SizedBox(height: 12),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: _questionController,
+                  decoration: InputDecoration(
+                    labelText: localisation.askQuestion,
+                  ),
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: _drawing ? null : _drawCards,
+                  icon: _drawing
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.auto_awesome),
+                  label: const Text('Consulta'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
