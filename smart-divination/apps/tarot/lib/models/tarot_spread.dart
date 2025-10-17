@@ -54,6 +54,28 @@ class TarotSpreads {
     ],
   );
 
+  static const twoCard = TarotSpread(
+    id: 'two_card',
+    name: 'Two Card',
+    description: 'Decision-making spread',
+    cardCount: 2,
+    aspectRatio: 1.3,
+    positions: [
+      CardPosition(
+        x: 0.35,
+        y: 0.5,
+        label: 'Option A',
+        description: 'Path or consequence of first choice',
+      ),
+      CardPosition(
+        x: 0.65,
+        y: 0.5,
+        label: 'Option B',
+        description: 'Path or consequence of second choice',
+      ),
+    ],
+  );
+
   static const threeCard = TarotSpread(
     id: 'three_card',
     name: 'Three Card Spread',
@@ -78,6 +100,46 @@ class TarotSpreads {
         y: 0.5,
         label: 'Future',
         description: 'The path opening before you',
+      ),
+    ],
+  );
+
+  static const fiveCardCross = TarotSpread(
+    id: 'five_card_cross',
+    name: 'Five Card Cross',
+    description: 'Comprehensive cross layout',
+    cardCount: 5,
+    aspectRatio: 1.3,
+    positions: [
+      CardPosition(
+        x: 0.25,
+        y: 0.5,
+        label: 'Past',
+        description: 'Past influences impacting present',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.5,
+        label: 'Present',
+        description: 'Current situation to address',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.5,
+        label: 'Future',
+        description: 'Outcome given current path',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.75,
+        label: 'What Holds You Back',
+        description: 'Past issues needing resolution',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.25,
+        label: 'Advice',
+        description: 'Guidance to push forward',
       ),
     ],
   );
@@ -439,15 +501,101 @@ class TarotSpreads {
     ],
   );
 
+  static const astrological = TarotSpread(
+    id: 'astrological',
+    name: 'Astrological Houses',
+    description: '12 houses of astrology',
+    cardCount: 12,
+    aspectRatio: 1.0,
+    positions: [
+      // Arranged in a circle like astrological chart
+      CardPosition(
+        x: 0.82,
+        y: 0.5,
+        label: '1st House',
+        description: 'Self & Identity',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.73,
+        label: '2nd House',
+        description: 'Values & Resources',
+      ),
+      CardPosition(
+        x: 0.6,
+        y: 0.87,
+        label: '3rd House',
+        description: 'Communication',
+      ),
+      CardPosition(
+        x: 0.4,
+        y: 0.87,
+        label: '4th House',
+        description: 'Home & Roots',
+      ),
+      CardPosition(
+        x: 0.25,
+        y: 0.73,
+        label: '5th House',
+        description: 'Creativity & Joy',
+      ),
+      CardPosition(
+        x: 0.18,
+        y: 0.5,
+        label: '6th House',
+        description: 'Health & Service',
+      ),
+      CardPosition(
+        x: 0.25,
+        y: 0.27,
+        label: '7th House',
+        description: 'Partnerships',
+      ),
+      CardPosition(
+        x: 0.4,
+        y: 0.13,
+        label: '8th House',
+        description: 'Transformation',
+      ),
+      CardPosition(
+        x: 0.6,
+        y: 0.13,
+        label: '9th House',
+        description: 'Expansion & Wisdom',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.27,
+        label: '10th House',
+        description: 'Career & Purpose',
+      ),
+      CardPosition(
+        x: 0.82,
+        y: 0.5,
+        label: '11th House',
+        description: 'Community & Dreams',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.73,
+        label: '12th House',
+        description: 'Spirituality & Unconscious',
+      ),
+    ],
+  );
+
   /// All available spreads
   static const List<TarotSpread> all = [
     single,
+    twoCard,
     threeCard,
+    fiveCardCross,
     relationship,
     pyramid,
     horseshoe,
     celticCross,
     star,
+    astrological,
     yearAhead,
   ];
 

@@ -97,7 +97,7 @@ class _SpreadRow extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.only(bottom: 12),
+        margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -107,7 +107,7 @@ class _SpreadRow extends StatelessWidget {
               TarotTheme.twilightPurple.withOpacity(isSelected ? 0.3 : 0.15),
             ],
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
                 ? TarotTheme.cosmicAccent
@@ -131,74 +131,74 @@ class _SpreadRow extends StatelessWidget {
                 ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
+          padding: const EdgeInsets.all(20),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Left side: Icon
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: TarotTheme.deepNight.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: TarotTheme.cosmicAccent.withOpacity(0.3),
-                    width: 1,
-                  ),
-                ),
-                child: Center(
-                  child: _getSpreadIcon(spread),
-                ),
-              ),
-              const SizedBox(width: 16),
-              // Middle: Title and card count
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      spread.name,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: TarotTheme.moonlight,
-                        height: 1.3,
+              // Top row: Icon, Title and card count
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Icon
+                  Container(
+                    width: 72,
+                    height: 72,
+                    decoration: BoxDecoration(
+                      color: TarotTheme.deepNight.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: TarotTheme.cosmicAccent.withOpacity(0.3),
+                        width: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: TarotTheme.cosmicAccent.withOpacity(0.25),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        '${spread.cardCount} ${spread.cardCount == 1 ? "carta" : "cartas"}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: TarotTheme.cosmicAccent,
+                    child: Center(
+                      child: _getSpreadIcon(spread),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  // Title and card count
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          spread.name,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: TarotTheme.moonlight,
+                            height: 1.2,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: TarotTheme.cosmicAccent.withOpacity(0.25),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${spread.cardCount} ${spread.cardCount == 1 ? "carta" : "cartas"}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: TarotTheme.cosmicAccent,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Right: Description
-              Expanded(
-                flex: 3,
-                child: Text(
-                  _getSpreadUseCase(spread.id),
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: TarotTheme.stardust.withOpacity(0.95),
-                    height: 1.4,
                   ),
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
+                ],
+              ),
+              const SizedBox(height: 16),
+              // Description below
+              Text(
+                _getSpreadUseCase(spread.id),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: TarotTheme.stardust.withOpacity(0.95),
+                  height: 1.5,
                 ),
               ),
             ],
@@ -212,21 +212,27 @@ class _SpreadRow extends StatelessWidget {
   String _getSpreadUseCase(String spreadId) {
     switch (spreadId) {
       case 'single':
-        return 'Tu guía diaria esencial. Corta el ruido y enfoca tu atención en un mensaje claro para las próximas 24 horas. Perfecta cuando buscas orientación rápida sin complejidades.';
+        return 'Tu guía diaria esencial. Corta el ruido y enfoca tu atención en un mensaje claro para las próximas 24 horas. Perfecta cuando buscas orientación rápida sin complejidades o necesitas una respuesta directa a una pregunta concreta.';
+      case 'two_card':
+        return 'La tirada de decisiones. Dos cartas revelan las consecuencias de elegir entre dos caminos. Úsala cuando te enfrentas a una elección binaria: aceptar o rechazar, continuar o parar, actuar o esperar. Excelente para comparar opciones y ver claramente qué te espera en cada dirección.';
       case 'three_card':
-        return 'La más versátil del tarot. Revela pasado-presente-futuro o responde preguntas directas. Su simplicidad oculta una profundidad sorprendente para analizar cualquier situación.';
+        return 'La más versátil del tarot. Revela pasado-presente-futuro o responde preguntas directas. Su simplicidad oculta una profundidad sorprendente para analizar cualquier situación. También puede interpretarse como situación-acción-resultado o mente-cuerpo-espíritu según tu necesidad.';
+      case 'five_card_cross':
+        return 'El equilibrio perfecto entre simplicidad y profundidad. Esta cruz de cinco cartas mapea pasado, presente y futuro en línea horizontal, con una carta debajo revelando lo que te retiene y otra arriba mostrando el consejo para avanzar. Más completa que tres cartas pero más rápida que el Celtic Cross.';
       case 'relationship':
-        return 'Examina brutalmente tu relación. Descubre tensiones no habladas, patrones insanos y puntos ciegos. Ideal para parejas atascadas que necesitan claridad sobre la verdadera dinámica.';
+        return 'Examina brutalmente tu relación. Descubre tensiones no habladas, patrones insanos y puntos ciegos. Siete cartas revelan tu posición, la de tu pareja, fortalezas compartidas, desafíos ocultos y necesidades de ambos. Ideal para parejas atascadas que necesitan claridad sobre la verdadera dinámica.';
       case 'pyramid':
-        return 'La tirada de lujo. 21 cartas que describen detalles específicos, revelan intenciones ocultas y presentan opciones. También funciona como revisión periódica de tu camino vital.';
+        return 'La tirada holística de seis cartas. Explora tu objetivo en la cima, descendiendo a mente y corazón en el medio, finalizando con acción, recursos y fundamento en la base. Perfecta cuando necesitas entender todos los aspectos de una meta: desde la aspiración espiritual hasta los pasos prácticos.';
       case 'horseshoe':
-        return 'El equilibrio perfecto: profunda pero manejable. Siete cartas revelan pasado, presente, influencias ocultas, obstáculos, actitudes externas, consejos y resultado probable.';
+        return 'El equilibrio perfecto: profunda pero manejable. Siete cartas dispuestas en herradura revelan pasado, presente, influencias ocultas, obstáculos, actitudes externas, consejos y resultado probable. Proporciona una visión completa sin abrumar. La preferida de lectores profesionales por su versatilidad.';
       case 'celtic_cross':
-        return 'La tirada maestra. Diez cartas que desglosan paso a paso cualquier situación compleja. Flexible: úsala con pregunta específica o para panorama general. Requiere práctica.';
+        return 'La tirada maestra del tarot. Diez cartas que desglosan paso a paso cualquier situación compleja: presente, desafío, pasado distante y reciente, meta, futuro cercano, tu actitud, influencias externas, esperanzas/miedos y resultado final. Flexible: úsala con pregunta específica o para panorama general. Requiere práctica.';
       case 'star':
-        return 'Explora tu pregunta en múltiples dimensiones. Siete cartas en forma de estrella revelan aspectos espirituales, influencias externas, sentimientos internos y esperanzas futuras.';
+        return 'Explora tu pregunta en múltiples dimensiones. Siete cartas en forma de estrella revelan aspectos espirituales (arriba), abundancia, amor, creatividad, sabiduría (los puntos) y tu esencia central. Perfecta para autodescubrimiento profundo y entender cómo diferentes áreas de tu vida se conectan e influencian mutuamente.';
+      case 'astrological':
+        return 'La tirada de las 12 casas astrológicas. Un círculo completo de doce cartas, cada una representando un área vital según la astrología: identidad, recursos, comunicación, hogar, creatividad, salud, relaciones, transformación, sabiduría, propósito, comunidad y espiritualidad. Ideal para una fotografía completa de tu vida actual.';
       case 'year_ahead':
-        return 'Tu mapa anual. Doce cartas representan cada mes siguiendo el ciclo zodiacal. Perfecta para planificación estratégica y entender las energías que te esperan.';
+        return 'Tu mapa anual mes a mes. Doce cartas representan cada mes del año siguiendo el ciclo zodiacal. Perfecta para planificación estratégica de Año Nuevo o cumpleaños, te ayuda a anticipar energías, prepararte para desafíos y aprovechar oportunidades. Revela el ritmo natural de tu próximo ciclo solar.';
       default:
         return spread.description;
     }
@@ -267,6 +273,10 @@ class _SpreadRow extends StatelessWidget {
       // Temporarily reuse icons for other spreads
       case 'single':
         return 'assets/spread-buttons/three-card-spread.svg'; // Reutilizar
+      case 'two_card':
+        return 'assets/spread-buttons/three-card-spread.svg'; // Reutilizar
+      case 'five_card_cross':
+        return 'assets/spread-buttons/simple-cross-spread.svg'; // Reutilizar
       case 'relationship':
         return 'assets/spread-buttons/simple-cross-spread.svg'; // Reutilizar
       case 'pyramid':
@@ -274,6 +284,8 @@ class _SpreadRow extends StatelessWidget {
       case 'horseshoe':
         return 'assets/spread-buttons/simple-cross-spread.svg'; // Reutilizar
       case 'star':
+        return 'assets/spread-buttons/celtic-cross-spread.svg'; // Reutilizar
+      case 'astrological':
         return 'assets/spread-buttons/celtic-cross-spread.svg'; // Reutilizar
       case 'year_ahead':
         return 'assets/spread-buttons/celtic-cross-spread.svg'; // Reutilizar
@@ -287,6 +299,10 @@ class _SpreadRow extends StatelessWidget {
     switch (spreadId) {
       case 'single':
         return Icons.rectangle_outlined;
+      case 'two_card':
+        return Icons.compare_arrows;
+      case 'five_card_cross':
+        return Icons.add;
       case 'relationship':
         return Icons.favorite_border;
       case 'pyramid':
@@ -295,6 +311,8 @@ class _SpreadRow extends StatelessWidget {
         return Icons.u_turn_right;
       case 'star':
         return Icons.star_border;
+      case 'astrological':
+        return Icons.album;
       case 'year_ahead':
         return Icons.calendar_month;
       default:
