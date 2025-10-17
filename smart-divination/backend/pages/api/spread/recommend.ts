@@ -52,8 +52,8 @@ interface SpreadRecommendation {
 }
 
 /**
- * Phase 1: Simple keyword-based spread recommendation
- * TODO Phase 2: Integrate with AI (GPT-4) for smarter recommendations
+ * Phase 2: AI-powered spread recommendation with DeepSeek
+ * Falls back to keyword-based if AI fails
  */
 async function recommendSpread(
   question: string,
@@ -61,37 +61,58 @@ async function recommendSpread(
   preferredComplexity?: string,
   preferredCategory?: string
 ): Promise<SpreadRecommendation> {
-  // Extract keywords from the question
+  // Try AI-powered selection first
+  const useAI = process.env.DEEPSEEK_API_KEY?.trim();
+
+  if (useAI) {
+    try {
+      const { selectSpreadWithAI } = await import('../../lib/services/ai-spread-selector');
+      const aiSelection = await selectSpreadWithAI(question, locale);
+      const spread = SPREADS.find((s) => s.id === aiSelection.spreadId);
+
+      if (spread) {
+        const alternatives = getAlternativeSpreads(spread, [], spread.category);
+        const keywords = extractKeywords(question);
+
+        return {
+          spread,
+          reasoning: aiSelection.reason,
+          reasoningCA: aiSelection.reason,
+          reasoningES: aiSelection.reason,
+          confidenceScore: aiSelection.confidence,
+          keyFactors: keywords,
+          detectedCategory: spread.category,
+          detectedComplexity: spread.complexity,
+          alternatives,
+        };
+      }
+    } catch (error) {
+      log('warn', 'AI spread selection failed, falling back to keyword-based', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+    }
+  }
+
+  // Fallback: keyword-based selection
   const keywords = extractKeywords(question);
 
-  log('info', 'Extracted keywords from question', {
+  log('info', 'Using keyword-based spread selection', {
     question: question.substring(0, 100),
     keywords,
   });
 
-  // Detect category based on keywords
   const detectedCategory = detectCategory(keywords);
   const detectedComplexity = detectComplexity(question, keywords);
-
-  // Use preferred values if provided, otherwise use detected values
   const targetCategory = preferredCategory || detectedCategory;
   const targetComplexity = preferredComplexity || detectedComplexity;
-
-  // Find the best spread
   const bestSpread = findBestSpread(keywords, targetCategory, targetComplexity);
-
-  // Calculate confidence score
   const confidenceScore = calculateConfidenceScore(
     keywords,
     bestSpread,
     targetCategory,
     targetComplexity
   );
-
-  // Get alternative spreads
   const alternatives = getAlternativeSpreads(bestSpread, keywords, targetCategory);
-
-  // Generate reasoning
   const reasoning = generateReasoning(question, bestSpread, keywords, detectedCategory, locale);
 
   return {
