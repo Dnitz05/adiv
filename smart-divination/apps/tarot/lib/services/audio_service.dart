@@ -6,7 +6,6 @@ class AudioService {
   factory AudioService() => _instance;
   AudioService._internal();
 
-  final AudioPlayer _player = AudioPlayer();
   bool _enabled = true;
 
   /// Enable or disable sound effects
@@ -17,18 +16,17 @@ class AudioService {
   bool get isEnabled => _enabled;
 
   /// Play card flip sound effect
+  /// Creates a new player for each sound to avoid overlap issues
   Future<void> playCardFlip() async {
     if (!_enabled) return;
 
     try {
-      await _player.play(AssetSource('sounds/card_flip.wav'));
+      // Create a new player for each sound to allow overlapping
+      final player = AudioPlayer();
+      await player.setReleaseMode(ReleaseMode.release); // Auto-dispose when done
+      await player.play(AssetSource('sounds/card_flip.wav'));
     } catch (e) {
       debugPrint('Error playing card flip sound: $e');
     }
-  }
-
-  /// Dispose resources
-  void dispose() {
-    _player.dispose();
   }
 }
