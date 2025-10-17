@@ -147,13 +147,11 @@ function buildInterpretationPrompt(params: {
 async function generateInterpretationFromDeepSeek(
   params: DeepSeekParams
 ): Promise<GeneratedInterpretation | null> {
-  // TEMPORARY: Hardcoded key while debugging Vercel env var issues
-  const apiKey = process.env.DEEPSEEK_API_KEY || 'sk-c31cd42fdccf4b46a383d721b996e94f';
+  const apiKey = process.env.DEEPSEEK_API_KEY;
   log('info', 'DeepSeek API key check', {
     sessionId: params.sessionId,
     hasApiKey: !!apiKey,
     keyLength: apiKey?.length || 0,
-    source: process.env.DEEPSEEK_API_KEY ? 'env' : 'hardcoded',
   });
   if (!apiKey) {
     log('warn', 'DeepSeek API key missing; skipping interpretation generation', {
