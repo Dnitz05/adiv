@@ -288,21 +288,8 @@ export async function generateRandomIntegers(
     return generateWithSeeded(request);
   }
 
-  // Try Random.org first (if available and not seeded)
-  if (
-    request.method !== 'crypto_secure' &&
-    (process.env.RANDOM_ORG_KEY || process.env.RANDOM_ORG_API_KEY) &&
-    !request.seed
-  ) {
-    try {
-      return await generateWithRandomOrg(request);
-    } catch (error) {
-      log('warn', 'Random.org failed, falling back to crypto-secure', { error });
-      // Fall through to crypto-secure
-    }
-  }
-
-  // Fallback to crypto-secure generation
+  // Always use crypto-secure generation for best performance and reliability
+  // Random.org is disabled to reduce latency and eliminate external dependency
   return generateWithCryptoSecure(request);
 }
 
