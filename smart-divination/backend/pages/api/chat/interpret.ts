@@ -31,7 +31,7 @@ const METRICS_PATH = '/api/chat/interpret';
 const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
 // Use DeepSeek Chat with aggressive speed optimizations
 // Note: deepseek-reasoner (R1) causes timeouts in production, so we force deepseek-chat
-const envModel = process.env.DEEPSEEK_MODEL;
+const envModel = process.env.DEEPSEEK_MODEL?.trim();
 const DEFAULT_MODEL =
   envModel === 'deepseek-reasoner' ? 'deepseek-chat' : (envModel ?? 'deepseek-chat');
 const DEEPSEEK_URL = process.env.DEEPSEEK_API_URL ?? 'https://api.deepseek.com/v1/chat/completions';
@@ -54,6 +54,10 @@ type GeneratedInterpretation = {
   interpretation: string;
   summary?: string;
   keywords: string[];
+  debug?: {
+    envApiKeyPresent: boolean;
+    resolvedModel: string;
+  };
 };
 
 type TarotResultCard = {
@@ -149,12 +153,13 @@ async function generateInterpretationFromDeepSeek(
 ): Promise<GeneratedInterpretation | null> {
   // WORKAROUND: Vercel env vars contain trailing \n that corrupt values
   // See: docs/vercel-env-vars-issue-report.md
-  const apiKey = process.env.DEEPSEEK_API_KEY?.trim();
+  const envApiKey = process.env.DEEPSEEK_API_KEY?.trim() || null;
+  const apiKey = envApiKey;
   log('info', 'DeepSeek API key check', {
     sessionId: params.sessionId,
     hasApiKey: !!apiKey,
-    keyLength: apiKey?.length || 0,
-    rawLength: process.env.DEEPSEEK_API_KEY?.length || 0,
+    keyLength: apiKey?.length ?? 0,
+    rawLength: process.env.DEEPSEEK_API_KEY?.length ?? 0,
   });
   if (!apiKey) {
     log('warn', 'DeepSeek API key missing; skipping interpretation generation', {
@@ -163,9 +168,16 @@ async function generateInterpretationFromDeepSeek(
     return null;
   }
 
+  const resolvedModel = params.model?.trim() ?? envModel ?? DEFAULT_MODEL;
+
+  log('info', 'Calling DeepSeek API', {
+    sessionId: params.sessionId,
+    url: DEEPSEEK_URL,
+    model: resolvedModel,
+  });
+
   const requestBody = {
-    // WORKAROUND: Clean model name to remove trailing \n
-    model: (params.model ?? process.env.DEEPSEEK_MODEL ?? DEFAULT_MODEL).trim(),
+    model: resolvedModel,
     temperature: params.temperature ?? 0.8, // Higher temp = faster generation
     max_tokens: 1000, // Sufficient for complete interpretations
     messages: [
@@ -184,12 +196,6 @@ async function generateInterpretationFromDeepSeek(
       },
     ],
   };
-
-  log('info', 'Calling DeepSeek API', {
-    sessionId: params.sessionId,
-    url: DEEPSEEK_URL,
-    model: params.model ?? DEFAULT_MODEL,
-  });
 
   const response = await fetch(DEEPSEEK_URL, {
     method: 'POST',
@@ -293,11 +299,17 @@ async function generateInterpretationFromDeepSeek(
           .slice(0, 12)
       : [];
 
-    return { interpretation, summary, keywords };
+    return {
+      interpretation,
+      summary,
+      keywords,
+      debug: { envApiKeyPresent: Boolean(envApiKey), resolvedModel },
+    };
   } catch {
     return {
       interpretation: cleanedContent,
       keywords: [],
+      debug: { envApiKeyPresent: Boolean(envApiKey), resolvedModel },
     };
   }
 }
@@ -358,10 +370,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const results = input.results ?? {};
   const question = input.question?.trim();
 
+  const debugHeader = req.headers['x-debug'];
+  const debugMode = Array.isArray(debugHeader)
+    ? debugHeader.some((value) => value === '1' || value === 'true')
+    : debugHeader === '1' || debugHeader === 'true';
+
   let interpretation = input.interpretation?.trim();
   let summary = input.summary?.trim();
   const keywordSet = new Set<string>(extractKeywords(question, 12));
   let generatedByModel = false;
+  let deepSeekDebug: GeneratedInterpretation['debug'] | undefined;
+  let generationError: string | undefined;
 
   if (!interpretation || interpretation.length === 0) {
     try {
@@ -381,12 +400,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         generated.keywords.forEach((keyword) => keywordSet.add(keyword.toLowerCase()));
         generatedByModel = true;
+        deepSeekDebug = generated.debug;
       }
     } catch (error) {
+      generationError = error instanceof Error ? error.message : String(error);
       log('warn', 'DeepSeek interpretation failed', {
         requestId,
         sessionId: input.sessionId,
-        error: error instanceof Error ? error.message : String(error),
+        error: generationError,
       });
     }
   }
@@ -504,6 +525,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const duration = Date.now() - startedAt;
+  const envKey = process.env.DEEPSEEK_API_KEY;
+  const trimmedEnvKey = envKey?.trim();
+  const debugPayload = debugMode
+    ? {
+        debug: {
+          generationError: generationError ?? null,
+          envApiKeyPresent: deepSeekDebug?.envApiKeyPresent ?? Boolean(trimmedEnvKey),
+          resolvedModel: deepSeekDebug?.resolvedModel ?? envModel ?? DEFAULT_MODEL,
+          hasEnvApiKey: Boolean(trimmedEnvKey),
+          envKeyPrefix: trimmedEnvKey ? trimmedEnvKey.slice(0, 8) : null,
+          envKeyLength: envKey?.length ?? 0,
+        },
+      }
+    : {};
   const response = createApiResponse(
     {
       sessionId: input.sessionId,
@@ -513,6 +548,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       keywords,
       stored: artifactStored || messageStored,
       generated: generatedByModel,
+      ...debugPayload,
     },
     { processingTimeMs: duration, requestId },
     requestId
