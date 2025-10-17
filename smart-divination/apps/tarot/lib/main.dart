@@ -845,8 +845,8 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
-      // Play card deal sound
-      AudioService().playCardDeal();
+      // Play card flip sound (same as when revealing)
+      AudioService().playCardFlip();
       setState(() {
         _dealtCardCount = i + 1;
       });
@@ -1333,6 +1333,70 @@ class _HomeState extends State<_Home> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
+                // Show spread info when showing placeholders
+                if (_dealtCardCount == 0) ...[
+                  Builder(
+                    builder: (context) {
+                      final spread = TarotSpreads.getById(draw.spread) ??
+                          TarotSpreads.threeCard;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: TarotTheme.moonlight,
+                                height: 1.5,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Tirada escogida: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: TarotTheme.cosmicAccent,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: spread.name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: TarotTheme.moonlight,
+                                height: 1.5,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Motivo: ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: TarotTheme.cosmicAccent,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: spread.description,
+                                  style: TextStyle(
+                                    color: TarotTheme.stardust,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    },
+                  ),
+                ],
                 LayoutBuilder(
                   builder: (context, constraints) {
                     // Get the selected spread or use threeCard as fallback

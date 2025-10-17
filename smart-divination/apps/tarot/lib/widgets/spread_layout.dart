@@ -59,17 +59,16 @@ class SpreadLayout extends StatelessWidget {
 
         final int dealtCards = dealtCardCount ?? cards.length;
     final int visibleCards = revealedCardCount ?? cards.length;
-    // Show placeholders when no cards dealt yet OR when cards list is empty
-    final bool showPlaceholders = cards.isEmpty || dealtCards == 0;
+    final bool hasCards = cards.isNotEmpty;
 
     return SizedBox(
       width: effectiveWidth,
       height: effectiveHeight,
       child: Stack(
         children: [
-          // Show placeholders if no cards are present
-          if (showPlaceholders)
-            for (int i = 0; i < spread.positions.length; i++)
+          // ALWAYS show placeholders as background for positions that haven't been dealt yet
+          for (int i = 0; i < spread.positions.length; i++)
+            if (!hasCards || i >= dealtCards)
               _buildPositionedPlaceholder(
                 cardNumber: i + 1,
                 position: spread.positions[i],
@@ -77,9 +76,9 @@ class SpreadLayout extends StatelessWidget {
                 containerHeight: effectiveHeight,
                 cardWidth: cardWidth,
                 cardHeight: cardHeight,
-              )
-          // Show actual cards if present
-          else
+              ),
+          // Show actual cards on top
+          if (hasCards)
             for (int i = 0; i < cards.length && i < spread.positions.length; i++)
               _buildPositionedCard(
                 card: cards[i],
@@ -214,8 +213,8 @@ class SpreadLayout extends StatelessWidget {
         _buildCardWidget(card, cardWidth, cardHeight, true);
 
     return AnimatedPositioned(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOutCubic,
       left: left,
       top: top,
       child: Transform.rotate(
