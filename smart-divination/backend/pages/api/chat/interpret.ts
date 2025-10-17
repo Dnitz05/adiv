@@ -147,11 +147,14 @@ function buildInterpretationPrompt(params: {
 async function generateInterpretationFromDeepSeek(
   params: DeepSeekParams
 ): Promise<GeneratedInterpretation | null> {
-  const apiKey = process.env.DEEPSEEK_API_KEY;
+  // WORKAROUND: Vercel env vars contain trailing \n that corrupt values
+  // See: docs/vercel-env-vars-issue-report.md
+  const apiKey = process.env.DEEPSEEK_API_KEY?.trim();
   log('info', 'DeepSeek API key check', {
     sessionId: params.sessionId,
     hasApiKey: !!apiKey,
     keyLength: apiKey?.length || 0,
+    rawLength: process.env.DEEPSEEK_API_KEY?.length || 0,
   });
   if (!apiKey) {
     log('warn', 'DeepSeek API key missing; skipping interpretation generation', {
@@ -161,7 +164,8 @@ async function generateInterpretationFromDeepSeek(
   }
 
   const requestBody = {
-    model: params.model ?? DEFAULT_MODEL,
+    // WORKAROUND: Clean model name to remove trailing \n
+    model: (params.model ?? process.env.DEEPSEEK_MODEL ?? DEFAULT_MODEL).trim(),
     temperature: params.temperature ?? 0.8, // Higher temp = faster generation
     max_tokens: 1000, // Sufficient for complete interpretations
     messages: [

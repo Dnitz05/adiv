@@ -103,8 +103,10 @@ let supabaseServiceClient: SupabaseClient | null = null;
 
 export function getSupabaseClient(): SupabaseClient {
   if (!supabaseClient) {
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+    // WORKAROUND: Vercel env vars contain trailing \n - trim them
+    // See: docs/vercel-env-vars-issue-report.md
+    const supabaseUrl = process.env.SUPABASE_URL?.trim();
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY?.trim();
     if (!supabaseUrl || !supabaseAnonKey) {
       throw new Error('Supabase configuration missing: SUPABASE_URL or SUPABASE_ANON_KEY');
     }
@@ -118,8 +120,10 @@ export function getSupabaseClient(): SupabaseClient {
 
 export function getSupabaseServiceClient(): SupabaseClient {
   if (!supabaseServiceClient) {
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    // WORKAROUND: Vercel env vars contain trailing \n - trim them
+    // See: docs/vercel-env-vars-issue-report.md
+    const supabaseUrl = process.env.SUPABASE_URL?.trim();
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
     if (!supabaseUrl || !serviceKey) {
       throw new Error('Supabase service configuration missing');
     }
