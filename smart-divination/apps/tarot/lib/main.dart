@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:math' as math;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
@@ -12,7 +10,6 @@ import 'package:common/shared/infrastructure/localization/common_strings_extensi
 
 import 'api/draw_cards_api.dart';
 import 'api/interpretation_api.dart';
-import 'api/session_limits_api.dart';
 import 'api/user_profile_api.dart';
 import 'user_identity.dart';
 import 'models/tarot_spread.dart';
@@ -22,6 +19,7 @@ import 'widgets/spread_layout.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
+import 'services/audio_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
 
@@ -638,11 +636,12 @@ class _HomeState extends State<_Home> {
   String? _userId;
   bool _initialising = true;
   String? _error;
-  SessionEligibility? _eligibility;
   UserProfile? _profile;
   List<TarotSession> _history = <TarotSession>[];
   CardsDrawResponse? _latestDraw;
   InterpretationResult? _latestInterpretation;
+  int _revealedCardCount = 0;
+  bool _revealingCards = false;
   String? _currentQuestion;
   bool _drawing = false;
   bool _requestingInterpretation = false;
@@ -694,7 +693,6 @@ class _HomeState extends State<_Home> {
 
       setState(() {
         _userId = userId;
-        _eligibility = null; // Disabled session eligibility
         _profile = profile;
         _history = history;
         _initialising = false;
@@ -712,34 +710,6 @@ class _HomeState extends State<_Home> {
       debugPrint('Failed to load initial data: $error');
       debugPrint('Stack trace: $stackTrace');
     }
-  }
-
-  Future<void> _refreshEligibility() async {
-    // Session eligibility check disabled - not needed for anonymous users
-    return;
-    /*
-    final userId = _userId;
-    if (userId == null) {
-      return;
-    }
-    try {
-      final eligibility = await fetchSessionEligibility(userId: userId);
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _eligibility = eligibility;
-      });
-    } catch (error) {
-      if (!mounted) {
-        return;
-      }
-      final localisation = CommonStrings.of(context);
-      setState(() {
-        _error ??= _formatError(localisation, error);
-      });
-    }
-    */
   }
 
   Future<void> _refreshProfile() async {
@@ -821,11 +791,13 @@ class _HomeState extends State<_Home> {
       setState(() {
         _latestDraw = response;
         _latestInterpretation = null;
+        _revealedCardCount = 0;
+        _revealingCards = false;
+        _requestingInterpretation = false;
         _currentQuestion = question.isEmpty ? null : question;
       });
       await Future.wait([
         _refreshHistory(),
-        _refreshEligibility(),
         _refreshProfile(),
       ]);
       if (!mounted) {
@@ -847,6 +819,43 @@ class _HomeState extends State<_Home> {
     }
   }
 
+  Future<void> _revealCardsSequentially() async {
+    final draw = _latestDraw;
+    if (draw == null || _revealingCards) {
+      return;
+    }
+    setState(() {
+      _revealingCards = true;
+    });
+
+    final totalCards = draw.result.length;
+    const Duration flipDelay = Duration(milliseconds: 320);
+
+    for (var i = 0; i < totalCards; i++) {
+      if (!mounted) {
+        return;
+      }
+      if (i > 0) {
+        await Future.delayed(flipDelay);
+      }
+      if (!mounted) {
+        return;
+      }
+      // Play card flip sound
+      AudioService().playCardFlip();
+      setState(() {
+        _revealedCardCount = i + 1;
+      });
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _revealingCards = false;
+    });
+  }
   Future<void> _requestInterpretation() async {
     if (_requestingInterpretation) {
       return;
@@ -897,10 +906,6 @@ class _HomeState extends State<_Home> {
         });
       }
     }
-  }
-
-  Future<void> _signOut() async {
-    await UserIdentity.signOut();
   }
 
   Future<void> _saveConversationLocally(
@@ -1108,48 +1113,6 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildEligibilityCard(
-    CommonStrings localisation,
-    SessionEligibility eligibility,
-  ) {
-    final theme = Theme.of(context);
-    final limits = eligibility.limits;
-    final usage = eligibility.usage;
-    final nextAllowed = eligibility.nextAllowedAt;
-    final subtitle = <String>[
-      localisation.tierLabel(eligibility.tier),
-      localisation.usageToday(usage.today, limits.perDay),
-      localisation.usageWeek(usage.thisWeek, limits.perWeek),
-      localisation.usageMonth(usage.thisMonth, limits.perMonth),
-      if (nextAllowed != null)
-        localisation.nextWindow(_formatTimestamp(nextAllowed)),
-      if (!eligibility.canStart && eligibility.reason != null)
-        eligibility.reason!,
-    ];
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              localisation.settings,
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 0),
-            ...subtitle.map(
-              (line) => Text(
-                line,
-                style: theme.textTheme.bodySmall,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildDailyQuoteCard() {
     final theme = Theme.of(context);
     final locale = Localizations.localeOf(context).languageCode;
@@ -1270,6 +1233,8 @@ class _HomeState extends State<_Home> {
     final theme = Theme.of(context);
     final interpretation = _latestInterpretation;
     final accentColor = TarotTheme.cosmicBlue; // Corporate blue
+    final int totalCards = draw.result.length;
+    final bool allCardsRevealed = _revealedCardCount >= totalCards;
 
     return Card(
       child: Column(
@@ -1339,34 +1304,46 @@ class _HomeState extends State<_Home> {
                           imagePath: imagePath);
                     }).toList();
 
+                    final revealCount = math.max(0, math.min(_revealedCardCount, totalCards));
+
                     return Center(
                       child: SpreadLayout(
                         spread: spread,
                         cards: tarotCards,
                         maxWidth: constraints.maxWidth,
                         maxHeight: 500,
+                        revealedCardCount: revealCount,
                       ),
                     );
                   },
                 ),
                 // Add button or loading indicator below the cards
-                if (interpretation == null) ...[
+                if (_revealedCardCount == 0 && !_revealingCards) ...[
                   const SizedBox(height: 16),
-                  if (_requestingInterpretation)
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: CircularProgressIndicator(),
-                    )
-                  else if (draw.sessionId != null && draw.sessionId!.isNotEmpty)
-                    FilledButton(
-                      onPressed: _requestingInterpretation
-                          ? null
-                          : _requestInterpretation,
-                      child: Text(localisation.interpretationHeading),
-                    ),
+                  FilledButton(
+                    onPressed: _revealCardsSequentially,
+                    child: Text(localisation.revealCards),
+                  ),
+                ]
+                else if (_revealingCards) ...[
+                  const SizedBox(height: 16),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: CircularProgressIndicator(),
+                  ),
+                ]
+                else if (allCardsRevealed &&
+                    interpretation == null &&
+                    draw.sessionId != null &&
+                    draw.sessionId!.isNotEmpty) ...[
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: _requestInterpretation,
+                    child: Text(localisation.interpretationHeading),
+                  ),
                 ],
                 // Show interpretation below cards if available
-                if (interpretation != null) ...[
+                if (allCardsRevealed && interpretation != null) ...[
                   const SizedBox(height: 24),
                   _buildInterpretationSection(interpretation, theme,
                       accentColor, draw.result, localisation),
@@ -2066,3 +2043,8 @@ class _StarryNightPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+
+
+
+

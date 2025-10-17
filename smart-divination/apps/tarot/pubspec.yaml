@@ -1,5 +1,5 @@
 name: smart_tarot
-description: Smart Tarot — Flutter app migrated into canonical workspace
+description: Smart Tarot â€” Flutter app migrated into canonical workspace
 version: 1.0.0+1
 publish_to: none
 
@@ -19,6 +19,7 @@ dependencies:
   shared_preferences: ^2.2.2
   flutter_svg: ^2.0.10
   flutter_markdown: ^0.7.4+1
+  audioplayers: ^6.1.0
   common:
     path: ../../packages/common
 
@@ -36,6 +37,7 @@ flutter:
     - assets/branding/
     - assets/backgrounds/
     - assets/spread-buttons/
+    - assets/sounds/
     - assets/banner.png
     - assets/home_banner.png
     - assets/daily-quotes.csv
@@ -45,5 +47,6 @@ flutter_launcher_icons:
   android: true
   ios: false
   image_path: assets/app_icon/icon.png
-  adaptive_icon_background: "#4A2C6F"
+  adaptive_icon_background: "#6D82CD"
   adaptive_icon_foreground: assets/app_icon/icon.png
+
