@@ -30,6 +30,10 @@ coverage/
 # Temporary files
 tmp_*.md
 tmp_*
+*.backup
+
+# Temporary Python scripts in Flutter app
+smart-divination/apps/tarot/*.py
 
 # Windows artifact
 nul

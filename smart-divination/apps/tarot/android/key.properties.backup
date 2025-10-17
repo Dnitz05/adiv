@@ -1,8 +1,0 @@
-# Android signing configuration
-# Generated: 2025-10-05
-# DO NOT COMMIT THIS FILE TO GIT
-
-storeFile=upload-keystore.jks
-storePassword=PLACEHOLDER_FROM_GITHUB_SECRET
-keyAlias=PLACEHOLDER_FROM_GITHUB_SECRET
-keyPassword=PLACEHOLDER_FROM_GITHUB_SECRET
