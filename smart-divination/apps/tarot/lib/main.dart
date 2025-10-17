@@ -1253,8 +1253,10 @@ class _HomeState extends State<_Home> {
 
   Widget _buildLatestDrawCard(CommonStrings localisation) {
     final draw = _latestDraw;
+
+    // Show spread preview if no cards drawn yet
     if (draw == null) {
-      return const SizedBox.shrink();
+      return _buildSpreadPreview(localisation);
     }
 
     final displayQuestion =
@@ -1267,6 +1269,62 @@ class _HomeState extends State<_Home> {
       children: [
         _buildCardsMessage(draw, localisation, displayQuestion),
       ],
+    );
+  }
+
+  Widget _buildSpreadPreview(CommonStrings localisation) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Spread info
+            Text(
+              _selectedSpread.name,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: TarotTheme.moonlight,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _selectedSpread.description,
+              style: TextStyle(
+                fontSize: 14,
+                color: TarotTheme.stardust.withOpacity(0.9),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Spread layout preview
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Center(
+                  child: SpreadLayout(
+                    spread: _selectedSpread,
+                    cards: const [], // Empty list to show placeholders
+                    maxWidth: constraints.maxWidth,
+                    maxHeight: 500,
+                    dealtCardCount: 0,
+                    revealedCardCount: 0,
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Tap on each position to see its meaning',
+              style: TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+                color: TarotTheme.stardust.withOpacity(0.7),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 

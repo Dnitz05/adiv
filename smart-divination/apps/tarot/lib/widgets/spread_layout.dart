@@ -59,24 +59,38 @@ class SpreadLayout extends StatelessWidget {
 
         final int dealtCards = dealtCardCount ?? cards.length;
     final int visibleCards = revealedCardCount ?? cards.length;
+    final bool showPlaceholders = cards.isEmpty;
 
     return SizedBox(
       width: effectiveWidth,
       height: effectiveHeight,
       child: Stack(
         children: [
-          for (int i = 0; i < cards.length && i < spread.positions.length; i++)
-            _buildPositionedCard(
-              card: cards[i],
-              index: i,
-              position: spread.positions[i],
-              containerWidth: effectiveWidth,
-              containerHeight: effectiveHeight,
-              cardWidth: cardWidth,
-              cardHeight: cardHeight,
-              isDealt: i < dealtCards,
-              isFaceUp: i < visibleCards,
-            ),
+          // Show placeholders if no cards are present
+          if (showPlaceholders)
+            for (int i = 0; i < spread.positions.length; i++)
+              _buildPositionedPlaceholder(
+                cardNumber: i + 1,
+                position: spread.positions[i],
+                containerWidth: effectiveWidth,
+                containerHeight: effectiveHeight,
+                cardWidth: cardWidth,
+                cardHeight: cardHeight,
+              )
+          // Show actual cards if present
+          else
+            for (int i = 0; i < cards.length && i < spread.positions.length; i++)
+              _buildPositionedCard(
+                card: cards[i],
+                index: i,
+                position: spread.positions[i],
+                containerWidth: effectiveWidth,
+                containerHeight: effectiveHeight,
+                cardWidth: cardWidth,
+                cardHeight: cardHeight,
+                isDealt: i < dealtCards,
+                isFaceUp: i < visibleCards,
+              ),
         ],
       ),
     );
@@ -218,6 +232,32 @@ class SpreadLayout extends StatelessWidget {
     );
   }
 
+  Widget _buildPositionedPlaceholder({
+    required int cardNumber,
+    required CardPosition position,
+    required double containerWidth,
+    required double containerHeight,
+    required double cardWidth,
+    required double cardHeight,
+  }) {
+    final double left = (position.x * containerWidth) - (cardWidth / 2);
+    final double top = (position.y * containerHeight) - (cardHeight / 2);
+
+    return Positioned(
+      left: left,
+      top: top,
+      child: Transform.rotate(
+        angle: position.rotation * math.pi / 180,
+        child: _buildPlaceholderCard(
+          cardNumber: cardNumber,
+          position: position,
+          width: cardWidth,
+          height: cardHeight,
+        ),
+      ),
+    );
+  }
+
   Widget _buildReversedIcon() {
     return Container(
       width: 24,
@@ -237,6 +277,92 @@ class SpreadLayout extends StatelessWidget {
         color: TarotTheme.deepNight,
       ),
     );
+  }
+
+  Widget _buildPlaceholderCard({
+    required int cardNumber,
+    required CardPosition position,
+    required double width,
+    required double height,
+  }) {
+    final placeholderWidget = Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: TarotTheme.deepNight.withOpacity(0.3),
+        border: Border.all(
+          color: TarotTheme.twilightPurple.withOpacity(0.6),
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: CustomPaint(
+        painter: _DashedBorderPainter(
+          color: TarotTheme.cosmicAccent.withOpacity(0.7),
+          strokeWidth: 2,
+          dashWidth: 8,
+          dashSpace: 4,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Card number
+            Text(
+              cardNumber.toString(),
+              style: TextStyle(
+                fontSize: math.min(width * 0.4, 48),
+                fontWeight: FontWeight.w300,
+                color: TarotTheme.stardust.withOpacity(0.8),
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Position label
+            if (position.label != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  position.label!,
+                  style: TextStyle(
+                    fontSize: math.min(width * 0.12, 14),
+                    fontWeight: FontWeight.w500,
+                    color: TarotTheme.cosmicAccent.withOpacity(0.9),
+                    letterSpacing: 0.5,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+
+    // Wrap with tooltip if there's a description
+    if (position.description != null) {
+      return Tooltip(
+        message: position.description!,
+        preferBelow: false,
+        verticalOffset: 10,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: TarotTheme.midnightBlue.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: TarotTheme.cosmicAccent.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        textStyle: TextStyle(
+          fontSize: 12,
+          color: TarotTheme.moonlight,
+          height: 1.4,
+        ),
+        child: placeholderWidget,
+      );
+    }
+
+    return placeholderWidget;
   }
 
   Widget _buildCardWidget(
@@ -432,4 +558,53 @@ class _AnimatedTarotCardState extends State<_AnimatedTarotCard>
       },
     );
   }
+}
+
+/// Custom painter for dashed border
+class _DashedBorderPainter extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+  final double dashWidth;
+  final double dashSpace;
+
+  _DashedBorderPainter({
+    required this.color,
+    required this.strokeWidth,
+    required this.dashWidth,
+    required this.dashSpace,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    final path = Path();
+    path.addRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        const Radius.circular(4),
+      ),
+    );
+
+    _drawDashedPath(canvas, path, paint);
+  }
+
+  void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
+    final pathMetrics = path.computeMetrics();
+    for (final metric in pathMetrics) {
+      double distance = 0.0;
+      while (distance < metric.length) {
+        final nextDistance = math.min(distance + dashWidth, metric.length);
+        final segment = metric.extractPath(distance, nextDistance);
+        canvas.drawPath(segment, paint);
+        distance = nextDistance + dashSpace;
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

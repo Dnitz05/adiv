@@ -5,12 +5,14 @@ class CardPosition {
   final double x; // Relative position (0.0 to 1.0) from left
   final double y; // Relative position (0.0 to 1.0) from top
   final String? label; // Optional label (e.g., "Past", "Present", "Future")
+  final String? description; // Optional description of what this position represents
   final double rotation; // Rotation in degrees (0 = upright)
 
   const CardPosition({
     required this.x,
     required this.y,
     this.label,
+    this.description,
     this.rotation = 0.0,
   });
 }
@@ -54,9 +56,24 @@ class TarotSpreads {
     cardCount: 3,
     aspectRatio: 1.8,
     positions: [
-      CardPosition(x: 0.15, y: 0.5),
-      CardPosition(x: 0.5, y: 0.5),
-      CardPosition(x: 0.85, y: 0.5),
+      CardPosition(
+        x: 0.15,
+        y: 0.5,
+        label: 'Past',
+        description: 'Influences that brought you here',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.5,
+        label: 'Present',
+        description: 'Your current situation',
+      ),
+      CardPosition(
+        x: 0.85,
+        y: 0.5,
+        label: 'Future',
+        description: 'The path opening before you',
+      ),
     ],
   );
 
@@ -67,16 +84,67 @@ class TarotSpreads {
     cardCount: 10,
     aspectRatio: 1.5,
     positions: [
-      CardPosition(x: 0.3, y: 0.5),
-      CardPosition(x: 0.38, y: 0.5, rotation: 90),
-      CardPosition(x: 0.3, y: 0.25),
-      CardPosition(x: 0.3, y: 0.75),
-      CardPosition(x: 0.1, y: 0.5),
-      CardPosition(x: 0.5, y: 0.5),
-      CardPosition(x: 0.75, y: 0.85),
-      CardPosition(x: 0.75, y: 0.65),
-      CardPosition(x: 0.75, y: 0.45),
-      CardPosition(x: 0.75, y: 0.25),
+      CardPosition(
+        x: 0.3,
+        y: 0.5,
+        label: 'Present',
+        description: 'Your current situation',
+      ),
+      CardPosition(
+        x: 0.38,
+        y: 0.5,
+        rotation: 90,
+        label: 'Challenge',
+        description: 'Immediate obstacles',
+      ),
+      CardPosition(
+        x: 0.3,
+        y: 0.25,
+        label: 'Distant Past',
+        description: 'Roots of the situation',
+      ),
+      CardPosition(
+        x: 0.3,
+        y: 0.75,
+        label: 'Recent Past',
+        description: 'Recent events',
+      ),
+      CardPosition(
+        x: 0.1,
+        y: 0.5,
+        label: 'Goal',
+        description: 'Best possible outcome',
+      ),
+      CardPosition(
+        x: 0.5,
+        y: 0.5,
+        label: 'Near Future',
+        description: 'What comes soon',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.85,
+        label: 'Self',
+        description: 'Your attitude',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.65,
+        label: 'Environment',
+        description: 'External influences',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.45,
+        label: 'Hopes & Fears',
+        description: 'Hidden feelings',
+      ),
+      CardPosition(
+        x: 0.75,
+        y: 0.25,
+        label: 'Outcome',
+        description: 'Final result',
+      ),
     ],
   );
 
