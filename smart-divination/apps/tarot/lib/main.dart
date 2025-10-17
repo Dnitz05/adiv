@@ -1462,6 +1462,7 @@ class _HomeState extends State<_Home> {
                         maxHeight: 500,
                         dealtCardCount: dealCount,
                         revealedCardCount: revealCount,
+                        locale: localisation.localeName,
                       ),
                     );
                   },
@@ -2073,8 +2074,8 @@ class _HomeState extends State<_Home> {
                       horizontal: 20.0, vertical: 0.0),
                   child: _buildDailyQuoteCard(),
                 ),
-                const SizedBox(height: 16),
-                // Banner image below quote
+                const SizedBox(height: 0),
+                // Banner image below quote (compensate spacing to keep original position)
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),

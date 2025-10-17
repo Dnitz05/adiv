@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../models/tarot_spread.dart';
 import '../models/tarot_card.dart';
 import '../utils/card_image_mapper.dart';
+import '../utils/card_name_localizer.dart';
 import '../theme/tarot_theme.dart';
 
 class SpreadLayout extends StatelessWidget {
@@ -14,6 +15,7 @@ class SpreadLayout extends StatelessWidget {
   final int? dealtCardCount;
   final int? revealedCardCount;
   final Duration flipDuration;
+  final String locale;
 
   const SpreadLayout({
     super.key,
@@ -24,6 +26,7 @@ class SpreadLayout extends StatelessWidget {
     this.dealtCardCount,
     this.revealedCardCount,
     this.flipDuration = const Duration(milliseconds: 450),
+    this.locale = 'es',
   });
 
   @override
@@ -212,14 +215,14 @@ class SpreadLayout extends StatelessWidget {
     final Widget backFace =
         _buildCardWidget(card, cardWidth, cardHeight, true);
 
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOutCubic,
-      left: left,
-      top: top,
-      child: Transform.rotate(
-        angle: baseRotation * math.pi / 180,
-        child: _AnimatedTarotCard(
+    // Get localized card name
+    final String localizedName = CardNameLocalizer.localize(card.name, locale);
+
+    // Wrap card with column to add name label below when revealed
+    final Widget cardWithLabel = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _AnimatedTarotCard(
           key: ValueKey('tarot-card-$index-${card.name}'),
           width: cardWidth,
           height: cardHeight,
@@ -228,6 +231,37 @@ class SpreadLayout extends StatelessWidget {
           isFaceUp: isFaceUp,
           duration: flipDuration,
         ),
+        // Show card name only when revealed (face up)
+        if (isFaceUp) ...[
+          const SizedBox(height: 6),
+          SizedBox(
+            width: cardWidth,
+            child: Text(
+              localizedName.toUpperCase(),
+              style: TextStyle(
+                fontSize: math.min(cardWidth * 0.11, 10),
+                fontWeight: FontWeight.w600,
+                color: TarotTheme.moonlight.withOpacity(0.9),
+                letterSpacing: 0.5,
+                height: 1.2,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ],
+    );
+
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOutCubic,
+      left: left,
+      top: top,
+      child: Transform.rotate(
+        angle: baseRotation * math.pi / 180,
+        child: cardWithLabel,
       ),
     );
   }
