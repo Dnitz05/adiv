@@ -2066,7 +2066,7 @@ class _HomeState extends State<_Home> {
             hasScrollBody: false,
             child: Column(
               children: [
-                const SizedBox(height: 16),
+                const SizedBox(height: 60),
                 // Daily quote card at top
                 Padding(
                   padding: const EdgeInsets.symmetric(
