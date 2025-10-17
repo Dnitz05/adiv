@@ -16,6 +16,7 @@ import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
 import 'widgets/spread_selector.dart';
 import 'widgets/spread_layout.dart';
+import 'widgets/spread_gallery_modal.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
@@ -821,6 +822,38 @@ class _HomeState extends State<_Home> {
         });
       }
     }
+  }
+
+  void _showSpreadGallery() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => SpreadGalleryModal(
+        selectedSpread: _selectedSpread,
+        onSpreadSelected: (spread) {
+          setState(() {
+            _selectedSpread = spread;
+          });
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  void _resetToHome() {
+    setState(() {
+      _latestDraw = null;
+      _latestInterpretation = null;
+      _dealtCardCount = 0;
+      _dealingCards = false;
+      _revealedCardCount = 0;
+      _revealingCards = false;
+      _requestingInterpretation = false;
+      _currentQuestion = null;
+      _questionController.clear();
+      _error = null;
+    });
   }
 
   Future<void> _dealCardsSequentially() async {
@@ -2108,11 +2141,34 @@ class _HomeState extends State<_Home> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
-          'assets/branding/logo-header.png',
-          height: 40,
-          fit: BoxFit.contain,
+        title: GestureDetector(
+          onTap: _resetToHome,
+          child: Image.asset(
+            'assets/branding/logo-header.png',
+            height: 40,
+            fit: BoxFit.contain,
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.grid_view_rounded,
+              color: TarotTheme.cosmicAccent,
+            ),
+            onPressed: _showSpreadGallery,
+            tooltip: 'Seleccionar Tirada',
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.history_rounded,
+              color: TarotTheme.twilightPurple,
+            ),
+            onPressed: () {
+              // TODO: Implementar historial
+            },
+            tooltip: 'Historial de Consultas',
+          ),
+        ],
       ),
       body: Stack(
         children: [
