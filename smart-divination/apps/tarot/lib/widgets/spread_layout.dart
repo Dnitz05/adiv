@@ -59,7 +59,8 @@ class SpreadLayout extends StatelessWidget {
 
         final int dealtCards = dealtCardCount ?? cards.length;
     final int visibleCards = revealedCardCount ?? cards.length;
-    final bool showPlaceholders = cards.isEmpty;
+    // Show placeholders when no cards dealt yet OR when cards list is empty
+    final bool showPlaceholders = cards.isEmpty || dealtCards == 0;
 
     return SizedBox(
       width: effectiveWidth,
