@@ -14,7 +14,6 @@ import 'api/user_profile_api.dart';
 import 'user_identity.dart';
 import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
-import 'widgets/spread_selector.dart';
 import 'widgets/spread_layout.dart';
 import 'widgets/spread_gallery_modal.dart';
 import 'theme/tarot_theme.dart';
@@ -1244,19 +1243,11 @@ class _HomeState extends State<_Home> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              localisation.startSession,
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            SpreadSelector(
-              selectedSpread: _selectedSpread,
-              onSpreadChanged: _drawing
-                  ? (_) {}
-                  : (spread) {
-                      setState(() {
-                        _selectedSpread = spread;
-                      });
-                    },
+              '¿Qué quieres consultar?',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.normal,
+              ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 12),
             TextField(
@@ -1276,7 +1267,7 @@ class _HomeState extends State<_Home> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.auto_awesome),
-              label: Text(localisation.startSession),
+              label: const Text('Consulta'),
             ),
           ],
         ),
