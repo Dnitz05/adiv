@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../models/tarot_spread.dart';
 import '../models/tarot_card.dart';
 import '../utils/card_image_mapper.dart';
@@ -241,10 +242,37 @@ class SpreadLayout extends StatelessWidget {
   Widget _buildCardWidget(
       TarotCard card, double width, double height, bool showCardBack) {
     // Use the back artwork when showing card backs
-    final String imagePath = showCardBack
-        ? 'assets/cards/CardBacks.jpg'
-        : (card.imageUrl ??
-            CardImageMapper.getCardImagePath(card.name, card.suit));
+    if (showCardBack) {
+      // Use SVG for card back
+      return Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            color: TarotTheme.twilightPurple.withOpacity(0.3),
+            width: 2,
+          ),
+          boxShadow: TarotTheme.elevatedShadow,
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: SvgPicture.asset(
+          'assets/cards/card-back.svg',
+          fit: BoxFit.cover,
+          placeholderBuilder: (context) => Container(
+            color: TarotTheme.midnightBlue,
+            child: Center(
+              child: Icon(Icons.back_hand,
+                  color: TarotTheme.cosmicAccent, size: width * 0.3),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Use JPG for card fronts
+    final String imagePath = card.imageUrl ??
+        CardImageMapper.getCardImagePath(card.name, card.suit);
 
     return Container(
       width: width,
@@ -262,16 +290,6 @@ class SpreadLayout extends StatelessWidget {
         imagePath,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          // If the back image fails, display a dark fallback container
-          if (showCardBack) {
-            return Container(
-              color: TarotTheme.midnightBlue,
-              child: Center(
-                child: Icon(Icons.back_hand,
-                    color: TarotTheme.cosmicAccent, size: width * 0.3),
-              ),
-            );
-          }
           return _buildCardFallback(card, width, height);
         },
       ),

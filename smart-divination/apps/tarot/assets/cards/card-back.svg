@@ -1,0 +1,206 @@
+<svg viewBox="0 0 300 527" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1929;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#312e81;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e1b4b;stop-opacity:1" />
+    </linearGradient>
+
+    <radialGradient id="cosmicGlow">
+      <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:0.9" />
+      <stop offset="40%" style="stop-color:#818cf8;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#3730a3;stop-opacity:0" />
+    </radialGradient>
+
+    <radialGradient id="moonGlow">
+      <stop offset="0%" style="stop-color:#f0f9ff;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#bae6fd;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#0ea5e9;stop-opacity:0" />
+    </radialGradient>
+
+    <linearGradient id="spiritualGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#a78bfa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Fons còsmic -->
+  <rect width="300" height="527" fill="url(#bgGradient)"/>
+
+  <!-- Estrelles celestials de fons -->
+  <g opacity="0.4">
+    <circle cx="45" cy="80" r="1" fill="#dbeafe"/>
+    <circle cx="250" cy="95" r="0.8" fill="#dbeafe"/>
+    <circle cx="80" cy="160" r="1.2" fill="#93c5fd"/>
+    <circle cx="220" cy="180" r="0.9" fill="#dbeafe"/>
+    <circle cx="60" cy="240" r="1" fill="#a5b4fc"/>
+    <circle cx="240" cy="260" r="1.1" fill="#dbeafe"/>
+    <circle cx="90" cy="340" r="0.8" fill="#93c5fd"/>
+    <circle cx="210" cy="370" r="1" fill="#dbeafe"/>
+    <circle cx="70" cy="440" r="1.2" fill="#a5b4fc"/>
+    <circle cx="230" cy="460" r="0.9" fill="#dbeafe"/>
+  </g>
+
+  <!-- SANEFA ESPIRITUAL -->
+  <g opacity="0.95">
+    <!-- Marc exterior amb arc de cercle còsmic -->
+    <rect x="10" y="10" width="280" height="507" fill="none" stroke="url(#spiritualGradient)" stroke-width="2.5" rx="8"/>
+    <rect x="15" y="15" width="270" height="497" fill="none" stroke="#93c5fd" stroke-width="1" rx="6"/>
+
+    <!-- Arc celestial superior -->
+    <path d="M 60,25 Q 150,15 240,25" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.8"/>
+    <path d="M 70,30 Q 150,22 230,30" fill="none" stroke="#60a5fa" stroke-width="1"/>
+
+    <!-- Lluna creixent superior esquerra -->
+    <g transform="translate(40, 40)">
+      <path d="M -8,-10 Q -4,-12 0,-10 Q -6,-5 -8,0 Q -10,-5 -8,-10" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+      <circle cx="0" cy="-5" r="2" fill="#dbeafe" opacity="0.8"/>
+    </g>
+
+    <!-- Sol espiritual superior dret -->
+    <g transform="translate(260, 40)">
+      <circle r="6" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+      <circle r="3" fill="#dbeafe" opacity="0.8"/>
+      <line x1="0" y1="-9" x2="0" y2="-11" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="0" y1="9" x2="0" y2="11" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="-9" y1="0" x2="-11" y2="0" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="9" y1="0" x2="11" y2="0" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="-6.5" y1="-6.5" x2="-8" y2="-8" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="6.5" y1="-6.5" x2="8" y2="-8" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="-6.5" y1="6.5" x2="-8" y2="8" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="6.5" y1="6.5" x2="8" y2="8" stroke="#93c5fd" stroke-width="1"/>
+    </g>
+
+    <!-- Arc celestial inferior -->
+    <path d="M 60,502 Q 150,512 240,502" fill="none" stroke="#a78bfa" stroke-width="2" opacity="0.8"/>
+    <path d="M 70,497 Q 150,505 230,497" fill="none" stroke="#60a5fa" stroke-width="1"/>
+
+    <!-- Lluna creixent inferior dret -->
+    <g transform="translate(260, 487)">
+      <path d="M 8,-10 Q 4,-12 0,-10 Q 6,-5 8,0 Q 10,-5 8,-10" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+      <circle cx="0" cy="-5" r="2" fill="#dbeafe" opacity="0.8"/>
+    </g>
+
+    <!-- Sol espiritual inferior esquerre -->
+    <g transform="translate(40, 487)">
+      <circle r="6" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+      <circle r="3" fill="#dbeafe" opacity="0.8"/>
+      <line x1="0" y1="-9" x2="0" y2="-11" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="0" y1="9" x2="0" y2="11" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="-9" y1="0" x2="-11" y2="0" stroke="#93c5fd" stroke-width="1"/>
+      <line x1="9" y1="0" x2="11" y2="0" stroke="#93c5fd" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- Chakra superior (tercer ull) -->
+  <g transform="translate(150, 70)" opacity="0.9">
+    <path d="M -8,-4 Q 0,-8 8,-4 L 0,6 Z" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+    <circle cy="-2" r="4" fill="none" stroke="#93c5fd" stroke-width="1"/>
+    <circle cy="-2" r="2" fill="#dbeafe"/>
+  </g>
+
+  <!-- Chakra inferior (arrel) -->
+  <g transform="translate(150, 457)" opacity="0.9">
+    <path d="M -10,0 L 0,-8 L 10,0 L 0,8 Z" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+    <circle r="3" fill="#dbeafe" opacity="0.8"/>
+  </g>
+
+  <!-- MANDALA CENTRAL -->
+  <g transform="translate(150, 263.5)">
+    <!-- Resplandor còsmic -->
+    <circle r="105" fill="url(#cosmicGlow)" opacity="0.3"/>
+
+    <!-- Cercle de protecció exterior -->
+    <circle r="95" fill="none" stroke="#60a5fa" stroke-width="2" opacity="0.8"/>
+    <circle r="90" fill="none" stroke="#818cf8" stroke-width="1" opacity="0.6"/>
+
+    <!-- Flor de la vida (geometria sagrada) -->
+    <g opacity="0.6" stroke="#93c5fd" stroke-width="1" fill="none">
+      <circle r="25"/>
+      <circle cx="0" cy="-25" r="25"/>
+      <circle cx="21.65" cy="-12.5" r="25"/>
+      <circle cx="21.65" cy="12.5" r="25"/>
+      <circle cx="0" cy="25" r="25"/>
+      <circle cx="-21.65" cy="12.5" r="25"/>
+      <circle cx="-21.65" cy="-12.5" r="25"/>
+    </g>
+
+    <!-- Estrella de 8 puntes (equilibri còsmic) -->
+    <g opacity="0.9">
+      <path d="M 0,-60 L -10,-20 L -40,-15 L -15,5 L -20,40 L 0,20 L 20,40 L 15,5 L 40,-15 L 10,-20 Z"
+            fill="url(#moonGlow)" stroke="#dbeafe" stroke-width="2"/>
+    </g>
+
+    <!-- Ull espiritual central -->
+    <g opacity="1">
+      <ellipse rx="30" ry="18" fill="none" stroke="#93c5fd" stroke-width="2"/>
+      <ellipse rx="30" ry="18" fill="none" stroke="#a78bfa" stroke-width="1" opacity="0.6"/>
+      <circle r="10" fill="url(#moonGlow)"/>
+      <circle r="7" fill="#1e3a8a"/>
+      <circle r="4" fill="#dbeafe"/>
+    </g>
+
+    <!-- Símbols alquímics als 4 punts cardinals -->
+    <!-- Nord (Aire) -->
+    <g transform="translate(0, -75)" opacity="0.8">
+      <path d="M -6,4 L 0,-4 L 6,4" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="#93c5fd" stroke-width="1.5"/>
+    </g>
+
+    <!-- Sud (Terra) -->
+    <g transform="translate(0, 75)" opacity="0.8">
+      <path d="M -6,-4 L 0,4 L 6,-4" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+      <line x1="-6" y1="0" x2="6" y2="0" stroke="#93c5fd" stroke-width="1.5"/>
+    </g>
+
+    <!-- Est (Foc) -->
+    <g transform="translate(75, 0)" opacity="0.8">
+      <path d="M -4,-6 L 4,0 L -4,6 Z" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+    </g>
+
+    <!-- Oest (Aigua) -->
+    <g transform="translate(-75, 0)" opacity="0.8">
+      <path d="M 4,-6 L -4,0 L 4,6 Z" fill="none" stroke="#93c5fd" stroke-width="1.5"/>
+    </g>
+  </g>
+
+  <!-- Constel·lacions laterals -->
+  <g opacity="0.7" stroke="#93c5fd" stroke-width="0.5">
+    <!-- Esquerra -->
+    <line x1="35" y1="160" x2="42" y2="175"/>
+    <line x1="42" y1="175" x2="35" y2="190"/>
+    <circle cx="35" cy="160" r="1.5" fill="#dbeafe"/>
+    <circle cx="42" cy="175" r="1.5" fill="#dbeafe"/>
+    <circle cx="35" cy="190" r="1.5" fill="#dbeafe"/>
+
+    <!-- Dreta -->
+    <line x1="265" y1="337" x2="258" y2="352"/>
+    <line x1="258" y1="352" x2="265" y2="367"/>
+    <circle cx="265" cy="337" r="1.5" fill="#dbeafe"/>
+    <circle cx="258" cy="352" r="1.5" fill="#dbeafe"/>
+    <circle cx="265" cy="367" r="1.5" fill="#dbeafe"/>
+  </g>
+
+  <!-- Símbols rúnics/místics als laterals -->
+  <g opacity="0.6">
+    <!-- Esquerra -->
+    <text x="28" y="265" font-family="serif" font-size="20" fill="#93c5fd">☽</text>
+    <text x="28" y="285" font-family="serif" font-size="16" fill="#a78bfa">✦</text>
+
+    <!-- Dreta -->
+    <text x="267" y="265" font-family="serif" font-size="20" fill="#93c5fd">☾</text>
+    <text x="267" y="285" font-family="serif" font-size="16" fill="#a78bfa">✧</text>
+  </g>
+
+  <!-- Partícules de llum flotant -->
+  <g fill="#dbeafe" opacity="0.5">
+    <circle cx="100" cy="120" r="1.5"/>
+    <circle cx="200" cy="140" r="1.2"/>
+    <circle cx="120" cy="380" r="1.3"/>
+    <circle cx="180" cy="400" r="1.4"/>
+    <circle cx="90" cy="280" r="1"/>
+    <circle cx="210" cy="300" r="1.1"/>
+  </g>
+</svg>
