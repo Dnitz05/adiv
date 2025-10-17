@@ -666,56 +666,56 @@ class _HomeState extends State<_Home> {
   }
 
   Future<void> _loadAll() async {
-  setState(() {
-    _initialising = true;
-    _error = null;
-  });
-
-  try {
-    final userId = await UserIdentity.obtain();
-
-    // Session eligibility check disabled - not needed for anonymous users
-    // final eligibility = await fetchSessionEligibility(userId: userId);
-
-    // Skip profile and history for anonymous users
-    final UserProfile? profile;
-    final List<TarotSession> history;
-    if (userId.startsWith('anon_')) {
-      profile = null;
-      history = <TarotSession>[];
-    } else {
-      profile = await fetchUserProfile(userId: userId);
-      history = await fetchTarotSessions(userId: userId);
-    }
-
-    if (!mounted) {
-      return;
-    }
-
     setState(() {
-      _userId = userId;
-      _eligibility = null; // Disabled session eligibility
-      _profile = profile;
-      _history = history;
-      _initialising = false;
+      _initialising = true;
+      _error = null;
     });
-  } catch (error, stackTrace) {
-    if (!mounted) {
-      return;
+
+    try {
+      final userId = await UserIdentity.obtain();
+
+      // Session eligibility check disabled - not needed for anonymous users
+      // final eligibility = await fetchSessionEligibility(userId: userId);
+
+      // Skip profile and history for anonymous users
+      final UserProfile? profile;
+      final List<TarotSession> history;
+      if (userId.startsWith('anon_')) {
+        profile = null;
+        history = <TarotSession>[];
+      } else {
+        profile = await fetchUserProfile(userId: userId);
+        history = await fetchTarotSessions(userId: userId);
+      }
+
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _userId = userId;
+        _eligibility = null; // Disabled session eligibility
+        _profile = profile;
+        _history = history;
+        _initialising = false;
+      });
+    } catch (error, stackTrace) {
+      if (!mounted) {
+        return;
+      }
+      final localisation = CommonStrings.of(context);
+      final formattedError = _formatError(localisation, error);
+      setState(() {
+        _error = formattedError;
+        _initialising = false;
+      });
+      debugPrint('Failed to load initial data: $error');
+      debugPrint('Stack trace: $stackTrace');
     }
-    final localisation = CommonStrings.of(context);
-    final formattedError = _formatError(localisation, error);
-    setState(() {
-      _error = formattedError;
-      _initialising = false;
-    });
-    debugPrint('Failed to load initial data: $error');
-    debugPrint('Stack trace: $stackTrace');
   }
-}
 
   Future<void> _refreshEligibility() async {
-  // Session eligibility check disabled - not needed for anonymous users
+    // Session eligibility check disabled - not needed for anonymous users
     return;
     /*
     final userId = _userId;
@@ -1111,7 +1111,7 @@ class _HomeState extends State<_Home> {
   Widget _buildEligibilityCard(
     CommonStrings localisation,
     SessionEligibility eligibility,
-) {
+  ) {
     final theme = Theme.of(context);
     final limits = eligibility.limits;
     final usage = eligibility.usage;
@@ -1172,7 +1172,7 @@ class _HomeState extends State<_Home> {
               Text(
                 text,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: const Color(0xFF6d82cd),
+                  color: TarotTheme.cosmicBlue,
                   fontWeight: FontWeight.normal,
                   height: 1.5,
                   fontSize: 16,
@@ -1231,10 +1231,6 @@ class _HomeState extends State<_Home> {
             const SizedBox(height: 24),
             FilledButton.icon(
               onPressed: _drawing ? null : _drawCards,
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF6d82cd),
-                foregroundColor: Colors.white,
-              ),
               icon: _drawing
                   ? const SizedBox(
                       height: 20,
@@ -1256,7 +1252,6 @@ class _HomeState extends State<_Home> {
       return const SizedBox.shrink();
     }
 
-    // Always show question, use "Consulta general" if empty
     final displayQuestion =
         (_currentQuestion != null && _currentQuestion!.isNotEmpty)
             ? _currentQuestion!
@@ -1265,30 +1260,8 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Cards display with question as header and interpretation below (integrated)
         _buildCardsMessage(draw, localisation, displayQuestion),
       ],
-    );
-  }
-
-  Widget _buildUserQuestionBubble(String question) {
-    final theme = Theme.of(context);
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 280),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: TarotTheme.cosmicPurple,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          question,
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ),
     );
   }
 
@@ -1296,7 +1269,7 @@ class _HomeState extends State<_Home> {
       CardsDrawResponse draw, CommonStrings localisation, String question) {
     final theme = Theme.of(context);
     final interpretation = _latestInterpretation;
-    final accentColor = TarotTheme.subtleGold;
+    final accentColor = TarotTheme.cosmicBlue; // Corporate blue
 
     return Card(
       child: Column(
@@ -1492,7 +1465,7 @@ class _HomeState extends State<_Home> {
     Map<String, String> cardImages,
     ThemeData theme,
     Color accentColor,
-) {
+  ) {
     // Parse markdown and identify card references
     // Pattern: **Card Name** (bold markdown)
     final cardReferencePattern = RegExp(r'\*\*(.+?)\*\*');
@@ -1535,8 +1508,8 @@ class _HomeState extends State<_Home> {
           .replaceAll(RegExp(r'\s*\(invertida\)', caseSensitive: false), '')
           .replaceAll(RegExp(r'\s*\(invertit\)', caseSensitive: false), '')
           .trim();
-      final localizedCardName =
-          CardNameLocalizer.localize(cardName, Localizations.localeOf(context).languageCode);
+      final localizedCardName = CardNameLocalizer.localize(
+          cardName, Localizations.localeOf(context).languageCode);
       final displayName = isReversed
           ? '$localizedCardName (${localisation.cardOrientationReversed})'
           : localizedCardName;
@@ -1663,7 +1636,7 @@ class _HomeState extends State<_Home> {
       CardsDrawResponse draw, CommonStrings localisation) {
     final theme = Theme.of(context);
     final interpretation = _latestInterpretation;
-    final accentColor = TarotTheme.subtleGold;
+    final accentColor = TarotTheme.cosmicBlue; // Corporate blue
 
     // Only show if we have an interpretation
     if (interpretation == null) {
@@ -1918,17 +1891,18 @@ class _HomeState extends State<_Home> {
     final hasDraw = _latestDraw != null;
     final mediaQuery = MediaQuery.of(context);
     const double extraBottomPadding = 32.0;
-    final bottomSafeInset = math.max(mediaQuery.viewPadding.bottom, mediaQuery.padding.bottom);
+    final bottomSafeInset =
+        math.max(mediaQuery.viewPadding.bottom, mediaQuery.padding.bottom);
     final bottomSpacing = bottomSafeInset + extraBottomPadding;
     const double topSpacing = 24.0;
-    
+
     // Build content based on whether there's a draw or not
     Widget bodyContent;
 
     if (_initialising) {
-            bodyContent = const Center(child: CircularProgressIndicator());
+      bodyContent = const Center(child: CircularProgressIndicator());
     } else if (!hasDraw) {
-            // Initial state: centered logo and draw form
+      // Initial state: centered logo and draw form
       bodyContent = CustomScrollView(
         physics: const NeverScrollableScrollPhysics(),
         slivers: [
@@ -1936,32 +1910,36 @@ class _HomeState extends State<_Home> {
             hasScrollBody: false,
             child: Column(
               children: [
-                const SizedBox(height: 32),
-                // Banner image at top
+                const SizedBox(height: 16),
+                // Daily quote card at top
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 0.0),
+                  child: _buildDailyQuoteCard(),
+                ),
+                const SizedBox(height: 16),
+                // Banner image below quote
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: Image.asset(
                       'assets/home_banner.png',
-                      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                      frameBuilder:
+                          (context, child, frame, wasSynchronouslyLoaded) {
                         if (frame == null) {
                           debugPrint('Banner loading...');
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                         debugPrint('Banner loaded successfully!');
                         return child;
                       },
                       width: MediaQuery.of(context).size.width * 0.8,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                // Daily quote card
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                  child: _buildDailyQuoteCard(),
                 ),
                 if (_error != null) ...[
                   const SizedBox(height: 16),
@@ -1999,6 +1977,7 @@ class _HomeState extends State<_Home> {
         );
       }
 
+      // Place AI recommendation first when available
       children.add(_buildLatestDrawCard(localisation));
 
       bodyContent = ListView(

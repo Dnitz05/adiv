@@ -9,8 +9,10 @@ const String _environmentApiBaseUrl = String.fromEnvironment(
 );
 
 const String _localDevelopmentApiBase = 'http://localhost:3001';
+const bool _useLocalApi =
+    bool.fromEnvironment('USE_LOCAL_API', defaultValue: false);
 const String _productionApiBase =
-    'https://backend-q4debzq5f-dnitzs-projects.vercel.app';
+    'https://backend-aoliijroc-dnitzs-projects.vercel.app';
 
 String? _runtimeApiBaseOverride;
 
@@ -28,7 +30,11 @@ String _resolveApiBaseUrl() {
     return _productionApiBase;
   }
 
-  return _localDevelopmentApiBase;
+  if (_useLocalApi) {
+    return _localDevelopmentApiBase;
+  }
+
+  return _productionApiBase;
 }
 
 void setApiBaseUrlOverride(String? override) {
@@ -88,7 +94,7 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
   if (isAnonymous) {
     // Anonymous users: only send x-user-id header
     print('[API] Using anonymous authentication with userId: $userId');
-    headers['x-user-id'] = userId!;
+    headers['x-user-id'] = userId;
   } else if (userId != null && userId.isNotEmpty) {
     // Registered users with explicit userId
     print('[API] Using registered user authentication with userId: $userId');
@@ -97,7 +103,8 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
       headers['authorization'] = 'Bearer $token';
       headers['x-user-id'] = userId;
     } catch (e) {
-      print('[API] ⚠️ Failed to get access token: $e');
+      print(
+          '[API] WARN Failed to get access token: $e');
       // Fall back to anonymous mode if token fetch fails
       headers['x-user-id'] = userId;
     }
@@ -108,7 +115,8 @@ Future<Map<String, String>> buildAuthenticatedHeaders({
       final token = await _requireAccessToken();
       headers['authorization'] = 'Bearer $token';
     } catch (e) {
-      print('[API] ⚠️ No authentication available: $e');
+      print(
+          '[API] WARN No authentication available: $e');
       // No authentication - API will handle this
     }
   }

@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 /// Minimalist neutral design system for tarot readings
 class TarotTheme {
   // Mystical neutral palette - subtle cosmic theme
-  static const Color deepNight = Color(0xFF0F0B1F);           // Main background (deep blue-black)
-  static const Color midnightBlue = Color(0xFF1A1530);        // Card surfaces
-  static const Color cosmicPurple = Color(0xFF2A2140);        // Elevated surfaces
-  static const Color twilightPurple = Color(0xFF3D3055);      // Borders, dividers
-  static const Color stardust = Color(0xFF8E8AA8);            // Secondary text (purple-gray)
-  static const Color moonlight = Color(0xFFF0EFF7);           // Primary text
-  static const Color subtleGold = Color(0xFFB8A280);          // Accent (warm gold)
-  static const Color cosmicAccent = Color(0xFF9B87D9);        // Secondary accent (soft purple)
-  static const Color starGlow = Color(0xFFE8E5F5);            // High contrast text
+  static const Color deepNight =
+      Color(0xFF0F0B1F); // Main background (deep blue-black)
+  static const Color midnightBlue = Color(0xFF1A1530); // Card surfaces
+  static const Color cosmicPurple = Color(0xFF2A2140); // Elevated surfaces
+  static const Color twilightPurple = Color(0xFF3D3055); // Borders, dividers
+  static const Color stardust =
+      Color(0xFF8E8AA8); // Secondary text (purple-gray)
+  static const Color moonlight = Color(0xFFF0EFF7); // Primary text
+  static const Color subtleGold = Color(0xFFB8A280); // Accent (warm gold)
+  static const Color cosmicAccent =
+      Color(0xFF9B87D9); // Secondary accent (soft purple)
+  static const Color cosmicBlue = Color(0xFF6d82cd); // Quote accent / CTA
+  static const Color starGlow = Color(0xFFE8E5F5); // High contrast text
 
   static ThemeData get darkTheme {
     return ThemeData(
@@ -154,8 +158,8 @@ class TarotTheme {
       // Filled button - mystical accent
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: subtleGold,
-          foregroundColor: deepNight,
+          backgroundColor: cosmicBlue,
+          foregroundColor: Colors.white,
           elevation: 0,
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -173,8 +177,8 @@ class TarotTheme {
       // Elevated button
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: subtleGold,
-          foregroundColor: deepNight,
+          backgroundColor: cosmicBlue,
+          foregroundColor: Colors.white,
           elevation: 0,
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -223,7 +227,8 @@ class TarotTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: cosmicPurple,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: twilightPurple.withOpacity(0.3)),
@@ -234,7 +239,7 @@ class TarotTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Color(0xFF6d82cd), width: 1.5),
+          borderSide: BorderSide(color: cosmicBlue, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -249,7 +254,7 @@ class TarotTheme {
           fontSize: 14,
         ),
         floatingLabelStyle: TextStyle(
-          color: Color(0xFF6d82cd),
+          color: cosmicBlue,
           fontSize: 14,
         ),
       ),

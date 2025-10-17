@@ -19,6 +19,49 @@ class InterpretationResult {
   final List<String> keywords;
 }
 
+/// Sanitizes interpretation text by removing JSON artifacts
+String _sanitizeInterpretation(String text) {
+  String cleaned = text;
+
+  // Remove JSON field names and syntax (like "interpretation":", "summary":", etc.)
+  cleaned = cleaned.replaceAll(RegExp(r'"[a-zA-Z]+"\s*:\s*'), '');
+
+  // Remove stray quotes, brackets, braces
+  cleaned = cleaned.replaceAll(RegExp(r'^["\[\{]+|["\]\}]+$'), '');
+  cleaned = cleaned.replaceAll(RegExp(r'(?<!\\)"'), ''); // Remove unescaped quotes
+
+  // Remove redundant section headers (in Catalan, Spanish, and English)
+  // Matches patterns like "## Apertura", "## Opening", "## Cards", "## Cartas", etc.
+  cleaned = cleaned.replaceAll(
+    RegExp(
+      r'^##\s*(Apertura|Opening|Obertura|Cards?|Cartes|S(?:i|\u00ed)ntesi[s]?|Synthesis|Orientaci[o\u00f3]|Guidance|Guia|Cartas Reveladas)\s*$',
+      multiLine: true,
+      caseSensitive: false,
+    ),
+    '',
+  );
+
+  // Convert escaped newlines to actual newlines
+  cleaned = cleaned.replaceAll(r'\n', '\n');
+
+  // Convert other common escape sequences
+  cleaned = cleaned.replaceAll(r'\t', '\t');
+  cleaned = cleaned.replaceAll(r'\"', '"');
+  cleaned = cleaned.replaceAll(r"\'", "'");
+  cleaned = cleaned.replaceAll(r'\\', '\\');
+
+  // Remove any remaining backslashes followed by letters (other escape sequences)
+  cleaned = cleaned.replaceAll(RegExp(r'\\[a-zA-Z]'), '');
+
+  // Clean up multiple consecutive newlines
+  cleaned = cleaned.replaceAll(RegExp(r'\n{3,}'), '\n\n');
+
+  // Trim whitespace
+  cleaned = cleaned.trim();
+
+  return cleaned;
+}
+
 Future<InterpretationResult?> submitInterpretation({
   required String sessionId,
   required CardsDrawResponse draw,
@@ -99,14 +142,19 @@ Future<InterpretationResult?> submitInterpretation({
     return null;
   }
 
+  // Sanitize the interpretation to remove JSON artifacts
+  final cleanInterpretation = _sanitizeInterpretation(interpretation);
+
   final summary = data['summary'] as String?;
+  final cleanSummary = summary != null ? _sanitizeInterpretation(summary) : null;
+
   final keywords = (data['keywords'] as List<dynamic>? ?? <dynamic>[])
       .whereType<String>()
       .toList();
 
   return InterpretationResult(
-    interpretation: interpretation,
-    summary: summary,
+    interpretation: cleanInterpretation,
+    summary: cleanSummary,
     keywords: keywords,
   );
 }
