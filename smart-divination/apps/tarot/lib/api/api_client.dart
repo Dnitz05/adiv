@@ -10,7 +10,7 @@ const String _environmentApiBaseUrl = String.fromEnvironment(
 
 const String _localDevelopmentApiBase = 'http://localhost:3001';
 const String _productionApiBase =
-    'https://backend-dnitzs-projects.vercel.app';
+    'https://backend-q4debzq5f-dnitzs-projects.vercel.app';
 
 String? _runtimeApiBaseOverride;
 

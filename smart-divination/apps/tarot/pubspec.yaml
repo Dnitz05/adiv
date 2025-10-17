@@ -36,6 +36,7 @@ flutter:
     - assets/branding/
     - assets/backgrounds/
     - assets/banner.png
+    - assets/home_banner.png
     - assets/daily-quotes.csv
 
 

@@ -211,18 +211,29 @@ async function generateInterpretationFromDeepSeek(
 
   const payload = (await response.json()) as DeepSeekResponse;
   const message = payload?.choices?.[0]?.message;
-  const content: unknown = message?.content;
 
   // For deepseek-chat, content should be present
-  // For deepseek-reasoner (R1), reasoning_content might be present but we ignore it
+  // For deepseek-reasoner (R1), content contains the final answer
+  // reasoning_content contains the Chain of Thought (internal reasoning)
+  const content: unknown = message?.content;
+
   if (typeof content !== 'string' || content.trim().length === 0) {
     log('error', 'DeepSeek response has empty content', {
       sessionId: params.sessionId,
       hasMessage: !!message,
       hasContent: !!message?.content,
       hasReasoningContent: !!message?.reasoning_content,
+      model: params.model ?? DEFAULT_MODEL,
     });
     throw new Error('DeepSeek response was empty.');
+  }
+
+  // Log if we received reasoning_content (for debugging)
+  if (message?.reasoning_content) {
+    log('info', 'DeepSeek R1 reasoning received', {
+      sessionId: params.sessionId,
+      reasoningLength: (message.reasoning_content as string).length,
+    });
   }
 
   log('info', 'DeepSeek raw content', {

@@ -234,7 +234,7 @@ class TarotTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: cosmicAccent, width: 1.5),
+          borderSide: BorderSide(color: Color(0xFF6d82cd), width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -249,7 +249,7 @@ class TarotTheme {
           fontSize: 14,
         ),
         floatingLabelStyle: TextStyle(
-          color: cosmicAccent,
+          color: Color(0xFF6d82cd),
           fontSize: 14,
         ),
       ),
