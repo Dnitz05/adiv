@@ -30,7 +30,10 @@ import { extractKeywords } from '../../../lib/utils/text';
 const METRICS_PATH = '/api/chat/interpret';
 const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
 // Use DeepSeek Chat with aggressive speed optimizations
-const DEFAULT_MODEL = process.env.DEEPSEEK_MODEL ?? 'deepseek-chat';
+// Note: deepseek-reasoner (R1) causes timeouts in production, so we force deepseek-chat
+const envModel = process.env.DEEPSEEK_MODEL;
+const DEFAULT_MODEL =
+  envModel === 'deepseek-reasoner' ? 'deepseek-chat' : (envModel ?? 'deepseek-chat');
 const DEEPSEEK_URL = process.env.DEEPSEEK_API_URL ?? 'https://api.deepseek.com/v1/chat/completions';
 
 const interpretationRequestSchema = baseRequestSchema.extend({
