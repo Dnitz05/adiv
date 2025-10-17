@@ -1375,6 +1375,7 @@ class _HomeState extends State<_Home> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Show spread info always (not just when placeholders are visible)
                 Builder(
