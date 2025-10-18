@@ -5,7 +5,8 @@ class CardPosition {
   final double x; // Relative position (0.0 to 1.0) from left
   final double y; // Relative position (0.0 to 1.0) from top
   final String? label; // Optional label (e.g., "Past", "Present", "Future")
-  final String? description; // Optional description of what this position represents
+  final String?
+      description; // Optional description of what this position represents
   final double rotation; // Rotation in degrees (0 = upright)
 
   const CardPosition({
@@ -606,5 +607,85 @@ class TarotSpreads {
     } catch (_) {
       return null;
     }
+  }
+}
+
+String _languageFromLocale(String locale) {
+  final separatorIndex = locale.indexOf('_');
+  if (separatorIndex != -1) {
+    return locale.substring(0, separatorIndex).toLowerCase();
+  }
+  return locale.toLowerCase();
+}
+
+const Map<String, Map<String, String>> _spreadNameTranslations =
+    <String, Map<String, String>>{
+  'ca': <String, String>{
+    'single': 'Una Carta',
+    'two_card': 'Dues Cartes',
+    'three_card': 'Tirada de Tres Cartes',
+    'five_card_cross': 'Creu de Cinc Cartes',
+    'relationship': 'Relació',
+    'pyramid': 'Piràmide',
+    'horseshoe': 'Ferradura',
+    'celtic_cross': 'Creu Celta',
+    'star': 'Estrella',
+    'astrological': 'Cases Astrològiques',
+    'year_ahead': 'Any Endavant',
+  },
+  'es': <String, String>{
+    'single': 'Una Carta',
+    'two_card': 'Dos Cartas',
+    'three_card': 'Tirada de Tres Cartas',
+    'five_card_cross': 'Cruz de Cinco Cartas',
+    'relationship': 'Relación',
+    'pyramid': 'Pirámide',
+    'horseshoe': 'Herradura',
+    'celtic_cross': 'Cruz Celta',
+    'star': 'Estrella',
+    'astrological': 'Casas Astrológicas',
+    'year_ahead': 'Año Por Delante',
+  },
+};
+
+const Map<String, Map<String, String>> _spreadDescriptionTranslations =
+    <String, Map<String, String>>{
+  'ca': <String, String>{
+    'single': 'Una carta per orientació diària ràpida i respostes directes',
+    'two_card': 'Tirada de decisió per a opcions binàries',
+    'three_card': 'Tirada versàtil per a passat, present i futur',
+    'five_card_cross': 'Disposició en creu completa amb bloquejos i consells',
+    'relationship': 'Set cartes explorant les dinàmiques de relació',
+    'pyramid': 'Sis cartes en disposició piramidal holística',
+    'horseshoe': 'Set cartes en ferradura per orientació completa',
+    'celtic_cross': 'Tirada mestra de deu cartes per situacions complexes',
+    'star': 'Set cartes en estrella per a autoconeixement',
+    'astrological': 'Dotze cartes representant les cases astrològiques',
+    'year_ahead': 'Dotze cartes per a pronòstic mensual',
+  },
+  'es': <String, String>{
+    'single': 'Una carta para orientación diaria rápida y respuestas directas',
+    'two_card': 'Tirada de decisión para opciones binarias',
+    'three_card': 'Tirada versátil para pasado, presente y futuro',
+    'five_card_cross': 'Disposición en cruz completa con bloqueos y consejos',
+    'relationship': 'Siete cartas explorando las dinámicas de relación',
+    'pyramid': 'Seis cartas en disposición piramidal holística',
+    'horseshoe': 'Siete cartas en herradura para orientación completa',
+    'celtic_cross': 'Tirada maestra de diez cartas para situaciones complejas',
+    'star': 'Siete cartas en estrella para autoconocimiento',
+    'astrological': 'Doce cartas representando las casas astrológicas',
+    'year_ahead': 'Doce cartas para pronóstico mensual',
+  },
+};
+
+extension TarotSpreadLocalization on TarotSpread {
+  String localizedName(String locale) {
+    final language = _languageFromLocale(locale);
+    return _spreadNameTranslations[language]?[id] ?? name;
+  }
+
+  String localizedDescription(String locale) {
+    final language = _languageFromLocale(locale);
+    return _spreadDescriptionTranslations[language]?[id] ?? description;
   }
 }

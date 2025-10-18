@@ -53,14 +53,20 @@ Return JSON only: {"spreadId":"id","reason":"1-2 sentences in ${locale}"}`;
  * Build system prompt - cached by DeepSeek for speed
  */
 function buildSystemPrompt(): string {
+  // Get all valid spread IDs for validation
+  const validIds = SPREADS.map(s => s.id).join(', ');
+
   return `You are a tarot expert. Select the BEST spread for the question.
+
+CRITICAL: spreadId MUST be EXACTLY one of these IDs (do NOT invent new IDs):
+${validIds}
 
 Rules:
 - Quick question or daily → single
 - Binary choice → two_card
 - General situation → three_card
 - With obstacles → five_card_cross
-- Love/relationship → relationship
+- Love/relationship → relationship (NOT "love")
 - Goal with aspects → pyramid
 - Comprehensive → horseshoe
 - Very complex → celtic_cross
@@ -68,7 +74,7 @@ Rules:
 - Life overview → astrological
 - Year planning → year_ahead
 
-Respond ONLY with JSON: {"spreadId":"id","reason":"brief explanation"}
+Respond ONLY with JSON: {"spreadId":"exact_id_from_list","reason":"brief explanation"}
 Keep reason under 100 chars.`;
 }
 

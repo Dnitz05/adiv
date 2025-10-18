@@ -229,57 +229,60 @@ function generateReasoning(
   category?: string,
   _locale: string = 'ca'
 ): { en: string; ca: string; es: string } {
-  const keywordPhrase = keywords.length > 0 ? keywords.join(', ') : 'general inquiry';
+  const categoryCa =
+    category === 'love'
+      ? "els temes d'amor i de vincle afectiu"
+      : category === 'decision'
+        ? 'els moments en què cal prendre decisions importants'
+        : category === 'career'
+          ? 'les inquietuds professionals i de projecte vital'
+          : "la necessitat d'obtenir una mirada global de la situació";
+  const categoryEs =
+    category === 'love'
+      ? 'los temas de amor y vínculo afectivo'
+      : category === 'decision'
+        ? 'los momentos en los que toca tomar decisiones importantes'
+        : category === 'career'
+          ? 'las inquietudes profesionales y de propósito vital'
+          : 'la necesidad de obtener una mirada amplia de la situación';
+  const categoryEn =
+    category === 'love'
+      ? 'matters of the heart and relationship dynamics'
+      : category === 'decision'
+        ? 'those crossroads where an important decision is required'
+        : category === 'career'
+          ? 'career questions and the direction of your work life'
+          : 'the need for a compassionate overview of the situation';
 
-  // Generate reasoning based on detected patterns
+  const complexityCa =
+    spread.complexity === 'simple'
+      ? 'amb un ritme àgil i clar'
+      : spread.complexity === 'medium'
+        ? 'amb prou profunditat sense perdre claredat'
+        : 'amb la profunditat que cal per revisar totes les capes';
+  const complexityEs =
+    spread.complexity === 'simple'
+      ? 'con un ritmo ágil y claro'
+      : spread.complexity === 'medium'
+        ? 'con la profundidad justa sin perder claridad'
+        : 'con la profundidad necesaria para revisar cada capa';
+  const complexityEn =
+    spread.complexity === 'simple'
+      ? 'with a quick, clear rhythm'
+      : spread.complexity === 'medium'
+        ? 'with enough depth while staying clear'
+        : 'with the depth needed to explore every layer';
+
+  const keywordSummaryCa = keywords.length > 0 ? keywords.join(', ') : 'el que sents ara mateix';
+  const keywordSummaryEs = keywords.length > 0 ? keywords.join(', ') : 'lo que sientes ahora mismo';
+  const keywordSummaryEn = keywords.length > 0 ? keywords.join(', ') : 'what is moving inside you right now';
+
   const reasons = {
-    ca: `He seleccionat la tirada "${spread.nameCA}" perquè és ideal per ${
-      category === 'love'
-        ? "qüestions d'amor i relacions"
-        : category === 'decision'
-          ? 'prendre decisions importants'
-          : category === 'career'
-            ? 'temes de carrera i treball'
-            : 'obtenir una visió general de la situació'
-    }. Amb ${spread.cardCount} cartes, aquesta tirada ${
-      spread.complexity === 'simple'
-        ? 'ofereix respostes ràpides i clares'
-        : spread.complexity === 'medium'
-          ? 'proporciona un equilibri entre profunditat i claredat'
-          : 'ofereix una anàlisi profunda i detallada'
-    }. Factors clau detectats: ${keywordPhrase}.`,
+    ca: `He escollit la tirada "${spread.nameCA}" perquè acompanya molt bé ${categoryCa}. ${spread.cardCount === 1 ? 'Aquesta carta' : `Les ${spread.cardCount} cartes`} treballen ${complexityCa} per oferir-te una lectura coherent i amable. Els matisos que expresses (${keywordSummaryCa}) es miraran amb sensibilitat perquè puguis sentir amb serenor els propers passos.`,
 
-    es: `He seleccionado la tirada "${spread.nameES}" porque es ideal para ${
-      category === 'love'
-        ? 'cuestiones de amor y relaciones'
-        : category === 'decision'
-          ? 'tomar decisiones importantes'
-          : category === 'career'
-            ? 'temas de carrera y trabajo'
-            : 'obtener una visión general de la situación'
-    }. Con ${spread.cardCount} cartas, esta tirada ${
-      spread.complexity === 'simple'
-        ? 'ofrece respuestas rápidas y claras'
-        : spread.complexity === 'medium'
-          ? 'proporciona un equilibrio entre profundidad y claridad'
-          : 'ofrece un análisis profundo y detallado'
-    }. Factores clave detectados: ${keywordPhrase}.`,
+    es: `He elegido la tirada "${spread.nameES}" porque abraza con cuidado ${categoryEs}. ${spread.cardCount === 1 ? 'Esta carta' : `Las ${spread.cardCount} cartas`} trabajan ${complexityEs} para darte una mirada didáctica y cercana. Los matices que compartes (${keywordSummaryEs}) se abordarán con delicadeza para que encuentres claridad y calma.`,
 
-    en: `I've selected the "${spread.name}" spread because it's ideal for ${
-      category === 'love'
-        ? 'love and relationship questions'
-        : category === 'decision'
-          ? 'making important decisions'
-          : category === 'career'
-            ? 'career and work matters'
-            : 'getting a general overview of the situation'
-    }. With ${spread.cardCount} cards, this spread ${
-      spread.complexity === 'simple'
-        ? 'offers quick and clear answers'
-        : spread.complexity === 'medium'
-          ? 'provides a balance between depth and clarity'
-          : 'offers deep and detailed analysis'
-    }. Key factors detected: ${keywordPhrase}.`,
+    en: `I've chosen the "${spread.name}" spread because it gently supports ${categoryEn}. ${spread.cardCount === 1 ? 'This card' : `The ${spread.cardCount} cards`} work ${complexityEn} to offer a thoughtful, down-to-earth reading. The feelings woven through your question (${keywordSummaryEn}) will be explored with care so you can sense the next step with confidence.`,
   };
 
   return reasons;

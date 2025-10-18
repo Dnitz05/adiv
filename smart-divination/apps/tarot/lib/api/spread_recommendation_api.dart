@@ -141,7 +141,9 @@ Future<SpreadRecommendation> recommendSpread({
     throw Exception('Spread recommendation failed: ${error ?? payload}');
   }
 
-  final data = payload['data'] as Map<String, dynamic>;
+  final outerData = payload['data'] as Map<String, dynamic>;
+  final data = outerData['data'] as Map<String, dynamic>;
+  print('🔮 DEBUG: Parsed data: ${data['spread']?['id']}');
   return SpreadRecommendation.fromJson(data);
 }
 

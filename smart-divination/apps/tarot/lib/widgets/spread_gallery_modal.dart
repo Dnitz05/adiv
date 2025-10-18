@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:common/l10n/common_strings.dart';
 
 import '../models/tarot_spread.dart';
 import '../theme/tarot_theme.dart';
@@ -17,7 +18,8 @@ class SpreadGalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final localisation = CommonStrings.of(context);
+    final locale = localisation.localeName;
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +37,7 @@ class SpreadGalleryPage extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              'Selecciona tu Tirada',
+              _headlineForLocale(locale),
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -71,11 +73,24 @@ class SpreadGalleryPage extends StatelessWidget {
                 onSpreadSelected(spread);
                 Navigator.pop(context);
               },
+              locale: locale,
             );
           },
         ),
       ),
     );
+  }
+
+  String _headlineForLocale(String locale) {
+    final language = locale.split(RegExp('[_-]')).first.toLowerCase();
+    switch (language) {
+      case 'ca':
+        return 'Selecciona la teva tirada';
+      case 'en':
+        return 'Select your spread';
+      default:
+        return 'Selecciona tu tirada';
+    }
   }
 }
 
@@ -84,11 +99,13 @@ class _SpreadRow extends StatelessWidget {
   final TarotSpread spread;
   final bool isSelected;
   final VoidCallback onTap;
+  final String locale;
 
   const _SpreadRow({
     required this.spread,
     required this.isSelected,
     required this.onTap,
+    required this.locale,
   });
 
   @override
@@ -162,7 +179,7 @@ class _SpreadRow extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          spread.name,
+                          spread.localizedName(locale),
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -172,13 +189,14 @@ class _SpreadRow extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: TarotTheme.cosmicAccent.withOpacity(0.25),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            '${spread.cardCount} ${spread.cardCount == 1 ? "carta" : "cartas"}',
+                            _cardCountLabel(spread.cardCount, locale),
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -194,7 +212,7 @@ class _SpreadRow extends StatelessWidget {
               const SizedBox(height: 16),
               // Description below
               Text(
-                _getSpreadUseCase(spread.id),
+                _getSpreadUseCase(spread, locale),
                 style: TextStyle(
                   fontSize: 14,
                   color: TarotTheme.stardust.withOpacity(0.95),
@@ -208,34 +226,49 @@ class _SpreadRow extends StatelessWidget {
     );
   }
 
-  /// Get use case description for each spread
-  String _getSpreadUseCase(String spreadId) {
-    switch (spreadId) {
-      case 'single':
-        return 'Tu guía diaria esencial. Corta el ruido y enfoca tu atención en un mensaje claro para las próximas 24 horas. Perfecta cuando buscas orientación rápida sin complejidades o necesitas una respuesta directa a una pregunta concreta.';
-      case 'two_card':
-        return 'La tirada de decisiones. Dos cartas revelan las consecuencias de elegir entre dos caminos. Úsala cuando te enfrentas a una elección binaria: aceptar o rechazar, continuar o parar, actuar o esperar. Excelente para comparar opciones y ver claramente qué te espera en cada dirección.';
-      case 'three_card':
-        return 'La más versátil del tarot. Revela pasado-presente-futuro o responde preguntas directas. Su simplicidad oculta una profundidad sorprendente para analizar cualquier situación. También puede interpretarse como situación-acción-resultado o mente-cuerpo-espíritu según tu necesidad.';
-      case 'five_card_cross':
-        return 'El equilibrio perfecto entre simplicidad y profundidad. Esta cruz de cinco cartas mapea pasado, presente y futuro en línea horizontal, con una carta debajo revelando lo que te retiene y otra arriba mostrando el consejo para avanzar. Más completa que tres cartas pero más rápida que el Celtic Cross.';
-      case 'relationship':
-        return 'Examina brutalmente tu relación. Descubre tensiones no habladas, patrones insanos y puntos ciegos. Siete cartas revelan tu posición, la de tu pareja, fortalezas compartidas, desafíos ocultos y necesidades de ambos. Ideal para parejas atascadas que necesitan claridad sobre la verdadera dinámica.';
-      case 'pyramid':
-        return 'La tirada holística de seis cartas. Explora tu objetivo en la cima, descendiendo a mente y corazón en el medio, finalizando con acción, recursos y fundamento en la base. Perfecta cuando necesitas entender todos los aspectos de una meta: desde la aspiración espiritual hasta los pasos prácticos.';
-      case 'horseshoe':
-        return 'El equilibrio perfecto: profunda pero manejable. Siete cartas dispuestas en herradura revelan pasado, presente, influencias ocultas, obstáculos, actitudes externas, consejos y resultado probable. Proporciona una visión completa sin abrumar. La preferida de lectores profesionales por su versatilidad.';
-      case 'celtic_cross':
-        return 'La tirada maestra del tarot. Diez cartas que desglosan paso a paso cualquier situación compleja: presente, desafío, pasado distante y reciente, meta, futuro cercano, tu actitud, influencias externas, esperanzas/miedos y resultado final. Flexible: úsala con pregunta específica o para panorama general. Requiere práctica.';
-      case 'star':
-        return 'Explora tu pregunta en múltiples dimensiones. Siete cartas en forma de estrella revelan aspectos espirituales (arriba), abundancia, amor, creatividad, sabiduría (los puntos) y tu esencia central. Perfecta para autodescubrimiento profundo y entender cómo diferentes áreas de tu vida se conectan e influencian mutuamente.';
-      case 'astrological':
-        return 'La tirada de las 12 casas astrológicas. Un círculo completo de doce cartas, cada una representando un área vital según la astrología: identidad, recursos, comunicación, hogar, creatividad, salud, relaciones, transformación, sabiduría, propósito, comunidad y espiritualidad. Ideal para una fotografía completa de tu vida actual.';
-      case 'year_ahead':
-        return 'Tu mapa anual mes a mes. Doce cartas representan cada mes del año siguiendo el ciclo zodiacal. Perfecta para planificación estratégica de Año Nuevo o cumpleaños, te ayuda a anticipar energías, prepararte para desafíos y aprovechar oportunidades. Revela el ritmo natural de tu próximo ciclo solar.';
+  String _cardCountLabel(int count, String locale) {
+    final language = locale.split(RegExp('[_-]')).first.toLowerCase();
+    final isPlural = count != 1;
+    switch (language) {
+      case 'ca':
+        return "$count ${isPlural ? 'cartes' : 'carta'}";
+      case 'es':
+        return "$count ${isPlural ? 'cartas' : 'carta'}";
       default:
-        return spread.description;
+        return "$count ${isPlural ? 'cards' : 'card'}";
     }
+  }
+
+  /// Get use case description for each spread
+  String _getSpreadUseCase(TarotSpread spread, String locale) {
+    final language = locale.split(RegExp('[_-]')).first.toLowerCase();
+    if (language == 'es') {
+      switch (spread.id) {
+        case 'single':
+          return 'Tu guía diaria esencial. Corta el ruido y enfoca tu atención en un mensaje claro para las próximas 24 horas. Perfecta cuando buscas orientación rápida sin complejidades o necesitas una respuesta directa a una pregunta concreta.';
+        case 'two_card':
+          return 'La tirada de decisiones. Dos cartas revelan las consecuencias de elegir entre dos caminos. Úsala cuando te enfrentas a una elección binaria: aceptar o rechazar, continuar o parar, actuar o esperar. Excelente para comparar opciones y ver claramente qué te espera en cada dirección.';
+        case 'three_card':
+          return 'La más versátil del tarot. Revela pasado-presente-futuro o responde preguntas directas. Su simplicidad oculta una profundidad sorprendente para analizar cualquier situación. También puede interpretarse como situación-acción-resultado o mente-cuerpo-espíritu según tu necesidad.';
+        case 'five_card_cross':
+          return 'El equilibrio perfecto entre simplicidad y profundidad. Esta cruz de cinco cartas mapea pasado, presente y futuro en línea horizontal, con una carta debajo revelando lo que te retiene y otra arriba mostrando el consejo para avanzar. Más completa que tres cartas pero más rápida que el Celtic Cross.';
+        case 'relationship':
+          return 'Examina brutalmente tu relación. Descubre tensiones no habladas, patrones insanos y puntos ciegos. Siete cartas revelan tu posición, la de tu pareja, fortalezas compartidas, desafíos ocultos y necesidades de ambos. Ideal para parejas atascadas que necesitan claridad sobre la verdadera dinámica.';
+        case 'pyramid':
+          return 'La tirada holística de seis cartas. Explora tu objetivo en la cima, descendiendo a mente y corazón en el medio, finalizando con acción, recursos y fundamento en la base. Perfecta cuando necesitas entender todos los aspectos de una meta: desde la aspiración espiritual hasta los pasos prácticos.';
+        case 'horseshoe':
+          return 'El equilibrio perfecto: profunda pero manejable. Siete cartas dispuestas en herradura revelan pasado, presente, influencias ocultas, obstáculos, actitudes externas, consejos y resultado probable. Proporciona una visión completa sin abrumar. La preferida de lectores profesionales por su versatilidad.';
+        case 'celtic_cross':
+          return 'La tirada maestra del tarot. Diez cartas que desglosan paso a paso cualquier situación compleja: presente, desafío, pasado distante y reciente, meta, futuro cercano, tu actitud, influencias externas, esperanzas/miedos y resultado final. Flexible: úsala con pregunta específica o para panorama general. Requiere práctica.';
+        case 'star':
+          return 'Explora tu pregunta en múltiples dimensiones. Siete cartas en forma de estrella revelan aspectos espirituales (arriba), abundancia, amor, creatividad, sabiduría (los puntos) y tu esencia central. Perfecta para autodescubrimiento profundo y entender cómo diferentes áreas de tu vida se conectan e influencian mutuamente.';
+        case 'astrological':
+          return 'La tirada de las 12 casas astrológicas. Un círculo completo de doce cartas, cada una representando un área vital según la astrología: identidad, recursos, comunicación, hogar, creatividad, salud, relaciones, transformación, sabiduría, propósito, comunidad y espiritualidad. Ideal para una fotografía completa de tu vida actual.';
+        case 'year_ahead':
+          return 'Tu mapa anual mes a mes. Doce cartas representan cada mes del año siguiendo el ciclo zodiacal. Perfecta para planificación estratégica de Año Nuevo o cumpleaños, te ayuda a anticipar energías, prepararte para desafíos y aprovechar oportunidades. Revela el ritmo natural de tu próximo ciclo solar.';
+      }
+    }
+    return spread.localizedDescription(locale);
   }
 
   /// Get the icon widget for a spread (SVG or fallback icon)

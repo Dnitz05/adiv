@@ -12,6 +12,7 @@ import 'api/draw_cards_api.dart';
 import 'api/interpretation_api.dart';
 import 'api/user_profile_api.dart';
 import 'api/spread_recommendation_api.dart';
+import 'api/question_format_api.dart';
 import 'user_identity.dart';
 import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
@@ -30,7 +31,8 @@ const String _supabaseUrl = String.fromEnvironment(
 );
 const String _supabaseAnonKey = String.fromEnvironment(
   'SUPABASE_ANON_KEY',
-  defaultValue: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxMTQ5NjYsImV4cCI6MjA0MjY5MDk2Nn0.CpqfQBuNVEwMlWbYU1WEA0zFwWBo6RKpPxYi4oy3Xwc',
+  defaultValue:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxMTQ5NjYsImV4cCI6MjA0MjY5MDk2Nn0.CpqfQBuNVEwMlWbYU1WEA0zFwWBo6RKpPxYi4oy3Xwc',
 );
 const String _passwordResetRedirectUrl = String.fromEnvironment(
   'SUPABASE_PASSWORD_RESET_REDIRECT',
@@ -650,9 +652,109 @@ class _HomeState extends State<_Home> {
   bool _requestingInterpretation = false;
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
   String? _spreadRecommendationReason; // AI reasoning for spread selection
+  String? _lastQuestionLocale;
+  String? _displayQuestion;
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
   final FocusNode _questionFocusNode = FocusNode();
+
+  static const List<String> _supportedQuestionLocales = <String>[
+    'ca',
+    'es',
+    'en'
+  ];
+
+  static const Set<String> _catalanPriorityTokens = {
+    'perquè',
+    'perque',
+    'què',
+    'aquest',
+    'aquesta',
+    'aquests',
+    'aquestes',
+    'això',
+    'aixo',
+    'doncs',
+    'vosaltres',
+    'nostre',
+    'nostra',
+    'camí',
+    'cami',
+    'camins',
+    'dubte',
+    'dubtes',
+    'consell',
+    'guia',
+    'relació',
+    'relacio',
+    'energia',
+    'llum',
+    'projecte',
+    'estimar',
+    'vull',
+    'necessito',
+  };
+
+  static const Set<String> _spanishPriorityTokens = {
+    'porque',
+    'porqué',
+    'qué',
+    'esta',
+    'este',
+    'estos',
+    'estas',
+    'mañana',
+    'ayer',
+    'pareja',
+    'trabajo',
+    'dinero',
+    'salud',
+    'amor',
+    'necesito',
+    'quiero',
+    'ayuda',
+    'situación',
+    'situacion',
+    'relación',
+    'relacion',
+    'decisión',
+    'decision',
+    'cartas',
+    'carta',
+    'futuro',
+    'familia',
+    'prosperidad',
+  };
+
+  static const Set<String> _englishPriorityTokens = {
+    'love',
+    'career',
+    'job',
+    'money',
+    'health',
+    'future',
+    'relationship',
+    'help',
+    'need',
+    'should',
+    'will',
+    'feel',
+    'today',
+    'tomorrow',
+    'cards',
+    'card',
+    'spread',
+    'reading',
+    'guidance',
+    'work',
+    'life',
+    'change',
+    'advice',
+    'question',
+    'answer',
+    'clarity',
+    'family',
+  };
 
   @override
   void initState() {
@@ -786,39 +888,63 @@ class _HomeState extends State<_Home> {
 
     try {
       final seed = _seedController.text.trim();
-      final question = _questionController.text.trim();
-
-      // If there's a question, get AI spread recommendation first
+      final typedQuestion = _questionController.text.trim();
+      final localeCode = _resolveQuestionLocale(typedQuestion);
+      _lastQuestionLocale = localeCode;
+      final baseQuestion = typedQuestion.isNotEmpty
+          ? typedQuestion
+          : _generalConsultationPrompt(localeCode);
+      final bool shouldNudgeUser = typedQuestion.isEmpty;
+      String? formattedQuestion;
+      try {
+        formattedQuestion = await formatQuestion(
+          question: baseQuestion,
+          locale: localeCode,
+        );
+      } catch (error) {
+        print('⚠️  Question formatting failed: $error');
+      }
+      final String displayQuestion =
+          (formattedQuestion != null && formattedQuestion.trim().isNotEmpty)
+              ? formattedQuestion.trim()
+              : _formatQuestionLabel(baseQuestion);
+      if (shouldNudgeUser &&
+          formattedQuestion != null &&
+          formattedQuestion.trim().isNotEmpty) {
+        _showGeneralTip(localisation);
+      }
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
+      try {
+        print(
+            '🔮 Calling AI spread recommendation for question: $baseQuestion');
 
-      if (question.isNotEmpty) {
-        try {
-          print('🔮 Calling AI spread recommendation with streaming for question: $question');
+        // Use non-streaming endpoint for now (streaming endpoint has deployment issues)
+        final recommendation = await recommendSpread(
+          question: baseQuestion,
+          locale: localeCode,
+          // Don't pass onReasoningChunk to use non-streaming endpoint
+        );
 
-          // Use streaming to show reasoning progressively
-          String streamedReason = '';
-          final recommendation = await recommendSpread(
-            question: question,
-            locale: Localizations.localeOf(context).languageCode,
-            onReasoningChunk: (chunk) {
-              // Update UI with each chunk
-              if (mounted) {
-                setState(() {
-                  streamedReason += chunk;
-                  _spreadRecommendationReason = streamedReason;
-                });
-              }
-            },
-          );
+        selectedSpread = recommendation.spread;
+        recommendationReason = recommendation.reasoning;
+        print(
+            '🔮 AI recommended spread: ${selectedSpread.id} - $recommendationReason');
 
-          selectedSpread = recommendation.spread;
-          recommendationReason = recommendation.reasoning;
-          print('🔮 AI recommended spread: ${selectedSpread.id} - $recommendationReason');
-        } catch (e) {
-          print('⚠️  AI spread recommendation failed, using selected spread: $e');
-          // If AI fails, continue with manually selected spread
+        // Update UI immediately to show the AI-selected spread
+        if (mounted) {
+          print(
+              '🔮 DEBUG: Updating _selectedSpread to: ${selectedSpread.id} (${selectedSpread.name})');
+          setState(() {
+            _selectedSpread = selectedSpread;
+            _spreadRecommendationReason = recommendationReason;
+          });
+          print(
+              '🔮 DEBUG: After setState, _selectedSpread is now: ${_selectedSpread.id} (${_selectedSpread.name})');
         }
+      } catch (e) {
+        print('⚠️  AI spread recommendation failed, using selected spread: $e');
+        // If AI fails, continue with manually selected spread
       }
 
       final response = await drawCards(
@@ -826,8 +952,8 @@ class _HomeState extends State<_Home> {
         spread: selectedSpread.id,
         allowReversed: true,
         seed: seed.isEmpty ? null : seed,
-        question: question.isEmpty ? null : question,
-        locale: Localizations.localeOf(context).languageCode,
+        question: baseQuestion,
+        locale: localeCode,
       );
       if (!mounted) {
         return;
@@ -840,10 +966,14 @@ class _HomeState extends State<_Home> {
         _revealedCardCount = 0;
         _revealingCards = false;
         _requestingInterpretation = false;
-        _currentQuestion = question.isEmpty ? null : question;
+        _currentQuestion = baseQuestion;
+        _displayQuestion = displayQuestion;
         _selectedSpread = selectedSpread; // Update to AI-selected spread
         _spreadRecommendationReason = recommendationReason;
       });
+      if (shouldNudgeUser && mounted) {
+        _showGeneralTip(localisation);
+      }
       await Future.wait([
         _refreshHistory(),
         _refreshProfile(),
@@ -894,6 +1024,8 @@ class _HomeState extends State<_Home> {
       _requestingInterpretation = false;
       _currentQuestion = null;
       _spreadRecommendationReason = null;
+      _lastQuestionLocale = null;
+      _displayQuestion = null;
       _questionController.clear();
       _error = null;
     });
@@ -915,7 +1047,7 @@ class _HomeState extends State<_Home> {
     });
 
     final totalCards = draw.result.length;
-    const Duration dealDelay = Duration(milliseconds: 500);
+    const Duration dealDelay = Duration(milliseconds: 650);
 
     for (var i = 0; i < totalCards; i++) {
       if (!mounted) {
@@ -980,6 +1112,7 @@ class _HomeState extends State<_Home> {
       _revealingCards = false;
     });
   }
+
   Future<void> _requestInterpretation() async {
     if (_requestingInterpretation) {
       return;
@@ -997,13 +1130,17 @@ class _HomeState extends State<_Home> {
     });
 
     try {
-      final question = _questionController.text.trim();
+      final originalQuestion =
+          _currentQuestion ?? _questionController.text.trim();
+      final localeCode =
+          _lastQuestionLocale ?? _resolveQuestionLocale(originalQuestion);
       final result = await submitInterpretation(
         sessionId: sessionId,
         draw: draw,
-        question: question.isEmpty ? null : question,
-        locale: Localizations.localeOf(context).languageCode,
+        question: originalQuestion.isEmpty ? null : originalQuestion,
+        locale: localeCode,
       );
+      _lastQuestionLocale = localeCode;
       if (!mounted) {
         return;
       }
@@ -1014,7 +1151,7 @@ class _HomeState extends State<_Home> {
 
       // Save conversation locally
       if (result != null) {
-        await _saveConversationLocally(draw, result, question);
+        await _saveConversationLocally(draw, result, originalQuestion);
       }
     } catch (error) {
       if (!mounted) {
@@ -1059,6 +1196,157 @@ class _HomeState extends State<_Home> {
     } catch (e) {
       debugPrint('Error saving conversation locally: $e');
     }
+  }
+
+  String _formatQuestionLabel(String question) {
+    final trimmed = question.trim();
+    if (trimmed.isEmpty) {
+      return question;
+    }
+    final firstLetter = trimmed.substring(0, 1).toUpperCase();
+    final rest = trimmed.substring(1);
+    return '$firstLetter$rest';
+  }
+
+  void _showGeneralTip(CommonStrings localisation) {
+    final language =
+        localisation.localeName.split(RegExp('[_-]')).first.toLowerCase();
+    final message = switch (language) {
+      'ca' =>
+        'Si tens una pregunta concreta, afegeix-la perquè la lectura et pugui orientar millor.',
+      'es' =>
+        'Si tienes una pregunta concreta, añádela para que la lectura pueda orientarte mejor.',
+      'en' =>
+        'If you have something specific on your mind, add it so the reading can guide you better.',
+      _ =>
+        'If there is something specific on your mind, share it so the reading can guide you better.',
+    };
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  String _generalConsultationPrompt(String locale) {
+    final language = locale.split(RegExp('[_-]')).first.toLowerCase();
+    switch (language) {
+      case 'ca':
+        return 'Consulta general: què necessito saber ara mateix per avançar?';
+      case 'es':
+        return 'Consulta general: ¿qué necesito saber ahora mismo para avanzar?';
+      case 'en':
+        return 'General reading: what do I most need to understand right now?';
+      default:
+        return 'General reading: what guidance is most helpful right now?';
+    }
+  }
+
+  String _generalConsultationLabel(String locale) {
+    final language = locale.split(RegExp('[_-]')).first.toLowerCase();
+    switch (language) {
+      case 'ca':
+      case 'es':
+        return 'Consulta general';
+      default:
+        return 'General consultation';
+    }
+  }
+
+  String _resolveQuestionLocale(String question) {
+    final locale = Localizations.localeOf(context);
+    final fallbackLanguage =
+        _supportedQuestionLocales.contains(locale.languageCode)
+            ? locale.languageCode
+            : 'es';
+    final trimmed = question.trim();
+    if (trimmed.isEmpty) {
+      return fallbackLanguage;
+    }
+
+    final detected = _detectLanguageCode(trimmed);
+    if (detected != null && _supportedQuestionLocales.contains(detected)) {
+      return detected;
+    }
+    return fallbackLanguage;
+  }
+
+  String? _detectLanguageCode(String text) {
+    final lower = text.toLowerCase();
+
+    final Map<String, int> scores = <String, int>{
+      'ca': 0,
+      'es': 0,
+      'en': 0,
+    };
+
+    void addScore(String language, int value) {
+      scores[language] = (scores[language] ?? 0) + value;
+    }
+
+    if (RegExp(r'[\u00F1\u00BF\u00A1]').hasMatch(lower)) {
+      addScore('es', 4);
+    }
+    if (RegExp(r'[\u00E7\u00B7]').hasMatch(lower)) {
+      addScore('ca', 4);
+    }
+    if (RegExp(
+            r'\bperqu\u00E8\b|\bperque\b|\bqu\u00E8\b|\baquest[ae]s?\b|\baix[\u00F2o]\b|\bdoncs\b|\bvull\b|\bvosaltres\b|\bnostre\b|\bnostra\b')
+        .hasMatch(lower)) {
+      addScore('ca', 3);
+    }
+    if (RegExp(
+            r'\bporque\b|\bqu\u00E9\b|\best[aeo]s?\b|\bma\u00F1ana\b|\bpareja\b|\btrabajo\b|\bdinero\b|\bnecesito\b|\bquiero\b|\bayuda\b')
+        .hasMatch(lower)) {
+      addScore('es', 3);
+    }
+    if (RegExp(
+            r'\blove\b|\bcareer\b|\brelationship\b|\bhelp\b|\bneed\b|\bshould\b|\bwill\b|\bguidance\b|\bcards?\b|\bspread\b')
+        .hasMatch(lower)) {
+      addScore('en', 3);
+    }
+    if (RegExp(r'\bthe\b|\band\b|\bwill\b|\bshould\b|\bcan\b')
+        .hasMatch(lower)) {
+      addScore('en', 1);
+    }
+
+    final tokens = lower
+        .split(RegExp(r'[^a-z\u00C0-\u00FF\u00B7]+'))
+        .where((token) => token.isNotEmpty)
+        .toList();
+
+    for (final token in tokens) {
+      if (_catalanPriorityTokens.contains(token)) {
+        addScore('ca', 2);
+      }
+      if (_spanishPriorityTokens.contains(token)) {
+        addScore('es', 2);
+      }
+      if (_englishPriorityTokens.contains(token)) {
+        addScore('en', 2);
+      }
+    }
+
+    if (tokens.isNotEmpty &&
+        tokens.every((token) => RegExp(r'^[a-z]+$').hasMatch(token))) {
+      if (RegExp(
+              r'\b(what|when|where|who|why|how|is|are|do|does|can|should|would|could)\b')
+          .hasMatch(lower)) {
+        addScore('en', 2);
+      }
+    }
+
+    final sorted = scores.entries.where((entry) => entry.value > 0).toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    if (sorted.isEmpty) {
+      return null;
+    }
+    if (sorted.length > 1 && sorted[0].value == sorted[1].value) {
+      return null;
+    }
+    return sorted.first.key;
   }
 
   String _formatError(CommonStrings localisation, Object error) {
@@ -1299,6 +1587,7 @@ class _HomeState extends State<_Home> {
         ),
         const SizedBox(height: 12),
         Card(
+          color: TarotTheme.midnightBlue.withOpacity(0.70),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -1338,10 +1627,11 @@ class _HomeState extends State<_Home> {
       return const SizedBox.shrink();
     }
 
-    final displayQuestion =
-        (_currentQuestion != null && _currentQuestion!.isNotEmpty)
-            ? _currentQuestion!
-            : 'Consulta general';
+    final displayQuestion = _displayQuestion?.trim().isNotEmpty == true
+        ? _displayQuestion!.trim()
+        : (_currentQuestion != null && _currentQuestion!.isNotEmpty)
+            ? _formatQuestionLabel(_currentQuestion!)
+            : _generalConsultationLabel(localisation.localeName);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1360,6 +1650,7 @@ class _HomeState extends State<_Home> {
     final bool allCardsRevealed = _revealedCardCount >= totalCards;
 
     return Card(
+      color: TarotTheme.midnightBlue.withOpacity(0.70),
       child: Column(
         children: [
           // Question header
@@ -1367,6 +1658,7 @@ class _HomeState extends State<_Home> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
+              color: TarotTheme.midnightBlue,
               gradient: LinearGradient(
                 colors: [
                   accentColor.withOpacity(0.12),
@@ -1387,7 +1679,7 @@ class _HomeState extends State<_Home> {
               ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   Icons.question_answer_outlined,
@@ -1403,7 +1695,7 @@ class _HomeState extends State<_Home> {
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.3,
                     ),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                   ),
                 ),
               ],
@@ -1421,8 +1713,10 @@ class _HomeState extends State<_Home> {
                     final spread = TarotSpreads.getById(draw.spread) ??
                         TarotSpreads.threeCard;
                     return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
+                        color: TarotTheme.midnightBlue,
                         gradient: LinearGradient(
                           colors: [
                             TarotTheme.cosmicAccent.withOpacity(0.15),
@@ -1466,7 +1760,8 @@ class _HomeState extends State<_Home> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: spread.name,
+                                        text: spread.localizedName(
+                                            localisation.localeName),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: TarotTheme.moonlight,
@@ -1480,12 +1775,14 @@ class _HomeState extends State<_Home> {
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            _spreadRecommendationReason ?? spread.description,
+                            _spreadRecommendationReason ??
+                                spread.localizedDescription(
+                                    localisation.localeName),
                             style: TextStyle(
-                              fontSize: 14,
-                              fontStyle: FontStyle.italic,
-                              color: TarotTheme.stardust.withOpacity(0.9),
-                              height: 1.5,
+                              fontSize: 15,
+                              color: TarotTheme.moonlight,
+                              height: 1.6,
+                              letterSpacing: 0.2,
                             ),
                           ),
                         ],
@@ -1493,7 +1790,7 @@ class _HomeState extends State<_Home> {
                     );
                   },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 28),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     // Get the selected spread or use threeCard as fallback
@@ -1507,8 +1804,10 @@ class _HomeState extends State<_Home> {
                           imagePath: imagePath);
                     }).toList();
 
-                    final dealCount = math.max(0, math.min(_dealtCardCount, totalCards));
-                    final revealCount = math.max(0, math.min(_revealedCardCount, totalCards));
+                    final dealCount =
+                        math.max(0, math.min(_dealtCardCount, totalCards));
+                    final revealCount =
+                        math.max(0, math.min(_revealedCardCount, totalCards));
 
                     return Center(
                       child: SpreadLayout(
@@ -1530,8 +1829,10 @@ class _HomeState extends State<_Home> {
                   FilledButton.icon(
                     onPressed: _dealCardsSequentially,
                     style: FilledButton.styleFrom(
-                      backgroundColor: TarotTheme.cosmicPurple,
-                      foregroundColor: TarotTheme.moonlight,
+                      backgroundColor: TarotTheme.cosmicAccent,
+                      foregroundColor: Colors.white,
+                      elevation: 2,
+                      shadowColor: TarotTheme.cosmicAccent.withOpacity(0.4),
                     ),
                     icon: const Icon(Icons.style, size: 20),
                     label: const Text('Repartir cartas'),
@@ -1545,7 +1846,9 @@ class _HomeState extends State<_Home> {
                   ),
                 ]
                 // Phase 2: Reveal cards (Revelar)
-                else if (_dealtCardCount > 0 && _revealedCardCount == 0 && !_revealingCards) ...[
+                else if (_dealtCardCount > 0 &&
+                    _revealedCardCount == 0 &&
+                    !_revealingCards) ...[
                   FilledButton.icon(
                     onPressed: _revealCardsSequentially,
                     style: FilledButton.styleFrom(
@@ -1562,27 +1865,95 @@ class _HomeState extends State<_Home> {
                     padding: EdgeInsets.symmetric(vertical: 8),
                     child: CircularProgressIndicator(),
                   ),
-                ]
+                ],
                 // Phase 3: Request interpretation (Interpretar)
-                else if (allCardsRevealed &&
-                    interpretation == null &&
+                // Show interpretation header (always visible when cards revealed)
+                if (allCardsRevealed &&
                     draw.sessionId != null &&
                     draw.sessionId!.isNotEmpty) ...[
-                  FilledButton.icon(
-                    onPressed: _requestInterpretation,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: TarotTheme.cosmicBlue,
-                      foregroundColor: Colors.white,
+                  const SizedBox(height: 12),
+                  InkWell(
+                    onTap: interpretation == null && !_requestingInterpretation
+                        ? _requestInterpretation
+                        : null,
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: TarotTheme.midnightBlue,
+                        gradient: LinearGradient(
+                          colors: interpretation != null ||
+                                  _requestingInterpretation
+                              ? [
+                                  TarotTheme.cosmicAccent.withOpacity(0.15),
+                                  TarotTheme.cosmicAccent.withOpacity(0.08),
+                                ]
+                              : [
+                                  TarotTheme.cosmicBlue.withOpacity(0.2),
+                                  TarotTheme.cosmicBlue.withOpacity(0.1),
+                                ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: TarotTheme.twilightPurple.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.auto_stories_outlined,
+                            color: interpretation != null ||
+                                    _requestingInterpretation
+                                ? TarotTheme.cosmicAccent
+                                : TarotTheme.cosmicBlue,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Interpretación',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: interpretation != null ||
+                                      _requestingInterpretation
+                                  ? TarotTheme.cosmicAccent
+                                  : TarotTheme.cosmicBlue,
+                              letterSpacing: 0.3,
+                              height: 1.4,
+                            ),
+                          ),
+                          const Spacer(),
+                          if (_requestingInterpretation)
+                            SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  TarotTheme.cosmicAccent,
+                                ),
+                              ),
+                            )
+                          else if (interpretation == null)
+                            Icon(
+                              Icons.touch_app,
+                              color: TarotTheme.cosmicBlue.withOpacity(0.6),
+                              size: 16,
+                            ),
+                        ],
+                      ),
                     ),
-                    icon: const Icon(Icons.school, size: 20),
-                    label: Text(localisation.interpretationHeading),
                   ),
-                ],
-                // Show interpretation below cards if available
-                if (allCardsRevealed && interpretation != null) ...[
-                  const SizedBox(height: 24),
-                  _buildInterpretationSection(interpretation, theme,
-                      accentColor, draw.result, localisation),
+                  // Show interpretation content below header if available
+                  if (interpretation != null) ...[
+                    const SizedBox(height: 16),
+                    _buildInterpretationContent(interpretation, theme,
+                        accentColor, draw.result, localisation),
+                  ],
                 ],
               ],
             ),
@@ -1592,7 +1963,19 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildInterpretationSection(
+  Widget _buildDashedDivider() {
+    return CustomPaint(
+      size: const Size(double.infinity, 1),
+      painter: _DashedLinePainter(
+        color: TarotTheme.cosmicAccent.withOpacity(0.3),
+        strokeWidth: 1.5,
+        dashWidth: 8,
+        dashSpace: 6,
+      ),
+    );
+  }
+
+  Widget _buildInterpretationContent(
       InterpretationResult interpretation,
       ThemeData theme,
       Color accentColor,
@@ -1612,46 +1995,19 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Summary as title
+        // Summary text
         if (interpretation.summary != null &&
             interpretation.summary!.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  accentColor.withOpacity(0.15),
-                  accentColor.withOpacity(0.08),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              interpretation.summary!,
+              style: TextStyle(
+                fontSize: 14,
+                fontStyle: FontStyle.italic,
+                color: TarotTheme.stardust.withOpacity(0.9),
+                height: 1.5,
               ),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: TarotTheme.twilightPurple.withOpacity(0.2),
-                width: 1,
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.lightbulb_outline,
-                  color: accentColor,
-                  size: 18,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    interpretation.summary!,
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: accentColor,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.3,
-                      height: 1.3,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
           const SizedBox(height: 16),
@@ -1742,20 +2098,20 @@ class _HomeState extends State<_Home> {
               // Card image thumbnail
               if (cardImage != null)
                 Container(
-                  width: 50,
-                  height: 80,
+                  width: 70,
+                  height: 112,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
                     child: Transform(
                       alignment: Alignment.center,
                       transform: isReversed
@@ -1996,7 +2352,7 @@ class _HomeState extends State<_Home> {
                 profile.recentQuestion!.isNotEmpty) ...[
               const SizedBox(height: 0),
               Text(
-                profile.recentQuestion!,
+                _formatQuestionLabel(profile.recentQuestion!),
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -2074,7 +2430,7 @@ class _HomeState extends State<_Home> {
                             session.question!.isNotEmpty) ...[
                           const SizedBox(height: 0),
                           Text(
-                            session.question!,
+                            _formatQuestionLabel(session.question!),
                             style: theme.textTheme.bodySmall,
                           ),
                         ],
@@ -2107,7 +2463,7 @@ class _HomeState extends State<_Home> {
     final bottomSafeInset =
         math.max(mediaQuery.viewPadding.bottom, mediaQuery.padding.bottom);
     final bottomSpacing = bottomSafeInset + extraBottomPadding;
-    const double topSpacing = 24.0;
+    const double topSpacing = 32.0;
 
     // Build content based on whether there's a draw or not
     Widget bodyContent;
@@ -2209,7 +2565,7 @@ class _HomeState extends State<_Home> {
         leading: IconButton(
           icon: const Icon(
             Icons.grid_view_rounded,
-            color: Colors.white,
+            color: TarotTheme.cosmicAccent,
           ),
           onPressed: _showSpreadGallery,
           tooltip: 'Seleccionar Tirada',
@@ -2218,15 +2574,16 @@ class _HomeState extends State<_Home> {
           onTap: _resetToHome,
           child: Image.asset(
             'assets/branding/logo-header.png',
-            height: 40,
+            height: 32,
             fit: BoxFit.contain,
+            color: TarotTheme.cosmicAccent,
           ),
         ),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.history_rounded,
-              color: Colors.white,
+              color: TarotTheme.cosmicAccent,
             ),
             onPressed: () {
               // TODO: Implementar historial
@@ -2303,7 +2660,40 @@ class _StarryNightPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
+/// Custom painter for dashed horizontal line
+class _DashedLinePainter extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+  final double dashWidth;
+  final double dashSpace;
 
+  _DashedLinePainter({
+    required this.color,
+    required this.strokeWidth,
+    required this.dashWidth,
+    required this.dashSpace,
+  });
 
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
 
+    double startX = 0;
+    final y = size.height / 2;
 
+    while (startX < size.width) {
+      canvas.drawLine(
+        Offset(startX, y),
+        Offset(startX + dashWidth, y),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

@@ -16,6 +16,7 @@ class SpreadSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localisation = CommonStrings.of(context);
+    final locale = localisation.localeName;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -29,8 +30,8 @@ class SpreadSelector extends StatelessWidget {
           isExpanded: true,
           icon: const Icon(Icons.arrow_drop_down),
           items: TarotSpreads.all.map((spread) {
-            final spreadName = spread.name;
-            final spreadSummary = '${spread.cardCount} cards';
+            final spreadName = spread.localizedName(locale);
+            final spreadSummary = _cardCountLabel(spread.cardCount, locale);
             return DropdownMenuItem<TarotSpread>(
               value: spread,
               child: Column(
@@ -63,5 +64,18 @@ class SpreadSelector extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _cardCountLabel(int count, String locale) {
+    final language = locale.split(RegExp('[_-]')).first.toLowerCase();
+    final isPlural = count != 1;
+    switch (language) {
+      case 'ca':
+        return "$count ${isPlural ? 'cartes' : 'carta'}";
+      case 'es':
+        return "$count ${isPlural ? 'cartas' : 'carta'}";
+      default:
+        return "$count ${isPlural ? 'cards' : 'card'}";
+    }
   }
 }

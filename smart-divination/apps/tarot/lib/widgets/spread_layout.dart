@@ -17,6 +17,10 @@ class SpreadLayout extends StatelessWidget {
   final Duration flipDuration;
   final String locale;
 
+  static const double _labelSpacing = 6.0;
+  static const double _labelHeight = 32.0;
+  static const Duration _labelFadeDuration = Duration(milliseconds: 220);
+
   const SpreadLayout({
     super.key,
     required this.spread,
@@ -60,13 +64,22 @@ class SpreadLayout extends StatelessWidget {
     final double cardWidth = cardSize.width;
     final double cardHeight = cardSize.height;
 
-        final int dealtCards = dealtCardCount ?? cards.length;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final TextStyle labelStyle = (theme.textTheme.bodySmall ?? const TextStyle(fontSize: 11)).copyWith(
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.6,
+      height: 1.2,
+      color: colorScheme.onSurface,
+    );
+
+    final int dealtCards = dealtCardCount ?? cards.length;
     final int visibleCards = revealedCardCount ?? cards.length;
     final bool hasCards = cards.isNotEmpty;
 
     return SizedBox(
       width: effectiveWidth,
-      height: effectiveHeight,
+      height: effectiveHeight + _labelSpacing + _labelHeight,
       child: Stack(
         children: [
           // ALWAYS show placeholders as background for positions that haven't been dealt yet
@@ -93,6 +106,7 @@ class SpreadLayout extends StatelessWidget {
                 cardHeight: cardHeight,
                 isDealt: i < dealtCards,
                 isFaceUp: i < visibleCards,
+                labelStyle: labelStyle,
               ),
         ],
       ),
@@ -185,6 +199,7 @@ class SpreadLayout extends StatelessWidget {
     required double cardHeight,
     required bool isDealt,
     required bool isFaceUp,
+    required TextStyle labelStyle,
   }) {
     final double finalLeft = (position.x * containerWidth) - (cardWidth / 2);
     final double finalTop = (position.y * containerHeight) - (cardHeight / 2);
@@ -242,36 +257,49 @@ class SpreadLayout extends StatelessWidget {
     final Widget cardWithLabel = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        rotatedCard,
-        // Show card name when revealed (face up)
-        if (isFaceUp) ...[
-          const SizedBox(height: 6),
-          SizedBox(
-            width: cardWidth,
-            child: Text(
-              localizedName.toUpperCase(),
-              style: TextStyle(
-                fontSize: math.min(cardWidth * 0.11, 10),
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                letterSpacing: 0.5,
-                height: 1.2,
+        SizedBox(
+          width: cardWidth,
+          height: cardHeight,
+          child: rotatedCard,
+        ),
+        const SizedBox(height: _labelSpacing),
+        SizedBox(
+          width: cardWidth,
+          height: _labelHeight,
+          child: AnimatedOpacity(
+            opacity: isFaceUp ? 1.0 : 0.0,
+            duration: _labelFadeDuration,
+            curve: Curves.easeInOut,
+            child: IgnorePointer(
+              ignoring: !isFaceUp,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  localizedName.toUpperCase(),
+                  style: labelStyle,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                ),
               ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
-        ],
+        ),
       ],
     );
 
     return AnimatedPositioned(
-      duration: const Duration(milliseconds: 600),
-      curve: Curves.easeOutQuart, // More realistic deceleration
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeOutCubic, // Smooth, realistic deceleration
       left: left,
       top: top,
-      child: cardWithLabel,
+      child: AnimatedScale(
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeOutBack, // Slight bounce effect
+        scale: isDealt ? 1.0 : 0.8,
+        child: cardWithLabel,
+      ),
     );
   }
 
@@ -289,14 +317,25 @@ class SpreadLayout extends StatelessWidget {
     return Positioned(
       left: left,
       top: top,
-      child: Transform.rotate(
-        angle: position.rotation * math.pi / 180,
-        child: _buildPlaceholderCard(
-          cardNumber: cardNumber,
-          position: position,
-          width: cardWidth,
-          height: cardHeight,
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: cardWidth,
+            height: cardHeight,
+            child: Transform.rotate(
+              angle: position.rotation * math.pi / 180,
+              child: _buildPlaceholderCard(
+                cardNumber: cardNumber,
+                position: position,
+                width: cardWidth,
+                height: cardHeight,
+              ),
+            ),
+          ),
+          const SizedBox(height: _labelSpacing),
+          SizedBox(width: cardWidth, height: _labelHeight),
+        ],
       ),
     );
   }
