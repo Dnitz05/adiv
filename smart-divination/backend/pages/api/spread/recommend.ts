@@ -66,7 +66,7 @@ async function recommendSpread(
 
   if (useAI) {
     try {
-      const { selectSpreadWithAI } = await import('../../lib/services/ai-spread-selector');
+      const { selectSpreadWithAI } = await import('../../../lib/services/ai-spread-selector');
       const aiSelection = await selectSpreadWithAI(question, locale);
       const spread = SPREADS.find((s) => s.id === aiSelection.spreadId);
 
