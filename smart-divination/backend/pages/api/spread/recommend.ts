@@ -227,7 +227,7 @@ function generateReasoning(
   spread: SpreadDefinition,
   keywords: string[],
   category?: string,
-  locale: string = 'ca'
+  _locale: string = 'ca'
 ): { en: string; ca: string; es: string } {
   const keywordPhrase = keywords.length > 0 ? keywords.join(', ') : 'general inquiry';
 
