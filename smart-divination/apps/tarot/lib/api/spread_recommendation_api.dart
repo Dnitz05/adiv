@@ -6,6 +6,9 @@ import 'api_client.dart';
 import '../user_identity.dart';
 import '../models/tarot_spread.dart';
 
+// For streaming
+const utf8 = Utf8Codec();
+
 class SpreadRecommendation {
   SpreadRecommendation({
     required this.spreadId,
@@ -70,9 +73,21 @@ Future<SpreadRecommendation> recommendSpread({
   String? preferredComplexity,
   String? preferredCategory,
   String? userId,
+  void Function(String)? onReasoningChunk,
 }) async {
   print('🔮 DEBUG: recommendSpread called with question="$question", locale=$locale');
 
+  // Use streaming endpoint if callback provided
+  if (onReasoningChunk != null) {
+    return _recommendSpreadStreaming(
+      question: question,
+      locale: locale,
+      userId: userId,
+      onReasoningChunk: onReasoningChunk,
+    );
+  }
+
+  // Otherwise use regular endpoint
   final uri = buildApiUri('api/spread/recommend');
   print('🔮 DEBUG: URI built: $uri');
 
@@ -128,4 +143,89 @@ Future<SpreadRecommendation> recommendSpread({
 
   final data = payload['data'] as Map<String, dynamic>;
   return SpreadRecommendation.fromJson(data);
+}
+
+Future<SpreadRecommendation> _recommendSpreadStreaming({
+  required String question,
+  required String locale,
+  String? userId,
+  required void Function(String) onReasoningChunk,
+}) async {
+  print('🔮 DEBUG: recommendSpreadStreaming called');
+
+  final uri = buildApiUri('api/spread/recommend-stream');
+  final effectiveUserId = userId ?? await UserIdentity.obtain();
+
+  final headers = await buildAuthenticatedHeaders(
+    locale: locale,
+    userId: effectiveUserId,
+    additional: {
+      'content-type': 'application/json',
+      'accept': 'text/event-stream',
+    },
+  );
+
+  final body = jsonEncode(<String, dynamic>{
+    'question': question,
+    'locale': locale,
+  });
+
+  print('🔮 DEBUG: Making streaming POST request to $uri');
+  final request = http.Request('POST', uri);
+  request.headers.addAll(headers);
+  request.body = body;
+
+  final response = await http.Client().send(request);
+
+  if (response.statusCode != 200) {
+    throw Exception('Streaming request failed (${response.statusCode})');
+  }
+
+  String? spreadId;
+  TarotSpread? spread;
+  String fullReason = '';
+  double confidenceScore = 0.5;
+
+  await for (final chunk in response.stream.transform(utf8.decoder)) {
+    final lines = chunk.split('\n');
+    for (final line in lines) {
+      if (line.startsWith('data: ')) {
+        final data = line.substring(6);
+        if (data == '[DONE]') continue;
+
+        try {
+          final parsed = jsonDecode(data) as Map<String, dynamic>;
+          final type = parsed['type'] as String?;
+
+          if (type == 'chunk') {
+            final content = parsed['content'] as String;
+            fullReason += content;
+            onReasoningChunk(content);
+          } else if (type == 'complete') {
+            spreadId = parsed['spreadId'] as String;
+            final spreadData = parsed['spread'] as Map<String, dynamic>;
+            spread = TarotSpreads.getById(spreadId!) ?? TarotSpreads.threeCard;
+            confidenceScore = (parsed['confidenceScore'] as num?)?.toDouble() ?? 0.9;
+            fullReason = parsed['reasoning'] as String? ?? fullReason;
+          } else if (type == 'error') {
+            throw Exception(parsed['error'] as String);
+          }
+        } catch (e) {
+          print('⚠️  Error parsing SSE: $e');
+        }
+      }
+    }
+  }
+
+  if (spreadId == null || spread == null) {
+    throw Exception('No spread received from streaming API');
+  }
+
+  return SpreadRecommendation(
+    spreadId: spreadId,
+    spread: spread,
+    reasoning: fullReason,
+    confidenceScore: confidenceScore,
+    keyFactors: [],
+  );
 }

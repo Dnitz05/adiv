@@ -794,11 +794,24 @@ class _HomeState extends State<_Home> {
 
       if (question.isNotEmpty) {
         try {
-          print('🔮 Calling AI spread recommendation for question: $question');
+          print('🔮 Calling AI spread recommendation with streaming for question: $question');
+
+          // Use streaming to show reasoning progressively
+          String streamedReason = '';
           final recommendation = await recommendSpread(
             question: question,
             locale: Localizations.localeOf(context).languageCode,
+            onReasoningChunk: (chunk) {
+              // Update UI with each chunk
+              if (mounted) {
+                setState(() {
+                  streamedReason += chunk;
+                  _spreadRecommendationReason = streamedReason;
+                });
+              }
+            },
           );
+
           selectedSpread = recommendation.spread;
           recommendationReason = recommendation.reasoning;
           print('🔮 AI recommended spread: ${selectedSpread.id} - $recommendationReason');
@@ -902,7 +915,7 @@ class _HomeState extends State<_Home> {
     });
 
     final totalCards = draw.result.length;
-    const Duration dealDelay = Duration(milliseconds: 250);
+    const Duration dealDelay = Duration(milliseconds: 500);
 
     for (var i = 0; i < totalCards; i++) {
       if (!mounted) {
@@ -940,7 +953,7 @@ class _HomeState extends State<_Home> {
     });
 
     final totalCards = draw.result.length;
-    const Duration flipDelay = Duration(milliseconds: 320);
+    const Duration flipDelay = Duration(milliseconds: 500);
 
     for (var i = 0; i < totalCards; i++) {
       if (!mounted) {
@@ -1430,7 +1443,7 @@ class _HomeState extends State<_Home> {
                           Row(
                             children: [
                               Icon(
-                                Icons.auto_awesome,
+                                Icons.style_outlined,
                                 color: TarotTheme.cosmicAccent,
                                 size: 18,
                               ),
@@ -1469,7 +1482,7 @@ class _HomeState extends State<_Home> {
                           Text(
                             _spreadRecommendationReason ?? spread.description,
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 14,
                               fontStyle: FontStyle.italic,
                               color: TarotTheme.stardust.withOpacity(0.9),
                               height: 1.5,
@@ -1539,7 +1552,7 @@ class _HomeState extends State<_Home> {
                       backgroundColor: TarotTheme.cosmicAccent,
                       foregroundColor: TarotTheme.moonlight,
                     ),
-                    icon: const Icon(Icons.flip_to_front, size: 20),
+                    icon: const Icon(Icons.visibility, size: 20),
                     label: Text(localisation.revealCards),
                   ),
                 ]
@@ -1561,7 +1574,7 @@ class _HomeState extends State<_Home> {
                       backgroundColor: TarotTheme.cosmicBlue,
                       foregroundColor: Colors.white,
                     ),
-                    icon: const Icon(Icons.auto_awesome, size: 20),
+                    icon: const Icon(Icons.school, size: 20),
                     label: Text(localisation.interpretationHeading),
                   ),
                 ],
@@ -1622,7 +1635,7 @@ class _HomeState extends State<_Home> {
             child: Row(
               children: [
                 Icon(
-                  Icons.auto_awesome,
+                  Icons.lightbulb_outline,
                   color: accentColor,
                   size: 18,
                 ),

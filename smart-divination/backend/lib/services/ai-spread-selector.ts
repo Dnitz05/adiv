@@ -73,7 +73,143 @@ Keep reason under 100 chars.`;
 }
 
 /**
- * Select spread using AI with ultra-low latency
+ * Select spread using AI with streaming support
+ * Streams the reasoning as it's generated for better UX
+ */
+export async function selectSpreadWithAIStreaming(
+  question: string,
+  locale: string = 'es',
+  requestId?: string,
+  onChunk?: (chunk: string) => void
+): Promise<SpreadSelection> {
+  const startTime = Date.now();
+  const apiKey = process.env.DEEPSEEK_API_KEY?.trim();
+
+  if (!apiKey) {
+    log('warn', 'DeepSeek API key missing for spread selection', { requestId });
+    return {
+      spreadId: 'three_card',
+      reason: 'Tirada versátil para tu pregunta',
+      confidence: 0.5,
+    };
+  }
+
+  try {
+    const messages: DeepSeekMessage[] = [
+      { role: 'system', content: buildSystemPrompt() },
+      { role: 'user', content: buildSpreadSelectionPrompt(question, locale) },
+    ];
+
+    const requestBody = {
+      model: MODEL,
+      temperature: 0.3,
+      max_tokens: 150,
+      messages,
+      stream: true, // Enable streaming
+    };
+
+    log('info', 'Calling DeepSeek for spread selection (streaming)', {
+      requestId,
+      questionLength: question.length,
+      locale,
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const response = await fetch(DEEPSEEK_URL, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(requestBody),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`DeepSeek failed: ${response.status}`);
+      }
+
+      if (!response.body) {
+        throw new Error('No response body for streaming');
+      }
+
+      // Process streaming response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullContent = '';
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') continue;
+
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content;
+              if (content) {
+                fullContent += content;
+                if (onChunk) onChunk(content);
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+
+      // Parse final JSON response
+      const parsed = JSON.parse(fullContent);
+      const spreadId = parsed.spreadId;
+      const reason = parsed.reason || 'Tirada recomendada para tu pregunta';
+
+      const spread = SPREADS.find((s) => s.id === spreadId);
+      if (!spread) {
+        throw new Error(`Invalid spread ID: ${spreadId}`);
+      }
+
+      const duration = Date.now() - startTime;
+      log('info', 'AI spread selection successful (streaming)', {
+        requestId,
+        spreadId,
+        duration,
+      });
+
+      return {
+        spreadId,
+        reason,
+        confidence: 0.9,
+      };
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      throw fetchError;
+    }
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    log('error', 'AI spread selection failed', {
+      requestId,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      duration,
+    });
+    return fallbackSpreadSelection(question, locale);
+  }
+}
+
+/**
+ * Select spread using AI with ultra-low latency (non-streaming)
  * Target: <2 seconds
  */
 export async function selectSpreadWithAI(

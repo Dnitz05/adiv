@@ -188,8 +188,13 @@ class SpreadLayout extends StatelessWidget {
   }) {
     final double finalLeft = (position.x * containerWidth) - (cardWidth / 2);
     final double finalTop = (position.y * containerHeight) - (cardHeight / 2);
-    final double left = isDealt ? finalLeft : containerWidth + 100;
-    final double top = isDealt ? finalTop : finalTop;
+
+    // Realistic card dealing animation: cards come from bottom center
+    final double startLeft = (containerWidth / 2) - (cardWidth / 2);
+    final double startTop = containerHeight + cardHeight;
+
+    final double left = isDealt ? finalLeft : startLeft;
+    final double top = isDealt ? finalTop : startTop;
 
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
@@ -262,8 +267,8 @@ class SpreadLayout extends StatelessWidget {
     );
 
     return AnimatedPositioned(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeOutCubic,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeOutQuart, // More realistic deceleration
       left: left,
       top: top,
       child: cardWithLabel,
