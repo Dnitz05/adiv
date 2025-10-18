@@ -947,7 +947,8 @@ class _HomeState extends State<_Home> {
       }
 
       // Start drawing cards, but also pre-load interpretation in parallel
-      print('🔮 Starting drawCards and pre-loading interpretation in parallel...');
+      print(
+          '🔮 Starting drawCards and pre-loading interpretation in parallel...');
 
       final drawFuture = drawCards(
         count: selectedSpread.cardCount,
@@ -984,9 +985,6 @@ class _HomeState extends State<_Home> {
         _preloadInterpretation(response, finalQuestion, localeCode);
       }
 
-      if (shouldNudgeUser && mounted) {
-        _showGeneralTip(localisation);
-      }
       await Future.wait([
         _refreshHistory(),
         _refreshProfile(),
@@ -1220,7 +1218,8 @@ class _HomeState extends State<_Home> {
           await _saveConversationLocally(draw, result, question);
         }
       } else {
-        print('ℹ️  Background interpretation completed but UI already has interpretation');
+        print(
+            'ℹ️  Background interpretation completed but UI already has interpretation');
       }
     } catch (error) {
       print('⚠️  Background interpretation pre-load failed: $error');
@@ -1266,27 +1265,6 @@ class _HomeState extends State<_Home> {
     final firstLetter = trimmed.substring(0, 1).toUpperCase();
     final rest = trimmed.substring(1);
     return '$firstLetter$rest';
-  }
-
-  void _showGeneralTip(CommonStrings localisation) {
-    final language =
-        localisation.localeName.split(RegExp('[_-]')).first.toLowerCase();
-    final message = switch (language) {
-      'ca' =>
-        'Si tens una pregunta concreta, afegeix-la perquè la lectura et pugui orientar millor.',
-      'es' =>
-        'Si tienes una pregunta concreta, añádela para que la lectura pueda orientarte mejor.',
-      'en' =>
-        'If you have something specific on your mind, add it so the reading can guide you better.',
-      _ =>
-        'If there is something specific on your mind, share it so the reading can guide you better.',
-    };
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
   }
 
   String _generalConsultationPrompt(String locale) {
@@ -1767,6 +1745,7 @@ class _HomeState extends State<_Home> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const SizedBox(height: 8), // Extra spacing after question header
                 // Show spread info always (not just when placeholders are visible)
                 Builder(
                   builder: (context) {
@@ -1822,7 +1801,7 @@ class _HomeState extends State<_Home> {
                                 spread.localizedDescription(
                                     localisation.localeName),
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 14,
                               color: TarotTheme.moonlight,
                               height: 1.6,
                               letterSpacing: 0.2,
@@ -1915,88 +1894,164 @@ class _HomeState extends State<_Home> {
                     draw.sessionId != null &&
                     draw.sessionId!.isNotEmpty) ...[
                   const SizedBox(height: 12),
-                  InkWell(
-                    onTap: interpretation == null && !_requestingInterpretation
-                        ? _requestInterpretation
-                        : null,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: TarotTheme.midnightBlue,
-                        gradient: LinearGradient(
-                          colors: interpretation != null ||
-                                  _requestingInterpretation
-                              ? [
-                                  TarotTheme.cosmicAccent.withOpacity(0.15),
-                                  TarotTheme.cosmicAccent.withOpacity(0.08),
-                                ]
-                              : [
-                                  TarotTheme.cosmicBlue.withOpacity(0.2),
-                                  TarotTheme.cosmicBlue.withOpacity(0.1),
-                                ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: TarotTheme.twilightPurple.withOpacity(0.2),
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
+                  Builder(
+                    builder: (context) {
+                      String? interpretationSummary;
+                      List<Map<String, dynamic>>? interpretationSections;
+
+                      if (interpretation != null) {
+                        final cardImages = _buildInterpretationCardImageLookup(
+                          draw.result,
+                          localisation,
+                        );
+                        final parsedInterpretation =
+                            _parseInterpretationSections(
+                          interpretation.interpretation,
+                          cardImages,
+                          localisation,
+                        );
+
+                        final providedSummary = interpretation.summary?.trim();
+                        final parsedSummary =
+                            (parsedInterpretation['summary'] as String?)
+                                ?.trim();
+
+                        if (providedSummary != null &&
+                            providedSummary.isNotEmpty) {
+                          interpretationSummary = providedSummary;
+                        } else if (parsedSummary != null &&
+                            parsedSummary.isNotEmpty) {
+                          interpretationSummary = parsedSummary;
+                        }
+
+                        interpretationSections =
+                            List<Map<String, dynamic>>.from(
+                          (parsedInterpretation['cardSections'] as List).map(
+                              (section) =>
+                                  Map<String, dynamic>.from(section as Map)),
+                        );
+                      }
+
+                      return Column(
                         children: [
-                          Icon(
-                            Icons.auto_stories_outlined,
-                            color: interpretation != null ||
-                                    _requestingInterpretation
-                                ? TarotTheme.cosmicAccent
-                                : TarotTheme.cosmicBlue,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Interpretación',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: interpretation != null ||
-                                      _requestingInterpretation
-                                  ? TarotTheme.cosmicAccent
-                                  : TarotTheme.cosmicBlue,
-                              letterSpacing: 0.3,
-                              height: 1.4,
-                            ),
-                          ),
-                          const Spacer(),
-                          if (_requestingInterpretation)
-                            SizedBox(
-                              width: 16,
-                              height: 16,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  TarotTheme.cosmicAccent,
+                          InkWell(
+                            onTap: interpretation == null &&
+                                    !_requestingInterpretation
+                                ? _requestInterpretation
+                                : null,
+                            borderRadius: BorderRadius.circular(12),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: TarotTheme.midnightBlue,
+                                gradient: LinearGradient(
+                                  colors: interpretation != null ||
+                                          _requestingInterpretation
+                                      ? [
+                                          TarotTheme.cosmicAccent
+                                              .withOpacity(0.15),
+                                          TarotTheme.cosmicAccent
+                                              .withOpacity(0.08),
+                                        ]
+                                      : [
+                                          TarotTheme.cosmicBlue
+                                              .withOpacity(0.2),
+                                          TarotTheme.cosmicBlue
+                                              .withOpacity(0.1),
+                                        ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: TarotTheme.twilightPurple
+                                      .withOpacity(0.2),
+                                  width: 1,
                                 ),
                               ),
-                            )
-                          else if (interpretation == null)
-                            Icon(
-                              Icons.touch_app,
-                              color: TarotTheme.cosmicBlue.withOpacity(0.6),
-                              size: 16,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.auto_stories_outlined,
+                                        color: interpretation != null ||
+                                                _requestingInterpretation
+                                            ? TarotTheme.cosmicAccent
+                                            : TarotTheme.cosmicBlue,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          'Interpretación',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: interpretation != null ||
+                                                    _requestingInterpretation
+                                                ? TarotTheme.cosmicAccent
+                                                : TarotTheme.cosmicBlue,
+                                            letterSpacing: 0.3,
+                                            height: 1.4,
+                                          ),
+                                        ),
+                                      ),
+                                      if (_requestingInterpretation)
+                                        SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              TarotTheme.cosmicAccent,
+                                            ),
+                                          ),
+                                        )
+                                      else if (interpretation == null)
+                                        Icon(
+                                          Icons.touch_app,
+                                          color: TarotTheme.cosmicBlue
+                                              .withOpacity(0.6),
+                                          size: 16,
+                                        ),
+                                    ],
+                                  ),
+                                  if (interpretationSummary != null &&
+                                      interpretationSummary!.isNotEmpty) ...[
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      interpretationSummary!,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: TarotTheme.moonlight,
+                                        height: 1.6,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
+                          ),
+                          if (interpretation != null) ...[
+                            const SizedBox(height: 16),
+                            _buildInterpretationContent(
+                              interpretation,
+                              theme,
+                              accentColor,
+                              draw.result,
+                              localisation,
+                              precomputedSections: interpretationSections,
+                            ),
+                          ],
                         ],
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                  // Show interpretation content below header if available
-                  if (interpretation != null) ...[
-                    const SizedBox(height: 16),
-                    _buildInterpretationContent(interpretation, theme,
-                        accentColor, draw.result, localisation),
-                  ],
                 ],
               ],
             ),
@@ -2018,13 +2073,10 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildInterpretationContent(
-      InterpretationResult interpretation,
-      ThemeData theme,
-      Color accentColor,
-      List<CardResult> cards,
-      CommonStrings localisation) {
-    // Create map of card names to their images for quick lookup
+  Map<String, String> _buildInterpretationCardImageLookup(
+    List<CardResult> cards,
+    CommonStrings localisation,
+  ) {
     final cardImages = <String, String>{};
     for (final card in cards) {
       final imagePath = CardImageMapper.getCardImagePath(card.name, card.suit);
@@ -2033,17 +2085,14 @@ class _HomeState extends State<_Home> {
           CardNameLocalizer.localize(card.name, localisation.localeName)
               .toLowerCase();
 
-      // Add multiple variants to improve matching
       cardImages[originalLower] = imagePath;
       cardImages[localizedKey] = imagePath;
 
-      // Also add version without "the" prefix
       final withoutThe = originalLower.replaceFirst(RegExp(r'^the\s+'), '');
       if (withoutThe != originalLower) {
         cardImages[withoutThe] = imagePath;
       }
 
-      // Add version without "el/la/els/les" prefix for localized
       final withoutArticle = localizedKey.replaceFirst(
           RegExp(r'^(el|la|els|les|the)\s+', caseSensitive: false), '');
       if (withoutArticle != localizedKey) {
@@ -2051,40 +2100,296 @@ class _HomeState extends State<_Home> {
       }
     }
 
+    return cardImages;
+  }
+
+  Widget _buildInterpretationContent(
+      InterpretationResult interpretation,
+      ThemeData theme,
+      Color accentColor,
+      List<CardResult> cards,
+      CommonStrings localisation,
+      {List<Map<String, dynamic>>? precomputedSections}) {
+    final List<Map<String, dynamic>> cardSections = precomputedSections ??
+        List<Map<String, dynamic>>.from(
+          (_parseInterpretationSections(
+            interpretation.interpretation,
+            _buildInterpretationCardImageLookup(cards, localisation),
+            localisation,
+          )['cardSections'] as List)
+              .map((section) => Map<String, dynamic>.from(section as Map)),
+        );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Summary text
-        if (interpretation.summary != null &&
-            interpretation.summary!.isNotEmpty) ...[
-          Padding(
+        // Individual card interpretation bubbles
+        ...cardSections.asMap().entries.map((entry) {
+          final index = entry.key;
+          final section = entry.value;
+          return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              interpretation.summary!,
-              style: TextStyle(
-                fontSize: 14,
-                fontStyle: FontStyle.italic,
-                color: TarotTheme.stardust.withOpacity(0.9),
-                height: 1.5,
-              ),
+            child: Column(
+              children: [
+                _buildCardInterpretationBubble(section, localisation, theme),
+                if (index < cardSections.length - 1) const SizedBox(height: 12),
+              ],
             ),
-          ),
-          const SizedBox(height: 16),
-        ],
-        // Full interpretation text with card images
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: _buildInterpretationWithCardImages(
-            localisation,
-            interpretation.interpretation,
-            cardImages,
-            theme,
-            accentColor,
-          ),
-        ),
+          );
+        }).toList(),
         const SizedBox(height: 16),
       ],
     );
+  }
+
+  /// Build a styled bubble for a single card interpretation
+  Widget _buildCardInterpretationBubble(
+    Map<String, dynamic> section,
+    CommonStrings localisation,
+    ThemeData theme,
+  ) {
+    final String cardName = section['cardName'];
+    final String? cardImage = section['cardImage'];
+    final bool isReversed = section['isReversed'];
+    final String interpretationText = section['interpretationText'];
+
+    // Check if this is a special section (Conclusión, Consejo, etc.)
+    final lowercardName = cardName.toLowerCase();
+    final isSpecialSection = lowercardName.contains('conclusi') ||
+        lowercardName.contains('consejo') ||
+        lowercardName.contains('consell');
+
+    // For special sections, use section name directly; for cards, localize
+    final displayName = isSpecialSection
+        ? cardName
+        : () {
+            final localizedCardName =
+                CardNameLocalizer.localize(cardName, localisation.localeName);
+            return isReversed
+                ? '$localizedCardName (${localisation.cardOrientationReversed})'
+                : localizedCardName;
+          }();
+
+    // Choose icon based on section type
+    final IconData sectionIcon = isSpecialSection
+        ? (lowercardName.contains('conclusi')
+            ? Icons.check_circle_outline
+            : Icons.lightbulb_outline)
+        : Icons.auto_awesome;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: TarotTheme.midnightBlue,
+        gradient: LinearGradient(
+          colors: [
+            TarotTheme.cosmicAccent.withOpacity(0.15),
+            TarotTheme.cosmicAccent.withOpacity(0.08),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: TarotTheme.twilightPurple.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header: Icon + Card Name or Section Name
+          Row(
+            children: [
+              Icon(
+                sectionIcon,
+                color: TarotTheme.cosmicAccent,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  displayName,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: TarotTheme.cosmicAccent,
+                    letterSpacing: 0.3,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Body: Card Image (only for actual cards) + Interpretation Text
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Card image on the left (only for actual cards, not special sections)
+              if (!isSpecialSection && cardImage != null)
+                Container(
+                  width: 70,
+                  height: 112,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: isReversed
+                          ? (Matrix4.identity()..rotateZ(math.pi))
+                          : Matrix4.identity(),
+                      child: Image.asset(
+                        cardImage,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: TarotTheme.cosmicPurple,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              color: TarotTheme.stardust,
+                              size: 30,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              if (!isSpecialSection && cardImage == null)
+                // Placeholder for cards without image
+                Container(
+                  width: 70,
+                  height: 112,
+                  decoration: BoxDecoration(
+                    color: TarotTheme.cosmicPurple,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    Icons.style,
+                    color: TarotTheme.stardust,
+                    size: 30,
+                  ),
+                ),
+              if (!isSpecialSection && cardImage != null)
+                const SizedBox(width: 12),
+              // Interpretation text on the right
+              Expanded(
+                child: Text(
+                  interpretationText,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: TarotTheme.moonlight,
+                    height: 1.6,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Parse interpretation into summary and card sections
+  Map<String, dynamic> _parseInterpretationSections(
+    String markdown,
+    Map<String, String> cardImages,
+    CommonStrings localisation,
+  ) {
+    // Pattern: **🃏 Card Name** or **Card Name**
+    final cardReferencePattern = RegExp(r'\*\*(.+?)\*\*');
+    final matches = cardReferencePattern.allMatches(markdown).toList();
+
+    if (matches.isEmpty) {
+      // No cards found, everything is summary
+      return {
+        'summary': markdown,
+        'cardSections': <Map<String, dynamic>>[],
+      };
+    }
+
+    // Extract summary (text before first card)
+    final firstCardStart = matches.first.start;
+    final summary =
+        firstCardStart > 0 ? markdown.substring(0, firstCardStart).trim() : '';
+
+    // Extract card sections
+    final List<Map<String, dynamic>> cardSections = [];
+
+    for (int i = 0; i < matches.length; i++) {
+      final match = matches[i];
+      final fullCardName = match.group(1)!.trim();
+
+      // Extract text after this card until next card (or end)
+      final textStart = match.end;
+      final textEnd =
+          (i + 1 < matches.length) ? matches[i + 1].start : markdown.length;
+      final interpretationText = markdown.substring(textStart, textEnd).trim();
+
+      // Skip if this looks like it's just markdown bold, not a card
+      // (card names typically have emojis or are proper nouns)
+      if (interpretationText.isEmpty && fullCardName.length < 5) {
+        continue;
+      }
+
+      // Process card name
+      final loweredName = fullCardName.toLowerCase();
+      final isReversed = loweredName.contains('(reversed)') ||
+          loweredName.contains('(invertida)') ||
+          loweredName.contains('(invertit)') ||
+          loweredName.contains('reverso') ||
+          loweredName.contains('invertida') ||
+          loweredName.contains('invertit');
+
+      final cardName = fullCardName
+          .replaceAll(RegExp(r'[\u{1F000}-\u{1F9FF}]', unicode: true), '')
+          .replaceAll(RegExp(r'\s*\(reversed\)', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*\(invertida\)', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*\(invertit\)', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*reverso\s*', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*invertida\s*', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*invertit\s*', caseSensitive: false), '')
+          .trim();
+
+      // Find card image
+      final lookupKey = cardName.toLowerCase();
+      String? cardImage = cardImages[lookupKey];
+
+      if (cardImage == null) {
+        final localizedCardName =
+            CardNameLocalizer.localize(cardName, localisation.localeName);
+        cardImage = cardImages[localizedCardName.toLowerCase()];
+      }
+
+      if (cardImage == null) {
+        final withoutArticle = lookupKey.replaceFirst(
+            RegExp(r'^(the|el|la|els|les)\s+', caseSensitive: false), '');
+        cardImage = cardImages[withoutArticle];
+      }
+
+      cardSections.add({
+        'cardName': cardName,
+        'cardImage': cardImage,
+        'isReversed': isReversed,
+        'interpretationText': interpretationText,
+      });
+    }
+
+    return {
+      'summary': summary,
+      'cardSections': cardSections,
+    };
   }
 
   Widget _buildInterpretationWithCardImages(
@@ -2572,7 +2877,8 @@ class _HomeState extends State<_Home> {
     final bottomSafeInset =
         math.max(mediaQuery.viewPadding.bottom, mediaQuery.padding.bottom);
     final bottomSpacing = bottomSafeInset + extraBottomPadding;
-    const double topSpacing = 32.0;
+    const double topSpacing =
+        12.0; // Reduced from 32.0 for less space below AppBar
 
     // Build content based on whether there's a draw or not
     Widget bodyContent;

@@ -31,22 +31,21 @@ interface DeepSeekResponse {
 }
 
 /**
- * Build ultra-compact prompt for spread selection
- * Optimized for speed: minimal tokens, clear structure
+ * Build prompt for spread selection with warm, knowledgeable tone
  */
 function buildSpreadSelectionPrompt(question: string, locale: string): string {
-  // Build compact spread list
+  // Build compact spread list with full names
   const spreadList = SPREADS.map((s) => {
     const locName = locale === 'ca' ? s.nameCA : locale === 'es' ? s.nameES : s.name;
-    return `${s.id}|${s.cardCount}c|${s.category}|${s.suitableFor.slice(0, 3).join(',')}`;
+    return `${s.id}|${locName}|${s.cardCount}c|${s.category}|${s.suitableFor.slice(0, 3).join(',')}`;
   }).join('\n');
 
   return `Q: ${question}
 
-Spreads (id|cards|category|keywords):
+Spreads (id|name|cards|category|keywords):
 ${spreadList}
 
-Return JSON only: {"spreadId":"id","reason":"1-2 sentences in ${locale}"}`;
+Return JSON only: {"spreadId":"id","reason":"2-4 sentences in ${locale}"}`;
 }
 
 /**
@@ -56,12 +55,12 @@ function buildSystemPrompt(): string {
   // Get all valid spread IDs for validation
   const validIds = SPREADS.map(s => s.id).join(', ');
 
-  return `You are a tarot expert. Select the BEST spread for the question.
+  return `You are a sensitive, knowledgeable tarot reader. Select the BEST spread for the question with warmth and understanding.
 
 CRITICAL: spreadId MUST be EXACTLY one of these IDs (do NOT invent new IDs):
 ${validIds}
 
-Rules:
+Selection guidelines:
 - Quick question or daily → single
 - Binary choice → two_card
 - General situation → three_card
@@ -74,10 +73,19 @@ Rules:
 - Life overview → astrological
 - Year planning → year_ahead
 
-IMPORTANT: Respond ONLY with clean JSON, no extra text or explanations.
-Format: {"spreadId":"exact_id_from_list","reason":"brief explanation in user's language"}
-The "reason" field should be a direct, friendly explanation (max 100 chars).
-Do NOT include phrases like "Key factors detected" or technical analysis.`;
+IMPORTANT: Respond ONLY with clean JSON, no extra text.
+Format: {"spreadId":"exact_id_from_list","reason":"warm explanation in user's language"}
+
+The "reason" field (2-4 sentences) should:
+- Show sensitivity to the user's question and emotional state
+- Explain WHY this spread is chosen (what it reveals, its strengths)
+- Briefly describe HOW to read it (what each position means or the overall flow)
+- Use a warm, confident, mystical-yet-practical tone
+- Demonstrate deep tarot knowledge and atmosphere
+- Avoid cold phrases like "Key factors detected" or technical jargon
+- Make the user feel understood and guided by an expert
+
+Example tone: "He escogido la Tirada de Tres Cartas porque tu pregunta busca claridad sobre tu situación actual. Esta tirada clásica te muestra el pasado que te ha traído aquí, el presente que estás viviendo, y el futuro que se despliega ante ti. Es perfecta para obtener una visión completa sin abrumarte, permitiéndote ver el hilo conductor de tu camino."`;
 }
 
 /**
@@ -111,7 +119,7 @@ export async function selectSpreadWithAIStreaming(
     const requestBody = {
       model: MODEL,
       temperature: 0.3,
-      max_tokens: 150,
+      max_tokens: 250, // Increased for warmer, more extensive reasoning
       messages,
       stream: true, // Enable streaming
     };
@@ -254,7 +262,7 @@ export async function selectSpreadWithAI(
     const requestBody = {
       model: MODEL,
       temperature: 0.3, // Low = faster + more deterministic
-      max_tokens: 100, // Just need tiny JSON response
+      max_tokens: 250, // Increased for warmer, more extensive reasoning
       messages,
     };
 
