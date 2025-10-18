@@ -648,6 +648,12 @@ const Map<String, Map<String, String>> _spreadNameTranslations =
   },
 };
 
+const Map<String, String> _spreadTitlePrefixes = <String, String>{
+  'ca': 'Tirada',
+  'es': 'Tirada',
+  'en': 'Draw',
+};
+
 const Map<String, Map<String, String>> _spreadDescriptionTranslations =
     <String, Map<String, String>>{
   'ca': <String, String>{
@@ -681,7 +687,20 @@ const Map<String, Map<String, String>> _spreadDescriptionTranslations =
 extension TarotSpreadLocalization on TarotSpread {
   String localizedName(String locale) {
     final language = _languageFromLocale(locale);
-    return _spreadNameTranslations[language]?[id] ?? name;
+    final baseName =
+        (_spreadNameTranslations[language]?[id] ?? name).trim();
+
+    final prefix = _spreadTitlePrefixes[language];
+    if (prefix != null && prefix.isNotEmpty) {
+      final lower = baseName.toLowerCase();
+      final prefixLower = prefix.toLowerCase();
+      if (lower.startsWith(prefixLower)) {
+        return baseName;
+      }
+      return '$prefix $baseName';
+    }
+
+    return baseName;
   }
 
   String localizedDescription(String locale) {

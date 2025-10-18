@@ -946,7 +946,10 @@ class _HomeState extends State<_Home> {
         // If AI fails, continue with manually selected spread
       }
 
-      final response = await drawCards(
+      // Start drawing cards, but also pre-load interpretation in parallel
+      print('🔮 Starting drawCards and pre-loading interpretation in parallel...');
+
+      final drawFuture = drawCards(
         count: selectedSpread.cardCount,
         spread: selectedSpread.id,
         allowReversed: true,
@@ -954,6 +957,10 @@ class _HomeState extends State<_Home> {
         question: finalQuestion,
         locale: localeCode,
       );
+
+      // Wait for cards to be drawn
+      final response = await drawFuture;
+
       if (!mounted) {
         return;
       }
@@ -970,6 +977,13 @@ class _HomeState extends State<_Home> {
         _selectedSpread = selectedSpread; // Update to AI-selected spread
         _spreadRecommendationReason = recommendationReason;
       });
+
+      // Pre-load interpretation in background immediately after cards are available
+      if (response.sessionId != null && response.sessionId!.isNotEmpty) {
+        print('🔮 Pre-loading AI interpretation in background...');
+        _preloadInterpretation(response, finalQuestion, localeCode);
+      }
+
       if (shouldNudgeUser && mounted) {
         _showGeneralTip(localisation);
       }
@@ -1123,6 +1137,12 @@ class _HomeState extends State<_Home> {
       return;
     }
 
+    // If interpretation already loaded in background, just return
+    if (_latestInterpretation != null) {
+      print('✅ Using pre-loaded interpretation');
+      return;
+    }
+
     setState(() {
       _requestingInterpretation = true;
       _error = null;
@@ -1165,6 +1185,47 @@ class _HomeState extends State<_Home> {
           _requestingInterpretation = false;
         });
       }
+    }
+  }
+
+  /// Pre-load interpretation in background without blocking UI
+  Future<void> _preloadInterpretation(
+    CardsDrawResponse draw,
+    String question,
+    String localeCode,
+  ) async {
+    final sessionId = draw.sessionId;
+    if (sessionId == null || sessionId.isEmpty) {
+      return;
+    }
+
+    try {
+      print('🔮 Starting background interpretation request...');
+      final result = await submitInterpretation(
+        sessionId: sessionId,
+        draw: draw,
+        question: question.isEmpty ? null : question,
+        locale: localeCode,
+      );
+
+      // Only update if user hasn't already requested interpretation
+      if (mounted && _latestInterpretation == null) {
+        print('✅ Background interpretation loaded successfully!');
+        setState(() {
+          _latestInterpretation = result;
+        });
+
+        // Save conversation locally
+        if (result != null) {
+          await _saveConversationLocally(draw, result, question);
+        }
+      } else {
+        print('ℹ️  Background interpretation completed but UI already has interpretation');
+      }
+    } catch (error) {
+      print('⚠️  Background interpretation pre-load failed: $error');
+      // Don't show error to user since this is background operation
+      // User can still request interpretation manually
     }
   }
 
@@ -2069,11 +2130,20 @@ class _HomeState extends State<_Home> {
       final loweredName = fullCardName.toLowerCase();
       final isReversed = loweredName.contains('(reversed)') ||
           loweredName.contains('(invertida)') ||
-          loweredName.contains('(invertit)');
+          loweredName.contains('(invertit)') ||
+          loweredName.contains('reverso') ||
+          loweredName.contains('invertida') ||
+          loweredName.contains('invertit');
       final cardName = fullCardName
+          // Remove emojis (card emoji 🃏 and others)
+          .replaceAll(RegExp(r'[\u{1F000}-\u{1F9FF}]', unicode: true), '')
+          // Remove reversed markers
           .replaceAll(RegExp(r'\s*\(reversed\)', caseSensitive: false), '')
           .replaceAll(RegExp(r'\s*\(invertida\)', caseSensitive: false), '')
           .replaceAll(RegExp(r'\s*\(invertit\)', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*reverso\s*', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*invertida\s*', caseSensitive: false), '')
+          .replaceAll(RegExp(r'\s*invertit\s*', caseSensitive: false), '')
           .trim();
       final localizedCardName = CardNameLocalizer.localize(
           cardName, Localizations.localeOf(context).languageCode);
