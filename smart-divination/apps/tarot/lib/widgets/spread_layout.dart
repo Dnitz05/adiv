@@ -16,7 +16,6 @@ class SpreadLayout extends StatelessWidget {
   final int? revealedCardCount;
   final Duration flipDuration;
   final String locale;
-  final bool hasInterpretation;
 
   const SpreadLayout({
     super.key,
@@ -28,7 +27,6 @@ class SpreadLayout extends StatelessWidget {
     this.revealedCardCount,
     this.flipDuration = const Duration(milliseconds: 450),
     this.locale = 'es',
-    this.hasInterpretation = false,
   });
 
   @override
@@ -188,9 +186,10 @@ class SpreadLayout extends StatelessWidget {
     required bool isDealt,
     required bool isFaceUp,
   }) {
-    final double left = (position.x * containerWidth) - (cardWidth / 2);
+    final double finalLeft = (position.x * containerWidth) - (cardWidth / 2);
     final double finalTop = (position.y * containerHeight) - (cardHeight / 2);
-    final double top = isDealt ? finalTop : -(cardHeight + 100);
+    final double left = isDealt ? finalLeft : containerWidth + 100;
+    final double top = isDealt ? finalTop : finalTop;
 
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
@@ -220,21 +219,27 @@ class SpreadLayout extends StatelessWidget {
     // Get localized card name
     final String localizedName = CardNameLocalizer.localize(card.name, locale);
 
+    // Apply rotation only to the card, not to the name label
+    final Widget rotatedCard = Transform.rotate(
+      angle: baseRotation * math.pi / 180,
+      child: _AnimatedTarotCard(
+        key: ValueKey('tarot-card-$index-${card.name}'),
+        width: cardWidth,
+        height: cardHeight,
+        front: frontFace,
+        back: backFace,
+        isFaceUp: isFaceUp,
+        duration: flipDuration,
+      ),
+    );
+
     // Wrap card with column to add name label below when revealed
     final Widget cardWithLabel = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _AnimatedTarotCard(
-          key: ValueKey('tarot-card-$index-${card.name}'),
-          width: cardWidth,
-          height: cardHeight,
-          front: frontFace,
-          back: backFace,
-          isFaceUp: isFaceUp,
-          duration: flipDuration,
-        ),
-        // Show card name only when revealed (face up) AND interpretation has been requested
-        if (isFaceUp && hasInterpretation) ...[
+        rotatedCard,
+        // Show card name when revealed (face up)
+        if (isFaceUp) ...[
           const SizedBox(height: 6),
           SizedBox(
             width: cardWidth,
@@ -243,7 +248,7 @@ class SpreadLayout extends StatelessWidget {
               style: TextStyle(
                 fontSize: math.min(cardWidth * 0.11, 10),
                 fontWeight: FontWeight.w600,
-                color: TarotTheme.moonlight.withOpacity(0.9),
+                color: Colors.white,
                 letterSpacing: 0.5,
                 height: 1.2,
               ),
@@ -261,10 +266,7 @@ class SpreadLayout extends StatelessWidget {
       curve: Curves.easeOutCubic,
       left: left,
       top: top,
-      child: Transform.rotate(
-        angle: baseRotation * math.pi / 180,
-        child: cardWithLabel,
-      ),
+      child: cardWithLabel,
     );
   }
 

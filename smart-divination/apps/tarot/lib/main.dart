@@ -11,6 +11,7 @@ import 'package:common/shared/infrastructure/localization/common_strings_extensi
 import 'api/draw_cards_api.dart';
 import 'api/interpretation_api.dart';
 import 'api/user_profile_api.dart';
+import 'api/spread_recommendation_api.dart';
 import 'user_identity.dart';
 import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
@@ -648,6 +649,7 @@ class _HomeState extends State<_Home> {
   bool _drawing = false;
   bool _requestingInterpretation = false;
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
+  String? _spreadRecommendationReason; // AI reasoning for spread selection
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
   final FocusNode _questionFocusNode = FocusNode();
@@ -785,9 +787,30 @@ class _HomeState extends State<_Home> {
     try {
       final seed = _seedController.text.trim();
       final question = _questionController.text.trim();
+
+      // If there's a question, get AI spread recommendation first
+      TarotSpread selectedSpread = _selectedSpread;
+      String? recommendationReason;
+
+      if (question.isNotEmpty) {
+        try {
+          print('🔮 Calling AI spread recommendation for question: $question');
+          final recommendation = await recommendSpread(
+            question: question,
+            locale: Localizations.localeOf(context).languageCode,
+          );
+          selectedSpread = recommendation.spread;
+          recommendationReason = recommendation.reasoning;
+          print('🔮 AI recommended spread: ${selectedSpread.id} - $recommendationReason');
+        } catch (e) {
+          print('⚠️  AI spread recommendation failed, using selected spread: $e');
+          // If AI fails, continue with manually selected spread
+        }
+      }
+
       final response = await drawCards(
-        count: _selectedSpread.cardCount,
-        spread: _selectedSpread.id,
+        count: selectedSpread.cardCount,
+        spread: selectedSpread.id,
         allowReversed: true,
         seed: seed.isEmpty ? null : seed,
         question: question.isEmpty ? null : question,
@@ -805,6 +828,8 @@ class _HomeState extends State<_Home> {
         _revealingCards = false;
         _requestingInterpretation = false;
         _currentQuestion = question.isEmpty ? null : question;
+        _selectedSpread = selectedSpread; // Update to AI-selected spread
+        _spreadRecommendationReason = recommendationReason;
       });
       await Future.wait([
         _refreshHistory(),
@@ -855,6 +880,7 @@ class _HomeState extends State<_Home> {
       _revealingCards = false;
       _requestingInterpretation = false;
       _currentQuestion = null;
+      _spreadRecommendationReason = null;
       _questionController.clear();
       _error = null;
     });
@@ -1381,63 +1407,80 @@ class _HomeState extends State<_Home> {
                   builder: (context) {
                     final spread = TarotSpreads.getById(draw.spread) ??
                         TarotSpreads.threeCard;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: TarotTheme.moonlight,
-                              height: 1.5,
-                            ),
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            TarotTheme.cosmicAccent.withOpacity(0.15),
+                            TarotTheme.cosmicAccent.withOpacity(0.08),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: TarotTheme.twilightPurple.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              TextSpan(
-                                text: 'Tirada escogida: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: TarotTheme.cosmicAccent,
-                                ),
+                              Icon(
+                                Icons.auto_awesome,
+                                color: TarotTheme.cosmicAccent,
+                                size: 18,
                               ),
-                              TextSpan(
-                                text: spread.name,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: TarotTheme.moonlight,
+                                      height: 1.4,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: 'Tirada: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: TarotTheme.cosmicAccent,
+                                          letterSpacing: 0.3,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: spread.name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: TarotTheme.moonlight,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        RichText(
-                          text: TextSpan(
+                          const SizedBox(height: 10),
+                          Text(
+                            _spreadRecommendationReason ?? spread.description,
                             style: TextStyle(
-                              fontSize: 14,
-                              color: TarotTheme.moonlight,
+                              fontSize: 13,
+                              fontStyle: FontStyle.italic,
+                              color: TarotTheme.stardust.withOpacity(0.9),
                               height: 1.5,
                             ),
-                            children: [
-                              TextSpan(
-                                text: 'Motivo: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: TarotTheme.cosmicAccent,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: spread.description,
-                                  style: TextStyle(
-                                    color: TarotTheme.stardust,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
-                          const SizedBox(height: 16),
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     // Get the selected spread or use threeCard as fallback
@@ -1463,7 +1506,6 @@ class _HomeState extends State<_Home> {
                         dealtCardCount: dealCount,
                         revealedCardCount: revealCount,
                         locale: localisation.localeName,
-                        hasInterpretation: _latestInterpretation != null,
                       ),
                     );
                   },
