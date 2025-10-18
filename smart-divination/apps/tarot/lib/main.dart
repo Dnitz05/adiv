@@ -1742,31 +1742,14 @@ class _HomeState extends State<_Home> {
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: TarotTheme.moonlight,
-                                      height: 1.4,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: 'Tirada: ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: TarotTheme.cosmicAccent,
-                                          letterSpacing: 0.3,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: spread.localizedName(
-                                            localisation.localeName),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: TarotTheme.moonlight,
-                                        ),
-                                      ),
-                                    ],
+                                child: Text(
+                                  spread.localizedName(localisation.localeName),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: TarotTheme.cosmicAccent,
+                                    letterSpacing: 0.3,
+                                    height: 1.4,
                                   ),
                                 ),
                               ),

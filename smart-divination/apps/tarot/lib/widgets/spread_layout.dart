@@ -66,7 +66,8 @@ class SpreadLayout extends StatelessWidget {
 
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final TextStyle labelStyle = (theme.textTheme.bodySmall ?? const TextStyle(fontSize: 11)).copyWith(
+    final TextStyle labelStyle =
+        (theme.textTheme.bodySmall ?? const TextStyle(fontSize: 11)).copyWith(
       fontWeight: FontWeight.w600,
       letterSpacing: 0.6,
       height: 1.2,
@@ -95,7 +96,9 @@ class SpreadLayout extends StatelessWidget {
               ),
           // Show actual cards on top
           if (hasCards)
-            for (int i = 0; i < cards.length && i < spread.positions.length; i++)
+            for (int i = 0;
+                i < cards.length && i < spread.positions.length;
+                i++)
               _buildPositionedCard(
                 card: cards[i],
                 index: i,
@@ -204,12 +207,9 @@ class SpreadLayout extends StatelessWidget {
     final double finalLeft = (position.x * containerWidth) - (cardWidth / 2);
     final double finalTop = (position.y * containerHeight) - (cardHeight / 2);
 
-    // Realistic card dealing animation: cards come from bottom center
-    final double startLeft = (containerWidth / 2) - (cardWidth / 2);
-    final double startTop = containerHeight + cardHeight;
-
-    final double left = isDealt ? finalLeft : startLeft;
-    final double top = isDealt ? finalTop : startTop;
+    if (!isDealt) {
+      return const SizedBox.shrink();
+    }
 
     final bool isReversed = card.upright == false;
     final double baseRotation = position.rotation;
@@ -233,8 +233,7 @@ class SpreadLayout extends StatelessWidget {
       ],
     );
 
-    final Widget backFace =
-        _buildCardWidget(card, cardWidth, cardHeight, true);
+    final Widget backFace = _buildCardWidget(card, cardWidth, cardHeight, true);
 
     // Get localized card name
     final String localizedName = CardNameLocalizer.localize(card.name, locale);
@@ -253,14 +252,18 @@ class SpreadLayout extends StatelessWidget {
       ),
     );
 
-    // Wrap card with column to add name label below when revealed
     final Widget cardWithLabel = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(
-          width: cardWidth,
-          height: cardHeight,
-          child: rotatedCard,
+        _MysticMaterialize(
+          isVisible: isDealt,
+          cardWidth: cardWidth,
+          cardHeight: cardHeight,
+          child: SizedBox(
+            width: cardWidth,
+            height: cardHeight,
+            child: rotatedCard,
+          ),
         ),
         const SizedBox(height: _labelSpacing),
         SizedBox(
@@ -289,17 +292,10 @@ class SpreadLayout extends StatelessWidget {
       ],
     );
 
-    return AnimatedPositioned(
-      duration: const Duration(milliseconds: 800),
-      curve: Curves.easeOutCubic, // Smooth, realistic deceleration
-      left: left,
-      top: top,
-      child: AnimatedScale(
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeOutBack, // Slight bounce effect
-        scale: isDealt ? 1.0 : 0.8,
-        child: cardWithLabel,
-      ),
+    return Positioned(
+      left: finalLeft,
+      top: finalTop,
+      child: cardWithLabel,
     );
   }
 
@@ -479,8 +475,8 @@ class SpreadLayout extends StatelessWidget {
     }
 
     // Use JPG for card fronts
-    final String imagePath = card.imageUrl ??
-        CardImageMapper.getCardImagePath(card.name, card.suit);
+    final String imagePath =
+        card.imageUrl ?? CardImageMapper.getCardImagePath(card.name, card.suit);
 
     return Container(
       width: width,
@@ -542,6 +538,238 @@ class SpreadLayout extends StatelessWidget {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _MysticMaterialize extends StatefulWidget {
+  const _MysticMaterialize({
+    required this.isVisible,
+    required this.cardWidth,
+    required this.cardHeight,
+    required this.child,
+  });
+
+  final bool isVisible;
+  final double cardWidth;
+  final double cardHeight;
+  final Widget child;
+
+  @override
+  State<_MysticMaterialize> createState() => _MysticMaterializeState();
+}
+
+class _MysticMaterializeState extends State<_MysticMaterialize>
+    with SingleTickerProviderStateMixin {
+  static const List<Offset> _sparkleOffsets = <Offset>[
+    Offset(-0.45, -0.38),
+    Offset(0.5, -0.32),
+    Offset(-0.5, 0.36),
+    Offset(0.42, 0.42),
+  ];
+
+  late final AnimationController _controller;
+  late final Animation<double> _opacity;
+  late final Animation<double> _scale;
+  late final Animation<double> _dust;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 720),
+    );
+    _opacity = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
+    );
+    _scale = Tween<double>(begin: 0.84, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+    );
+    _dust = CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0.0, 0.75, curve: Curves.easeOut),
+    );
+
+    if (widget.isVisible) {
+      // Trigger the apparition as soon as the card becomes visible.
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _MysticMaterialize oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!oldWidget.isVisible && widget.isVisible) {
+      _controller.forward(from: 0);
+    } else if (oldWidget.isVisible && !widget.isVisible) {
+      _controller.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widget.cardWidth,
+      height: widget.cardHeight,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          final double opacity = widget.isVisible ? _opacity.value : 0.0;
+          final double dustOpacity = _dust.value.clamp(0.0, 1.0);
+          final double progress = _controller.value;
+
+          return Opacity(
+            opacity: opacity,
+            child: Transform.scale(
+              scale: _scale.value,
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  if (dustOpacity > 0)
+                    _MysticDustHalo(
+                      opacity: dustOpacity,
+                      width: widget.cardWidth,
+                      height: widget.cardHeight,
+                      progress: progress,
+                      sparkleOffsets: _sparkleOffsets,
+                    ),
+                  child!,
+                ],
+              ),
+            ),
+          );
+        },
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+class _MysticDustHalo extends StatelessWidget {
+  const _MysticDustHalo({
+    required this.opacity,
+    required this.width,
+    required this.height,
+    required this.progress,
+    required this.sparkleOffsets,
+  });
+
+  final double opacity;
+  final double width;
+  final double height;
+  final double progress;
+  final List<Offset> sparkleOffsets;
+
+  @override
+  Widget build(BuildContext context) {
+    final double eased = Curves.easeOut.transform(progress.clamp(0.0, 1.0));
+    final double haloSize = math.max(width, height) * (1.15 + 0.12 * eased);
+
+    return IgnorePointer(
+      child: Opacity(
+        opacity: opacity,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              width: haloSize,
+              height: haloSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    TarotTheme.cosmicAccent.withOpacity(0.22 * opacity),
+                    TarotTheme.subtleGold.withOpacity(0.16 * opacity),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                ),
+              ),
+            ),
+            Container(
+              width: width * (0.9 + 0.1 * eased),
+              height: height * (0.9 + 0.1 * eased),
+              decoration: BoxDecoration(
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.18 * opacity),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+            for (int i = 0; i < sparkleOffsets.length; i++)
+              Transform.translate(
+                offset: Offset(
+                  sparkleOffsets[i].dx * width,
+                  sparkleOffsets[i].dy * height,
+                ),
+                child: _SparkleParticle(
+                  size: math.max(width, height) *
+                      (0.08 + (0.02 * (sparkleOffsets.length - i))),
+                  opacity: (0.72 - i * 0.14).clamp(0.0, 1.0) * opacity,
+                  progress: eased,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SparkleParticle extends StatelessWidget {
+  const _SparkleParticle({
+    required this.size,
+    required this.opacity,
+    required this.progress,
+  });
+
+  final double size;
+  final double opacity;
+  final double progress;
+
+  @override
+  Widget build(BuildContext context) {
+    final double clampedOpacity = opacity.clamp(0.0, 1.0);
+    if (clampedOpacity <= 0) {
+      return const SizedBox.shrink();
+    }
+
+    final double pulse = 0.85 + 0.15 * math.sin(progress * math.pi);
+    final double dimension = size * pulse;
+
+    return Container(
+      width: dimension,
+      height: dimension,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [
+            Colors.white.withOpacity(clampedOpacity),
+            TarotTheme.cosmicAccent.withOpacity(clampedOpacity * 0.75),
+            Colors.transparent,
+          ],
+          stops: const [0.0, 0.55, 1.0],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: TarotTheme.cosmicAccent.withOpacity(clampedOpacity * 0.9),
+            blurRadius: dimension,
+            spreadRadius: dimension * 0.18,
+          ),
         ],
       ),
     );

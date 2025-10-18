@@ -74,8 +74,10 @@ Rules:
 - Life overview → astrological
 - Year planning → year_ahead
 
-Respond ONLY with JSON: {"spreadId":"exact_id_from_list","reason":"brief explanation"}
-Keep reason under 100 chars.`;
+IMPORTANT: Respond ONLY with clean JSON, no extra text or explanations.
+Format: {"spreadId":"exact_id_from_list","reason":"brief explanation in user's language"}
+The "reason" field should be a direct, friendly explanation (max 100 chars).
+Do NOT include phrases like "Key factors detected" or technical analysis.`;
 }
 
 /**
