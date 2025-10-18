@@ -6,12 +6,7 @@ import {
   applyStandardResponseHeaders,
   handleCorsPreflight,
 } from '../../../lib/utils/nextApi';
-import {
-  baseRequestSchema,
-  createRequestId,
-  log,
-  parseApiRequest,
-} from '../../../lib/utils/api';
+import { baseRequestSchema, createRequestId, log, parseApiRequest } from '../../../lib/utils/api';
 import { SPREADS } from '../../../lib/data/spreads';
 
 const CORS_CONFIG = { methods: 'OPTIONS, POST' };
