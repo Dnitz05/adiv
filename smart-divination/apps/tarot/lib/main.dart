@@ -2143,6 +2143,90 @@ class _HomeState extends State<_Home> {
   }
 
   /// Build a styled bubble for a single card interpretation
+  /// Build text with floated image (newspaper-style layout)
+  /// Image floats on the left, text flows next to it and continues below
+  Widget _buildTextWithFloatedImage({
+    required String cardImage,
+    required bool isReversed,
+    required String interpretationText,
+  }) {
+    // Capitalize first letter of text
+    final capitalizedText = interpretationText.isNotEmpty
+        ? interpretationText[0].toUpperCase() + interpretationText.substring(1)
+        : interpretationText;
+
+    const imageWidth = 70.0;
+    const imageHeight = 112.0;
+    const gap = 12.0;
+
+    final textStyle = TextStyle(
+      fontSize: 15,
+      color: TarotTheme.moonlight,
+      height: 1.6,
+      letterSpacing: 0.2,
+    );
+
+    // Build the image widget
+    final imageWidget = Container(
+      width: imageWidth,
+      height: imageHeight,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Transform(
+          alignment: Alignment.center,
+          transform: isReversed
+              ? (Matrix4.identity()..rotateZ(math.pi))
+              : Matrix4.identity(),
+          child: Image.asset(
+            cardImage,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: TarotTheme.cosmicPurple,
+                child: Icon(
+                  Icons.image_not_supported,
+                  color: TarotTheme.stardust,
+                  size: 30,
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    // Use Row for text beside image, then full-width text below
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            imageWidget,
+            const SizedBox(width: gap),
+            Expanded(
+              child: Text(
+                capitalizedText,
+                style: textStyle,
+                maxLines: null, // Allow text to wrap and continue below if needed
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildCardInterpretationBubble(
     Map<String, dynamic> section,
     CommonStrings localisation,
@@ -2175,7 +2259,7 @@ class _HomeState extends State<_Home> {
         ? (lowercardName.contains('conclusi')
             ? Icons.check_circle_outline
             : Icons.lightbulb_outline)
-        : Icons.auto_awesome;
+        : Icons.style; // Card-related icon for tarot cards
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -2222,80 +2306,25 @@ class _HomeState extends State<_Home> {
             ],
           ),
           const SizedBox(height: 12),
-          // Body: Card Image (only for actual cards) + Interpretation Text
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Card image on the left (only for actual cards, not special sections)
-              if (!isSpecialSection && cardImage != null)
-                Container(
-                  width: 70,
-                  height: 112,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Transform(
-                      alignment: Alignment.center,
-                      transform: isReversed
-                          ? (Matrix4.identity()..rotateZ(math.pi))
-                          : Matrix4.identity(),
-                      child: Image.asset(
-                        cardImage,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: TarotTheme.cosmicPurple,
-                            child: Icon(
-                              Icons.image_not_supported,
-                              color: TarotTheme.stardust,
-                              size: 30,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              if (!isSpecialSection && cardImage == null)
-                // Placeholder for cards without image
-                Container(
-                  width: 70,
-                  height: 112,
-                  decoration: BoxDecoration(
-                    color: TarotTheme.cosmicPurple,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.style,
-                    color: TarotTheme.stardust,
-                    size: 30,
-                  ),
-                ),
-              if (!isSpecialSection && cardImage != null)
-                const SizedBox(width: 12),
-              // Interpretation text on the right
-              Expanded(
-                child: Text(
-                  interpretationText,
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: TarotTheme.moonlight,
-                    height: 1.6,
-                    letterSpacing: 0.2,
-                  ),
-                ),
+          // Body: Card Image (floated left) + Interpretation Text (wrapping around)
+          if (!isSpecialSection && cardImage != null)
+            // Newspaper-style layout: image on left, text wraps around
+            _buildTextWithFloatedImage(
+              cardImage: cardImage,
+              isReversed: isReversed,
+              interpretationText: interpretationText,
+            )
+          else
+            // No image: just show text (for special sections or missing images)
+            Text(
+              interpretationText,
+              style: TextStyle(
+                fontSize: 15,
+                color: TarotTheme.moonlight,
+                height: 1.6,
+                letterSpacing: 0.2,
               ),
-            ],
-          ),
+            ),
         ],
       ),
     );
