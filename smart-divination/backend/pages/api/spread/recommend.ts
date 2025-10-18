@@ -275,7 +275,8 @@ function generateReasoning(
 
   const keywordSummaryCa = keywords.length > 0 ? keywords.join(', ') : 'el que sents ara mateix';
   const keywordSummaryEs = keywords.length > 0 ? keywords.join(', ') : 'lo que sientes ahora mismo';
-  const keywordSummaryEn = keywords.length > 0 ? keywords.join(', ') : 'what is moving inside you right now';
+  const keywordSummaryEn =
+    keywords.length > 0 ? keywords.join(', ') : 'what is moving inside you right now';
 
   const reasons = {
     ca: `He escollit la tirada "${spread.nameCA}" perquè acompanya molt bé ${categoryCa}. ${spread.cardCount === 1 ? 'Aquesta carta' : `Les ${spread.cardCount} cartes`} treballen ${complexityCa} per oferir-te una lectura coherent i amable. Els matisos que expresses (${keywordSummaryCa}) es miraran amb sensibilitat perquè puguis sentir amb serenor els propers passos.`,
