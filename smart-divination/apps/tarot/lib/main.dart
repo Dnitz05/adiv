@@ -908,11 +908,6 @@ class _HomeState extends State<_Home> {
           (formattedQuestion != null && formattedQuestion.trim().isNotEmpty)
               ? formattedQuestion.trim()
               : _formatQuestionLabel(baseQuestion);
-      if (shouldNudgeUser &&
-          formattedQuestion != null &&
-          formattedQuestion.trim().isNotEmpty) {
-        _showGeneralTip(localisation);
-      }
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
       try {
@@ -1985,11 +1980,27 @@ class _HomeState extends State<_Home> {
     final cardImages = <String, String>{};
     for (final card in cards) {
       final imagePath = CardImageMapper.getCardImagePath(card.name, card.suit);
-      cardImages[card.name.toLowerCase()] = imagePath;
+      final originalLower = card.name.toLowerCase();
       final localizedKey =
           CardNameLocalizer.localize(card.name, localisation.localeName)
               .toLowerCase();
+
+      // Add multiple variants to improve matching
+      cardImages[originalLower] = imagePath;
       cardImages[localizedKey] = imagePath;
+
+      // Also add version without "the" prefix
+      final withoutThe = originalLower.replaceFirst(RegExp(r'^the\s+'), '');
+      if (withoutThe != originalLower) {
+        cardImages[withoutThe] = imagePath;
+      }
+
+      // Add version without "el/la/els/les" prefix for localized
+      final withoutArticle = localizedKey.replaceFirst(
+          RegExp(r'^(el|la|els|les|the)\s+', caseSensitive: false), '');
+      if (withoutArticle != localizedKey) {
+        cardImages[withoutArticle] = imagePath;
+      }
     }
 
     return Column(
@@ -2083,10 +2094,21 @@ class _HomeState extends State<_Home> {
           ? '$localizedCardName (${localisation.cardOrientationReversed})'
           : localizedCardName;
 
-      // Find card image
+      // Find card image with multiple fallback strategies
       final lookupKey = cardName.toLowerCase();
-      final cardImage =
-          cardImages[lookupKey] ?? cardImages[localizedCardName.toLowerCase()];
+      String? cardImage = cardImages[lookupKey];
+
+      // Fallback 1: try localized name
+      if (cardImage == null) {
+        cardImage = cardImages[localizedCardName.toLowerCase()];
+      }
+
+      // Fallback 2: try without articles
+      if (cardImage == null) {
+        final withoutArticle = lookupKey.replaceFirst(
+            RegExp(r'^(the|el|la|els|les)\s+', caseSensitive: false), '');
+        cardImage = cardImages[withoutArticle];
+      }
 
       // Add card header with image
       widgets.add(
@@ -2120,8 +2142,38 @@ class _HomeState extends State<_Home> {
                       child: Image.asset(
                         cardImage,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Show icon if image fails to load
+                          return Container(
+                            color: TarotTheme.cosmicPurple,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              color: TarotTheme.stardust,
+                              size: 30,
+                            ),
+                          );
+                        },
                       ),
                     ),
+                  ),
+                )
+              else
+                // Show icon if no image found
+                Container(
+                  width: 70,
+                  height: 112,
+                  decoration: BoxDecoration(
+                    color: TarotTheme.cosmicPurple,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: TarotTheme.twilightPurple,
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.style,
+                    color: TarotTheme.cosmicAccent,
+                    size: 30,
                   ),
                 ),
               const SizedBox(width: 12),

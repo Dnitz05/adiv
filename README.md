@@ -29,6 +29,7 @@ The dev server listens on `http://localhost:3001`. See `.env.production.example`
 - `POST /api/draw/coins` - I Ching throws. Returns 503 unless `ENABLE_ICHING=true`; when enabled it delivers full 64-hexagram analysis, session persistence, and artefact stubs.
 - `POST /api/draw/runes` - Elder Futhark rune casts. Returns 503 unless `ENABLE_RUNES=true`; when enabled it outputs rune metadata, orientation, and persists the session envelope.
 - `POST /api/chat/interpret` - AI interpretation pipeline (DeepSeek). Persists generated messages and artefacts when Supabase credentials are present.
+- `POST /api/questions/format` - AI question formatter used by the tarot client; requires `DEEPSEEK_API_KEY` and falls back to local capitalisation when unavailable.
 - `POST /api/sessions` - canonical session creation endpoint for mobile clients and background jobs.
 - `GET /api/sessions/[userId]`, `GET /api/users/[userId]/profile`, `GET /api/users/[userId]/can-start-session` - session history and eligibility backed by the `session_history_expanded` view.
 - `GET /api/metrics`, `GET /api/health` - local observability endpoints (in-memory metrics with optional Datadog forwarder).
@@ -68,7 +69,7 @@ The tarot client consumes live Supabase history and interpretations. The I Ching
 - Pack metadata lives in `backend/data/packs/manifests.json` and is loaded through `lib/packs/manifestRegistry.ts` with checksum validation.
 
 ## Release Status & Next Steps
-- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore `upload-keystore.jks`, `key.properties` configured). Signed release APK/AAB generated and tested (55MB APK, 45.7MB AAB). Build blockers resolved (app_links compileSdk, intl 0.20.0). App successfully runs on physical device. iOS signing and store metadata pending.
+- **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore `upload-keystore.jks`, `key.properties` configured). Signed release APK/AAB generated and tested (55MB APK, 45.7MB AAB). Build blockers resolved (app_links compileSdk, intl 0.20.0). App successfully runs on physical device. iOS signing and store metadata pending. Header and spread rationale now leverage the AI formatter even for 'Consulta General', prompting users to add detail when no question was provided.
 - **Backend**: Production environment live at `https://backend-4sircya71-dnitzs-projects.vercel.app` with health/metrics endpoints operational. Deployed on 2025-10-05.
 - **Database**: Supabase production migrations applied. Schema complete with RLS policies active.
 - **Security**: All credentials secure. Security incident from 2025-10-05 resolved on 2025-10-06 (all exposed secrets rotated). See `SECURITY_INCIDENT_RESPONSE.md` for details.
