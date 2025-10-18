@@ -908,15 +908,19 @@ class _HomeState extends State<_Home> {
           (formattedQuestion != null && formattedQuestion.trim().isNotEmpty)
               ? formattedQuestion.trim()
               : _formatQuestionLabel(baseQuestion);
+
+      // Use displayQuestion for everything (both UI and backend)
+      final String finalQuestion = displayQuestion;
+
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
       try {
         print(
-            '🔮 Calling AI spread recommendation for question: $baseQuestion');
+            '🔮 Calling AI spread recommendation for question: $finalQuestion');
 
         // Use non-streaming endpoint for now (streaming endpoint has deployment issues)
         final recommendation = await recommendSpread(
-          question: baseQuestion,
+          question: finalQuestion,
           locale: localeCode,
           // Don't pass onReasoningChunk to use non-streaming endpoint
         );
@@ -947,7 +951,7 @@ class _HomeState extends State<_Home> {
         spread: selectedSpread.id,
         allowReversed: true,
         seed: seed.isEmpty ? null : seed,
-        question: baseQuestion,
+        question: finalQuestion,
         locale: localeCode,
       );
       if (!mounted) {
@@ -961,7 +965,7 @@ class _HomeState extends State<_Home> {
         _revealedCardCount = 0;
         _revealingCards = false;
         _requestingInterpretation = false;
-        _currentQuestion = baseQuestion;
+        _currentQuestion = finalQuestion;
         _displayQuestion = displayQuestion;
         _selectedSpread = selectedSpread; // Update to AI-selected spread
         _spreadRecommendationReason = recommendationReason;

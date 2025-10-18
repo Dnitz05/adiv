@@ -1,6 +1,6 @@
 # Project Status (October 2025)
 
-Last Updated: 2025-10-16
+Last Updated: 2025-10-18
 
 ## Current Status: Android Release Ready
 **Focus:** Android signing complete. App successfully tested on physical device. Ready for Play Store assets creation and submission.
@@ -21,6 +21,14 @@ Completed work (total ~45 minutes once secrets were available):
 3. Configure Android signing for CI/CD (20 min)
 4. Fix Android build failure (app_links compileSdk)
 5. Finish localisation migration to CommonStrings
+
+## Recent Progress (2025-10-18)
+
+### UX & AI polish
+- Added the AI question formatter endpoint (`POST /api/questions/format`) and updated the Flutter client so even “Consulta General” passes through DeepSeek before hitting the backend.
+- When the user leaves the prompt empty, the app now nudges them with a localized tip and still performs the draw using a contextual general question.
+- Backend draw endpoint now reuses the canonical spread catalog, preventing `INVALID_SPREAD` errors when the recommender picks spreads like `two_card` or `five_card_cross`.
+- Spread reasoning text was rewritten to be more empathetic and didactic in CA/ES/EN without the old “Key factors detected…” boilerplate.
 
 ## Recent Progress (2025-10-13)
 
