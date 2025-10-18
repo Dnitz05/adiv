@@ -6,10 +6,10 @@
 import { log } from '../utils/api';
 import { SPREADS, type SpreadDefinition } from '../data/spreads';
 
-// Model configuration - using R1 for better reasoning
+// Model configuration - using deepseek-chat for speed and reliability
 const DEEPSEEK_URL = process.env.DEEPSEEK_API_URL ?? 'https://api.deepseek.com/v1/chat/completions';
-// Use DeepSeek R1 (reasoner) for intelligent spread selection
-const MODEL = process.env.DEEPSEEK_MODEL?.trim() || 'deepseek-reasoner';
+// Use DeepSeek Chat (fast, reliable model for spread selection)
+const MODEL = process.env.DEEPSEEK_MODEL?.trim() || 'deepseek-chat';
 
 interface SpreadSelection {
   spreadId: string;
