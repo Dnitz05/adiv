@@ -650,6 +650,7 @@ class _HomeState extends State<_Home> {
   String? _currentQuestion;
   bool _drawing = false;
   bool _requestingInterpretation = false;
+  bool _showInterpretation = false; // Controls whether interpretation is visible
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
   String? _spreadRecommendationReason; // AI reasoning for spread selection
   String? _lastQuestionLocale;
@@ -973,6 +974,7 @@ class _HomeState extends State<_Home> {
         _revealedCardCount = 0;
         _revealingCards = false;
         _requestingInterpretation = false;
+        _showInterpretation = false;
         _currentQuestion = finalQuestion;
         _displayQuestion = displayQuestion;
         _selectedSpread = selectedSpread; // Update to AI-selected spread
@@ -1033,6 +1035,7 @@ class _HomeState extends State<_Home> {
       _revealedCardCount = 0;
       _revealingCards = false;
       _requestingInterpretation = false;
+      _showInterpretation = false;
       _currentQuestion = null;
       _spreadRecommendationReason = null;
       _lastQuestionLocale = null;
@@ -1649,7 +1652,7 @@ class _HomeState extends State<_Home> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.auto_awesome),
-                  label: const Text('Consulta'),
+                  label: const Text('Consultar'),
                 ),
               ],
             ),
@@ -1857,7 +1860,7 @@ class _HomeState extends State<_Home> {
                       shadowColor: TarotTheme.cosmicAccent.withOpacity(0.4),
                     ),
                     icon: const Icon(Icons.style, size: 20),
-                    label: const Text('Repartir cartas'),
+                    label: const Text('Repartir'),
                   ),
                 ]
                 // Phase 1: Dealing in progress
@@ -1878,7 +1881,7 @@ class _HomeState extends State<_Home> {
                       foregroundColor: TarotTheme.moonlight,
                     ),
                     icon: const Icon(Icons.visibility, size: 20),
-                    label: Text(localisation.revealCards),
+                    label: const Text('Revelar'),
                   ),
                 ]
                 // Phase 2: Revealing in progress
@@ -1889,10 +1892,39 @@ class _HomeState extends State<_Home> {
                   ),
                 ],
                 // Phase 3: Request interpretation (Interpretar)
-                // Show interpretation header (always visible when cards revealed)
+                // Show "Interpretar" button when cards revealed and interpretation not shown yet
                 if (allCardsRevealed &&
                     draw.sessionId != null &&
-                    draw.sessionId!.isNotEmpty) ...[
+                    draw.sessionId!.isNotEmpty &&
+                    !_showInterpretation) ...[
+                  if (_requestingInterpretation)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: CircularProgressIndicator(),
+                    )
+                  else
+                    FilledButton.icon(
+                      onPressed: () {
+                        if (interpretation == null) {
+                          _requestInterpretation();
+                        }
+                        setState(() {
+                          _showInterpretation = true;
+                        });
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: TarotTheme.cosmicAccent,
+                        foregroundColor: TarotTheme.moonlight,
+                      ),
+                      icon: const Icon(Icons.auto_stories_outlined, size: 20),
+                      label: const Text('Interpretar'),
+                    ),
+                ]
+                // Phase 4: Show interpretation content when button clicked
+                else if (allCardsRevealed &&
+                    draw.sessionId != null &&
+                    draw.sessionId!.isNotEmpty &&
+                    _showInterpretation) ...[
                   const SizedBox(height: 12),
                   Builder(
                     builder: (context) {
@@ -1932,124 +1964,24 @@ class _HomeState extends State<_Home> {
                         );
                       }
 
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: interpretation == null &&
-                                    !_requestingInterpretation
-                                ? _requestInterpretation
-                                : null,
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 12),
-                              decoration: BoxDecoration(
-                                color: TarotTheme.midnightBlue,
-                                gradient: LinearGradient(
-                                  colors: interpretation != null ||
-                                          _requestingInterpretation
-                                      ? [
-                                          TarotTheme.cosmicAccent
-                                              .withOpacity(0.15),
-                                          TarotTheme.cosmicAccent
-                                              .withOpacity(0.08),
-                                        ]
-                                      : [
-                                          TarotTheme.cosmicBlue
-                                              .withOpacity(0.2),
-                                          TarotTheme.cosmicBlue
-                                              .withOpacity(0.1),
-                                        ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: TarotTheme.twilightPurple
-                                      .withOpacity(0.2),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.auto_stories_outlined,
-                                        color: interpretation != null ||
-                                                _requestingInterpretation
-                                            ? TarotTheme.cosmicAccent
-                                            : TarotTheme.cosmicBlue,
-                                        size: 18,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: Text(
-                                          'Interpretación',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w700,
-                                            color: interpretation != null ||
-                                                    _requestingInterpretation
-                                                ? TarotTheme.cosmicAccent
-                                                : TarotTheme.cosmicBlue,
-                                            letterSpacing: 0.3,
-                                            height: 1.4,
-                                          ),
-                                        ),
-                                      ),
-                                      if (_requestingInterpretation)
-                                        SizedBox(
-                                          width: 16,
-                                          height: 16,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                              TarotTheme.cosmicAccent,
-                                            ),
-                                          ),
-                                        )
-                                      else if (interpretation == null)
-                                        Icon(
-                                          Icons.touch_app,
-                                          color: TarotTheme.cosmicBlue
-                                              .withOpacity(0.6),
-                                          size: 16,
-                                        ),
-                                    ],
-                                  ),
-                                  if (interpretationSummary != null &&
-                                      interpretationSummary!.isNotEmpty) ...[
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      interpretationSummary!,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: TarotTheme.moonlight,
-                                        height: 1.6,
-                                        letterSpacing: 0.2,
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                          ),
-                          if (interpretation != null) ...[
-                            const SizedBox(height: 16),
-                            _buildInterpretationContent(
-                              interpretation,
-                              theme,
-                              accentColor,
-                              draw.result,
-                              localisation,
-                              precomputedSections: interpretationSections,
-                            ),
-                          ],
-                        ],
-                      );
+                      // Show interpretation content directly
+                      if (interpretation != null) {
+                        return _buildInterpretationContent(
+                          interpretation,
+                          theme,
+                          accentColor,
+                          draw.result,
+                          localisation,
+                          precomputedSections: interpretationSections,
+                        );
+                      } else if (_requestingInterpretation) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
                     },
                   ),
                 ],
