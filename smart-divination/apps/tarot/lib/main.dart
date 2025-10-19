@@ -1964,24 +1964,102 @@ class _HomeState extends State<_Home> {
                         );
                       }
 
-                      // Show interpretation content directly
-                      if (interpretation != null) {
-                        return _buildInterpretationContent(
-                          interpretation,
-                          theme,
-                          accentColor,
-                          draw.result,
-                          localisation,
-                          precomputedSections: interpretationSections,
-                        );
-                      } else if (_requestingInterpretation) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8),
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        return const SizedBox.shrink();
-                      }
+                      // Show interpretation header bubble and content
+                      return Column(
+                        children: [
+                          // Interpretation header bubble
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: TarotTheme.midnightBlue,
+                              gradient: LinearGradient(
+                                colors: [
+                                  TarotTheme.cosmicAccent.withOpacity(0.15),
+                                  TarotTheme.cosmicAccent.withOpacity(0.08),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: TarotTheme.twilightPurple.withOpacity(0.2),
+                                width: 1,
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.auto_stories_outlined,
+                                      color: TarotTheme.cosmicAccent,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        'Interpretación',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w700,
+                                          color: TarotTheme.cosmicAccent,
+                                          letterSpacing: 0.3,
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                    if (_requestingInterpretation)
+                                      SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                            TarotTheme.cosmicAccent,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                if (interpretationSummary != null &&
+                                    interpretationSummary!.isNotEmpty) ...[
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    interpretationSummary!,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: TarotTheme.moonlight,
+                                      height: 1.6,
+                                      letterSpacing: 0.2,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                          // Interpretation content
+                          if (interpretation != null) ...[
+                            const SizedBox(height: 16),
+                            _buildInterpretationContent(
+                              interpretation,
+                              theme,
+                              accentColor,
+                              draw.result,
+                              localisation,
+                              precomputedSections: interpretationSections,
+                            ),
+                          ] else if (_requestingInterpretation) ...[
+                            const SizedBox(height: 16),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: CircularProgressIndicator(),
+                            ),
+                          ],
+                        ],
+                      );
                     },
                   ),
                 ],
