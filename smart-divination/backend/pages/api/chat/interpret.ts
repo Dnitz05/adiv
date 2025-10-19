@@ -159,13 +159,20 @@ function buildInterpretationPrompt(params: {
   const cardNamesRef = drawnCards.length > 0
     ? [
         '',
-        'CRITICAL: Use these EXACT card names (your cards for this reading):',
+        'CRITICAL: Use these EXACT card names for titles:',
         ...drawnCards.map((c, i) => {
-          const orientation = c.upright ? '' : ` (${locale === 'ca' ? 'Invertit' : locale === 'es' ? 'Invertida' : 'Reversed'})`;
           const name = locale === 'ca' ? c.ca : locale === 'es' ? c.es : c.en;
-          return `${i + 1}. **${name}${orientation}**`;
+          const orientationNote = c.upright
+            ? ''
+            : ` - ${locale === 'ca' ? 'apareix invertida' : locale === 'es' ? 'aparece invertida' : 'appears reversed'}`;
+          return `${i + 1}. **${name}** ${orientationNote}`;
         }),
-        'Use these names EXACTLY as shown above. Do NOT translate or modify them.',
+        '',
+        'IMPORTANT RULES:',
+        '- Use card names EXACTLY as shown (without orientation markers in the title)',
+        '- For reversed cards, mention the reversal NATURALLY in the interpretation text',
+        `- Example: "**El Loco** te invita... Esta carta aparece invertida, lo que indica..."`,
+        '- Do NOT add (Invertida), (Invertit), or (Reversed) to the card title',
         '',
       ].join('\n')
     : '';
@@ -176,8 +183,6 @@ function buildInterpretationPrompt(params: {
     'Brief tarot insight (250-350 words):',
     'Write a flowing, narrative interpretation with clear structure.',
     'Start with a brief opening, describe each card naturally with **🃏 Card Name** in bold.',
-    'IMPORTANT: Use the EXACT card names provided below. Do NOT translate or change them.',
-    'For reversed cards, the orientation marker is already included in the name below.',
     '',
     'Then add two final sections with these exact titles:',
     '**Síntesis**: Synthesize the overall meaning (2-3 sentences)',
