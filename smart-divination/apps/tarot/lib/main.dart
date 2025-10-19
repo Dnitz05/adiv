@@ -1930,6 +1930,8 @@ class _HomeState extends State<_Home> {
                     builder: (context) {
                       String? interpretationSummary;
                       List<Map<String, dynamic>>? interpretationSections;
+                      Map<String, dynamic>? interpretationSynthesis;
+                      Map<String, dynamic>? interpretationGuide;
 
                       if (interpretation != null) {
                         final cardImages = _buildInterpretationCardImageLookup(
@@ -1962,6 +1964,12 @@ class _HomeState extends State<_Home> {
                               (section) =>
                                   Map<String, dynamic>.from(section as Map)),
                         );
+
+                        interpretationSynthesis =
+                            parsedInterpretation['synthesis'] as Map<String, dynamic>?;
+
+                        interpretationGuide =
+                            parsedInterpretation['guide'] as Map<String, dynamic>?;
                       }
 
                       // Show interpretation header bubble and content
@@ -2050,6 +2058,8 @@ class _HomeState extends State<_Home> {
                               draw.result,
                               localisation,
                               precomputedSections: interpretationSections,
+                              precomputedSynthesis: interpretationSynthesis,
+                              precomputedGuide: interpretationGuide,
                             ),
                           ] else if (_requestingInterpretation) ...[
                             const SizedBox(height: 16),
@@ -2119,16 +2129,26 @@ class _HomeState extends State<_Home> {
       Color accentColor,
       List<CardResult> cards,
       CommonStrings localisation,
-      {List<Map<String, dynamic>>? precomputedSections}) {
+      {List<Map<String, dynamic>>? precomputedSections,
+      Map<String, dynamic>? precomputedSynthesis,
+      Map<String, dynamic>? precomputedGuide}) {
+    final parsed = _parseInterpretationSections(
+      interpretation.interpretation,
+      _buildInterpretationCardImageLookup(cards, localisation),
+      localisation,
+    );
+
     final List<Map<String, dynamic>> cardSections = precomputedSections ??
         List<Map<String, dynamic>>.from(
-          (_parseInterpretationSections(
-            interpretation.interpretation,
-            _buildInterpretationCardImageLookup(cards, localisation),
-            localisation,
-          )['cardSections'] as List)
+          (parsed['cardSections'] as List)
               .map((section) => Map<String, dynamic>.from(section as Map)),
         );
+
+    final Map<String, dynamic>? synthesis =
+        precomputedSynthesis ?? parsed['synthesis'] as Map<String, dynamic>?;
+
+    final Map<String, dynamic>? guide =
+        precomputedGuide ?? parsed['guide'] as Map<String, dynamic>?;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -2137,16 +2157,36 @@ class _HomeState extends State<_Home> {
         ...cardSections.asMap().entries.map((entry) {
           final index = entry.key;
           final section = entry.value;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                _buildCardInterpretationBubble(section, localisation, theme),
-                if (index < cardSections.length - 1) const SizedBox(height: 12),
-              ],
-            ),
+          return Column(
+            children: [
+              _buildCardInterpretationBubble(section, localisation, theme),
+              if (index < cardSections.length - 1) const SizedBox(height: 12),
+            ],
           );
         }).toList(),
+
+        // Síntesis section (if present)
+        if (synthesis != null) ...[
+          const SizedBox(height: 12),
+          _buildSpecialSectionBubble(
+            synthesis['sectionName'] as String,
+            synthesis['sectionText'] as String,
+            Icons.check_circle_outline,
+            theme,
+          ),
+        ],
+
+        // Guía section (if present)
+        if (guide != null) ...[
+          const SizedBox(height: 12),
+          _buildSpecialSectionBubble(
+            guide['sectionName'] as String,
+            guide['sectionText'] as String,
+            Icons.lightbulb_outline,
+            theme,
+          ),
+        ],
+
         const SizedBox(height: 16),
       ],
     );
@@ -2340,7 +2380,79 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  /// Parse interpretation into summary and card sections
+  /// Build a styled bubble for special sections (Síntesis, Guía)
+  Widget _buildSpecialSectionBubble(
+    String sectionName,
+    String sectionText,
+    IconData icon,
+    ThemeData theme,
+  ) {
+    // Capitalize first letter of text
+    final capitalizedText = sectionText.isNotEmpty
+        ? sectionText[0].toUpperCase() + sectionText.substring(1)
+        : sectionText;
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: TarotTheme.midnightBlue,
+        gradient: LinearGradient(
+          colors: [
+            TarotTheme.cosmicAccent.withOpacity(0.15),
+            TarotTheme.cosmicAccent.withOpacity(0.08),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: TarotTheme.twilightPurple.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header: Icon + Section Name
+          Row(
+            children: [
+              Icon(
+                icon,
+                color: TarotTheme.cosmicAccent,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  sectionName,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: TarotTheme.cosmicAccent,
+                    letterSpacing: 0.3,
+                    height: 1.4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Body: Section Text
+          Text(
+            capitalizedText,
+            style: TextStyle(
+              fontSize: 15,
+              color: TarotTheme.moonlight,
+              height: 1.6,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Parse interpretation into summary, card sections, and special sections
   Map<String, dynamic> _parseInterpretationSections(
     String markdown,
     Map<String, String> cardImages,
@@ -2355,6 +2467,8 @@ class _HomeState extends State<_Home> {
       return {
         'summary': markdown,
         'cardSections': <Map<String, dynamic>>[],
+        'synthesis': null,
+        'guide': null,
       };
     }
 
@@ -2363,8 +2477,10 @@ class _HomeState extends State<_Home> {
     final summary =
         firstCardStart > 0 ? markdown.substring(0, firstCardStart).trim() : '';
 
-    // Extract card sections
+    // Extract card sections and special sections
     final List<Map<String, dynamic>> cardSections = [];
+    Map<String, dynamic>? synthesis;
+    Map<String, dynamic>? guide;
 
     for (int i = 0; i < matches.length; i++) {
       final match = matches[i];
@@ -2401,6 +2517,27 @@ class _HomeState extends State<_Home> {
           .replaceAll(RegExp(r'\s*invertit\s*', caseSensitive: false), '')
           .trim();
 
+      // Check if this is a special section (Síntesis or Guía)
+      final isSpecialSection = loweredName.contains('síntesi') ||
+          loweredName.contains('síntesis') ||
+          loweredName.contains('guía') ||
+          loweredName.contains('guia');
+
+      if (isSpecialSection) {
+        // Store as special section
+        final sectionData = {
+          'sectionName': cardName,
+          'sectionText': interpretationText,
+        };
+
+        if (loweredName.contains('síntesi') || loweredName.contains('síntesis')) {
+          synthesis = sectionData;
+        } else if (loweredName.contains('guía') || loweredName.contains('guia')) {
+          guide = sectionData;
+        }
+        continue; // Don't add to card sections
+      }
+
       // Find card image
       final lookupKey = cardName.toLowerCase();
       String? cardImage = cardImages[lookupKey];
@@ -2428,6 +2565,8 @@ class _HomeState extends State<_Home> {
     return {
       'summary': summary,
       'cardSections': cardSections,
+      'synthesis': synthesis,
+      'guide': guide,
     };
   }
 
