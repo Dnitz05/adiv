@@ -76,6 +76,7 @@ type DeepSeekParams = {
   locale: string;
   model?: string;
   temperature?: number;
+  drawnCards?: Array<{ en: string; es: string; ca: string; upright: boolean }>;
 };
 
 function cleanMetadata(source: Record<string, unknown>): Record<string, unknown> {
@@ -121,18 +122,15 @@ function formatResultsForPrompt(results: JsonRecord, technique: string): string 
   return JSON.stringify(results);
 }
 
-function buildInterpretationPrompt(params: {
-  technique: string;
-  locale: string;
-  question?: string | null;
-  results: JsonRecord;
-}): string {
-  const { technique, locale, question, results } = params;
-  const questionText = question?.trim() ?? 'No specific question.';
-  const spread = typeof results.spread === 'string' ? results.spread : 'unknown';
-
-  // Extract drawn cards and build canonical names reference
+/**
+ * Extract canonical card names from results
+ */
+function extractDrawnCards(
+  results: JsonRecord,
+  technique: string
+): Array<{ en: string; es: string; ca: string; upright: boolean }> {
   const drawnCards: Array<{ en: string; es: string; ca: string; upright: boolean }> = [];
+
   if (technique === 'tarot' && Array.isArray(results.cards)) {
     for (const card of results.cards) {
       // Type guard: ensure card is an object
@@ -155,24 +153,60 @@ function buildInterpretationPrompt(params: {
     }
   }
 
-  // Build card names reference for the AI
-  const cardNamesRef = drawnCards.length > 0
+  return drawnCards;
+}
+
+/**
+ * Replace card placeholders with canonical names
+ * Converts **[CARD_0]**, **[CARD_1]**, etc. to actual localized card names
+ */
+function replaceCardPlaceholders(
+  markdown: string,
+  drawnCards: Array<{ en: string; es: string; ca: string; upright: boolean }>,
+  locale: string
+): string {
+  let result = markdown;
+
+  // Replace each placeholder with the canonical card name
+  drawnCards.forEach((card, index) => {
+    const placeholder = `**[CARD_${index}]**`;
+    const cardName = locale === 'ca' ? card.ca : locale === 'es' ? card.es : card.en;
+    result = result.replaceAll(placeholder, `**${cardName}**`);
+  });
+
+  return result;
+}
+
+function buildInterpretationPrompt(params: {
+  technique: string;
+  locale: string;
+  question?: string | null;
+  results: JsonRecord;
+}): string {
+  const { technique, locale, question, results } = params;
+  const questionText = question?.trim() ?? 'No specific question.';
+  const spread = typeof results.spread === 'string' ? results.spread : 'unknown';
+
+  // Extract drawn cards
+  const drawnCards = extractDrawnCards(results, technique);
+
+  // Build card placeholders reference for the AI
+  const cardPlaceholdersRef = drawnCards.length > 0
     ? [
         '',
-        'CRITICAL: Use these EXACT card names for titles:',
+        'CRITICAL: Use these CARD PLACEHOLDERS in your interpretation:',
         ...drawnCards.map((c, i) => {
-          const name = locale === 'ca' ? c.ca : locale === 'es' ? c.es : c.en;
           const orientationNote = c.upright
-            ? ''
-            : ` - ${locale === 'ca' ? 'apareix invertida' : locale === 'es' ? 'aparece invertida' : 'appears reversed'}`;
-          return `${i + 1}. **${name}** ${orientationNote}`;
+            ? 'upright'
+            : `${locale === 'ca' ? 'apareix invertida' : locale === 'es' ? 'aparece invertida' : 'appears reversed'}`;
+          return `${i + 1}. **[CARD_${i}]** - ${orientationNote}`;
         }),
         '',
         'IMPORTANT RULES:',
-        '- Use card names EXACTLY as shown (without orientation markers in the title)',
+        '- Use **[CARD_0]**, **[CARD_1]**, etc. as card titles (system will replace with actual names)',
         '- For reversed cards, mention the reversal NATURALLY in the interpretation text',
-        `- Example: "**El Loco** te invita... Esta carta aparece invertida, lo que indica..."`,
-        '- Do NOT add (Invertida), (Invertit), or (Reversed) to the card title',
+        `- Example: "**[CARD_0]** te invita... Esta carta aparece invertida, lo que indica..."`,
+        '- Do NOT invent or translate card names - ONLY use the placeholders shown above',
         '',
       ].join('\n')
     : '';
@@ -182,13 +216,13 @@ function buildInterpretationPrompt(params: {
     '',
     'Brief tarot insight (250-350 words):',
     'Write a flowing, narrative interpretation with clear structure.',
-    'Start with a brief opening, describe each card naturally with **🃏 Card Name** in bold.',
+    'Start with a brief opening, describe each card naturally using the placeholders provided.',
     '',
     'Then add two final sections with these exact titles:',
     '**Síntesis**: Synthesize the overall meaning (2-3 sentences)',
     '**Guía**: Provide practical, actionable guidance (2-3 sentences)',
     '',
-    cardNamesRef,
+    cardPlaceholdersRef,
     'Style: mystical + practical.',
     `Lang: ${locale}`,
     `Q: ${questionText}`,
@@ -339,8 +373,14 @@ async function generateInterpretationFromDeepSeek(
           : 'not a string',
     });
 
-    const interpretation =
+    let interpretation =
       typeof interpretationValue === 'string' ? interpretationValue : content.trim();
+
+    // Replace card placeholders with canonical names
+    if (params.drawnCards && params.drawnCards.length > 0) {
+      interpretation = replaceCardPlaceholders(interpretation, params.drawnCards, params.locale);
+    }
+
     const summary = typeof summaryValue === 'string' ? summaryValue : undefined;
     const keywords = Array.isArray(keywordsValue)
       ? (keywordsValue as unknown[])
@@ -357,8 +397,15 @@ async function generateInterpretationFromDeepSeek(
       debug: { envApiKeyPresent: Boolean(envApiKey), resolvedModel },
     };
   } catch {
+    let interpretation = cleanedContent;
+
+    // Replace card placeholders with canonical names (even in error case)
+    if (params.drawnCards && params.drawnCards.length > 0) {
+      interpretation = replaceCardPlaceholders(interpretation, params.drawnCards, params.locale);
+    }
+
     return {
-      interpretation: cleanedContent,
+      interpretation,
       keywords: [],
       debug: { envApiKeyPresent: Boolean(envApiKey), resolvedModel },
     };
@@ -435,6 +482,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!interpretation || interpretation.length === 0) {
     try {
+      const drawnCards = extractDrawnCards(results, technique);
       const generated = await generateInterpretationFromDeepSeek({
         sessionId: input.sessionId,
         results,
@@ -443,6 +491,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         locale,
         model: input.model,
         temperature: input.temperature,
+        drawnCards,
       });
       if (generated) {
         interpretation = generated.interpretation.trim();
