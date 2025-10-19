@@ -13,6 +13,7 @@ import 'api/interpretation_api.dart';
 import 'api/user_profile_api.dart';
 import 'api/spread_recommendation_api.dart';
 import 'api/question_format_api.dart';
+import 'api/question_edit_api.dart';
 import 'user_identity.dart';
 import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
@@ -650,7 +651,8 @@ class _HomeState extends State<_Home> {
   String? _currentQuestion;
   bool _drawing = false;
   bool _requestingInterpretation = false;
-  bool _showInterpretation = false; // Controls whether interpretation is visible
+  bool _showInterpretation =
+      false; // Controls whether interpretation is visible
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
   String? _spreadRecommendationReason; // AI reasoning for spread selection
   String? _lastQuestionLocale;
@@ -905,13 +907,27 @@ class _HomeState extends State<_Home> {
       } catch (error) {
         print('⚠️  Question formatting failed: $error');
       }
-      final String displayQuestion =
+      final String formattedOrFallback =
           (formattedQuestion != null && formattedQuestion.trim().isNotEmpty)
               ? formattedQuestion.trim()
               : _formatQuestionLabel(baseQuestion);
 
-      // Use displayQuestion for everything (both UI and backend)
-      final String finalQuestion = displayQuestion;
+      String editedQuestion = formattedOrFallback;
+      try {
+        final editResult = await editQuestion(
+          question: formattedOrFallback,
+          locale: localeCode,
+        );
+        if (editResult.edited.isNotEmpty) {
+          editedQuestion = editResult.edited;
+        }
+      } on Exception catch (error) {
+        debugPrint('🪄 Question editing failed: $error');
+      }
+
+      // Use edited question for display and backend interactions
+      final String finalQuestion = editedQuestion;
+      final String displayQuestion = editedQuestion;
 
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
@@ -1748,7 +1764,8 @@ class _HomeState extends State<_Home> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 8), // Extra spacing after question header
+                const SizedBox(
+                    height: 8), // Extra spacing after question header
                 // Show spread info always (not just when placeholders are visible)
                 Builder(
                   builder: (context) {
@@ -1966,10 +1983,11 @@ class _HomeState extends State<_Home> {
                         );
 
                         interpretationSynthesis =
-                            parsedInterpretation['synthesis'] as Map<String, dynamic>?;
+                            parsedInterpretation['synthesis']
+                                as Map<String, dynamic>?;
 
-                        interpretationGuide =
-                            parsedInterpretation['guide'] as Map<String, dynamic>?;
+                        interpretationGuide = parsedInterpretation['guide']
+                            as Map<String, dynamic>?;
                       }
 
                       // Show interpretation header bubble and content
@@ -1991,7 +2009,8 @@ class _HomeState extends State<_Home> {
                               ),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: TarotTheme.twilightPurple.withOpacity(0.2),
+                                color:
+                                    TarotTheme.twilightPurple.withOpacity(0.2),
                                 width: 1,
                               ),
                             ),
@@ -2193,8 +2212,7 @@ class _HomeState extends State<_Home> {
   }
 
   /// Build a styled bubble for a single card interpretation
-  /// Build text with floated image (newspaper-style layout)
-  /// Image floats on the left, text flows next to it and continues below
+  /// Build text with an inline image that keeps flowing beneath it
   Widget _buildTextWithFloatedImage({
     required String cardImage,
     required bool isReversed,
@@ -2205,8 +2223,8 @@ class _HomeState extends State<_Home> {
         ? interpretationText[0].toUpperCase() + interpretationText.substring(1)
         : interpretationText;
 
-    const imageWidth = 70.0;
-    const imageHeight = 112.0;
+    const imageWidth = 62.0;
+    const imageHeight = 108.0;
     const gap = 12.0;
 
     final textStyle = TextStyle(
@@ -2216,7 +2234,6 @@ class _HomeState extends State<_Home> {
       letterSpacing: 0.2,
     );
 
-    // Build the image widget
     final imageWidget = Container(
       width: imageWidth,
       height: imageHeight,
@@ -2255,25 +2272,20 @@ class _HomeState extends State<_Home> {
       ),
     );
 
-    // Use Row for text beside image, then full-width text below
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            imageWidget,
-            const SizedBox(width: gap),
-            Expanded(
-              child: Text(
-                capitalizedText,
-                style: textStyle,
-                maxLines: null, // Allow text to wrap and continue below if needed
-              ),
+    return RichText(
+      text: TextSpan(
+        style: textStyle,
+        children: [
+          WidgetSpan(
+            alignment: PlaceholderAlignment.top,
+            child: Padding(
+              padding: const EdgeInsets.only(right: gap, bottom: 6),
+              child: imageWidget,
             ),
-          ],
-        ),
-      ],
+          ),
+          TextSpan(text: capitalizedText),
+        ],
+      ),
     );
   }
 
@@ -2530,9 +2542,11 @@ class _HomeState extends State<_Home> {
           'sectionText': interpretationText,
         };
 
-        if (loweredName.contains('síntesi') || loweredName.contains('síntesis')) {
+        if (loweredName.contains('síntesi') ||
+            loweredName.contains('síntesis')) {
           synthesis = sectionData;
-        } else if (loweredName.contains('guía') || loweredName.contains('guia')) {
+        } else if (loweredName.contains('guía') ||
+            loweredName.contains('guia')) {
           guide = sectionData;
         }
         continue; // Don't add to card sections
