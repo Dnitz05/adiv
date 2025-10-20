@@ -25,6 +25,7 @@ import 'services/daily_quote_service.dart';
 import 'services/audio_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
+import 'screens/splash_screen.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
@@ -81,6 +82,7 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
   Session? _session;
   _AuthFlow _authFlow = _AuthFlow.anonymous;
   StreamSubscription<AuthState>? _authSubscription;
+  bool _showSplash = true;
 
   @override
   void initState() {
@@ -112,6 +114,12 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
     });
   }
 
+  void _completeSplash() {
+    setState(() {
+      _showSplash = false;
+    });
+  }
+
   @override
   void dispose() {
     _authSubscription?.cancel();
@@ -131,6 +139,16 @@ class _SmartTarotAppState extends State<SmartTarotApp> {
 
   @override
   Widget build(BuildContext context) {
+    // Show splash screen first
+    if (_showSplash) {
+      return MaterialApp(
+        title: 'Smart Tarot',
+        debugShowCheckedModeBanner: false,
+        theme: TarotTheme.darkTheme,
+        home: SplashScreen(onComplete: _completeSplash),
+      );
+    }
+
     final Widget home;
     switch (_authFlow) {
       case _AuthFlow.passwordRecovery:
