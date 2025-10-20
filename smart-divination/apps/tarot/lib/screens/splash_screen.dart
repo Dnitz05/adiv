@@ -18,10 +18,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _bannerController;
-  late AnimationController _pulseController;
+  late AnimationController _logoController;
   late AnimationController _rotationController;
   late Animation<Offset> _bannerAnimation;
-  late Animation<double> _pulseAnimation;
+  late Animation<double> _logoOpacityAnimation;
+  late Animation<double> _logoScaleAnimation;
   late Animation<double> _rotationAnimation;
 
   @override
@@ -42,18 +43,26 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.easeOut,
     ));
 
-    // Logo pulse animation (fade in/out)
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+    // Logo materialization animation (fade in + scale up from background)
+    _logoController = AnimationController(
+      duration: const Duration(milliseconds: 2500),
       vsync: this,
     );
 
-    _pulseAnimation = Tween<double>(
+    _logoOpacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _logoController,
+      curve: const Interval(0.0, 0.6, curve: Curves.easeIn),
+    ));
+
+    _logoScaleAnimation = Tween<double>(
       begin: 0.3,
       end: 1.0,
     ).animate(CurvedAnimation(
-      parent: _pulseController,
-      curve: Curves.easeInOut,
+      parent: _logoController,
+      curve: Curves.easeOutBack,
     ));
 
     // Starry rotation animation (accelerating from center)
@@ -72,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Start animations
     _bannerController.forward();
-    _pulseController.repeat(reverse: true);
+    _logoController.forward();
     _rotationController.repeat();
 
     // Complete splash after 3 seconds
@@ -86,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void dispose() {
     _bannerController.dispose();
-    _pulseController.dispose();
+    _logoController.dispose();
     _rotationController.dispose();
     super.dispose();
   }
@@ -137,16 +146,24 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
 
-            // Pulsing logo on top
+            // Materializing logo on top (larger size)
             Center(
-              child: FadeTransition(
-                opacity: _pulseAnimation,
-                child: Image.asset(
-                  'assets/app_icon/icon.png',
-                  width: 120,
-                  height: 120,
-                  fit: BoxFit.contain,
-                ),
+              child: AnimatedBuilder(
+                animation: _logoController,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _logoOpacityAnimation.value,
+                    child: Transform.scale(
+                      scale: _logoScaleAnimation.value,
+                      child: Image.asset(
+                        'assets/app_icon/icon.png',
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
