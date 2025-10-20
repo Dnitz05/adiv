@@ -125,28 +125,7 @@ class _SplashScreenState extends State<SplashScreen>
               },
             ),
 
-            // Banner sliding from left to right
-            Align(
-              alignment: Alignment.center,
-              child: SlideTransition(
-                position: _bannerAnimation,
-                child: Image.asset(
-                  'assets/banner.png',
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    // Fallback to home_banner if banner.png doesn't exist
-                    return Image.asset(
-                      'assets/home_banner.png',
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      fit: BoxFit.contain,
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            // Materializing logo on top (larger size)
+            // Materializing logo (FIRST, behind banner)
             Center(
               child: AnimatedBuilder(
                 animation: _logoController,
@@ -155,15 +134,53 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _logoOpacityAnimation.value,
                     child: Transform.scale(
                       scale: _logoScaleAnimation.value,
-                      child: Image.asset(
-                        'assets/app_icon/icon.png',
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.contain,
+                      child: Container(
+                        width: 220,
+                        height: 220,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: TarotTheme.cosmicAccent.withOpacity(0.3),
+                              blurRadius: 30,
+                              spreadRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: Image.asset(
+                          'assets/app_icon/icon.png',
+                          width: 220,
+                          height: 220,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   );
                 },
+              ),
+            ),
+
+            // Banner sliding from left to right (ON TOP of logo)
+            Align(
+              alignment: Alignment.center,
+              child: SlideTransition(
+                position: _bannerAnimation,
+                child: Opacity(
+                  opacity: 0.95,
+                  child: Image.asset(
+                    'assets/banner.png',
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      // Fallback to home_banner if banner.png doesn't exist
+                      return Image.asset(
+                        'assets/home_banner.png',
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        fit: BoxFit.contain,
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           ],
