@@ -134,25 +134,48 @@ class _SplashScreenState extends State<SplashScreen>
                     opacity: _logoOpacityAnimation.value,
                     child: Transform.scale(
                       scale: _logoScaleAnimation.value,
-                      child: Container(
-                        width: 220,
-                        height: 220,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: TarotTheme.cosmicAccent.withOpacity(0.3),
-                              blurRadius: 30,
-                              spreadRadius: 10,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 250,
+                            height: 250,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: TarotTheme.deepNight.withOpacity(0.8),
+                              border: Border.all(
+                                color: TarotTheme.cosmicAccent.withOpacity(0.5),
+                                width: 2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: TarotTheme.cosmicAccent.withOpacity(0.4),
+                                  blurRadius: 40,
+                                  spreadRadius: 5,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: Image.asset(
-                          'assets/app_icon/icon.png',
-                          width: 220,
-                          height: 220,
-                          fit: BoxFit.contain,
-                        ),
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/app_icon/icon.png',
+                                width: 210,
+                                height: 210,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  // Debug: show error if image doesn't load
+                                  return Container(
+                                    color: Colors.red,
+                                    child: const Center(
+                                      child: Icon(Icons.error, color: Colors.white, size: 50),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   );
