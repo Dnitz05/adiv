@@ -27,10 +27,7 @@ const editRequestSchema = baseRequestSchema.extend({
 
 type EditRequestBody = z.infer<typeof editRequestSchema>;
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<void> {
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
   const requestId = createRequestId();
   const startTime = Date.now();
 

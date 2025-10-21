@@ -26,7 +26,7 @@ import {
 } from '../../../lib/utils/supabase';
 import { recordApiMetric } from '../../../lib/utils/metrics';
 import { extractKeywords } from '../../../lib/utils/text';
-import { getCardByEnglishName, CARD_NAMES } from '../../../lib/data/card-names';
+import { getCardByEnglishName } from '../../../lib/data/card-names';
 import { isUsingGemini } from '../../../lib/services/ai-provider';
 import { interpretCardsWithGemini } from '../../../lib/services/gemini-ai';
 
@@ -193,25 +193,26 @@ function buildInterpretationPrompt(params: {
   const drawnCards = extractDrawnCards(results, technique);
 
   // Build card placeholders reference for the AI
-  const cardPlaceholdersRef = drawnCards.length > 0
-    ? [
-        '',
-        'CRITICAL: Use these CARD PLACEHOLDERS in your interpretation:',
-        ...drawnCards.map((c, i) => {
-          const orientationNote = c.upright
-            ? 'upright'
-            : `${locale === 'ca' ? 'apareix invertida' : locale === 'es' ? 'aparece invertida' : 'appears reversed'}`;
-          return `${i + 1}. **[CARD_${i}]** - ${orientationNote}`;
-        }),
-        '',
-        'IMPORTANT RULES:',
-        '- Use **[CARD_0]**, **[CARD_1]**, etc. as card titles (system will replace with actual names)',
-        '- For reversed cards, mention the reversal NATURALLY in the interpretation text',
-        `- Example: "**[CARD_0]** te invita... Esta carta aparece invertida, lo que indica..."`,
-        '- Do NOT invent or translate card names - ONLY use the placeholders shown above',
-        '',
-      ].join('\n')
-    : '';
+  const cardPlaceholdersRef =
+    drawnCards.length > 0
+      ? [
+          '',
+          'CRITICAL: Use these CARD PLACEHOLDERS in your interpretation:',
+          ...drawnCards.map((c, i) => {
+            const orientationNote = c.upright
+              ? 'upright'
+              : `${locale === 'ca' ? 'apareix invertida' : locale === 'es' ? 'aparece invertida' : 'appears reversed'}`;
+            return `${i + 1}. **[CARD_${i}]** - ${orientationNote}`;
+          }),
+          '',
+          'IMPORTANT RULES:',
+          '- Use **[CARD_0]**, **[CARD_1]**, etc. as card titles (system will replace with actual names)',
+          '- For reversed cards, mention the reversal NATURALLY in the interpretation text',
+          `- Example: "**[CARD_0]** te invita... Esta carta aparece invertida, lo que indica..."`,
+          '- Do NOT invent or translate card names - ONLY use the placeholders shown above',
+          '',
+        ].join('\n')
+      : '';
 
   const promptLines = [
     'JSON: {"interpretation": "markdown", "summary": "title <120 chars", "keywords": ["key1", "key2"]}',
@@ -510,7 +511,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           };
         });
 
-        let geminiInterpretation = await interpretCardsWithGemini(
+        const geminiInterpretation = await interpretCardsWithGemini(
           question || 'General reading',
           cards,
           spreadName,
