@@ -42,7 +42,7 @@ class DrawFullScreenFlow extends StatelessWidget {
     required this.interpretationContent,
     required this.localisation,
     required this.onClose,
-    required this.onBriefingContinue,
+    required this.onStartDealing,
     required this.onDeal,
     required this.onReveal,
     required this.onInterpret,
@@ -63,7 +63,7 @@ class DrawFullScreenFlow extends StatelessWidget {
   final Widget? interpretationContent;
   final CommonStrings localisation;
   final VoidCallback onClose;
-  final VoidCallback onBriefingContinue;
+  final Future<void> Function() onStartDealing;
   final Future<void> Function() onDeal;
   final Future<void> Function() onReveal;
   final Future<void> Function() onInterpret;
@@ -73,43 +73,42 @@ class DrawFullScreenFlow extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget content;
     switch (step) {
-      case FullScreenStep.briefing:
-        content = _BriefingStep(
-          key: const ValueKey('briefing'),
+      case FullScreenStep.spreadPresentation:
+        content = _SpreadPresentationStep(
+          key: const ValueKey('presentation'),
           question: question,
           recommendation: recommendation,
           spread: spread,
           localisation: localisation,
           onClose: onClose,
-          onContinue: onBriefingContinue,
+          onStartDealing: onStartDealing,
         );
         break;
-      case FullScreenStep.spread:
-        content = _SpreadStep(
-          key: const ValueKey('spread'),
-          question: question,
-          recommendation: recommendation,
+      case FullScreenStep.dealing:
+        content = _DealingStep(
+          key: const ValueKey('dealing'),
           spread: spread,
           cards: cards,
           dealtCardCount: dealtCardCount,
           dealingCards: dealingCards,
-          revealedCardCount: revealedCardCount,
-          revealingCards: revealingCards,
-          requestingInterpretation: requestingInterpretation,
-          interpretationAvailable: interpretationAvailable,
           localisation: localisation,
           onClose: onClose,
-          onDeal: onDeal,
           onReveal: onReveal,
-          onInterpret: onInterpret,
+        );
+        break;
+      case FullScreenStep.revealed:
+        content = _RevealedStep(
+          key: const ValueKey('revealed'),
+          spread: spread,
+          cards: cards,
+          localisation: localisation,
+          onClose: onClose,
           onShowInterpretation: onShowInterpretation,
         );
         break;
       case FullScreenStep.interpretation:
         content = _InterpretationStep(
           key: const ValueKey('interpretation'),
-          question: question,
-          spread: spread,
           interpretationContent: interpretationContent,
           localisation: localisation,
           onClose: onClose,
@@ -137,15 +136,19 @@ class DrawFullScreenFlow extends StatelessWidget {
   }
 }
 
-class _BriefingStep extends StatelessWidget {
-  const _BriefingStep({
+// ============================================================================
+// STEP 1: SPREAD PRESENTATION (Diagram + AI Reasoning)
+// ============================================================================
+
+class _SpreadPresentationStep extends StatelessWidget {
+  const _SpreadPresentationStep({
     super.key,
     required this.question,
     required this.recommendation,
     required this.spread,
     required this.localisation,
     required this.onClose,
-    required this.onContinue,
+    required this.onStartDealing,
   });
 
   final String question;
@@ -153,310 +156,334 @@ class _BriefingStep extends StatelessWidget {
   final TarotSpread spread;
   final CommonStrings localisation;
   final VoidCallback onClose;
-  final VoidCallback onContinue;
+  final Future<void> Function() onStartDealing;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _TopBar(onClose: onClose, title: localisation.appTitleTarot),
-          const SizedBox(height: 24),
-          Text(
-            _t(
-              localisation,
-              en: 'Prepare the reading',
-              es: 'Prepara la tirada',
-              ca: 'Prepara la tirada',
-            ),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: TarotTheme.moonlight,
-                  fontWeight: FontWeight.w600,
+    return Column(
+      children: [
+        // Scrollable content
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 40),
+
+                // Spread name
+                Text(
+                  spread.localizedName(localisation.localeName),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: TarotTheme.moonlight,
+                        fontWeight: FontWeight.w600,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
-          ),
-          const SizedBox(height: 20),
-          _InfoPanel(
-            icon: Icons.help_outline,
-            title: _t(
-              localisation,
-              en: 'Your question',
-              es: 'Tu pregunta',
-              ca: 'La teva pregunta',
+
+                const SizedBox(height: 24),
+
+                // Spread diagram (empty placeholders)
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Container(
+                      constraints: const BoxConstraints(maxHeight: 300),
+                      child: SpreadLayout(
+                        spread: spread,
+                        cards: const [], // Empty = show placeholders
+                        maxWidth: constraints.maxWidth > 0
+                            ? constraints.maxWidth
+                            : MediaQuery.of(context).size.width - 32,
+                        maxHeight: 300,
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 32),
+
+                // AI Reasoning
+                if (recommendation != null && recommendation!.isNotEmpty) ...[
+                  _InfoPanel(
+                    icon: Icons.psychology_outlined,
+                    title: _t(
+                      localisation,
+                      en: 'Why this spread?',
+                      es: '¿Por qué esta tirada?',
+                      ca: 'Per què aquesta tirada?',
+                    ),
+                    body: recommendation!,
+                  ),
+                ] else ...[
+                  _InfoPanel(
+                    icon: Icons.info_outline,
+                    title: spread.localizedName(localisation.localeName),
+                    body: spread.localizedDescription(localisation.localeName),
+                  ),
+                ],
+
+                const SizedBox(height: 24),
+              ],
             ),
-            body: question,
           ),
-          const SizedBox(height: 16),
-          _InfoPanel(
-            icon: Icons.style_outlined,
-            title: _t(
-              localisation,
-              en: 'Why this spread?',
-              es: '¿Por qué esta tirada?',
-              ca: 'Per què aquesta tirada?',
-            ),
-            body: recommendation ??
-                spread.localizedDescription(localisation.localeName),
-          ),
-          const Spacer(),
-          _PrimaryButton(
+        ),
+
+        // Sticky footer button
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: _PrimaryButton(
             label: _t(
               localisation,
-              en: 'Start the spread',
-              es: 'Iniciar la tirada',
-              ca: 'Començar la tirada',
+              en: 'Deal Cards',
+              es: 'Repartir Cartas',
+              ca: 'Repartir Cartes',
             ),
-            onPressed: onContinue,
+            onPressed: onStartDealing,
           ),
-          const SizedBox(height: 12),
-        ],
-      ),
-    );
-  }
-}
-
-class _SpreadStep extends StatelessWidget {
-  const _SpreadStep({
-    super.key,
-    required this.question,
-    required this.recommendation,
-    required this.spread,
-    required this.cards,
-    required this.dealtCardCount,
-    required this.dealingCards,
-    required this.revealedCardCount,
-    required this.revealingCards,
-    required this.requestingInterpretation,
-    required this.interpretationAvailable,
-    required this.localisation,
-    required this.onClose,
-    required this.onDeal,
-    required this.onReveal,
-    required this.onInterpret,
-    required this.onShowInterpretation,
-  });
-
-  final String question;
-  final String? recommendation;
-  final TarotSpread spread;
-  final List<TarotCard> cards;
-  final int dealtCardCount;
-  final bool dealingCards;
-  final int revealedCardCount;
-  final bool revealingCards;
-  final bool requestingInterpretation;
-  final bool interpretationAvailable;
-  final CommonStrings localisation;
-  final VoidCallback onClose;
-  final Future<void> Function() onDeal;
-  final Future<void> Function() onReveal;
-  final Future<void> Function() onInterpret;
-  final VoidCallback onShowInterpretation;
-
-  @override
-  Widget build(BuildContext context) {
-    final totalCards = cards.length;
-    final bool allDealt = dealtCardCount >= totalCards;
-    final bool allRevealed = revealedCardCount >= totalCards;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: _TopBar(
-              onClose: onClose,
-              title: spread.localizedName(localisation.localeName)),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: _InfoPanel(
-            icon: Icons.help_outline,
-            title: _t(
-              localisation,
-              en: 'Your question',
-              es: 'Tu pregunta',
-              ca: 'La teva pregunta',
-            ),
-            body: question,
-          ),
-        ),
-        if (recommendation != null) ...[
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: _InfoPanel(
-              icon: Icons.psychology_alt_outlined,
-              title: _t(
-                localisation,
-                en: 'Why this spread?',
-                es: '¿Por qué esta tirada?',
-                ca: 'Per què aquesta tirada?',
-              ),
-              body: recommendation!,
-            ),
-          ),
-        ],
-        const SizedBox(height: 12),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SpreadLayout(
-                  spread: spread,
-                  cards: cards,
-                  maxWidth: constraints.maxWidth,
-                  maxHeight: constraints.maxHeight,
-                  dealtCardCount: dealtCardCount,
-                  revealedCardCount: revealedCardCount,
-                  locale: localisation.localeName,
-                );
-              },
-            ),
-          ),
-        ),
-        _SpreadFooter(
-          allDealt: allDealt,
-          allRevealed: allRevealed,
-          dealingCards: dealingCards,
-          revealingCards: revealingCards,
-          requestingInterpretation: requestingInterpretation,
-          interpretationAvailable: interpretationAvailable,
-          localisation: localisation,
-          onDeal: onDeal,
-          onReveal: onReveal,
-          onInterpret: onInterpret,
-          onShowInterpretation: onShowInterpretation,
         ),
       ],
     );
   }
 }
 
+// ============================================================================
+// STEP 2: DEALING (Card by card animation)
+// ============================================================================
+
+class _DealingStep extends StatelessWidget {
+  const _DealingStep({
+    super.key,
+    required this.spread,
+    required this.cards,
+    required this.dealtCardCount,
+    required this.dealingCards,
+    required this.localisation,
+    required this.onClose,
+    required this.onReveal,
+  });
+
+  final TarotSpread spread;
+  final List<TarotCard> cards;
+  final int dealtCardCount;
+  final bool dealingCards;
+  final CommonStrings localisation;
+  final VoidCallback onClose;
+  final Future<void> Function() onReveal;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Show cards dealt so far (face down)
+                      SpreadLayout(
+                        spread: spread,
+                        cards: cards.take(dealtCardCount).toList(),
+                        maxWidth: constraints.maxWidth > 0
+                            ? constraints.maxWidth
+                            : MediaQuery.of(context).size.width - 32,
+                        maxHeight: MediaQuery.of(context).size.height * 0.6,
+                        revealedCardCount: 0, // All face down during dealing
+                      ),
+
+                      const SizedBox(height: 32),
+
+                      // Dealing indicator
+                      if (dealingCards) ...[
+                        const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            TarotTheme.cosmicAccent,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _t(
+                            localisation,
+                            en: 'Dealing cards...',
+                            es: 'Repartiendo cartas...',
+                            ca: 'Repartint cartes...',
+                          ),
+                          style: TextStyle(
+                            color: TarotTheme.stardust,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+
+        // Reveal button - only show when dealing is complete
+        if (!dealingCards)
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: _PrimaryButton(
+              label: _t(
+                localisation,
+                en: 'Reveal Cards',
+                es: 'Revelar Cartas',
+                ca: 'Revelar Cartes',
+              ),
+              onPressed: onReveal,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+// ============================================================================
+// STEP 3: REVEALED (All cards face up)
+// ============================================================================
+
+class _RevealedStep extends StatelessWidget {
+  const _RevealedStep({
+    super.key,
+    required this.spread,
+    required this.cards,
+    required this.localisation,
+    required this.onClose,
+    required this.onShowInterpretation,
+  });
+
+  final TarotSpread spread;
+  final List<TarotCard> cards;
+  final CommonStrings localisation;
+  final VoidCallback onClose;
+  final VoidCallback onShowInterpretation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    // All cards revealed
+                    SpreadLayout(
+                      spread: spread,
+                      cards: cards,
+                      maxWidth: constraints.maxWidth > 0
+                          ? constraints.maxWidth
+                          : MediaQuery.of(context).size.width - 32,
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
+                      revealedCardCount: cards.length, // All revealed
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    Text(
+                      _t(
+                        localisation,
+                        en: 'Your cards have been revealed',
+                        es: 'Tus cartas han sido reveladas',
+                        ca: 'Les teves cartes han estat revelades',
+                      ),
+                      style: TextStyle(
+                        color: TarotTheme.moonlight,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+
+        // Button to see interpretation
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: _PrimaryButton(
+            label: _t(
+              localisation,
+              en: 'See Interpretation',
+              es: 'Ver Interpretación',
+              ca: 'Veure Interpretació',
+            ),
+            onPressed: onShowInterpretation,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ============================================================================
+// STEP 4: INTERPRETATION (Full AI reading)
+// ============================================================================
+
 class _InterpretationStep extends StatelessWidget {
   const _InterpretationStep({
     super.key,
-    required this.question,
-    required this.spread,
     required this.interpretationContent,
     required this.localisation,
     required this.onClose,
   });
 
-  final String question;
-  final TarotSpread spread;
   final Widget? interpretationContent;
   final CommonStrings localisation;
   final VoidCallback onClose;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _TopBar(
-            onClose: onClose,
-            title: _t(
-              localisation,
-              en: 'Interpretation',
-              es: 'Interpretación',
-              ca: 'Interpretació',
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                const SizedBox(height: 24),
+                interpretationContent ?? const SizedBox.shrink(),
+              ],
             ),
           ),
-          const SizedBox(height: 20),
-          _InfoPanel(
-            icon: Icons.help_outline,
-            title: _t(
-              localisation,
-              en: 'Your question',
-              es: 'Tu pregunta',
-              ca: 'La teva pregunta',
-            ),
-            body: question,
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: interpretationContent != null
-                ? SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    child: interpretationContent!,
-                  )
-                : Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const CircularProgressIndicator(),
-                        const SizedBox(height: 12),
-                        Text(
-                          _t(
-                            localisation,
-                            en: 'Loading interpretation...',
-                            es: 'Cargando interpretación...',
-                            ca: 'Carregant interpretació...',
-                          ),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(color: TarotTheme.moonlight),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-          ),
-          _PrimaryButton(
+        ),
+
+        // Back to chat button
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: _PrimaryButton(
             label: _t(
               localisation,
-              en: 'Back to chat',
-              es: 'Volver al chat',
-              ca: 'Torna al xat',
+              en: 'Back to Chat',
+              es: 'Volver al Chat',
+              ca: 'Torna al Xat',
             ),
             onPressed: onClose,
           ),
-          const SizedBox(height: 12),
-        ],
-      ),
-    );
-  }
-}
-
-class _TopBar extends StatelessWidget {
-  const _TopBar({super.key, required this.onClose, required this.title});
-
-  final VoidCallback onClose;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: onClose,
-          icon: const Icon(Icons.close, color: TarotTheme.moonlight),
         ),
-        Expanded(
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: TarotTheme.moonlight,
-                  fontWeight: FontWeight.w600,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(width: 48),
       ],
     );
   }
 }
 
+// ============================================================================
+// SHARED WIDGETS
+// ============================================================================
+
 class _InfoPanel extends StatelessWidget {
   const _InfoPanel({
-    super.key,
     required this.icon,
     required this.title,
     required this.body,
@@ -480,15 +507,16 @@ class _InfoPanel extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: TarotTheme.cosmicAccent, size: 18),
-              const SizedBox(width: 10),
+              Icon(icon, color: TarotTheme.cosmicAccent, size: 20),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: TarotTheme.cosmicAccent,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: const TextStyle(
+                    color: TarotTheme.cosmicAccent,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -496,10 +524,11 @@ class _InfoPanel extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             body,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(color: TarotTheme.moonlight, height: 1.6),
+            style: const TextStyle(
+              color: TarotTheme.moonlight,
+              fontSize: 15,
+              height: 1.6,
+            ),
           ),
         ],
       ),
@@ -508,125 +537,38 @@ class _InfoPanel extends StatelessWidget {
 }
 
 class _PrimaryButton extends StatelessWidget {
-  const _PrimaryButton({required this.label, required this.onPressed});
-
-  final String label;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: FilledButton(
-        onPressed: onPressed,
-        style: FilledButton.styleFrom(
-          backgroundColor: TarotTheme.cosmicAccent,
-          foregroundColor: TarotTheme.moonlight,
-          padding: const EdgeInsets.symmetric(vertical: 18),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        child: Text(label),
-      ),
-    );
-  }
-}
-
-class _SpreadFooter extends StatelessWidget {
-  const _SpreadFooter({
-    required this.allDealt,
-    required this.allRevealed,
-    required this.dealingCards,
-    required this.revealingCards,
-    required this.requestingInterpretation,
-    required this.interpretationAvailable,
-    required this.localisation,
-    required this.onDeal,
-    required this.onReveal,
-    required this.onInterpret,
-    required this.onShowInterpretation,
+  const _PrimaryButton({
+    required this.label,
+    required this.onPressed,
   });
 
-  final bool allDealt;
-  final bool allRevealed;
-  final bool dealingCards;
-  final bool revealingCards;
-  final bool requestingInterpretation;
-  final bool interpretationAvailable;
-  final CommonStrings localisation;
-  final Future<void> Function() onDeal;
-  final Future<void> Function() onReveal;
-  final Future<void> Function() onInterpret;
-  final VoidCallback onShowInterpretation;
+  final String label;
+  final dynamic onPressed;
 
   @override
   Widget build(BuildContext context) {
-    Widget child;
-
-    if (dealingCards || revealingCards) {
-      child = const _FooterProgress();
-    } else if (!allDealt) {
-      child = _PrimaryButton(
-        label: _t(
-          localisation,
-          en: 'Deal cards',
-          es: 'Repartir cartas',
-          ca: 'Repartir cartes',
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TarotTheme.cosmicAccent,
+          foregroundColor: TarotTheme.deepNight,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 4,
         ),
-        onPressed: () => onDeal(),
-      );
-    } else if (!allRevealed) {
-      child = _PrimaryButton(
-        label: _t(
-          localisation,
-          en: 'Reveal cards',
-          es: 'Revelar cartas',
-          ca: 'Revelar cartes',
+        child: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        onPressed: () => onReveal(),
-      );
-    } else if (requestingInterpretation) {
-      child = const _FooterProgress();
-    } else if (interpretationAvailable) {
-      child = _PrimaryButton(
-        label: _t(
-          localisation,
-          en: 'View interpretation',
-          es: 'Ver interpretación',
-          ca: 'Veure interpretació',
-        ),
-        onPressed: onShowInterpretation,
-      );
-    } else {
-      child = _PrimaryButton(
-        label: _t(
-          localisation,
-          en: 'Interpret the spread',
-          es: 'Interpretar la tirada',
-          ca: 'Interpretar la tirada',
-        ),
-        onPressed: () => onInterpret(),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      child: child,
-    );
-  }
-}
-
-class _FooterProgress extends StatelessWidget {
-  const _FooterProgress();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 22),
-        alignment: Alignment.center,
-        child: const CircularProgressIndicator(),
       ),
     );
   }
 }
+

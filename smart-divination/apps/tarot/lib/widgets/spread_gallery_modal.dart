@@ -120,28 +120,28 @@ class _SpreadRow extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              TarotTheme.cosmicBlue.withOpacity(isSelected ? 0.3 : 0.15),
-              TarotTheme.twilightPurple.withOpacity(isSelected ? 0.3 : 0.15),
+              TarotTheme.cosmicBlue.withValues(alpha: isSelected ? 0.3 : 0.15),
+              TarotTheme.twilightPurple.withValues(alpha: isSelected ? 0.3 : 0.15),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
                 ? TarotTheme.cosmicAccent
-                : TarotTheme.stardust.withOpacity(0.3),
+                : TarotTheme.stardust.withValues(alpha: 0.3),
             width: isSelected ? 3 : 1.5,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: TarotTheme.cosmicAccent.withOpacity(0.4),
+                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.4),
                     blurRadius: 16,
                     spreadRadius: 2,
                   ),
                 ]
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -161,10 +161,10 @@ class _SpreadRow extends StatelessWidget {
                     width: 72,
                     height: 72,
                     decoration: BoxDecoration(
-                      color: TarotTheme.deepNight.withOpacity(0.5),
+                      color: TarotTheme.deepNight.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: TarotTheme.cosmicAccent.withOpacity(0.3),
+                        color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
                         width: 1.5,
                       ),
                     ),
@@ -192,7 +192,7 @@ class _SpreadRow extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: TarotTheme.cosmicAccent.withOpacity(0.25),
+                            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -215,7 +215,7 @@ class _SpreadRow extends StatelessWidget {
                 _getSpreadUseCase(spread, locale),
                 style: TextStyle(
                   fontSize: 14,
-                  color: TarotTheme.stardust.withOpacity(0.95),
+                  color: TarotTheme.stardust.withValues(alpha: 0.95),
                   height: 1.5,
                 ),
               ),
@@ -290,7 +290,7 @@ class _SpreadRow extends StatelessWidget {
       return Icon(
         _getPlaceholderIcon(spread.id),
         size: 40,
-        color: TarotTheme.cosmicAccent.withOpacity(0.7),
+        color: TarotTheme.cosmicAccent.withValues(alpha: 0.7),
       );
     }
   }

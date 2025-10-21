@@ -13,7 +13,6 @@ import 'api/interpretation_api.dart';
 import 'api/user_profile_api.dart';
 import 'api/spread_recommendation_api.dart';
 import 'api/question_format_api.dart';
-import 'api/question_edit_api.dart';
 import 'user_identity.dart';
 import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
@@ -935,22 +934,9 @@ class _HomeState extends State<_Home> {
               ? formattedQuestion.trim()
               : _formatQuestionLabel(baseQuestion);
 
-      String editedQuestion = formattedOrFallback;
-      try {
-        final editResult = await editQuestion(
-          question: formattedOrFallback,
-          locale: localeCode,
-        );
-        if (editResult.edited.isNotEmpty) {
-          editedQuestion = editResult.edited;
-        }
-      } on Exception catch (error) {
-        debugPrint('🪄 Question editing failed: $error');
-      }
-
-      // Use edited question for display and backend interactions
-      final String finalQuestion = editedQuestion;
-      final String displayQuestion = editedQuestion;
+      // Use formatted question directly (no autocorrection)
+      final String finalQuestion = formattedOrFallback;
+      final String displayQuestion = formattedOrFallback;
 
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
@@ -1007,6 +993,7 @@ class _HomeState extends State<_Home> {
         _selectedSpread = selectedSpread; // Update to AI-selected spread
         _spreadRecommendationReason = recommendationReason;
       });
+      _enterFullScreenFlow();
 
       _enterFullScreenFlow();
 
@@ -1054,22 +1041,18 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  void _enterFullScreenFlow({bool autoAdvance = true}) {
+  void _enterFullScreenFlow() {
     _briefingAutoAdvanceTimer?.cancel();
     if (!mounted) {
       return;
     }
     setState(() {
-      _fullScreenStep = FullScreenStep.briefing;
+      _fullScreenStep = FullScreenStep.spreadPresentation;
+      _dealtCardCount = 0;
+      _dealingCards = false;
+      _revealedCardCount = 0;
+      _revealingCards = false;
     });
-    if (autoAdvance) {
-      _briefingAutoAdvanceTimer = Timer(const Duration(seconds: 2), () {
-        if (!mounted) {
-          return;
-        }
-        _handleBriefingContinue(autoTriggered: true);
-      });
-    }
   }
 
   void _exitFullScreenFlow({bool showInterpretation = false}) {
@@ -1111,44 +1094,6 @@ class _HomeState extends State<_Home> {
       if (mounted) {
         _questionFocusNode.requestFocus();
       }
-    });
-  }
-
-  Future<void> _dealCardsSequentially() async {
-    final draw = _latestDraw;
-    if (draw == null || _dealingCards) {
-      return;
-    }
-    setState(() {
-      _dealingCards = true;
-    });
-
-    final totalCards = draw.result.length;
-    const Duration dealDelay = Duration(milliseconds: 650);
-
-    for (var i = 0; i < totalCards; i++) {
-      if (!mounted) {
-        return;
-      }
-      if (i > 0) {
-        await Future.delayed(dealDelay);
-      }
-      if (!mounted) {
-        return;
-      }
-      // Play card flip sound (same as when revealing)
-      AudioService().playCardFlip();
-      setState(() {
-        _dealtCardCount = i + 1;
-      });
-    }
-
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _dealingCards = false;
     });
   }
 
@@ -1674,15 +1619,6 @@ class _HomeState extends State<_Home> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          '¿Qué quieres consultar?',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.normal,
-            color: TarotTheme.moonlight85,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 12),
         Card(
           color: TarotTheme.midnightBlue70,
           child: Padding(
@@ -1693,8 +1629,14 @@ class _HomeState extends State<_Home> {
                 TextField(
                   controller: _questionController,
                   focusNode: _questionFocusNode,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontSize: 18, // 2 punts més gran que el default (16)
+                  ),
                   decoration: InputDecoration(
                     labelText: localisation.askQuestion,
+                    labelStyle: theme.textTheme.bodyLarge?.copyWith(
+                      fontSize: 18,
+                    ),
                   ),
                   maxLines: 2,
                 ),
@@ -1734,18 +1676,32 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  void _handleBriefingContinue({bool autoTriggered = false}) {
-    _briefingAutoAdvanceTimer?.cancel();
-    _briefingAutoAdvanceTimer = null;
-    if (_fullScreenStep != FullScreenStep.briefing) {
+  Future<void> _handleStartDealing() async {
+    if (_fullScreenStep != FullScreenStep.spreadPresentation) {
       return;
     }
     setState(() {
-      _fullScreenStep = FullScreenStep.spread;
+      _fullScreenStep = FullScreenStep.dealing;
+      _dealtCardCount = 0;
+      _dealingCards = true;
     });
-    if (autoTriggered && !_dealingCards && _dealtCardCount == 0) {
-      _dealCardsSequentially();
+
+    // Start card-by-card dealing with dynamic timing
+    await _dealCardsSequentially();
+
+    // After dealing completes, stay in dealing step
+    // User must press "Reveal Cards" button to continue
+  }
+
+  Future<void> _handleRevealCards() async {
+    if (_fullScreenStep != FullScreenStep.dealing) {
+      return;
     }
+
+    // Move to revealed step
+    setState(() {
+      _fullScreenStep = FullScreenStep.revealed;
+    });
   }
 
   Future<void> _handleFullScreenInterpretationRequest() async {
@@ -1755,6 +1711,37 @@ class _HomeState extends State<_Home> {
       });
     }
     await _requestInterpretation();
+  }
+
+  Future<void> _dealCardsSequentially() async {
+    final totalCards = _latestDraw?.result.length ?? 0;
+    if (totalCards == 0) return;
+
+    // Dynamic timing based on card count
+    // User requested: more time for fewer cards, less time for more cards
+    Duration delayPerCard;
+    if (totalCards <= 5) {
+      delayPerCard = const Duration(seconds: 1); // 3-5 cards: 1.0s each
+    } else if (totalCards <= 7) {
+      delayPerCard = const Duration(milliseconds: 600); // 6-7 cards: 0.6s each
+    } else if (totalCards <= 10) {
+      delayPerCard = const Duration(milliseconds: 400); // 8-10 cards: 0.4s each
+    } else {
+      delayPerCard = const Duration(milliseconds: 300); // 10+ cards: 0.3s each
+    }
+
+    // Deal cards one by one
+    for (int i = 0; i < totalCards; i++) {
+      await Future.delayed(delayPerCard);
+      if (!mounted) return;
+      setState(() {
+        _dealtCardCount = i + 1;
+      });
+    }
+
+    setState(() {
+      _dealingCards = false;
+    });
   }
 
   void _handleShowInterpretationView() {
@@ -1872,27 +1859,13 @@ class _HomeState extends State<_Home> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.style_outlined,
-                                color: TarotTheme.cosmicAccent,
-                                size: 18,
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  spread.localizedName(localisation.localeName),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: TarotTheme.cosmicAccent,
-                                    letterSpacing: 0.3,
-                                    height: 1.4,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Text(
+                            spread.localizedName(localisation.localeName),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: TarotTheme.cosmicAccent,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 0.2,
+                            ),
                           ),
                           const SizedBox(height: 10),
                           Text(
@@ -1956,7 +1929,8 @@ class _HomeState extends State<_Home> {
                       backgroundColor: TarotTheme.cosmicAccent,
                       foregroundColor: Colors.white,
                       elevation: 2,
-                      shadowColor: TarotTheme.cosmicAccent.withValues(alpha: 0.4),
+                      shadowColor:
+                          TarotTheme.cosmicAccent.withValues(alpha: 0.4),
                     ),
                     icon: const Icon(Icons.style, size: 20),
                     label: const Text('Repartir'),
@@ -2083,16 +2057,15 @@ class _HomeState extends State<_Home> {
                               color: TarotTheme.midnightBlue,
                               gradient: LinearGradient(
                                 colors: [
-                                  TarotTheme.cosmicAccent.withOpacity(0.15),
-                                  TarotTheme.cosmicAccent.withOpacity(0.08),
+                                  TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+                                  TarotTheme.cosmicAccent.withValues(alpha: 0.08),
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color:
-                                    TarotTheme.twilightPurpleFaint,
+                                color: TarotTheme.twilightPurpleFaint,
                                 width: 1,
                               ),
                             ),
@@ -2399,8 +2372,8 @@ class _HomeState extends State<_Home> {
         color: TarotTheme.midnightBlue,
         gradient: LinearGradient(
           colors: [
-            TarotTheme.cosmicAccent.withOpacity(0.15),
-            TarotTheme.cosmicAccent.withOpacity(0.08),
+            TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+            TarotTheme.cosmicAccent.withValues(alpha: 0.08),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -2480,8 +2453,8 @@ class _HomeState extends State<_Home> {
         color: TarotTheme.midnightBlue,
         gradient: LinearGradient(
           colors: [
-            TarotTheme.cosmicAccent.withOpacity(0.15),
-            TarotTheme.cosmicAccent.withOpacity(0.08),
+            TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+            TarotTheme.cosmicAccent.withValues(alpha: 0.08),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -2654,191 +2627,6 @@ class _HomeState extends State<_Home> {
     };
   }
 
-  Widget _buildInterpretationWithCardImages(
-    CommonStrings localisation,
-    String markdown,
-    Map<String, String> cardImages,
-    ThemeData theme,
-    Color accentColor,
-  ) {
-    // Parse markdown and identify card references
-    // Pattern: **Card Name** (bold markdown)
-    final cardReferencePattern = RegExp(r'\*\*(.+?)\*\*');
-    final matches = cardReferencePattern.allMatches(markdown);
-
-    if (matches.isEmpty) {
-      // No card references found, use regular markdown
-      return MarkdownBody(
-        data: markdown,
-        selectable: true,
-        styleSheet: _getMarkdownStyleSheet(theme, accentColor),
-      );
-    }
-
-    // Build widgets with card images
-    final List<Widget> widgets = [];
-    int lastIndex = 0;
-
-    for (final match in matches) {
-      // Add text before the card reference
-      if (match.start > lastIndex) {
-        final beforeText = markdown.substring(lastIndex, match.start);
-        widgets.add(
-          MarkdownBody(
-            data: beforeText,
-            selectable: true,
-            styleSheet: _getMarkdownStyleSheet(theme, accentColor),
-          ),
-        );
-      }
-
-      // Extract card name and check if it's reversed
-      final fullCardName = match.group(1)!.trim();
-      final loweredName = fullCardName.toLowerCase();
-      final isReversed = loweredName.contains('(reversed)') ||
-          loweredName.contains('(invertida)') ||
-          loweredName.contains('(invertit)') ||
-          loweredName.contains('reverso') ||
-          loweredName.contains('invertida') ||
-          loweredName.contains('invertit');
-      final cardName = fullCardName
-          // Remove emojis (card emoji 🃏 and others)
-          .replaceAll(RegExp(r'[\u{1F000}-\u{1F9FF}]', unicode: true), '')
-          // Remove reversed markers
-          .replaceAll(RegExp(r'\s*\(reversed\)', caseSensitive: false), '')
-          .replaceAll(RegExp(r'\s*\(invertida\)', caseSensitive: false), '')
-          .replaceAll(RegExp(r'\s*\(invertit\)', caseSensitive: false), '')
-          .replaceAll(RegExp(r'\s*reverso\s*', caseSensitive: false), '')
-          .replaceAll(RegExp(r'\s*invertida\s*', caseSensitive: false), '')
-          .replaceAll(RegExp(r'\s*invertit\s*', caseSensitive: false), '')
-          .trim();
-      final localizedCardName = CardNameLocalizer.localize(
-          cardName, Localizations.localeOf(context).languageCode);
-      final displayName = isReversed
-          ? '$localizedCardName (${localisation.cardOrientationReversed})'
-          : localizedCardName;
-
-      // Find card image with multiple fallback strategies
-      final lookupKey = cardName.toLowerCase();
-      String? cardImage = cardImages[lookupKey];
-
-      // Fallback 1: try localized name
-      if (cardImage == null) {
-        cardImage = cardImages[localizedCardName.toLowerCase()];
-      }
-
-      // Fallback 2: try without articles
-      if (cardImage == null) {
-        final withoutArticle = lookupKey.replaceFirst(
-            RegExp(r'^(the|el|la|els|les)\s+', caseSensitive: false), '');
-        cardImage = cardImages[withoutArticle];
-      }
-
-      // Add card header with image
-      widgets.add(
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Card image thumbnail
-              if (cardImage != null)
-                Container(
-                  width: 70,
-                  height: 112,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: TarotTheme.blackOverlay30,
-                        blurRadius: 6,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Transform(
-                      alignment: Alignment.center,
-                      transform: isReversed
-                          ? (Matrix4.identity()..rotateZ(math.pi))
-                          : Matrix4.identity(),
-                      child: Image.asset(
-                        cardImage,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Show icon if image fails to load
-                          return Container(
-                            color: TarotTheme.cosmicPurple,
-                            child: Icon(
-                              Icons.image_not_supported,
-                              color: TarotTheme.stardust,
-                              size: 30,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                )
-              else
-                // Show icon if no image found
-                Container(
-                  width: 70,
-                  height: 112,
-                  decoration: BoxDecoration(
-                    color: TarotTheme.cosmicPurple,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: TarotTheme.twilightPurple,
-                      width: 1,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.style,
-                    color: TarotTheme.cosmicAccent,
-                    size: 30,
-                  ),
-                ),
-              const SizedBox(width: 12),
-              // Card name
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    displayName,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: accentColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-
-      lastIndex = match.end;
-    }
-
-    // Add remaining text
-    if (lastIndex < markdown.length) {
-      final remainingText = markdown.substring(lastIndex);
-      widgets.add(
-        MarkdownBody(
-          data: remainingText,
-          selectable: true,
-          styleSheet: _getMarkdownStyleSheet(theme, accentColor),
-        ),
-      );
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: widgets,
-    );
-  }
 
   MarkdownStyleSheet _getMarkdownStyleSheet(
       ThemeData theme, Color accentColor) {
@@ -2854,7 +2642,7 @@ class _HomeState extends State<_Home> {
         height: 1.5,
       ),
       em: theme.textTheme.bodyMedium?.copyWith(
-        color: accentColor.withOpacity(0.9),
+        color: accentColor.withValues(alpha: 0.9),
         fontStyle: FontStyle.italic,
         height: 1.5,
       ),
@@ -2877,258 +2665,8 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  Widget _buildAIInterpretationBubble(
-      CardsDrawResponse draw, CommonStrings localisation) {
-    final theme = Theme.of(context);
-    final interpretation = _latestInterpretation;
-    final accentColor = TarotTheme.cosmicBlue; // Corporate blue
 
-    // Only show if we have an interpretation
-    if (interpretation == null) {
-      return const SizedBox.shrink();
-    }
 
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 340),
-        padding: const EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          color: TarotTheme.midnightBlue,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: TarotTheme.cosmicAccentSubtle,
-            width: 1,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Summary as prominent header/title
-            if (interpretation.summary != null &&
-                interpretation.summary!.isNotEmpty) ...[
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      accentColor.withValues(alpha: 0.15),
-                      accentColor.withValues(alpha: 0.08),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  border: Border(
-                    bottom: BorderSide(
-                      color: TarotTheme.twilightPurpleFaint,
-                      width: 1,
-                    ),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.auto_awesome,
-                      color: accentColor,
-                      size: 18,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        interpretation.summary!,
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: accentColor,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.3,
-                          height: 1.3,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            // Full interpretation text with markdown support
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: MarkdownBody(
-                data: interpretation.interpretation,
-                selectable: true,
-                styleSheet: MarkdownStyleSheet(
-                  p: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    height: 1.5,
-                    letterSpacing: 0.2,
-                  ),
-                  strong: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                    fontWeight: FontWeight.bold,
-                    height: 1.5,
-                  ),
-                  em: theme.textTheme.bodyMedium?.copyWith(
-                    color: accentColor.withOpacity(0.9),
-                    fontStyle: FontStyle.italic,
-                    height: 1.5,
-                  ),
-                  h1: theme.textTheme.titleLarge?.copyWith(
-                    color: accentColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  h2: theme.textTheme.titleMedium?.copyWith(
-                    color: accentColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  h3: theme.textTheme.titleSmall?.copyWith(
-                    color: accentColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  blockSpacing: 8.0,
-                  listBullet: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileCard(CommonStrings localisation) {
-    final profile = _profile;
-    if (profile == null) {
-      return const SizedBox.shrink();
-    }
-    final theme = Theme.of(context);
-    // Keyword chips hidden per request
-    final List<Widget> keywordChips = const [];
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              localisation.history,
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 0),
-            Text(
-              localisation.latestDrawTitle(profile.sessionCount),
-              style: theme.textTheme.bodySmall,
-            ),
-            if (profile.recentQuestion != null &&
-                profile.recentQuestion!.isNotEmpty) ...[
-              const SizedBox(height: 0),
-              Text(
-                _formatQuestionLabel(profile.recentQuestion!),
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
-            if (profile.recentInterpretation != null &&
-                profile.recentInterpretation!.isNotEmpty) ...[
-              const SizedBox(height: 0),
-              Text(
-                profile.recentInterpretation!,
-                style: theme.textTheme.bodySmall,
-              ),
-            ],
-            if (keywordChips.isNotEmpty) ...[
-              const SizedBox(height: 0),
-              Wrap(
-                spacing: 6,
-                children: keywordChips,
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHistoryCard(CommonStrings localisation) {
-    final theme = Theme.of(context);
-    if (_history.isEmpty) {
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            localisation.drawPlaceholder,
-            style: theme.textTheme.bodyMedium,
-          ),
-        ),
-      );
-    }
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              localisation.historyHeading,
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            ..._history.take(5).map(
-                  (session) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _formatTimestamp(session.createdAt),
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 0),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: session.cards
-                                .map(
-                                  (card) => Padding(
-                                    padding: const EdgeInsets.only(right: 12),
-                                    child: _buildCardWidget(card, localisation),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        if (session.question != null &&
-                            session.question!.isNotEmpty) ...[
-                          const SizedBox(height: 0),
-                          Text(
-                            _formatQuestionLabel(session.question!),
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        ],
-                        if (session.interpretation != null &&
-                            session.interpretation!.isNotEmpty) ...[
-                          const SizedBox(height: 0),
-                          Text(
-                            session.interpretation!,
-                            style: theme.textTheme.bodySmall,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -3164,30 +2702,7 @@ class _HomeState extends State<_Home> {
                       horizontal: 20.0, vertical: 0.0),
                   child: _buildDailyQuoteCard(),
                 ),
-                const SizedBox(height: 0),
-                // Banner image below quote (compensate spacing to keep original position)
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Image.asset(
-                      'assets/home_banner.png',
-                      frameBuilder:
-                          (context, child, frame, wasSynchronouslyLoaded) {
-                        if (frame == null) {
-                          debugPrint('Banner loading...');
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                        debugPrint('Banner loaded successfully!');
-                        return child;
-                      },
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const SizedBox.shrink(),
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 24),
                 if (_error != null) ...[
                   const SizedBox(height: 16),
                   Padding(
@@ -3274,9 +2789,9 @@ class _HomeState extends State<_Home> {
         interpretationContent: interpretationContent,
         localisation: localisation,
         onClose: _closeFullScreenFlow,
-        onBriefingContinue: _handleBriefingContinue,
+        onStartDealing: _handleStartDealing,
         onDeal: _dealCardsSequentially,
-        onReveal: _revealCardsSequentially,
+        onReveal: _handleRevealCards,
         onInterpret: _handleFullScreenInterpretationRequest,
         onShowInterpretation: _handleShowInterpretationView,
       );
@@ -3298,14 +2813,13 @@ class _HomeState extends State<_Home> {
             'assets/branding/logo-header.png',
             height: 32,
             fit: BoxFit.contain,
-            color: TarotTheme.cosmicAccent,
           ),
         ),
         actions: [
           IconButton(
             icon: Icon(
               Icons.history_rounded,
-              color: TarotTheme.stardust.withOpacity(0.5),
+              color: TarotTheme.stardust.withValues(alpha: 0.5),
             ),
             onPressed: null, // History feature - coming soon
             tooltip: 'Historial (Próximamente)',
@@ -3373,46 +2887,8 @@ class _StarryNightPainter extends CustomPainter {
       canvas.drawCircle(Offset(x, y), radius, paint);
 
       // Add a subtle glow
-      paint.color = TarotTheme.cosmicAccent.withOpacity(opacity * 0.3);
+      paint.color = TarotTheme.cosmicAccent.withValues(alpha: opacity * 0.3);
       canvas.drawCircle(Offset(x, y), radius * 2.5, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-
-/// Custom painter for dashed horizontal line
-class _DashedLinePainter extends CustomPainter {
-  final Color color;
-  final double strokeWidth;
-  final double dashWidth;
-  final double dashSpace;
-
-  _DashedLinePainter({
-    required this.color,
-    required this.strokeWidth,
-    required this.dashWidth,
-    required this.dashSpace,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.stroke;
-
-    double startX = 0;
-    final y = size.height / 2;
-
-    while (startX < size.width) {
-      canvas.drawLine(
-        Offset(startX, y),
-        Offset(startX + dashWidth, y),
-        paint,
-      );
-      startX += dashWidth + dashSpace;
     }
   }
 

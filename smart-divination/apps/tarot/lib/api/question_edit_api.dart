@@ -55,7 +55,7 @@ Future<EditedQuestion> editQuestion({
   try {
     response = await http
         .post(uri, headers: headers, body: body)
-        .timeout(const Duration(seconds: 2));
+        .timeout(const Duration(seconds: 15));
   } on Exception catch (error) {
     throw QuestionEditException('Network error: $error');
   }

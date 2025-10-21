@@ -476,7 +476,7 @@ class SpreadLayout extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: TarotTheme.twilightPurple.withOpacity(0.3),
+            color: TarotTheme.twilightPurple.withValues(alpha: 0.3),
             width: 2,
           ),
           boxShadow: TarotTheme.elevatedShadow,
@@ -712,8 +712,8 @@ class _MysticDustHalo extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    TarotTheme.cosmicAccent.withOpacity(0.22 * opacity),
-                    TarotTheme.subtleGold.withOpacity(0.16 * opacity),
+                    TarotTheme.cosmicAccent.withValues(alpha: 0.22 * opacity),
+                    TarotTheme.subtleGold.withValues(alpha: 0.16 * opacity),
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.5, 1.0],
@@ -726,7 +726,7 @@ class _MysticDustHalo extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
-                    Colors.white.withOpacity(0.18 * opacity),
+                    Colors.white.withValues(alpha: 0.18 * opacity),
                     Colors.transparent,
                   ],
                 ),
@@ -780,15 +780,15 @@ class _SparkleParticle extends StatelessWidget {
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            Colors.white.withOpacity(clampedOpacity),
-            TarotTheme.cosmicAccent.withOpacity(clampedOpacity * 0.75),
+            Colors.white.withValues(alpha: clampedOpacity),
+            TarotTheme.cosmicAccent.withValues(alpha: clampedOpacity * 0.75),
             Colors.transparent,
           ],
           stops: const [0.0, 0.55, 1.0],
         ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.cosmicAccent.withOpacity(clampedOpacity * 0.9),
+            color: TarotTheme.cosmicAccent.withValues(alpha: clampedOpacity * 0.9),
             blurRadius: dimension,
             spreadRadius: dimension * 0.18,
           ),

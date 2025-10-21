@@ -295,11 +295,26 @@ function generateReasoning(
     keywords.length > 0 ? keywords.join(', ') : 'what is moving inside you right now';
 
   const reasons = {
-    ca: `He escollit la tirada "${spread.nameCA}" perquè acompanya molt bé ${categoryCa}. ${spread.cardCount === 1 ? 'Aquesta carta' : `Les ${spread.cardCount} cartes`} treballen ${complexityCa} per oferir-te una lectura coherent i amable. Els matisos que expresses (${keywordSummaryCa}) es miraran amb sensibilitat perquè puguis sentir amb serenor els propers passos.`,
+    ca: `Per qu� s'ha triat aquesta tirada:
+- ${spread.nameCA} t'ajuda a mirar ${categoryCa}.
 
-    es: `He elegido la tirada "${spread.nameES}" porque abraza con cuidado ${categoryEs}. ${spread.cardCount === 1 ? 'Esta carta' : `Las ${spread.cardCount} cartas`} trabajan ${complexityEs} para darte una mirada didáctica y cercana. Los matices que compartes (${keywordSummaryEs}) se abordarán con delicadeza para que encuentres claridad y calma.`,
+Com llegir-la:
+- ${spread.cardCount === 1 ? 'Aquesta carta' : `Les ${spread.cardCount} cartes`} treballen ${complexityCa}.
+- Centra't especialment en ${keywordSummaryCa}.`,
 
-    en: `I've chosen the "${spread.name}" spread because it gently supports ${categoryEn}. ${spread.cardCount === 1 ? 'This card' : `The ${spread.cardCount} cards`} work ${complexityEn} to offer a thoughtful, down-to-earth reading. The feelings woven through your question (${keywordSummaryEn}) will be explored with care so you can sense the next step with confidence.`,
+    es: `Por qu� se eligi� esta tirada:
+- ${spread.nameES} te sostiene en ${categoryEs}.
+
+C�mo leerla:
+- ${spread.cardCount === 1 ? 'Esta carta' : `Las ${spread.cardCount} cartas`} avanzan ${complexityEs}.
+- Presta atenci�n a ${keywordSummaryEs}.`,
+
+    en: `Why this spread:
+- ${spread.name} supports ${categoryEn}.
+
+How to read it:
+- ${spread.cardCount === 1 ? 'This card' : `The ${spread.cardCount} cards`} move ${complexityEn}.
+- Focus on ${keywordSummaryEn}.`,
   };
 
   return reasons;

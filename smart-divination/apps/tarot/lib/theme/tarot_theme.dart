@@ -62,7 +62,7 @@ class TarotTheme {
 
       // AppBar - mystical and elegant
       appBarTheme: AppBarTheme(
-        backgroundColor: midnightBlue.withOpacity(0.95),
+        backgroundColor: midnightBlue.withValues(alpha: 0.95),
         foregroundColor: moonlight,
         elevation: 0,
         shadowColor: Colors.transparent,
@@ -85,7 +85,7 @@ class TarotTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
-            color: cosmicAccent.withOpacity(0.15),
+            color: cosmicAccent.withValues(alpha: 0.15),
             width: 1,
           ),
         ),
@@ -152,7 +152,7 @@ class TarotTheme {
         bodyMedium: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          color: moonlight.withOpacity(0.9),
+          color: moonlight.withValues(alpha: 0.9),
           letterSpacing: 0.1,
           height: 1.5,
         ),
@@ -253,11 +253,11 @@ class TarotTheme {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: twilightPurple.withOpacity(0.3)),
+          borderSide: BorderSide(color: twilightPurple.withValues(alpha: 0.3)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: twilightPurple.withOpacity(0.3)),
+          borderSide: BorderSide(color: twilightPurple.withValues(alpha: 0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -272,7 +272,7 @@ class TarotTheme {
           fontSize: 14,
         ),
         hintStyle: TextStyle(
-          color: stardust.withOpacity(0.6),
+          color: stardust.withValues(alpha: 0.6),
           fontSize: 14,
         ),
         floatingLabelStyle: TextStyle(
@@ -283,7 +283,7 @@ class TarotTheme {
 
       // Divider - subtle separation
       dividerTheme: DividerThemeData(
-        color: twilightPurple.withOpacity(0.2),
+        color: twilightPurple.withValues(alpha: 0.2),
         thickness: 1,
         space: 16,
       ),
@@ -308,7 +308,7 @@ class TarotTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: cosmicAccent.withOpacity(0.2)),
+          side: BorderSide(color: cosmicAccent.withValues(alpha: 0.2)),
         ),
         titleTextStyle: TextStyle(
           fontSize: 18,
@@ -317,7 +317,7 @@ class TarotTheme {
         ),
         contentTextStyle: TextStyle(
           fontSize: 14,
-          color: moonlight.withOpacity(0.9),
+          color: moonlight.withValues(alpha: 0.9),
           height: 1.5,
         ),
       ),
@@ -325,7 +325,7 @@ class TarotTheme {
       // Progress indicator
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: cosmicAccent,
-        circularTrackColor: twilightPurple.withOpacity(0.3),
+        circularTrackColor: twilightPurple.withValues(alpha: 0.3),
       ),
     );
   }
@@ -338,8 +338,8 @@ class TarotTheme {
       colors: [
         Color(0xFF0A0515), // Deep space
         deepNight,
-        midnightBlue.withOpacity(0.4),
-        cosmicPurple.withOpacity(0.2),
+        midnightBlue.withValues(alpha: 0.4),
+        cosmicPurple.withValues(alpha: 0.2),
       ],
       stops: [0.0, 0.3, 0.7, 1.0],
     );
@@ -351,7 +351,7 @@ class TarotTheme {
       end: Alignment.bottomRight,
       colors: [
         midnightBlue,
-        cosmicPurple.withOpacity(0.8),
+        cosmicPurple.withValues(alpha: 0.8),
       ],
     );
   }
@@ -362,9 +362,9 @@ class TarotTheme {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        cosmicAccent.withOpacity(0.03),
+        cosmicAccent.withValues(alpha: 0.03),
         Colors.transparent,
-        cosmicAccent.withOpacity(0.02),
+        cosmicAccent.withValues(alpha: 0.02),
       ],
       stops: [0.0, 0.5, 1.0],
     );
@@ -374,7 +374,7 @@ class TarotTheme {
   static List<BoxShadow> get subtleShadow {
     return [
       BoxShadow(
-        color: Colors.black.withOpacity(0.15),
+        color: Colors.black.withValues(alpha: 0.15),
         blurRadius: 8,
         offset: const Offset(0, 2),
       ),
@@ -384,7 +384,7 @@ class TarotTheme {
   static List<BoxShadow> get elevatedShadow {
     return [
       BoxShadow(
-        color: Colors.black.withOpacity(0.25),
+        color: Colors.black.withValues(alpha: 0.25),
         blurRadius: 12,
         offset: const Offset(0, 4),
       ),

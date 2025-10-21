@@ -73,7 +73,6 @@ class DailyQuoteService {
       }
       _lastLoadDate = DateTime.now();
     } catch (e) {
-      print('Error loading daily quotes: $e');
       _quotes = [];
     }
   }

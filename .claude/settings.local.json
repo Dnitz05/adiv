@@ -119,7 +119,8 @@
       "Bash(cmd //c restart-backend.bat)",
       "Bash(C:/tarot/supabase_cli/supabase.exe status)",
       "Bash(/dev/null)",
-      "Bash(JAVA_HOME=\"C:\\tarot\\temp\\jdk\\jdk-17.0.2\" flutter build:*)"
+      "Bash(JAVA_HOME=\"C:\\tarot\\temp\\jdk\\jdk-17.0.2\" flutter build:*)",
+      "Bash(npx vercel --prod)"
     ],
     "deny": [],
     "ask": []

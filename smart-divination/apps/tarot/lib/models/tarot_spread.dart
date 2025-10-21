@@ -651,7 +651,7 @@ const Map<String, Map<String, String>> _spreadNameTranslations =
 const Map<String, String> _spreadTitlePrefixes = <String, String>{
   'ca': 'Tirada',
   'es': 'Tirada',
-  'en': 'Draw',
+  'en': '',
 };
 
 const Map<String, Map<String, String>> _spreadDescriptionTranslations =

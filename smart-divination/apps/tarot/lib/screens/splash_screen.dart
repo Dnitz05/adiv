@@ -17,10 +17,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  late AnimationController _bannerController;
   late AnimationController _logoController;
   late AnimationController _rotationController;
-  late Animation<Offset> _bannerAnimation;
   late Animation<double> _logoOpacityAnimation;
   late Animation<double> _logoScaleAnimation;
   late Animation<double> _rotationAnimation;
@@ -28,20 +26,6 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-
-    // Banner slide animation (left to right)
-    _bannerController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
-      vsync: this,
-    );
-
-    _bannerAnimation = Tween<Offset>(
-      begin: const Offset(-1.0, 0.0),
-      end: const Offset(0.0, 0.0),
-    ).animate(CurvedAnimation(
-      parent: _bannerController,
-      curve: Curves.easeOut,
-    ));
 
     // Logo materialization animation (fade in + scale up from background)
     _logoController = AnimationController(
@@ -80,7 +64,6 @@ class _SplashScreenState extends State<SplashScreen>
     ));
 
     // Start animations
-    _bannerController.forward();
     _logoController.forward();
     _rotationController.repeat();
 
@@ -94,7 +77,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    _bannerController.dispose();
     _logoController.dispose();
     _rotationController.dispose();
     super.dispose();
@@ -125,9 +107,9 @@ class _SplashScreenState extends State<SplashScreen>
               },
             ),
 
-            // Materializing logo (positioned higher to avoid banner overlap)
+            // Materializing logo
             Align(
-              alignment: const Alignment(0.0, -0.4),
+              alignment: Alignment.center,
               child: AnimatedBuilder(
                 animation: _logoController,
                 builder: (context, child) {
@@ -144,30 +126,6 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                   );
                 },
-              ),
-            ),
-
-            // Banner sliding from left to right (ON TOP of logo)
-            Align(
-              alignment: Alignment.center,
-              child: SlideTransition(
-                position: _bannerAnimation,
-                child: Opacity(
-                  opacity: 0.95,
-                  child: Image.asset(
-                    'assets/banner.png',
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      // Fallback to home_banner if banner.png doesn't exist
-                      return Image.asset(
-                        'assets/home_banner.png',
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        fit: BoxFit.contain,
-                      );
-                    },
-                  ),
-                ),
               ),
             ),
           ],
@@ -203,7 +161,7 @@ class StarsPainter extends CustomPainter {
     final centerY = size.height / 2;
 
     for (final star in _stars) {
-      paint.color = TarotTheme.moonlight.withOpacity(star.opacity);
+      paint.color = TarotTheme.moonlight.withValues(alpha: star.opacity);
       canvas.drawCircle(
         Offset(centerX + star.x, centerY + star.y),
         star.size,

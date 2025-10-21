@@ -42,7 +42,7 @@ class LocalStorageService {
       final jsonString = jsonEncode(conversations);
       await prefs.setString(_conversationsKey, jsonString);
     } catch (e) {
-      print('Error saving conversation: $e');
+      // Silent fail
     }
   }
 
@@ -59,7 +59,6 @@ class LocalStorageService {
       final List<dynamic> decoded = jsonDecode(jsonString);
       return decoded.cast<Map<String, dynamic>>();
     } catch (e) {
-      print('Error loading conversations: $e');
       return [];
     }
   }
@@ -70,7 +69,7 @@ class LocalStorageService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_conversationsKey);
     } catch (e) {
-      print('Error clearing conversations: $e');
+      // Silent fail
     }
   }
 

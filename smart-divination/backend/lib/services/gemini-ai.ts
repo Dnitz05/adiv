@@ -175,22 +175,29 @@ Return ONLY the formatted question, nothing else.`;
 }
 
 /**
- * Edit/improve question
+ * Edit/improve question - fixes typos and improves clarity
  */
 export async function editQuestionWithGemini(
   question: string,
   locale: string,
   requestId?: string
 ): Promise<string> {
-  const userPrompt = `Improve this tarot question to be more focused and clear (${locale} language):
+  const userPrompt = `Fix any spelling errors and improve this tarot question to be clear and well-written (${locale} language):
 
 Question: "${question}"
 
-Return ONLY the improved question, nothing else.`;
+Instructions:
+- Correct any typos or spelling mistakes
+- Fix grammar if needed
+- Keep the original meaning and intent
+- Make it natural and conversational
+- Language: ${locale}
+
+Return ONLY the corrected/improved question, nothing else.`;
 
   const response = await callGemini({
     userPrompt,
-    temperature: 0.4,
+    temperature: 0.3, // Lower for more consistent corrections
     maxTokens: 150,
     requestId,
   });
