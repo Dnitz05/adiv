@@ -15,7 +15,7 @@ import {
   parseApiRequest,
 } from '../../../lib/utils/api';
 import { recordApiMetric } from '../../../lib/utils/metrics';
-import { formatQuestionWithAI } from '../../../lib/services/ai-question-formatter';
+import { formatQuestion } from '../../../lib/services/ai-provider';
 
 const METRICS_PATH = '/api/questions/format';
 const CORS_CONFIG = { methods: 'OPTIONS, POST' };
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       questionLength: body.question.length,
     });
 
-    const result = await formatQuestionWithAI(body.question, body.locale);
+    const formatted = await formatQuestion(body.question, body.locale, requestId);
 
     const duration = Date.now() - startTime;
     recordApiMetric(METRICS_PATH, 200, duration);
@@ -70,8 +70,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       createApiResponse({
         requestId,
         data: {
-          formattedQuestion: result.formatted,
-          usedAI: result.usedAI,
+          formattedQuestion: formatted,
+          usedAI: true,
         },
       })
     );

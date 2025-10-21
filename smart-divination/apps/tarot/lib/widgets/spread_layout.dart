@@ -64,6 +64,9 @@ class SpreadLayout extends StatelessWidget {
     final double cardWidth = cardSize.width;
     final double cardHeight = cardSize.height;
 
+    final double verticalOffsetAdjustment =
+        spread.id == 'celtic_cross' ? cardHeight * 0.08 : 0.0;
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final TextStyle labelStyle =
@@ -90,7 +93,7 @@ class SpreadLayout extends StatelessWidget {
                 cardNumber: i + 1,
                 position: spread.positions[i],
                 containerWidth: effectiveWidth,
-                containerHeight: effectiveHeight,
+                containerHeight: effectiveHeight + verticalOffsetAdjustment,
                 cardWidth: cardWidth,
                 cardHeight: cardHeight,
               ),
@@ -104,7 +107,7 @@ class SpreadLayout extends StatelessWidget {
                 index: i,
                 position: spread.positions[i],
                 containerWidth: effectiveWidth,
-                containerHeight: effectiveHeight,
+                containerHeight: effectiveHeight + verticalOffsetAdjustment,
                 cardWidth: cardWidth,
                 cardHeight: cardHeight,
                 isDealt: i < dealtCards,
@@ -122,8 +125,11 @@ class SpreadLayout extends StatelessWidget {
     double containerHeight,
     double cardAspectRatio,
   ) {
-    final double verticalCardHeight =
-        _calculateCardHeight(spread, containerHeight);
+    final double verticalCardHeight = _calculateCardHeight(
+      spread,
+      containerHeight,
+      effectiveWidth: containerWidth,
+    );
     final double widthFromHeight = verticalCardHeight * cardAspectRatio;
     final double widthFromSpacing =
         _maxCardWidthFromSpacing(spread, containerWidth);
@@ -139,7 +145,11 @@ class SpreadLayout extends StatelessWidget {
     return Size(cardWidth, cardHeight);
   }
 
-  double _calculateCardHeight(TarotSpread spread, double containerHeight) {
+  double _calculateCardHeight(
+    TarotSpread spread,
+    double containerHeight, {
+    double? effectiveWidth,
+  }) {
     // Calculate optimal card height based on number of cards and layout
     // Maximized for better visual impact and space utilization
     if (spread.cardCount == 1) {
@@ -155,6 +165,12 @@ class SpreadLayout extends StatelessWidget {
       // Medium spreads (6-7 cards): Balanced and well-sized
       return containerHeight * 0.45;
     } else if (spread.cardCount <= 10) {
+      if (spread.id == 'celtic_cross') {
+        final double base = containerHeight * 0.56;
+        final double widthAdjustment =
+            effectiveWidth != null ? (effectiveWidth * 0.06) : 0.0;
+        return base + widthAdjustment;
+      }
       // Large spreads (8-10 cards): Still readable and detailed
       return containerHeight * 0.35;
     } else {
@@ -163,12 +179,18 @@ class SpreadLayout extends StatelessWidget {
     }
   }
 
-  double _maxCardWidthFromSpacing(TarotSpread spread, double containerWidth) {
+  double _maxCardWidthFromSpacing(
+    TarotSpread spread,
+    double containerWidth,
+  ) {
     if (spread.positions.isEmpty) {
       return containerWidth;
     }
 
-    final double spacingFactor = spread.cardCount <= 3 ? 1.0 : 0.90;
+    double spacingFactor = spread.cardCount <= 3 ? 1.0 : 0.90;
+    if (spread.id == 'celtic_cross') {
+      spacingFactor = 1.3;
+    }
     double limit = containerWidth;
 
     for (final position in spread.positions) {
@@ -341,7 +363,7 @@ class SpreadLayout extends StatelessWidget {
       width: 24,
       height: 24,
       decoration: BoxDecoration(
-        color: TarotTheme.cosmicAccent.withOpacity(0.9),
+        color: TarotTheme.cosmicAccent,
         shape: BoxShape.circle,
         border: Border.all(
           color: TarotTheme.twilightPurple,
@@ -367,16 +389,16 @@ class SpreadLayout extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: TarotTheme.deepNight.withOpacity(0.3),
+        color: TarotTheme.twilightPurpleBorder,
         border: Border.all(
-          color: TarotTheme.twilightPurple.withOpacity(0.6),
+          color: TarotTheme.twilightPurpleLight,
           width: 2,
         ),
         borderRadius: BorderRadius.circular(4),
       ),
       child: CustomPaint(
         painter: _DashedBorderPainter(
-          color: TarotTheme.cosmicAccent.withOpacity(0.7),
+          color: TarotTheme.cosmicAccent,
           strokeWidth: 2,
           dashWidth: 8,
           dashSpace: 4,
@@ -390,7 +412,7 @@ class SpreadLayout extends StatelessWidget {
               style: TextStyle(
                 fontSize: math.min(width * 0.4, 48),
                 fontWeight: FontWeight.w300,
-                color: TarotTheme.stardust.withOpacity(0.8),
+                color: TarotTheme.stardustLight,
               ),
             ),
             const SizedBox(height: 8),
@@ -403,7 +425,7 @@ class SpreadLayout extends StatelessWidget {
                   style: TextStyle(
                     fontSize: math.min(width * 0.12, 14),
                     fontWeight: FontWeight.w500,
-                    color: TarotTheme.cosmicAccent.withOpacity(0.9),
+                    color: TarotTheme.cosmicAccent,
                     letterSpacing: 0.5,
                   ),
                   textAlign: TextAlign.center,
@@ -424,10 +446,10 @@ class SpreadLayout extends StatelessWidget {
         verticalOffset: 10,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: TarotTheme.midnightBlue.withOpacity(0.95),
+          color: TarotTheme.midnightBlueAppBar,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: TarotTheme.cosmicAccent.withOpacity(0.3),
+            color: TarotTheme.cosmicAccentSubtle,
             width: 1,
           ),
         ),
@@ -484,7 +506,7 @@ class SpreadLayout extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: TarotTheme.twilightPurple.withOpacity(0.3),
+          color: TarotTheme.twilightPurpleBorder,
           width: 2,
         ),
         boxShadow: TarotTheme.elevatedShadow,

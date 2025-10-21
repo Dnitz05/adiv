@@ -18,6 +18,7 @@ import 'user_identity.dart';
 import 'models/tarot_spread.dart';
 import 'models/tarot_card.dart';
 import 'widgets/spread_layout.dart';
+import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
@@ -25,6 +26,7 @@ import 'services/daily_quote_service.dart';
 import 'services/audio_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
+import 'state/full_screen_step.dart';
 import 'screens/splash_screen.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
@@ -674,6 +676,8 @@ class _HomeState extends State<_Home> {
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
   String? _spreadRecommendationReason; // AI reasoning for spread selection
   String? _lastQuestionLocale;
+  FullScreenStep? _fullScreenStep;
+  Timer? _briefingAutoAdvanceTimer;
   String? _displayQuestion;
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
@@ -791,6 +795,8 @@ class _HomeState extends State<_Home> {
 
   @override
   void dispose() {
+    _briefingAutoAdvanceTimer?.cancel();
+    _briefingAutoAdvanceTimer = null;
     _questionController.dispose();
     _seedController.dispose();
     _questionFocusNode.dispose();
@@ -915,7 +921,6 @@ class _HomeState extends State<_Home> {
       final baseQuestion = typedQuestion.isNotEmpty
           ? typedQuestion
           : _generalConsultationPrompt(localeCode);
-      final bool shouldNudgeUser = typedQuestion.isEmpty;
       String? formattedQuestion;
       try {
         formattedQuestion = await formatQuestion(
@@ -923,7 +928,7 @@ class _HomeState extends State<_Home> {
           locale: localeCode,
         );
       } catch (error) {
-        print('⚠️  Question formatting failed: $error');
+        // Question formatting failed, continue with fallback
       }
       final String formattedOrFallback =
           (formattedQuestion != null && formattedQuestion.trim().isNotEmpty)
@@ -950,9 +955,6 @@ class _HomeState extends State<_Home> {
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
       try {
-        print(
-            '🔮 Calling AI spread recommendation for question: $finalQuestion');
-
         // Use non-streaming endpoint for now (streaming endpoint has deployment issues)
         final recommendation = await recommendSpread(
           question: finalQuestion,
@@ -962,28 +964,19 @@ class _HomeState extends State<_Home> {
 
         selectedSpread = recommendation.spread;
         recommendationReason = recommendation.reasoning;
-        print(
-            '🔮 AI recommended spread: ${selectedSpread.id} - $recommendationReason');
 
         // Update UI immediately to show the AI-selected spread
         if (mounted) {
-          print(
-              '🔮 DEBUG: Updating _selectedSpread to: ${selectedSpread.id} (${selectedSpread.name})');
           setState(() {
             _selectedSpread = selectedSpread;
             _spreadRecommendationReason = recommendationReason;
           });
-          print(
-              '🔮 DEBUG: After setState, _selectedSpread is now: ${_selectedSpread.id} (${_selectedSpread.name})');
         }
       } catch (e) {
-        print('⚠️  AI spread recommendation failed, using selected spread: $e');
         // If AI fails, continue with manually selected spread
       }
 
       // Start drawing cards, but also pre-load interpretation in parallel
-      print(
-          '🔮 Starting drawCards and pre-loading interpretation in parallel...');
 
       final drawFuture = drawCards(
         count: selectedSpread.cardCount,
@@ -1015,9 +1008,10 @@ class _HomeState extends State<_Home> {
         _spreadRecommendationReason = recommendationReason;
       });
 
+      _enterFullScreenFlow();
+
       // Pre-load interpretation in background immediately after cards are available
       if (response.sessionId != null && response.sessionId!.isNotEmpty) {
-        print('🔮 Pre-loading AI interpretation in background...');
         _preloadInterpretation(response, finalQuestion, localeCode);
       }
 
@@ -1060,7 +1054,41 @@ class _HomeState extends State<_Home> {
     );
   }
 
+  void _enterFullScreenFlow({bool autoAdvance = true}) {
+    _briefingAutoAdvanceTimer?.cancel();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _fullScreenStep = FullScreenStep.briefing;
+    });
+    if (autoAdvance) {
+      _briefingAutoAdvanceTimer = Timer(const Duration(seconds: 2), () {
+        if (!mounted) {
+          return;
+        }
+        _handleBriefingContinue(autoTriggered: true);
+      });
+    }
+  }
+
+  void _exitFullScreenFlow({bool showInterpretation = false}) {
+    _briefingAutoAdvanceTimer?.cancel();
+    _briefingAutoAdvanceTimer = null;
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _fullScreenStep = null;
+      if (showInterpretation) {
+        _showInterpretation = true;
+      }
+    });
+  }
+
   void _resetToHome() {
+    _briefingAutoAdvanceTimer?.cancel();
+    _briefingAutoAdvanceTimer = null;
     setState(() {
       _latestDraw = null;
       _latestInterpretation = null;
@@ -1074,6 +1102,7 @@ class _HomeState extends State<_Home> {
       _spreadRecommendationReason = null;
       _lastQuestionLocale = null;
       _displayQuestion = null;
+      _fullScreenStep = null;
       _questionController.clear();
       _error = null;
     });
@@ -1174,7 +1203,6 @@ class _HomeState extends State<_Home> {
 
     // If interpretation already loaded in background, just return
     if (_latestInterpretation != null) {
-      print('✅ Using pre-loaded interpretation');
       return;
     }
 
@@ -1235,7 +1263,6 @@ class _HomeState extends State<_Home> {
     }
 
     try {
-      print('🔮 Starting background interpretation request...');
       final result = await submitInterpretation(
         sessionId: sessionId,
         draw: draw,
@@ -1245,7 +1272,6 @@ class _HomeState extends State<_Home> {
 
       // Only update if user hasn't already requested interpretation
       if (mounted && _latestInterpretation == null) {
-        print('✅ Background interpretation loaded successfully!');
         setState(() {
           _latestInterpretation = result;
         });
@@ -1254,12 +1280,8 @@ class _HomeState extends State<_Home> {
         if (result != null) {
           await _saveConversationLocally(draw, result, question);
         }
-      } else {
-        print(
-            'ℹ️  Background interpretation completed but UI already has interpretation');
       }
     } catch (error) {
-      print('⚠️  Background interpretation pre-load failed: $error');
       // Don't show error to user since this is background operation
       // User can still request interpretation manually
     }
@@ -1538,7 +1560,7 @@ class _HomeState extends State<_Home> {
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: TarotTheme.blackOverlay20,
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -1582,7 +1604,7 @@ class _HomeState extends State<_Home> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        color: TarotTheme.cosmicAccent.withOpacity(0.9),
+        color: TarotTheme.cosmicAccent90,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Row(
@@ -1634,7 +1656,7 @@ class _HomeState extends State<_Home> {
                 Text(
                   quote.author,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.white.withOpacity(0.7),
+                    color: TarotTheme.white70,
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,
@@ -1656,13 +1678,13 @@ class _HomeState extends State<_Home> {
           '¿Qué quieres consultar?',
           style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.normal,
-            color: TarotTheme.moonlight.withOpacity(0.85),
+            color: TarotTheme.moonlight85,
           ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
         Card(
-          color: TarotTheme.midnightBlue.withOpacity(0.70),
+          color: TarotTheme.midnightBlue70,
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -1702,11 +1724,7 @@ class _HomeState extends State<_Home> {
       return const SizedBox.shrink();
     }
 
-    final displayQuestion = _displayQuestion?.trim().isNotEmpty == true
-        ? _displayQuestion!.trim()
-        : (_currentQuestion != null && _currentQuestion!.isNotEmpty)
-            ? _formatQuestionLabel(_currentQuestion!)
-            : _generalConsultationLabel(localisation.localeName);
+    final displayQuestion = _currentDisplayQuestion(localisation);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1714,6 +1732,49 @@ class _HomeState extends State<_Home> {
         _buildCardsMessage(draw, localisation, displayQuestion),
       ],
     );
+  }
+
+  void _handleBriefingContinue({bool autoTriggered = false}) {
+    _briefingAutoAdvanceTimer?.cancel();
+    _briefingAutoAdvanceTimer = null;
+    if (_fullScreenStep != FullScreenStep.briefing) {
+      return;
+    }
+    setState(() {
+      _fullScreenStep = FullScreenStep.spread;
+    });
+    if (autoTriggered && !_dealingCards && _dealtCardCount == 0) {
+      _dealCardsSequentially();
+    }
+  }
+
+  Future<void> _handleFullScreenInterpretationRequest() async {
+    if (_fullScreenStep != FullScreenStep.interpretation) {
+      setState(() {
+        _fullScreenStep = FullScreenStep.interpretation;
+      });
+    }
+    await _requestInterpretation();
+  }
+
+  void _handleShowInterpretationView() {
+    setState(() {
+      _fullScreenStep = FullScreenStep.interpretation;
+    });
+  }
+
+  void _closeFullScreenFlow() {
+    _exitFullScreenFlow(showInterpretation: _latestInterpretation != null);
+  }
+
+  String _currentDisplayQuestion(CommonStrings localisation) {
+    if (_displayQuestion != null && _displayQuestion!.trim().isNotEmpty) {
+      return _displayQuestion!.trim();
+    }
+    if (_currentQuestion != null && _currentQuestion!.isNotEmpty) {
+      return _formatQuestionLabel(_currentQuestion!);
+    }
+    return _generalConsultationLabel(localisation.localeName);
   }
 
   Widget _buildCardsMessage(
@@ -1725,7 +1786,7 @@ class _HomeState extends State<_Home> {
     final bool allCardsRevealed = _revealedCardCount >= totalCards;
 
     return Card(
-      color: TarotTheme.midnightBlue.withOpacity(0.70),
+      color: TarotTheme.midnightBlue70,
       child: Column(
         children: [
           // Question header
@@ -1736,15 +1797,15 @@ class _HomeState extends State<_Home> {
               color: TarotTheme.midnightBlue,
               gradient: LinearGradient(
                 colors: [
-                  accentColor.withOpacity(0.12),
-                  accentColor.withOpacity(0.06),
+                  accentColor.withValues(alpha: 0.12),
+                  accentColor.withValues(alpha: 0.06),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               border: Border(
                 bottom: BorderSide(
-                  color: TarotTheme.twilightPurple.withOpacity(0.2),
+                  color: TarotTheme.twilightPurpleFaint,
                   width: 1,
                 ),
               ),
@@ -1796,15 +1857,15 @@ class _HomeState extends State<_Home> {
                         color: TarotTheme.midnightBlue,
                         gradient: LinearGradient(
                           colors: [
-                            TarotTheme.cosmicAccent.withOpacity(0.15),
-                            TarotTheme.cosmicAccent.withOpacity(0.08),
+                            TarotTheme.cosmicAccent15,
+                            TarotTheme.cosmicAccent08,
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: TarotTheme.twilightPurple.withOpacity(0.2),
+                          color: TarotTheme.twilightPurpleFaint,
                           width: 1,
                         ),
                       ),
@@ -1869,12 +1930,15 @@ class _HomeState extends State<_Home> {
                     final revealCount =
                         math.max(0, math.min(_revealedCardCount, totalCards));
 
+                    final double spreadMaxHeight =
+                        spread.id == 'celtic_cross' ? 660 : 500;
+
                     return Center(
                       child: SpreadLayout(
                         spread: spread,
                         cards: tarotCards,
                         maxWidth: constraints.maxWidth,
-                        maxHeight: 500,
+                        maxHeight: spreadMaxHeight,
                         dealtCardCount: dealCount,
                         revealedCardCount: revealCount,
                         locale: localisation.localeName,
@@ -1892,7 +1956,7 @@ class _HomeState extends State<_Home> {
                       backgroundColor: TarotTheme.cosmicAccent,
                       foregroundColor: Colors.white,
                       elevation: 2,
-                      shadowColor: TarotTheme.cosmicAccent.withOpacity(0.4),
+                      shadowColor: TarotTheme.cosmicAccent.withValues(alpha: 0.4),
                     ),
                     icon: const Icon(Icons.style, size: 20),
                     label: const Text('Repartir'),
@@ -2028,7 +2092,7 @@ class _HomeState extends State<_Home> {
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color:
-                                    TarotTheme.twilightPurple.withOpacity(0.2),
+                                    TarotTheme.twilightPurpleFaint,
                                 width: 1,
                               ),
                             ),
@@ -2070,10 +2134,10 @@ class _HomeState extends State<_Home> {
                                   ],
                                 ),
                                 if (interpretationSummary != null &&
-                                    interpretationSummary!.isNotEmpty) ...[
+                                    interpretationSummary.isNotEmpty) ...[
                                   const SizedBox(height: 10),
                                   Text(
-                                    interpretationSummary!,
+                                    interpretationSummary,
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: TarotTheme.moonlight,
@@ -2114,18 +2178,6 @@ class _HomeState extends State<_Home> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDashedDivider() {
-    return CustomPaint(
-      size: const Size(double.infinity, 1),
-      painter: _DashedLinePainter(
-        color: TarotTheme.cosmicAccent.withOpacity(0.3),
-        strokeWidth: 1.5,
-        dashWidth: 8,
-        dashSpace: 6,
       ),
     );
   }
@@ -2200,7 +2252,7 @@ class _HomeState extends State<_Home> {
               if (index < cardSections.length - 1) const SizedBox(height: 12),
             ],
           );
-        }).toList(),
+        }),
 
         // Síntesis section (if present)
         if (synthesis != null) ...[
@@ -2259,7 +2311,7 @@ class _HomeState extends State<_Home> {
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: TarotTheme.blackOverlay30,
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -2355,7 +2407,7 @@ class _HomeState extends State<_Home> {
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: TarotTheme.twilightPurple.withOpacity(0.2),
+          color: TarotTheme.twilightPurpleFaint,
           width: 1,
         ),
       ),
@@ -2436,7 +2488,7 @@ class _HomeState extends State<_Home> {
         ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: TarotTheme.twilightPurple.withOpacity(0.2),
+          color: TarotTheme.twilightPurpleFaint,
           width: 1,
         ),
       ),
@@ -2698,7 +2750,7 @@ class _HomeState extends State<_Home> {
                     borderRadius: BorderRadius.circular(8),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
+                        color: TarotTheme.blackOverlay30,
                         blurRadius: 6,
                         offset: const Offset(0, 3),
                       ),
@@ -2845,7 +2897,7 @@ class _HomeState extends State<_Home> {
           color: TarotTheme.midnightBlue,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: TarotTheme.cosmicAccent.withOpacity(0.2),
+            color: TarotTheme.cosmicAccentSubtle,
             width: 1,
           ),
         ),
@@ -2861,8 +2913,8 @@ class _HomeState extends State<_Home> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      accentColor.withOpacity(0.15),
-                      accentColor.withOpacity(0.08),
+                      accentColor.withValues(alpha: 0.15),
+                      accentColor.withValues(alpha: 0.08),
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -2873,7 +2925,7 @@ class _HomeState extends State<_Home> {
                   ),
                   border: Border(
                     bottom: BorderSide(
-                      color: TarotTheme.twilightPurple.withOpacity(0.2),
+                      color: TarotTheme.twilightPurpleFaint,
                       width: 1,
                     ),
                   ),
@@ -3092,6 +3144,7 @@ class _HomeState extends State<_Home> {
 
     // Build content based on whether there's a draw or not
     Widget bodyContent;
+    Widget? fullScreenOverlay;
 
     if (_initialising) {
       bodyContent = const Center(child: CircularProgressIndicator());
@@ -3185,6 +3238,50 @@ class _HomeState extends State<_Home> {
       );
     }
 
+    if (_fullScreenStep != null && _latestDraw != null) {
+      final draw = _latestDraw!;
+      final spread =
+          TarotSpreads.getById(draw.spread) ?? TarotSpreads.threeCard;
+      final cards = draw.result
+          .map((card) => TarotCard.fromCardResult(
+                card,
+                imagePath: _getCardImagePath(card),
+              ))
+          .toList();
+      Widget? interpretationContent;
+      if (_latestInterpretation != null) {
+        interpretationContent = _buildInterpretationContent(
+          _latestInterpretation!,
+          Theme.of(context),
+          TarotTheme.cosmicBlue,
+          draw.result,
+          localisation,
+        );
+      }
+
+      fullScreenOverlay = DrawFullScreenFlow(
+        step: _fullScreenStep!,
+        question: _currentDisplayQuestion(localisation),
+        recommendation: _spreadRecommendationReason,
+        spread: spread,
+        cards: cards,
+        dealtCardCount: _dealtCardCount,
+        dealingCards: _dealingCards,
+        revealedCardCount: _revealedCardCount,
+        revealingCards: _revealingCards,
+        requestingInterpretation: _requestingInterpretation,
+        interpretationAvailable: _latestInterpretation != null,
+        interpretationContent: interpretationContent,
+        localisation: localisation,
+        onClose: _closeFullScreenFlow,
+        onBriefingContinue: _handleBriefingContinue,
+        onDeal: _dealCardsSequentially,
+        onReveal: _revealCardsSequentially,
+        onInterpret: _handleFullScreenInterpretationRequest,
+        onShowInterpretation: _handleShowInterpretationView,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -3206,14 +3303,12 @@ class _HomeState extends State<_Home> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.history_rounded,
-              color: TarotTheme.cosmicAccent,
+              color: TarotTheme.stardust.withOpacity(0.5),
             ),
-            onPressed: () {
-              // TODO: Implementar historial
-            },
-            tooltip: 'Historial de Consultas',
+            onPressed: null, // History feature - coming soon
+            tooltip: 'Historial (Próximamente)',
           ),
         ],
       ),
@@ -3233,6 +3328,8 @@ class _HomeState extends State<_Home> {
           ),
           // Content
           bodyContent,
+          if (fullScreenOverlay != null)
+            Positioned.fill(child: fullScreenOverlay),
           // Form card fixed at bottom (above button) - only show on home page
           if (!hasDraw)
             Positioned(
@@ -3261,7 +3358,7 @@ class _StarryNightPainter extends CustomPainter {
       final radius = random.nextDouble() * 1.2 + 0.3;
       final opacity = random.nextDouble() * 0.4 + 0.2;
 
-      paint.color = Colors.white.withOpacity(opacity);
+      paint.color = Colors.white.withValues(alpha: opacity);
       canvas.drawCircle(Offset(x, y), radius, paint);
     }
 
@@ -3272,7 +3369,7 @@ class _StarryNightPainter extends CustomPainter {
       final radius = random.nextDouble() * 1.8 + 0.8;
       final opacity = random.nextDouble() * 0.3 + 0.5;
 
-      paint.color = TarotTheme.cosmicAccent.withOpacity(opacity);
+      paint.color = TarotTheme.cosmicAccent.withValues(alpha: opacity);
       canvas.drawCircle(Offset(x, y), radius, paint);
 
       // Add a subtle glow

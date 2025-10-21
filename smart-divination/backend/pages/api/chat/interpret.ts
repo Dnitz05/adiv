@@ -27,6 +27,8 @@ import {
 import { recordApiMetric } from '../../../lib/utils/metrics';
 import { extractKeywords } from '../../../lib/utils/text';
 import { getCardByEnglishName, CARD_NAMES } from '../../../lib/data/card-names';
+import { isUsingGemini } from '../../../lib/services/ai-provider';
+import { interpretCardsWithGemini } from '../../../lib/services/gemini-ai';
 
 const METRICS_PATH = '/api/chat/interpret';
 const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
@@ -483,30 +485,78 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!interpretation || interpretation.length === 0) {
     try {
       const drawnCards = extractDrawnCards(results, technique);
-      const generated = await generateInterpretationFromDeepSeek({
-        sessionId: input.sessionId,
-        results,
-        question,
-        technique,
-        locale,
-        model: input.model,
-        temperature: input.temperature,
-        drawnCards,
-      });
-      if (generated) {
-        interpretation = generated.interpretation.trim();
-        if (generated.summary && generated.summary.trim().length > 0) {
-          summary = generated.summary.trim();
+
+      // Use Gemini if configured
+      if (isUsingGemini()) {
+        log('info', 'Using Gemini for interpretation', { requestId });
+
+        // Extract spread name from results
+        const spreadName = typeof results.spread === 'string' ? results.spread : 'Tarot Reading';
+
+        // Convert drawnCards to format expected by Gemini
+        // NOTE: We pass placeholder info, NOT actual card names (they get replaced later)
+        const cards = drawnCards.map((card, index) => {
+          const positionText =
+            typeof results.cards === 'object' &&
+            Array.isArray(results.cards) &&
+            results.cards[index]?.position
+              ? String(results.cards[index].position)
+              : `Position ${index + 1}`;
+
+          return {
+            name: `CARD_${index}`, // Use placeholder, will be replaced
+            upright: card.upright,
+            position: positionText,
+          };
+        });
+
+        let geminiInterpretation = await interpretCardsWithGemini(
+          question || 'General reading',
+          cards,
+          spreadName,
+          locale,
+          requestId
+        );
+
+        // Replace card placeholders with canonical names (same as DeepSeek)
+        if (drawnCards && drawnCards.length > 0) {
+          interpretation = replaceCardPlaceholders(geminiInterpretation, drawnCards, locale);
+        } else {
+          interpretation = geminiInterpretation;
         }
-        generated.keywords.forEach((keyword) => keywordSet.add(keyword.toLowerCase()));
+
         generatedByModel = true;
-        deepSeekDebug = generated.debug;
+
+        // Extract keywords from interpretation
+        extractKeywords(interpretation, 12).forEach((keyword) => keywordSet.add(keyword));
+      } else {
+        // Use DeepSeek
+        const generated = await generateInterpretationFromDeepSeek({
+          sessionId: input.sessionId,
+          results,
+          question,
+          technique,
+          locale,
+          model: input.model,
+          temperature: input.temperature,
+          drawnCards,
+        });
+        if (generated) {
+          interpretation = generated.interpretation.trim();
+          if (generated.summary && generated.summary.trim().length > 0) {
+            summary = generated.summary.trim();
+          }
+          generated.keywords.forEach((keyword) => keywordSet.add(keyword.toLowerCase()));
+          generatedByModel = true;
+          deepSeekDebug = generated.debug;
+        }
       }
     } catch (error) {
       generationError = error instanceof Error ? error.message : String(error);
-      log('warn', 'DeepSeek interpretation failed', {
+      log('warn', 'AI interpretation failed', {
         requestId,
         sessionId: input.sessionId,
+        provider: isUsingGemini() ? 'Gemini' : 'DeepSeek',
         error: generationError,
       });
     }

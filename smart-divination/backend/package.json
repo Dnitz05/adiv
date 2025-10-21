@@ -28,6 +28,7 @@
     "supabase:types:ci": "bash ../../scripts/supabase/generate_types.sh"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.39.0",
     "@vercel/edge": "^1.1.1",
     "bcryptjs": "^2.4.3",
@@ -63,10 +64,13 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "transform": {
-      "^.+\\.ts$": ["ts-jest", {
-        "diagnostics": false,
-        "tsconfig": "./tsconfig.json"
-      }]
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "diagnostics": false,
+          "tsconfig": "./tsconfig.json"
+        }
+      ]
     },
     "roots": [
       "<rootDir>/__tests__"

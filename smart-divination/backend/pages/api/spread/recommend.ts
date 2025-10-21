@@ -17,6 +17,8 @@ import {
 import { recordApiMetric } from '../../../lib/utils/metrics';
 import { extractKeywords } from '../../../lib/utils/text';
 import { findBestSpread, SPREADS, type SpreadDefinition } from '../../../lib/data/spreads';
+import { isUsingGemini } from '../../../lib/services/ai-provider';
+import { selectSpreadWithGemini } from '../../../lib/services/gemini-ai';
 
 const METRICS_PATH = '/api/spread/recommend';
 const CORS_CONFIG = { methods: 'OPTIONS, POST' };
@@ -52,22 +54,35 @@ interface SpreadRecommendation {
 }
 
 /**
- * Phase 2: AI-powered spread recommendation with DeepSeek
+ * Phase 2: AI-powered spread recommendation with Gemini or DeepSeek
  * Falls back to keyword-based if AI fails
  */
 async function recommendSpread(
   question: string,
   locale: string,
   preferredComplexity?: string,
-  preferredCategory?: string
+  preferredCategory?: string,
+  requestId?: string
 ): Promise<SpreadRecommendation> {
   // Try AI-powered selection first
-  const useAI = process.env.DEEPSEEK_API_KEY?.trim();
+  const useAI = isUsingGemini()
+    ? process.env.GEMINI_API_KEY?.trim()
+    : process.env.DEEPSEEK_API_KEY?.trim();
 
   if (useAI) {
     try {
-      const { selectSpreadWithAI } = await import('../../../lib/services/ai-spread-selector');
-      const aiSelection = await selectSpreadWithAI(question, locale);
+      let aiSelection;
+
+      if (isUsingGemini()) {
+        // Use Gemini for spread selection
+        log('info', 'Using Gemini for spread selection', { requestId });
+        aiSelection = await selectSpreadWithGemini(question, SPREADS, locale, requestId);
+      } else {
+        // Use DeepSeek for spread selection
+        const { selectSpreadWithAI } = await import('../../../lib/services/ai-spread-selector');
+        aiSelection = await selectSpreadWithAI(question, locale, requestId);
+      }
+
       const spread = SPREADS.find((s) => s.id === aiSelection.spreadId);
 
       if (spread) {
@@ -79,7 +94,7 @@ async function recommendSpread(
           reasoning: aiSelection.reason,
           reasoningCA: aiSelection.reason,
           reasoningES: aiSelection.reason,
-          confidenceScore: aiSelection.confidence,
+          confidenceScore: 0.9,
           keyFactors: keywords,
           detectedCategory: spread.category,
           detectedComplexity: spread.complexity,
@@ -88,6 +103,7 @@ async function recommendSpread(
       }
     } catch (error) {
       log('warn', 'AI spread selection failed, falling back to keyword-based', {
+        requestId,
         error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
@@ -339,7 +355,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       body.question,
       body.locale,
       body.preferredComplexity,
-      body.preferredCategory
+      body.preferredCategory,
+      requestId
     );
 
     // Record metrics

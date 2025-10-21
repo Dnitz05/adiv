@@ -15,7 +15,7 @@ import {
   parseApiRequest,
 } from '../../../lib/utils/api';
 import { recordApiMetric } from '../../../lib/utils/metrics';
-import { editQuestionWithAI } from '../../../lib/services/ai-question-editor';
+import { editQuestion } from '../../../lib/services/ai-provider';
 
 const METRICS_PATH = '/api/questions/edit';
 const CORS_CONFIG = { methods: 'OPTIONS, POST' };
@@ -64,7 +64,7 @@ export default async function handler(
       questionLength: body.question.length,
     });
 
-    const result = await editQuestionWithAI(body.question, body.locale);
+    const edited = await editQuestion(body.question, body.locale, requestId);
 
     const duration = Date.now() - startTime;
     recordApiMetric(METRICS_PATH, 200, duration);
@@ -74,8 +74,8 @@ export default async function handler(
         requestId,
         data: {
           original: body.question,
-          edited: result.edited,
-          usedAI: result.usedAI,
+          edited: edited,
+          usedAI: true,
         },
       })
     );

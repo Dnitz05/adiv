@@ -68,9 +68,7 @@ Future<InterpretationResult?> submitInterpretation({
   String? question,
   String locale = 'en',
 }) async {
-  print('[InterpretationAPI] Starting submitInterpretation');
   final uri = buildApiUri('api/chat/interpret');
-  print('[InterpretationAPI] URI: $uri');
   final cardsPayload = draw.result
       .map((card) => <String, dynamic>{
             'id': card.id,
@@ -111,7 +109,6 @@ Future<InterpretationResult?> submitInterpretation({
     },
   );
 
-  print('[InterpretationAPI] Sending POST request...');
   final response = await http.post(
     uri,
     headers: headers,
@@ -122,9 +119,6 @@ Future<InterpretationResult?> submitInterpretation({
       throw Exception('Connection timeout: Interpretation server did not respond within 60 seconds');
     },
   );
-
-  print('[InterpretationAPI] Response status: ${response.statusCode}');
-  print('[InterpretationAPI] Response body: ${response.body}');
 
   if (response.statusCode != 200) {
     throw Exception('Interpretation request failed (${response.statusCode}): ${response.body}');

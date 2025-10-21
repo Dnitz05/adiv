@@ -29,7 +29,10 @@ class TarotCard {
       imageUrl: imagePath,
     );
   }
-  static String? _normaliseSuit(String rawSuit) {
+  static String? _normaliseSuit(String? rawSuit) {
+    if (rawSuit == null) {
+      return null;
+    }
     final trimmed = rawSuit.trim();
     if (trimmed.isEmpty) {
       return null;

@@ -17,6 +17,28 @@ class TarotTheme {
   static const Color cosmicBlue = Color(0xFF6d82cd); // Quote accent / CTA
   static const Color starGlow = Color(0xFFE8E5F5); // High contrast text
 
+  // Optimized opacity variants (avoid withOpacity() in builds)
+  static const Color deepNightOverlay = Color(0xFA0F0B1F); // 98% opacity
+  static const Color midnightBlueTransparent = Color(0xD91A1530); // 85% opacity
+  static const Color midnightBlueAppBar = Color(0xF21A1530); // 95% opacity
+  static const Color midnightBlue70 = Color(0xB31A1530); // 70% opacity
+  static const Color cosmicAccentSubtle = Color(0x339B87D9); // 20% opacity
+  static const Color cosmicAccentFaint = Color(0x1F9B87D9); // 12% opacity
+  static const Color cosmicAccent15 = Color(0x269B87D9); // 15% opacity
+  static const Color cosmicAccent08 = Color(0x149B87D9); // 8% opacity
+  static const Color cosmicAccent90 = Color(0xE69B87D9); // 90% opacity
+  static const Color twilightPurpleLight = Color(0x993D3055); // 60% opacity
+  static const Color twilightPurpleFaint = Color(0x333D3055); // 20% opacity
+  static const Color twilightPurpleBorder = Color(0x4D3D3055); // 30% opacity
+  static const Color stardustLight = Color(0xCC8E8AA8); // 80% opacity
+  static const Color stardustFaint = Color(0x998E8AA8); // 60% opacity
+  static const Color moonlightTransparent = Color(0xE6F0EFF7); // 90% opacity
+  static const Color moonlight85 = Color(0xD9F0EFF7); // 85% opacity
+  static const Color moonlight70 = Color(0xB3F0EFF7); // 70% opacity
+  static const Color blackOverlay20 = Color(0x33000000); // 20% opacity
+  static const Color blackOverlay30 = Color(0x4D000000); // 30% opacity
+  static const Color white70 = Color(0xB3FFFFFF); // 70% opacity
+
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,

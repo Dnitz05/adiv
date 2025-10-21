@@ -75,8 +75,6 @@ Future<SpreadRecommendation> recommendSpread({
   String? userId,
   void Function(String)? onReasoningChunk,
 }) async {
-  print('🔮 DEBUG: recommendSpread called with question="$question", locale=$locale');
-
   // Use streaming endpoint if callback provided
   if (onReasoningChunk != null) {
     return _recommendSpreadStreaming(
@@ -89,10 +87,8 @@ Future<SpreadRecommendation> recommendSpread({
 
   // Otherwise use regular endpoint
   final uri = buildApiUri('api/spread/recommend');
-  print('🔮 DEBUG: URI built: $uri');
 
   final effectiveUserId = userId ?? await UserIdentity.obtain();
-  print('🔮 DEBUG: User ID: $effectiveUserId');
 
   final headers = await buildAuthenticatedHeaders(
     locale: locale,
@@ -102,7 +98,6 @@ Future<SpreadRecommendation> recommendSpread({
       'accept': 'application/json',
     },
   );
-  print('🔮 DEBUG: Headers built, preparing body');
 
   final body = jsonEncode(<String, dynamic>{
     'question': question,
@@ -112,9 +107,7 @@ Future<SpreadRecommendation> recommendSpread({
     if (preferredCategory != null && preferredCategory.isNotEmpty)
       'preferredCategory': preferredCategory,
   });
-  print('🔮 DEBUG: Body: $body');
 
-  print('🔮 DEBUG: Making POST request to $uri');
   final res = await http.post(
     uri,
     headers: headers,
@@ -125,14 +118,11 @@ Future<SpreadRecommendation> recommendSpread({
       throw Exception('Connection timeout: AI spread selection timed out');
     },
   );
-  print('🔮 DEBUG: Response status: ${res.statusCode}');
 
   if (res.statusCode != 200) {
-    print('🔮 DEBUG: Request failed with ${res.statusCode}: ${res.body}');
     throw Exception('Spread recommendation failed (${res.statusCode}): ${res.body}');
   }
 
-  print('🔮 DEBUG: Parsing response body');
   final Map<String, dynamic> payload =
       jsonDecode(res.body) as Map<String, dynamic>;
 
@@ -143,7 +133,6 @@ Future<SpreadRecommendation> recommendSpread({
 
   final outerData = payload['data'] as Map<String, dynamic>;
   final data = outerData['data'] as Map<String, dynamic>;
-  print('🔮 DEBUG: Parsed data: ${data['spread']?['id']}');
   return SpreadRecommendation.fromJson(data);
 }
 
@@ -153,8 +142,6 @@ Future<SpreadRecommendation> _recommendSpreadStreaming({
   String? userId,
   required void Function(String) onReasoningChunk,
 }) async {
-  print('🔮 DEBUG: recommendSpreadStreaming called');
-
   final uri = buildApiUri('api/spread/recommend-stream');
   final effectiveUserId = userId ?? await UserIdentity.obtain();
 
@@ -171,8 +158,6 @@ Future<SpreadRecommendation> _recommendSpreadStreaming({
     'question': question,
     'locale': locale,
   });
-
-  print('🔮 DEBUG: Making streaming POST request to $uri');
   final request = http.Request('POST', uri);
   request.headers.addAll(headers);
   request.body = body;
@@ -205,7 +190,6 @@ Future<SpreadRecommendation> _recommendSpreadStreaming({
             onReasoningChunk(content);
           } else if (type == 'complete') {
             spreadId = parsed['spreadId'] as String;
-            final spreadData = parsed['spread'] as Map<String, dynamic>;
             spread = TarotSpreads.getById(spreadId!) ?? TarotSpreads.threeCard;
             confidenceScore = (parsed['confidenceScore'] as num?)?.toDouble() ?? 0.9;
             fullReason = parsed['reasoning'] as String? ?? fullReason;
@@ -213,7 +197,7 @@ Future<SpreadRecommendation> _recommendSpreadStreaming({
             throw Exception(parsed['error'] as String);
           }
         } catch (e) {
-          print('⚠️  Error parsing SSE: $e');
+          // Silently skip malformed SSE events
         }
       }
     }

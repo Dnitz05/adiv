@@ -82,14 +82,10 @@ Future<T> _retryWithBackoff<T>(
     try {
       return await operation();
     } catch (e) {
-      print('🔄 DEBUG: Attempt $attempt failed: $e');
-
       if (attempt >= maxAttempts) {
-        print('❌ DEBUG: All $maxAttempts attempts failed');
         rethrow;
       }
 
-      print('⏳ DEBUG: Waiting ${delay.inSeconds}s before retry $attempt/$maxAttempts');
       await Future.delayed(delay);
       delay *= 2; // Exponential backoff
     }
@@ -105,13 +101,9 @@ Future<CardsDrawResponse> drawCards({
   String? userId,
   String locale = 'en',
 }) async {
-  print('🎴 DEBUG: drawCards called with count=$count, spread=$spread');
-
   return _retryWithBackoff<CardsDrawResponse>(() async {
     final uri = buildApiUri('api/draw/cards');
-    print('🎴 DEBUG: URI built: $uri');
     final effectiveUserId = userId ?? await UserIdentity.obtain();
-    print('🎴 DEBUG: User ID: $effectiveUserId');
 
     final headers = await buildAuthenticatedHeaders(
       locale: locale,
@@ -121,7 +113,6 @@ Future<CardsDrawResponse> drawCards({
         'accept': 'application/json',
       },
     );
-    print('🎴 DEBUG: Headers built, preparing body');
 
     final body = jsonEncode(<String, dynamic>{
       'count': count,
@@ -130,9 +121,7 @@ Future<CardsDrawResponse> drawCards({
       if (question != null && question.isNotEmpty) 'question': question,
       if (spread != null && spread.isNotEmpty) 'spread': spread,
     });
-    print('🎴 DEBUG: Body: $body');
 
-    print('🎴 DEBUG: Making POST request to $uri');
     final res = await http.post(
       uri,
       headers: headers,
@@ -143,14 +132,10 @@ Future<CardsDrawResponse> drawCards({
         throw Exception('Connection timeout: Server did not respond within 30 seconds');
       },
     );
-    print('🎴 DEBUG: Response status: ${res.statusCode}');
 
     if (res.statusCode != 200) {
-      print('🎴 DEBUG: Request failed with ${res.statusCode}: ${res.body}');
       throw Exception('Draw failed (${res.statusCode}): ${res.body}');
     }
-
-    print('🎴 DEBUG: Parsing response body');
     final Map<String, dynamic> data =
         jsonDecode(res.body) as Map<String, dynamic>;
     return CardsDrawResponse.fromJson(data);
