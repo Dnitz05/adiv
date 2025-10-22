@@ -1664,63 +1664,72 @@ class _HomeState extends State<_Home> {
   }
 
   Widget _buildQuickActions(BuildContext context, CommonStrings localisation) {
-    final double maxWidth = MediaQuery.of(context).size.width;
-    const double spacing = 12.0;
-    final double tileWidth = math.max(
-      96.0,
-      math.min((maxWidth - 80) / 4, 128.0),
-    );
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        const double spacing = 12.0;
+        final double availableWidth = constraints.maxWidth;
+        if (availableWidth <= 0) {
+          return const SizedBox.shrink();
+        }
 
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: spacing,
-      runSpacing: spacing,
-      children: [
-        _QuickActionTile(
-          width: tileWidth,
-          icon: Icons.chat_bubble_outline,
-          title: _qaText(localisation,
-              en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
-          subtitle: _qaText(localisation,
-              en: 'Talk with guided responses',
-              es: 'Conversa con guía al instante',
-              ca: 'Conversa amb guia instantània'),
-          onTap: () => _handleQuickActionChat(localisation),
-        ),
-        _QuickActionTile(
-          width: tileWidth,
-          icon: Icons.archive_outlined,
-          title: _qaText(localisation,
-              en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
-          subtitle: _qaText(localisation,
-              en: 'Revisit past readings',
-              es: 'Revisa lecturas pasadas',
-              ca: 'Revisa lectures passades'),
-          onTap: () => _handleQuickActionArchive(localisation),
-        ),
-        _QuickActionTile(
-          width: tileWidth,
-          icon: Icons.auto_awesome_motion,
-          title: _qaText(localisation,
-              en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
-          subtitle: _qaText(localisation,
-              en: 'Explore layouts and meanings',
-              es: 'Explora diseños y significados',
-              ca: 'Explora disposicions i significats'),
-          onTap: () => _handleQuickActionSpreads(localisation),
-        ),
-        _QuickActionTile(
-          width: tileWidth,
-          icon: Icons.self_improvement,
-          title: _qaText(localisation,
-              en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
-          subtitle: _qaText(localisation,
-              en: 'Guided rituals coming soon',
-              es: 'Rituales guiados próximamente',
-              ca: 'Rituals guiats properament'),
-          onTap: () => _handleQuickActionRituals(localisation),
-        ),
-      ],
+        final bool forceSingleColumn = availableWidth < 320;
+        final double tileWidth = forceSingleColumn
+            ? availableWidth
+            : math.max(140.0, math.min((availableWidth - spacing) / 2, 200.0));
+        final double horizontalSpacing = forceSingleColumn ? 0.0 : spacing;
+
+        return Wrap(
+          alignment: WrapAlignment.center,
+          spacing: horizontalSpacing,
+          runSpacing: spacing,
+          children: [
+            _QuickActionTile(
+              width: tileWidth,
+              icon: Icons.chat_bubble_outline,
+              title: _qaText(localisation,
+                  en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
+              subtitle: _qaText(localisation,
+                  en: 'Talk with guided responses',
+                  es: 'Conversa con guÃ­a al instante',
+                  ca: 'Conversa amb guia instantÃ nia'),
+              onTap: () => _handleQuickActionChat(localisation),
+            ),
+            _QuickActionTile(
+              width: tileWidth,
+              icon: Icons.archive_outlined,
+              title: _qaText(localisation,
+                  en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+              subtitle: _qaText(localisation,
+                  en: 'Revisit past readings',
+                  es: 'Revisa lecturas pasadas',
+                  ca: 'Revisa lectures passades'),
+              onTap: () => _handleQuickActionArchive(localisation),
+            ),
+            _QuickActionTile(
+              width: tileWidth,
+              icon: Icons.auto_awesome_motion,
+              title: _qaText(localisation,
+                  en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
+              subtitle: _qaText(localisation,
+                  en: 'Explore layouts and meanings',
+                  es: 'Explora diseÃ±os y significados',
+                  ca: 'Explora disposicions i significats'),
+              onTap: () => _handleQuickActionSpreads(localisation),
+            ),
+            _QuickActionTile(
+              width: tileWidth,
+              icon: Icons.self_improvement,
+              title: _qaText(localisation,
+                  en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
+              subtitle: _qaText(localisation,
+                  en: 'Guided rituals coming soon',
+                  es: 'Rituales guiados prÃ³ximamente',
+                  ca: 'Rituals guiats properament'),
+              onTap: () => _handleQuickActionRituals(localisation),
+            ),
+          ],
+        );
+      },
     );
   }
 
