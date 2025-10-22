@@ -25,6 +25,7 @@ Completed work (total ~45 minutes once secrets were available):
 ## Recent Progress (2025-10-22)
 
 ### UX & Visual Improvements
+- **Auto Celtic Cross**: When question field is left empty, automatically selects Celtic Cross (10-card) spread for comprehensive general consultations. Skips AI spread recommendation to save time.
 - **Functional Header**: Replaced logo with 4 actionable icons (Chat, Spreads, Archive, Settings) in top header bar. Clean vertical icon+text layout. Removed duplicate QuickActions from below text field for streamlined UX.
 - **Spread Gallery Layout**: Increased diagram size from 38% to 50% of screen height, making Celtic Cross cards significantly larger and more readable. Fixed text section to 25% max height with scrolling.
 - **AI Content Quality**: Completely rewritten "Why this spread?" content with rich 30-50 word bullets (previously 10-15 words). Removed generic intro sentences. First bullet explains WHY the spread is perfect, second provides concrete reading guidance. Increased Gemini temperature to 0.9 and maxTokens to 700 for deeper insights.
