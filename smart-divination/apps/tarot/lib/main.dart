@@ -2973,6 +2973,12 @@ class _HomeState extends State<_Home> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildHeaderAction(
+              icon: Icons.home_outlined,
+              label: _qaText(localisation,
+                  en: 'Home', es: 'Inicio', ca: 'Inici'),
+              onTap: () => _resetToHome(),
+            ),
+            _buildHeaderAction(
               icon: Icons.chat_bubble_outline,
               label: _qaText(localisation,
                   en: 'Chat', es: 'Chat', ca: 'Xat'),
