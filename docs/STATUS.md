@@ -27,7 +27,7 @@ Completed work (total ~45 minutes once secrets were available):
 ### UX & Visual Improvements
 - **Spread Gallery Layout**: Increased diagram size from 38% to 50% of screen height, making Celtic Cross cards significantly larger and more readable. Fixed text section to 25% max height with scrolling.
 - **AI Content Quality**: Completely rewritten "Why this spread?" content with rich 30-50 word bullets (previously 10-15 words). Removed generic intro sentences. First bullet explains WHY the spread is perfect, second provides concrete reading guidance. Increased Gemini temperature to 0.9 and maxTokens to 700 for deeper insights.
-- **App Icon**: Updated launcher icon to sun symbol with concentric circles design. Replaced moon icon with mystical sun featuring golden/beige rays on cosmic blue background. Regenerated all adaptive icons for Android & iOS.
+- **App Icon**: Updated launcher icon with sun symbol on constellation starfield. Features mystical sun with golden rays on rich purple/violet cosmic background with constellation patterns and 4-point stars. Regenerated all adaptive icons for Android & iOS.
 - **Quick Actions**: Redesigned home screen quick action tiles as single horizontal row positioned above Consultar button. All 4 actions displayed in line using cosmicBlue background matching the main button. White icons and text for visual consistency. Compact vertical icon+text layout with equal width distribution.
 - **Daily Quotes**: Removed author attribution, showing only quote text for cleaner presentation.
 
