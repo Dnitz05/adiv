@@ -1641,8 +1641,6 @@ class _HomeState extends State<_Home> {
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 16),
-                _buildQuickActions(context, localisation),
                 const SizedBox(height: 20),
                 FilledButton.icon(
                   onPressed: _drawing ? null : _drawCards,
@@ -1659,6 +1657,8 @@ class _HomeState extends State<_Home> {
             ),
           ),
         ),
+        const SizedBox(height: 16),
+        _buildQuickActions(context, localisation),
       ],
     );
   }
@@ -1688,10 +1688,6 @@ class _HomeState extends State<_Home> {
               icon: Icons.chat_bubble_outline,
               title: _qaText(localisation,
                   en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
-              subtitle: _qaText(localisation,
-                  en: 'Talk with guided responses',
-                  es: 'Conversa con guÃ­a al instante',
-                  ca: 'Conversa amb guia instantÃ nia'),
               onTap: () => _handleQuickActionChat(localisation),
             ),
             _QuickActionTile(
@@ -1699,10 +1695,6 @@ class _HomeState extends State<_Home> {
               icon: Icons.archive_outlined,
               title: _qaText(localisation,
                   en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
-              subtitle: _qaText(localisation,
-                  en: 'Revisit past readings',
-                  es: 'Revisa lecturas pasadas',
-                  ca: 'Revisa lectures passades'),
               onTap: () => _handleQuickActionArchive(localisation),
             ),
             _QuickActionTile(
@@ -1710,10 +1702,6 @@ class _HomeState extends State<_Home> {
               icon: Icons.auto_awesome_motion,
               title: _qaText(localisation,
                   en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
-              subtitle: _qaText(localisation,
-                  en: 'Explore layouts and meanings',
-                  es: 'Explora diseÃ±os y significados',
-                  ca: 'Explora disposicions i significats'),
               onTap: () => _handleQuickActionSpreads(localisation),
             ),
             _QuickActionTile(
@@ -1721,10 +1709,6 @@ class _HomeState extends State<_Home> {
               icon: Icons.self_improvement,
               title: _qaText(localisation,
                   en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
-              subtitle: _qaText(localisation,
-                  en: 'Guided rituals coming soon',
-                  es: 'Rituales guiados prÃ³ximamente',
-                  ca: 'Rituals guiats properament'),
               onTap: () => _handleQuickActionRituals(localisation),
             ),
           ],
@@ -3004,14 +2988,12 @@ class _QuickActionTile extends StatelessWidget {
     required this.width,
     required this.icon,
     required this.title,
-    required this.subtitle,
     required this.onTap,
   });
 
   final double width;
   final IconData icon;
   final String title;
-  final String subtitle;
   final VoidCallback onTap;
 
   @override
@@ -3024,7 +3006,7 @@ class _QuickActionTile extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             decoration: BoxDecoration(
               color: TarotTheme.midnightBlueTransparent,
               borderRadius: BorderRadius.circular(16),
@@ -3044,7 +3026,7 @@ class _QuickActionTile extends StatelessWidget {
                   ),
                   child: Icon(icon, color: TarotTheme.cosmicAccent, size: 20),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Text(
                   title,
                   style: const TextStyle(
@@ -3054,18 +3036,6 @@ class _QuickActionTile extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: TarotTheme.stardust,
-                    fontSize: 11,
-                    height: 1.3,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
