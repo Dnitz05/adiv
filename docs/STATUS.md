@@ -28,7 +28,7 @@ Completed work (total ~45 minutes once secrets were available):
 - **Spread Gallery Layout**: Increased diagram size from 38% to 50% of screen height, making Celtic Cross cards significantly larger and more readable. Fixed text section to 25% max height with scrolling.
 - **AI Content Quality**: Completely rewritten "Why this spread?" content with rich 30-50 word bullets (previously 10-15 words). Removed generic intro sentences. First bullet explains WHY the spread is perfect, second provides concrete reading guidance. Increased Gemini temperature to 0.9 and maxTokens to 700 for deeper insights.
 - **App Icon**: Updated launcher icon with latest design iteration across all mipmaps (Android & iOS).
-- **Quick Actions**: Redesigned home screen quick action tiles with responsive two-column layout (collapses to single column on narrow screens). Now positioned inside the form card directly below the text field. Uses LayoutBuilder for optimal width calculation and maintains compact, visually coherent design with circular highlighted icons.
+- **Quick Actions**: Redesigned home screen quick action tiles with responsive two-column layout (collapses to single column on narrow screens). Now positioned below the form card for cleaner visual separation. Subtitles removed and tile height reduced for more compact presentation. Uses LayoutBuilder for optimal width calculation and maintains visually coherent design with circular highlighted icons.
 - **Daily Quotes**: Removed author attribution, showing only quote text for cleaner presentation.
 
 ## Recent Progress (2025-10-18)
