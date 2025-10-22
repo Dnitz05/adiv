@@ -25,7 +25,7 @@ Completed work (total ~45 minutes once secrets were available):
 ## Recent Progress (2025-10-22)
 
 ### UX & Visual Improvements
-- **Mystical Background**: Home screen now features repeating pattern with golden mystical symbols (suns, moons, eyes, constellations) on purple base at 30% opacity. Creates rich atmospheric depth while maintaining readability.
+- **Mystical Background**: Home screen now features Solaris Tarot starry texture background with central sun and scattered stars on deep purple-blue gradient at 30% opacity. Creates rich atmospheric depth while maintaining readability.
 - **Auto Celtic Cross**: When question field is left empty, automatically selects Celtic Cross (10-card) spread for comprehensive general consultations. Skips AI spread recommendation to save time.
 - **Functional Header**: Replaced logo with 5 actionable icons (Home, Chat, Spreads, Archive, Settings) in top header bar. Clean vertical icon+text layout. Removed duplicate QuickActions from below text field for streamlined UX.
 - **Spread Gallery Layout**: Increased diagram size from 38% to 50% of screen height, making Celtic Cross cards significantly larger and more readable. Fixed text section to 25% max height with scrolling.

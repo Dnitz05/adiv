@@ -3007,11 +3007,11 @@ class _HomeState extends State<_Home> {
       ),
       body: Stack(
         children: [
-          // Mystical pattern background
+          // Solaris Tarot starry background
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/backgrounds/fondo.jpg'),
+                image: AssetImage('assets/backgrounds/fons.png'),
                 fit: BoxFit.cover,
                 opacity: 0.3,
               ),
