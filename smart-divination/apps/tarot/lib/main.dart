@@ -3007,16 +3007,14 @@ class _HomeState extends State<_Home> {
       ),
       body: Stack(
         children: [
-          // Cosmic gradient background
+          // Mystical pattern background
           Container(
-            decoration: BoxDecoration(
-              gradient: TarotTheme.subtleBackgroundGradient,
-            ),
-          ),
-          // Starry overlay
-          Positioned.fill(
-            child: CustomPaint(
-              painter: _StarryNightPainter(),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/backgrounds/fondo.jpg'),
+                fit: BoxFit.cover,
+                opacity: 0.3,
+              ),
             ),
           ),
           // Content
