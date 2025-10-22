@@ -1641,7 +1641,9 @@ class _HomeState extends State<_Home> {
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                _buildQuickActions(context, localisation),
+                const SizedBox(height: 20),
                 FilledButton.icon(
                   onPressed: _drawing ? null : _drawCards,
                   icon: _drawing
@@ -1663,63 +1665,62 @@ class _HomeState extends State<_Home> {
 
   Widget _buildQuickActions(BuildContext context, CommonStrings localisation) {
     final double maxWidth = MediaQuery.of(context).size.width;
-    const double horizontalPadding = 20.0;
     const double spacing = 12.0;
-    final double tileWidth =
-        math.max((maxWidth - (horizontalPadding * 2) - spacing) / 2, 150.0);
+    final double tileWidth = math.max(
+      96.0,
+      math.min((maxWidth - 80) / 4, 128.0),
+    );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Wrap(
-        spacing: spacing,
-        runSpacing: spacing,
-        children: [
-          _QuickActionTile(
-            width: tileWidth,
-            icon: Icons.chat_bubble_outline,
-            title: _qaText(localisation,
-                en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
-            subtitle: _qaText(localisation,
-                en: 'Talk with guided responses',
-                es: 'Conversa con guía al instante',
-                ca: 'Conversa amb guia instantània'),
-            onTap: () => _handleQuickActionChat(localisation),
-          ),
-          _QuickActionTile(
-            width: tileWidth,
-            icon: Icons.archive_outlined,
-            title: _qaText(localisation,
-                en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
-            subtitle: _qaText(localisation,
-                en: 'Revisit past readings',
-                es: 'Revisa lecturas pasadas',
-                ca: 'Revisa lectures passades'),
-            onTap: () => _handleQuickActionArchive(localisation),
-          ),
-          _QuickActionTile(
-            width: tileWidth,
-            icon: Icons.auto_awesome_motion,
-            title: _qaText(localisation,
-                en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
-            subtitle: _qaText(localisation,
-                en: 'Explore layouts and meanings',
-                es: 'Explora diseños y significados',
-                ca: 'Explora disposicions i significats'),
-            onTap: () => _handleQuickActionSpreads(localisation),
-          ),
-          _QuickActionTile(
-            width: tileWidth,
-            icon: Icons.self_improvement,
-            title: _qaText(localisation,
-                en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
-            subtitle: _qaText(localisation,
-                en: 'Guided rituals coming soon',
-                es: 'Rituales guiados próximamente',
-                ca: 'Rituals guiats properament'),
-            onTap: () => _handleQuickActionRituals(localisation),
-          ),
-        ],
-      ),
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: spacing,
+      runSpacing: spacing,
+      children: [
+        _QuickActionTile(
+          width: tileWidth,
+          icon: Icons.chat_bubble_outline,
+          title: _qaText(localisation,
+              en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
+          subtitle: _qaText(localisation,
+              en: 'Talk with guided responses',
+              es: 'Conversa con guía al instante',
+              ca: 'Conversa amb guia instantània'),
+          onTap: () => _handleQuickActionChat(localisation),
+        ),
+        _QuickActionTile(
+          width: tileWidth,
+          icon: Icons.archive_outlined,
+          title: _qaText(localisation,
+              en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+          subtitle: _qaText(localisation,
+              en: 'Revisit past readings',
+              es: 'Revisa lecturas pasadas',
+              ca: 'Revisa lectures passades'),
+          onTap: () => _handleQuickActionArchive(localisation),
+        ),
+        _QuickActionTile(
+          width: tileWidth,
+          icon: Icons.auto_awesome_motion,
+          title: _qaText(localisation,
+              en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
+          subtitle: _qaText(localisation,
+              en: 'Explore layouts and meanings',
+              es: 'Explora diseños y significados',
+              ca: 'Explora disposicions i significats'),
+          onTap: () => _handleQuickActionSpreads(localisation),
+        ),
+        _QuickActionTile(
+          width: tileWidth,
+          icon: Icons.self_improvement,
+          title: _qaText(localisation,
+              en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
+          subtitle: _qaText(localisation,
+              en: 'Guided rituals coming soon',
+              es: 'Rituales guiados próximamente',
+              ca: 'Rituals guiats properament'),
+          onTap: () => _handleQuickActionRituals(localisation),
+        ),
+      ],
     );
   }
 
@@ -2842,8 +2843,6 @@ class _HomeState extends State<_Home> {
                     ),
                   ),
                 ],
-                const SizedBox(height: 16),
-                _buildQuickActions(context, localisation),
                 const SizedBox(height: 24),
                 SizedBox(height: bottomSpacing),
               ],
@@ -3010,39 +3009,58 @@ class _QuickActionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: TarotTheme.midnightBlueTransparent,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: TarotTheme.cosmicAccentSubtle),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: TarotTheme.cosmicAccent, size: 22),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: TarotTheme.moonlight,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            decoration: BoxDecoration(
+              color: TarotTheme.midnightBlueTransparent,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: TarotTheme.cosmicAccentSubtle.withValues(alpha: 0.7),
               ),
-              const SizedBox(height: 6),
-              Text(
-                subtitle,
-                style: const TextStyle(
-                  color: TarotTheme.stardust,
-                  fontSize: 12,
-                  height: 1.4,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.18),
+                  ),
+                  child: Icon(icon, color: TarotTheme.cosmicAccent, size: 20),
                 ),
-              ),
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: TarotTheme.moonlight,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: TarotTheme.stardust,
+                    fontSize: 11,
+                    height: 1.3,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -70,7 +70,7 @@ The tarot client consumes live Supabase history and interpretations. The I Ching
 
 ## Release Status & Next Steps
 - **Tarot**: Backend plus Flutter app in private beta. Android signing complete (keystore `upload-keystore.jks`, `key.properties` configured). Signed release APK/AAB generated and tested (55MB APK, 45.7MB AAB). Build blockers resolved (app_links compileSdk, intl 0.20.0). App successfully runs on physical device. iOS signing and store metadata pending. Header and spread rationale now leverage the AI formatter even for 'Consulta General', prompting users to add detail when no question was provided.
-- **Backend**: Production environment live at `https://backend-4sircya71-dnitzs-projects.vercel.app` with health/metrics endpoints operational. Deployed on 2025-10-05.
+- **Backend**: Production environment live at `https://backend-jnmkq4odo-dnitzs-projects.vercel.app` with health/metrics endpoints operational. Deployed on 2025-10-22.
 - **Database**: Supabase production migrations applied. Schema complete with RLS policies active.
 - **Security**: All credentials secure. Security incident from 2025-10-05 resolved on 2025-10-06 (all exposed secrets rotated). See `SECURITY_INCIDENT_RESPONSE.md` for details.
 - **Visual assets**: App icon complete (1024x1024 with adaptive icon and all mipmaps). Screenshots (2-8 required), feature graphic (1024x500), and splash customization remain pending.

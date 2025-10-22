@@ -1,6 +1,6 @@
 # Project Status (October 2025)
 
-Last Updated: 2025-10-18
+Last Updated: 2025-10-22
 
 ## Current Status: Android Release Ready
 **Focus:** Android signing complete. App successfully tested on physical device. Ready for Play Store assets creation and submission.
@@ -22,6 +22,15 @@ Completed work (total ~45 minutes once secrets were available):
 4. Fix Android build failure (app_links compileSdk)
 5. Finish localisation migration to CommonStrings
 
+## Recent Progress (2025-10-22)
+
+### UX & Visual Improvements
+- **Spread Gallery Layout**: Increased diagram size from 38% to 50% of screen height, making Celtic Cross cards significantly larger and more readable. Fixed text section to 25% max height with scrolling.
+- **AI Content Quality**: Completely rewritten "Why this spread?" content with rich 30-50 word bullets (previously 10-15 words). Removed generic intro sentences. First bullet explains WHY the spread is perfect, second provides concrete reading guidance. Increased Gemini temperature to 0.9 and maxTokens to 700 for deeper insights.
+- **App Icon**: Updated launcher icon with latest design iteration across all mipmaps (Android & iOS).
+- **Quick Actions**: Redesigned home screen quick action tiles with centered grid layout, compact containers, circular highlighted icons for better visual coherence.
+- **Daily Quotes**: Removed author attribution, showing only quote text for cleaner presentation.
+
 ## Recent Progress (2025-10-18)
 
 ### UX & AI polish
@@ -33,7 +42,7 @@ Completed work (total ~45 minutes once secrets were available):
 ## Recent Progress (2025-10-13)
 
 ### Infrastructure & Deployment
-- Backend production URL: https://backend-4sircya71-dnitzs-projects.vercel.app (health check OK)
+- Backend production URL: https://backend-jnmkq4odo-dnitzs-projects.vercel.app (health check OK)
 - Supabase project vanrixxzaawybszeuivb.supabase.co linked and migrated
 - Tables: users, sessions, session_artifacts, session_messages (created via migrations)
 - GitHub secrets: 13/13 configured (Android signing, Vercel IDs, Supabase, DeepSeek, Random.org)
