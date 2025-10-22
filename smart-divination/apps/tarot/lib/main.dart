@@ -1608,17 +1608,6 @@ class _HomeState extends State<_Home> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              if (quote.author.isNotEmpty) ...[
-                const SizedBox(height: 0),
-                Text(
-                  quote.author,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: TarotTheme.white70,
-                    fontSize: 12,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
             ],
           ),
         );
