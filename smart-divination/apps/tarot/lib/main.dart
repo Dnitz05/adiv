@@ -943,17 +943,33 @@ class _HomeState extends State<_Home> {
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
       String? interpretationGuide;
-      try {
-        // Use non-streaming endpoint for now (streaming endpoint has deployment issues)
-        final recommendation = await recommendSpread(
-          question: finalQuestion,
-          locale: localeCode,
-          // Don't pass onReasoningChunk to use non-streaming endpoint
-        );
 
-        selectedSpread = recommendation.spread;
-        recommendationReason = recommendation.reasoning;
-        interpretationGuide = recommendation.interpretationGuide;
+      // If no question provided, automatically use Celtic Cross
+      if (typedQuestion.isEmpty) {
+        selectedSpread = TarotSpreads.celticCross;
+        recommendationReason = null;
+        interpretationGuide = null;
+
+        // Update UI immediately to show Celtic Cross selection
+        if (mounted) {
+          setState(() {
+            _selectedSpread = selectedSpread;
+            _spreadRecommendationReason = null;
+            _spreadInterpretationGuide = null;
+          });
+        }
+      } else {
+        try {
+          // Use non-streaming endpoint for now (streaming endpoint has deployment issues)
+          final recommendation = await recommendSpread(
+            question: finalQuestion,
+            locale: localeCode,
+            // Don't pass onReasoningChunk to use non-streaming endpoint
+          );
+
+          selectedSpread = recommendation.spread;
+          recommendationReason = recommendation.reasoning;
+          interpretationGuide = recommendation.interpretationGuide;
 
         debugPrint('🎴 Spread recommendation received:');
         debugPrint('   - Spread: ${selectedSpread.id}');
@@ -962,16 +978,17 @@ class _HomeState extends State<_Home> {
         debugPrint(
             '   - Interpretation guide: ${interpretationGuide ?? "NULL"}');
 
-        // Update UI immediately to show the AI-selected spread
-        if (mounted) {
-          setState(() {
-            _selectedSpread = selectedSpread;
-            _spreadRecommendationReason = recommendationReason;
-            _spreadInterpretationGuide = interpretationGuide;
-          });
+          // Update UI immediately to show the AI-selected spread
+          if (mounted) {
+            setState(() {
+              _selectedSpread = selectedSpread;
+              _spreadRecommendationReason = recommendationReason;
+              _spreadInterpretationGuide = interpretationGuide;
+            });
+          }
+        } catch (e) {
+          // If AI fails, continue with manually selected spread
         }
-      } catch (e) {
-        // If AI fails, continue with manually selected spread
       }
 
       // Start drawing cards, but also pre-load interpretation in parallel
