@@ -1641,9 +1641,7 @@ class _HomeState extends State<_Home> {
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 16),
-                _buildQuickActions(context, localisation),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 FilledButton.icon(
                   onPressed: _drawing ? null : _drawCards,
                   icon: _drawing
@@ -1768,6 +1766,48 @@ class _HomeState extends State<_Home> {
         en: 'Guided rituals coming soon.',
         es: 'Rituales guiados próximamente.',
         ca: 'Rituals guiats properament.',
+      ),
+    );
+  }
+
+  Widget _buildHeaderAction({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 20, color: TarotTheme.cosmicAccent),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: TarotTheme.stardust,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showSettingsDialog(CommonStrings localisation) {
+    _showQuickActionMessage(
+      _qaText(
+        localisation,
+        en: 'Settings coming soon.',
+        es: 'Ajustes próximamente.',
+        ca: 'Ajustos properament.',
       ),
     );
   }
@@ -2911,32 +2951,36 @@ class _HomeState extends State<_Home> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.grid_view_rounded,
-            color: TarotTheme.cosmicAccent,
-          ),
-          onPressed: _showSpreadGallery,
-          tooltip: 'Seleccionar Tirada',
-        ),
-        title: GestureDetector(
-          onTap: _resetToHome,
-          child: Image.asset(
-            'assets/branding/logo-header.png',
-            height: 32,
-            fit: BoxFit.contain,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.history_rounded,
-              color: TarotTheme.stardust.withValues(alpha: 0.5),
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildHeaderAction(
+              icon: Icons.chat_bubble_outline,
+              label: _qaText(localisation,
+                  en: 'Chat', es: 'Chat', ca: 'Xat'),
+              onTap: () => _handleQuickActionChat(localisation),
             ),
-            onPressed: null, // History feature - coming soon
-            tooltip: 'Historial (Próximamente)',
-          ),
-        ],
+            _buildHeaderAction(
+              icon: Icons.auto_awesome_motion,
+              label: _qaText(localisation,
+                  en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
+              onTap: () => _handleQuickActionSpreads(localisation),
+            ),
+            _buildHeaderAction(
+              icon: Icons.archive_outlined,
+              label: _qaText(localisation,
+                  en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+              onTap: () => _handleQuickActionArchive(localisation),
+            ),
+            _buildHeaderAction(
+              icon: Icons.settings_outlined,
+              label: _qaText(localisation,
+                  en: 'Settings', es: 'Ajustes', ca: 'Ajustos'),
+              onTap: () => _showSettingsDialog(localisation),
+            ),
+          ],
+        ),
       ),
       body: Stack(
         children: [
