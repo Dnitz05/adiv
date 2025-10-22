@@ -1641,7 +1641,9 @@ class _HomeState extends State<_Home> {
                   ),
                   maxLines: 2,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
+                _buildQuickActions(context, localisation),
+                const SizedBox(height: 16),
                 FilledButton.icon(
                   onPressed: _drawing ? null : _drawCards,
                   icon: _drawing
@@ -1657,63 +1659,49 @@ class _HomeState extends State<_Home> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
-        _buildQuickActions(context, localisation),
       ],
     );
   }
 
   Widget _buildQuickActions(BuildContext context, CommonStrings localisation) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        const double spacing = 12.0;
-        final double availableWidth = constraints.maxWidth;
-        if (availableWidth <= 0) {
-          return const SizedBox.shrink();
-        }
-
-        final bool forceSingleColumn = availableWidth < 320;
-        final double tileWidth = forceSingleColumn
-            ? availableWidth
-            : math.max(140.0, math.min((availableWidth - spacing) / 2, 200.0));
-        final double horizontalSpacing = forceSingleColumn ? 0.0 : spacing;
-
-        return Wrap(
-          alignment: WrapAlignment.center,
-          spacing: horizontalSpacing,
-          runSpacing: spacing,
-          children: [
-            _QuickActionTile(
-              width: tileWidth,
-              icon: Icons.chat_bubble_outline,
-              title: _qaText(localisation,
-                  en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
-              onTap: () => _handleQuickActionChat(localisation),
-            ),
-            _QuickActionTile(
-              width: tileWidth,
-              icon: Icons.archive_outlined,
-              title: _qaText(localisation,
-                  en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
-              onTap: () => _handleQuickActionArchive(localisation),
-            ),
-            _QuickActionTile(
-              width: tileWidth,
-              icon: Icons.auto_awesome_motion,
-              title: _qaText(localisation,
-                  en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
-              onTap: () => _handleQuickActionSpreads(localisation),
-            ),
-            _QuickActionTile(
-              width: tileWidth,
-              icon: Icons.self_improvement,
-              title: _qaText(localisation,
-                  en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
-              onTap: () => _handleQuickActionRituals(localisation),
-            ),
-          ],
-        );
-      },
+    return Row(
+      children: [
+        Expanded(
+          child: _QuickActionTile(
+            icon: Icons.chat_bubble_outline,
+            title: _qaText(localisation,
+                en: 'Chat', es: 'Chat', ca: 'Xat'),
+            onTap: () => _handleQuickActionChat(localisation),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _QuickActionTile(
+            icon: Icons.archive_outlined,
+            title: _qaText(localisation,
+                en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+            onTap: () => _handleQuickActionArchive(localisation),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _QuickActionTile(
+            icon: Icons.auto_awesome_motion,
+            title: _qaText(localisation,
+                en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
+            onTap: () => _handleQuickActionSpreads(localisation),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: _QuickActionTile(
+            icon: Icons.self_improvement,
+            title: _qaText(localisation,
+                en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
+            onTap: () => _handleQuickActionRituals(localisation),
+          ),
+        ),
+      ],
     );
   }
 
@@ -2985,61 +2973,46 @@ class _HomeState extends State<_Home> {
 // Custom painter for starry night background
 class _QuickActionTile extends StatelessWidget {
   const _QuickActionTile({
-    required this.width,
     required this.icon,
     required this.title,
     required this.onTap,
   });
 
-  final double width;
   final IconData icon;
   final String title;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: BoxDecoration(
-              color: TarotTheme.midnightBlueTransparent,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: TarotTheme.cosmicAccentSubtle.withValues(alpha: 0.7),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: TarotTheme.cosmicBlue,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: Colors.white, size: 18),
+              const SizedBox(height: 4),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.18),
-                  ),
-                  child: Icon(icon, color: TarotTheme.cosmicAccent, size: 20),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: TarotTheme.moonlight,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
