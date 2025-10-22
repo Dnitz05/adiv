@@ -14,6 +14,7 @@ class SpreadRecommendation {
     required this.spreadId,
     required this.spread,
     required this.reasoning,
+    this.interpretationGuide,
     required this.confidenceScore,
     required this.keyFactors,
     this.detectedCategory,
@@ -24,6 +25,7 @@ class SpreadRecommendation {
   final String spreadId;
   final TarotSpread spread;
   final String reasoning;
+  final String? interpretationGuide;
   final double confidenceScore;
   final List<String> keyFactors;
   final String? detectedCategory;
@@ -50,11 +52,13 @@ class SpreadRecommendation {
 
     // Choose reasoning based on locale (default to main reasoning)
     String reasoning = json['reasoning'] as String? ?? '';
+    String? interpretationGuide = json['interpretationGuide'] as String?;
 
     return SpreadRecommendation(
       spreadId: spreadData['id'] as String,
       spread: spread,
       reasoning: reasoning,
+      interpretationGuide: interpretationGuide,
       confidenceScore: (json['confidenceScore'] as num?)?.toDouble() ?? 0.5,
       keyFactors: (json['keyFactors'] as List<dynamic>?)
               ?.map((e) => e.toString())

@@ -31,6 +31,7 @@ class DrawFullScreenFlow extends StatelessWidget {
     required this.step,
     required this.question,
     required this.recommendation,
+    this.interpretationGuide,
     required this.spread,
     required this.cards,
     required this.dealtCardCount,
@@ -52,6 +53,7 @@ class DrawFullScreenFlow extends StatelessWidget {
   final FullScreenStep step;
   final String question;
   final String? recommendation;
+  final String? interpretationGuide;
   final TarotSpread spread;
   final List<TarotCard> cards;
   final int dealtCardCount;
@@ -78,6 +80,7 @@ class DrawFullScreenFlow extends StatelessWidget {
           key: const ValueKey('presentation'),
           question: question,
           recommendation: recommendation,
+          interpretationGuide: interpretationGuide,
           spread: spread,
           localisation: localisation,
           onClose: onClose,
@@ -145,6 +148,7 @@ class _SpreadPresentationStep extends StatelessWidget {
     super.key,
     required this.question,
     required this.recommendation,
+    this.interpretationGuide,
     required this.spread,
     required this.localisation,
     required this.onClose,
@@ -153,6 +157,7 @@ class _SpreadPresentationStep extends StatelessWidget {
 
   final String question;
   final String? recommendation;
+  final String? interpretationGuide;
   final TarotSpread spread;
   final CommonStrings localisation;
   final VoidCallback onClose;
@@ -162,71 +167,91 @@ class _SpreadPresentationStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Scrollable content
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+        // Fixed header section - single line
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
               children: [
-                const SizedBox(height: 40),
-
-                // Spread name
-                Text(
-                  spread.localizedName(localisation.localeName),
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: TarotTheme.moonlight,
-                        fontWeight: FontWeight.w600,
-                      ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 24),
-
-                // Spread diagram (empty placeholders)
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Container(
-                      constraints: const BoxConstraints(maxHeight: 300),
-                      child: SpreadLayout(
-                        spread: spread,
-                        cards: const [], // Empty = show placeholders
-                        maxWidth: constraints.maxWidth > 0
-                            ? constraints.maxWidth
-                            : MediaQuery.of(context).size.width - 32,
-                        maxHeight: 300,
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 32),
-
-                // AI Reasoning
-                if (recommendation != null && recommendation!.isNotEmpty) ...[
-                  _InfoPanel(
-                    icon: Icons.psychology_outlined,
-                    title: _t(
-                      localisation,
-                      en: 'Why this spread?',
-                      es: '¿Por qué esta tirada?',
-                      ca: 'Per què aquesta tirada?',
-                    ),
-                    body: recommendation!,
+                TextSpan(
+                  text: _t(
+                    localisation,
+                    en: 'Selected Spread: ',
+                    es: 'Tirada Escogida: ',
+                    ca: 'Tirada Escollida: ',
                   ),
-                ] else ...[
-                  _InfoPanel(
-                    icon: Icons.info_outline,
-                    title: spread.localizedName(localisation.localeName),
-                    body: spread.localizedDescription(localisation.localeName),
+                  style: const TextStyle(
+                    color: TarotTheme.cosmicBlue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.3,
                   ),
-                ],
-
-                const SizedBox(height: 24),
+                ),
+                TextSpan(
+                  text: spread.localizedName(localisation.localeName),
+                  style: const TextStyle(
+                    color: TarotTheme.cosmicAccent,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ),
         ),
+
+        const SizedBox(height: 16),
+
+        // Spread diagram (fixed proportion)
+        Expanded(
+          flex: 55,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SpreadLayout(
+                  spread: spread,
+                  cards: const [], // Empty = show placeholders
+                  maxWidth: constraints.maxWidth > 0
+                      ? constraints.maxWidth
+                      : MediaQuery.of(context).size.width - 32,
+                  maxHeight: constraints.maxHeight,
+                );
+              },
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        // AI Reasoning section (fixed proportion, scrollable internally if needed)
+        Expanded(
+          flex: 25,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SingleChildScrollView(
+              child: recommendation != null && recommendation!.isNotEmpty
+                  ? _InfoPanel(
+                      icon: Icons.psychology_outlined,
+                      title: _t(
+                        localisation,
+                        en: 'Why this spread?',
+                        es: '¿Por qué esta tirada?',
+                        ca: 'Per què aquesta tirada?',
+                      ),
+                      body: recommendation!,
+                    )
+                  : _InfoPanel(
+                      icon: Icons.info_outline,
+                      title: spread.localizedName(localisation.localeName),
+                      body: spread.localizedDescription(localisation.localeName),
+                    ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 8),
 
         // Sticky footer button
         Padding(
@@ -522,14 +547,46 @@ class _InfoPanel extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
-            body,
-            style: const TextStyle(
-              color: TarotTheme.moonlight,
-              fontSize: 15,
-              height: 1.6,
+          _buildBodyWithColoredBullets(body),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBodyWithColoredBullets(String body) {
+    final parts = body.split('•');
+    if (parts.length == 1) {
+      // No bullets, just regular text
+      return Text(
+        body,
+        style: const TextStyle(
+          color: TarotTheme.moonlight,
+          fontSize: 15,
+          height: 1.6,
+        ),
+      );
+    }
+
+    // Has bullets
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(
+          color: TarotTheme.moonlight,
+          fontSize: 15,
+          height: 1.6,
+        ),
+        children: [
+          TextSpan(text: parts[0]), // Intro text
+          for (int i = 1; i < parts.length; i++) ...[
+            const TextSpan(
+              text: '•',
+              style: TextStyle(
+                color: TarotTheme.cosmicAccent,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
+            TextSpan(text: parts[i]),
+          ],
         ],
       ),
     );

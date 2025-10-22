@@ -674,10 +674,12 @@ class _HomeState extends State<_Home> {
       false; // Controls whether interpretation is visible
   TarotSpread _selectedSpread = TarotSpreads.threeCard;
   String? _spreadRecommendationReason; // AI reasoning for spread selection
+  String? _spreadInterpretationGuide; // AI guide on how to interpret the spread
+  String? _displayQuestion;
+  String? _editedQuestion;
   String? _lastQuestionLocale;
   FullScreenStep? _fullScreenStep;
   Timer? _briefingAutoAdvanceTimer;
-  String? _displayQuestion;
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
   final FocusNode _questionFocusNode = FocusNode();
@@ -940,6 +942,7 @@ class _HomeState extends State<_Home> {
 
       TarotSpread selectedSpread = _selectedSpread;
       String? recommendationReason;
+      String? interpretationGuide;
       try {
         // Use non-streaming endpoint for now (streaming endpoint has deployment issues)
         final recommendation = await recommendSpread(
@@ -950,12 +953,21 @@ class _HomeState extends State<_Home> {
 
         selectedSpread = recommendation.spread;
         recommendationReason = recommendation.reasoning;
+        interpretationGuide = recommendation.interpretationGuide;
+
+        debugPrint('🎴 Spread recommendation received:');
+        debugPrint('   - Spread: ${selectedSpread.id}');
+        debugPrint(
+            '   - Reasoning: ${recommendationReason?.substring(0, 50)}...');
+        debugPrint(
+            '   - Interpretation guide: ${interpretationGuide ?? "NULL"}');
 
         // Update UI immediately to show the AI-selected spread
         if (mounted) {
           setState(() {
             _selectedSpread = selectedSpread;
             _spreadRecommendationReason = recommendationReason;
+            _spreadInterpretationGuide = interpretationGuide;
           });
         }
       } catch (e) {
@@ -1660,6 +1672,135 @@ class _HomeState extends State<_Home> {
     );
   }
 
+  Widget _buildQuickActions(BuildContext context, CommonStrings localisation) {
+    final double maxWidth = MediaQuery.of(context).size.width;
+    const double horizontalPadding = 20.0;
+    const double spacing = 12.0;
+    final double tileWidth =
+        math.max((maxWidth - (horizontalPadding * 2) - spacing) / 2, 150.0);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
+      child: Wrap(
+        spacing: spacing,
+        runSpacing: spacing,
+        children: [
+          _QuickActionTile(
+            width: tileWidth,
+            icon: Icons.chat_bubble_outline,
+            title: _qaText(localisation,
+                en: 'Chat Mode', es: 'Modo chat', ca: 'Mode xat'),
+            subtitle: _qaText(localisation,
+                en: 'Talk with guided responses',
+                es: 'Conversa con guía al instante',
+                ca: 'Conversa amb guia instantània'),
+            onTap: () => _handleQuickActionChat(localisation),
+          ),
+          _QuickActionTile(
+            width: tileWidth,
+            icon: Icons.archive_outlined,
+            title: _qaText(localisation,
+                en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+            subtitle: _qaText(localisation,
+                en: 'Revisit past readings',
+                es: 'Revisa lecturas pasadas',
+                ca: 'Revisa lectures passades'),
+            onTap: () => _handleQuickActionArchive(localisation),
+          ),
+          _QuickActionTile(
+            width: tileWidth,
+            icon: Icons.auto_awesome_motion,
+            title: _qaText(localisation,
+                en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
+            subtitle: _qaText(localisation,
+                en: 'Explore layouts and meanings',
+                es: 'Explora diseños y significados',
+                ca: 'Explora disposicions i significats'),
+            onTap: () => _handleQuickActionSpreads(localisation),
+          ),
+          _QuickActionTile(
+            width: tileWidth,
+            icon: Icons.self_improvement,
+            title: _qaText(localisation,
+                en: 'Rituals', es: 'Rituales', ca: 'Rituals'),
+            subtitle: _qaText(localisation,
+                en: 'Guided rituals coming soon',
+                es: 'Rituales guiados próximamente',
+                ca: 'Rituals guiats properament'),
+            onTap: () => _handleQuickActionRituals(localisation),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _qaText(CommonStrings localisation,
+      {required String en, required String es, required String ca}) {
+    final language =
+        localisation.localeName.split(RegExp('[_-]')).first.toLowerCase();
+    switch (language) {
+      case 'ca':
+        return ca;
+      case 'es':
+        return es;
+      default:
+        return en;
+    }
+  }
+
+  void _showQuickActionMessage(String message) {
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void _handleQuickActionChat(CommonStrings localisation) {
+    _showQuickActionMessage(
+      _qaText(
+        localisation,
+        en: 'Chat mode is coming soon.',
+        es: 'El modo chat llegará pronto.',
+        ca: 'El mode xat arribarà ben aviat.',
+      ),
+    );
+  }
+
+  void _handleQuickActionArchive(CommonStrings localisation) {
+    _showQuickActionMessage(
+      _qaText(
+        localisation,
+        en: 'Archive will be available shortly.',
+        es: 'El archivo estará disponible en breve.',
+        ca: 'L\'arxiu estarà disponible ben aviat.',
+      ),
+    );
+  }
+
+  void _handleQuickActionSpreads(CommonStrings localisation) {
+    _showQuickActionMessage(
+      _qaText(
+        localisation,
+        en: 'Spread explorer coming soon.',
+        es: 'Explorador de tiradas próximamente.',
+        ca: 'Explorador de tirades properament.',
+      ),
+    );
+  }
+
+  void _handleQuickActionRituals(CommonStrings localisation) {
+    _showQuickActionMessage(
+      _qaText(
+        localisation,
+        en: 'Guided rituals coming soon.',
+        es: 'Rituales guiados próximamente.',
+        ca: 'Rituals guiats properament.',
+      ),
+    );
+  }
+
   Widget _buildLatestDrawCard(CommonStrings localisation) {
     final draw = _latestDraw;
     if (draw == null) {
@@ -2057,8 +2198,10 @@ class _HomeState extends State<_Home> {
                               color: TarotTheme.midnightBlue,
                               gradient: LinearGradient(
                                 colors: [
-                                  TarotTheme.cosmicAccent.withValues(alpha: 0.15),
-                                  TarotTheme.cosmicAccent.withValues(alpha: 0.08),
+                                  TarotTheme.cosmicAccent
+                                      .withValues(alpha: 0.15),
+                                  TarotTheme.cosmicAccent
+                                      .withValues(alpha: 0.08),
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -2627,7 +2770,6 @@ class _HomeState extends State<_Home> {
     };
   }
 
-
   MarkdownStyleSheet _getMarkdownStyleSheet(
       ThemeData theme, Color accentColor) {
     return MarkdownStyleSheet(
@@ -2664,9 +2806,6 @@ class _HomeState extends State<_Home> {
       ),
     );
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -2714,6 +2853,9 @@ class _HomeState extends State<_Home> {
                     ),
                   ),
                 ],
+                const SizedBox(height: 16),
+                _buildQuickActions(context, localisation),
+                const SizedBox(height: 24),
                 SizedBox(height: bottomSpacing),
               ],
             ),
@@ -2778,6 +2920,7 @@ class _HomeState extends State<_Home> {
         step: _fullScreenStep!,
         question: _currentDisplayQuestion(localisation),
         recommendation: _spreadRecommendationReason,
+        interpretationGuide: _spreadInterpretationGuide,
         spread: spread,
         cards: cards,
         dealtCardCount: _dealtCardCount,
@@ -2859,6 +3002,65 @@ class _HomeState extends State<_Home> {
 }
 
 // Custom painter for starry night background
+class _QuickActionTile extends StatelessWidget {
+  const _QuickActionTile({
+    required this.width,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final double width;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: TarotTheme.midnightBlueTransparent,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: TarotTheme.cosmicAccentSubtle),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: TarotTheme.cosmicAccent, size: 22),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: TarotTheme.moonlight,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  color: TarotTheme.stardust,
+                  fontSize: 12,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _StarryNightPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

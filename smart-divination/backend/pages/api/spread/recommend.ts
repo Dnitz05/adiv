@@ -46,6 +46,9 @@ interface SpreadRecommendation {
   reasoning: string;
   reasoningCA?: string;
   reasoningES?: string;
+  interpretationGuide?: string;
+  interpretationGuideCA?: string;
+  interpretationGuideES?: string;
   confidenceScore: number;
   keyFactors: string[];
   detectedCategory?: string;
@@ -94,6 +97,9 @@ async function recommendSpread(
           reasoning: aiSelection.reason,
           reasoningCA: aiSelection.reason,
           reasoningES: aiSelection.reason,
+          interpretationGuide: aiSelection.interpretationGuide,
+          interpretationGuideCA: aiSelection.interpretationGuide,
+          interpretationGuideES: aiSelection.interpretationGuide,
           confidenceScore: 0.9,
           keyFactors: keywords,
           detectedCategory: spread.category,
@@ -131,11 +137,48 @@ async function recommendSpread(
   const alternatives = getAlternativeSpreads(bestSpread, keywords, targetCategory);
   const reasoning = generateReasoning(question, bestSpread, keywords, detectedCategory, locale);
 
+  // Generate interpretation guide with variety
+  const guideIndex = Math.floor(Math.random() * 3);
+
+  const guidesCA = [
+    `Per interpretar aquesta tirada, observa com cada carta es relaciona amb la seva posició al diagrama. Comença per les primeres posicions i avança cap a les finals, deixant que el significat de cada carta es vagi construint sobre l'anterior. Presta atenció als colors i símbols de les cartes, ja que et donaran pistes sobre l'energia de cada aspecte.`,
+    `Llegeix aquesta tirada com si fossis una història. Cada carta és un capítol que s'obre davant teu. Deixa que les imatges parlin al teu intuït abans de buscar significats. Els colors càlids sovint parlen de passió i acció, mentre que els freds suggereixen reflexió i calma. Deixa't guiar per allò que ressona amb tu.`,
+    `En aquesta tirada, cada carta és una finestra a un aspecte de la teva situació. Respira profundament abans de començar i fixa't primer en la impressió general. Després, explora cada posició amb curiositat, preguntant-te què et crida l'atenció de cada carta. La veritat sovint apareix en els detalls inesperats.`,
+  ];
+
+  const guidesES = [
+    `Para interpretar esta tirada, observa cómo cada carta se relaciona con su posición en el diagrama. Empieza por las primeras posiciones y avanza hacia las finales, dejando que el significado de cada carta se construya sobre el anterior. Presta atención a los colores y símbolos de las cartas, ya que te darán pistas sobre la energía de cada aspecto.`,
+    `Lee esta tirada como si fuera una historia. Cada carta es un capítulo que se abre ante ti. Deja que las imágenes hablen a tu intuición antes de buscar significados. Los colores cálidos a menudo hablan de pasión y acción, mientras que los fríos sugieren reflexión y calma. Déjate guiar por lo que resuena contigo.`,
+    `En esta tirada, cada carta es una ventana a un aspecto de tu situación. Respira profundamente antes de empezar y fíjate primero en la impresión general. Después, explora cada posición con curiosidad, preguntándote qué te llama la atención de cada carta. La verdad a menudo aparece en los detalles inesperados.`,
+  ];
+
+  const guidesEN = [
+    `To interpret this spread, observe how each card relates to its position in the diagram. Start with the first positions and move toward the final ones, letting the meaning of each card build upon the previous. Pay attention to the colors and symbols of the cards, as they will give you clues about the energy of each aspect.`,
+    `Read this spread like a story unfolding. Each card is a chapter opening before you. Let the images speak to your intuition before seeking meanings. Warm colors often speak of passion and action, while cool ones suggest reflection and calm. Allow yourself to be guided by what resonates with you.`,
+    `In this spread, each card is a window into an aspect of your situation. Take a deep breath before beginning and notice the overall impression first. Then explore each position with curiosity, asking yourself what catches your attention in each card. Truth often appears in unexpected details.`,
+  ];
+
+  const interpretationGuideTemplates = {
+    ca: guidesCA[guideIndex],
+    es: guidesES[guideIndex],
+    en: guidesEN[guideIndex],
+  };
+
+  const interpretationGuide =
+    locale === 'ca'
+      ? interpretationGuideTemplates.ca
+      : locale === 'es'
+        ? interpretationGuideTemplates.es
+        : interpretationGuideTemplates.en;
+
   return {
     spread: bestSpread,
     reasoning: reasoning.en,
     reasoningCA: reasoning.ca,
     reasoningES: reasoning.es,
+    interpretationGuide,
+    interpretationGuideCA: interpretationGuideTemplates.ca,
+    interpretationGuideES: interpretationGuideTemplates.es,
     confidenceScore,
     keyFactors: keywords,
     detectedCategory,
@@ -252,7 +295,7 @@ function generateReasoning(
         ? 'els moments en què cal prendre decisions importants'
         : category === 'career'
           ? 'les inquietuds professionals i de projecte vital'
-          : "la necessitat d'obtenir una mirada global de la situació";
+          : 'explorar el que et preocupa ara mateix';
   const categoryEs =
     category === 'love'
       ? 'los temas de amor y vínculo afectivo'
@@ -260,7 +303,7 @@ function generateReasoning(
         ? 'los momentos en los que toca tomar decisiones importantes'
         : category === 'career'
           ? 'las inquietudes profesionales y de propósito vital'
-          : 'la necesidad de obtener una mirada amplia de la situación';
+          : 'explorar lo que te preocupa ahora mismo';
   const categoryEn =
     category === 'love'
       ? 'matters of the heart and relationship dynamics'
@@ -268,7 +311,7 @@ function generateReasoning(
         ? 'those crossroads where an important decision is required'
         : category === 'career'
           ? 'career questions and the direction of your work life'
-          : 'the need for a compassionate overview of the situation';
+          : 'exploring what concerns you right now';
 
   const complexityCa =
     spread.complexity === 'simple'
@@ -289,32 +332,37 @@ function generateReasoning(
         ? 'with enough depth while staying clear'
         : 'with the depth needed to explore every layer';
 
-  const keywordSummaryCa = keywords.length > 0 ? keywords.join(', ') : 'el que sents ara mateix';
-  const keywordSummaryEs = keywords.length > 0 ? keywords.join(', ') : 'lo que sientes ahora mismo';
-  const keywordSummaryEn =
-    keywords.length > 0 ? keywords.join(', ') : 'what is moving inside you right now';
+  // Multiple templates for variety
+  const templateIndex = Math.floor(Math.random() * 5);
+
+  const templatesCA = [
+    `He triat ${spread.nameCA} per ${categoryCa}:\n\n• Les cartes mostraran on et trobes ara i cap on vas\n• Cada posició revelarà què necessites saber per avançar`,
+    `${spread.nameCA} encaixa perfectament amb la teva pregunta:\n\n• Veuràs la influència del passat i com està modelant el present\n• Les cartes finals t'indicaran possibles desenllaços i consells`,
+    `Aquesta tirada és ideal per ${categoryCa}:\n\n• T'ajudarà a veure què bloqueja i què impulsa la situació\n• Descobriràs recursos interns que encara no has activat`,
+    `${spread.nameCA} et mostrarà el camí per ${categoryCa}:\n\n• Les primeres cartes parlaran de tu i la teva energia actual\n• Les últimes et revelaran l'evolució natural d'aquesta situació`,
+    `Per a la teva pregunta, ${spread.nameCA} és el millor:\n\n• Veuràs com interactuen els diferents aspectes de la teva vida\n• Les cartes t'oferiran una lectura clara de l'energia present`,
+  ];
+
+  const templatesES = [
+    `He elegido ${spread.nameES} para ${categoryEs}:\n\n• Las cartas mostrarán dónde estás ahora y hacia dónde vas\n• Cada posición revelará qué necesitas saber para avanzar`,
+    `${spread.nameES} encaja perfectamente con tu pregunta:\n\n• Verás la influencia del pasado y cómo está moldeando el presente\n• Las cartas finales te indicarán posibles desenlaces y consejos`,
+    `Esta tirada es ideal para ${categoryEs}:\n\n• Te ayudará a ver qué bloquea y qué impulsa la situación\n• Descubrirás recursos internos que aún no has activado`,
+    `${spread.nameES} te mostrará el camino para ${categoryEs}:\n\n• Las primeras cartas hablarán de ti y tu energía actual\n• Las últimas te revelarán la evolución natural de esta situación`,
+    `Para tu pregunta, ${spread.nameES} es lo mejor:\n\n• Verás cómo interactúan los diferentes aspectos de tu vida\n• Las cartas te ofrecerán una lectura clara de la energía presente`,
+  ];
+
+  const templatesEN = [
+    `I chose ${spread.name} for ${categoryEn}:\n\n• The cards will show where you are now and where you're heading\n• Each position will reveal what you need to know to move forward`,
+    `${spread.name} fits perfectly with your question:\n\n• You'll see the influence of the past and how it's shaping the present\n• The final cards will indicate possible outcomes and advice`,
+    `This spread is ideal for ${categoryEn}:\n\n• It will help you see what's blocking and what's driving the situation\n• You'll discover internal resources you haven't activated yet`,
+    `${spread.name} will show you the path for ${categoryEn}:\n\n• The first cards will speak about you and your current energy\n• The last ones will reveal the natural evolution of this situation`,
+    `For your question, ${spread.name} is the best:\n\n• You'll see how different aspects of your life interact\n• The cards will offer you a clear reading of the present energy`,
+  ];
 
   const reasons = {
-    ca: `Per qu� s'ha triat aquesta tirada:
-- ${spread.nameCA} t'ajuda a mirar ${categoryCa}.
-
-Com llegir-la:
-- ${spread.cardCount === 1 ? 'Aquesta carta' : `Les ${spread.cardCount} cartes`} treballen ${complexityCa}.
-- Centra't especialment en ${keywordSummaryCa}.`,
-
-    es: `Por qu� se eligi� esta tirada:
-- ${spread.nameES} te sostiene en ${categoryEs}.
-
-C�mo leerla:
-- ${spread.cardCount === 1 ? 'Esta carta' : `Las ${spread.cardCount} cartas`} avanzan ${complexityEs}.
-- Presta atenci�n a ${keywordSummaryEs}.`,
-
-    en: `Why this spread:
-- ${spread.name} supports ${categoryEn}.
-
-How to read it:
-- ${spread.cardCount === 1 ? 'This card' : `The ${spread.cardCount} cards`} move ${complexityEn}.
-- Focus on ${keywordSummaryEn}.`,
+    ca: templatesCA[templateIndex],
+    es: templatesES[templateIndex],
+    en: templatesEN[templateIndex],
   };
 
   return reasons;

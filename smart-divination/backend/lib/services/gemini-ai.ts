@@ -206,32 +206,48 @@ Return ONLY the corrected/improved question, nothing else.`;
 }
 
 /**
- * Select spread with AI
+ * Select spread with AI and generate interpretation guide
  */
 export async function selectSpreadWithGemini(
   question: string,
-  spreads: Array<{ id: string; name: string; description: string }>,
+  spreads: Array<{
+    id: string;
+    name: string;
+    description: string;
+    positions?: Array<{ meaning: string; meaningCA: string; meaningES: string }>;
+  }>,
   locale: string,
   requestId?: string
-): Promise<{ spreadId: string; reason: string }> {
+): Promise<{ spreadId: string; reason: string; interpretationGuide: string }> {
   const spreadsText = spreads
-    .map(s => `- ${s.id}: ${s.name} (${s.description})`)
+    .map(s => {
+      const positionsText = s.positions?.length
+        ? `\n  Positions: ${s.positions.map((p, i) => `${i + 1}. ${locale === 'ca' ? p.meaningCA : locale === 'es' ? p.meaningES : p.meaning}`).join(', ')}`
+        : '';
+      return `- ${s.id}: ${s.name} (${s.description})${positionsText}`;
+    })
     .join('\n');
 
-  const userPrompt = `Select the BEST tarot spread for this question:
+  const userPrompt = `You are a warm, experienced tarot reader. Select the BEST tarot spread for this question and provide guidance in a natural, conversational way.
 
 Question: "${question}"
 
 Available spreads:
 ${spreadsText}
 
+IMPORTANT: Be creative and natural. Each response should feel fresh and personal, like a real tarot reader would speak. Vary your word choice, sentence structure, and approach each time. Avoid formulaic or repetitive language.
+
 Respond in ${locale} with ONLY this JSON format:
-{"spreadId":"exact_id_from_list","reason":"warm 2-3 sentence explanation in ${locale}"}`;
+{
+  "spreadId": "exact_id_from_list",
+  "reason": "Start with a short intro sentence, then add 2 bullet points with • symbol. Format: 'Intro sentence:\\n\\n• First point\\n• Second point'. Each point should be SPECIFIC about tarot reading: mention card positions, what they'll reveal, past/present/future, energy flow, or personal insights. Be concrete, not generic. 10-15 words per point.",
+  "interpretationGuide": ""
+}`;
 
   const response = await callGemini({
     userPrompt,
-    temperature: 0.3,
-    maxTokens: 250,
+    temperature: 0.85,
+    maxTokens: 400,
     requestId,
   });
 
@@ -240,6 +256,7 @@ Respond in ${locale} with ONLY this JSON format:
     return {
       spreadId: parsed.spreadId,
       reason: parsed.reason || 'Tirada recomendada para tu pregunta',
+      interpretationGuide: parsed.interpretationGuide || '',
     };
   } catch (error) {
     log('error', 'Failed to parse Gemini spread selection', { requestId, error });
