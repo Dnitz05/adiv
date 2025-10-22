@@ -4,6 +4,7 @@ import 'package:common/l10n/common_strings.dart';
 
 import '../models/tarot_spread.dart';
 import '../theme/tarot_theme.dart';
+import 'spread_layout.dart';
 
 /// Full page that displays all available spreads in a visual gallery grid
 class SpreadGalleryPage extends StatelessWidget {
@@ -149,77 +150,83 @@ class _SpreadRow extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Top row: Icon, Title and card count
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final screenHeight = MediaQuery.of(context).size.height;
+              // Fixed proportions: 50% diagram, 25% for text
+              final diagramHeight = screenHeight * 0.50;
+              final textMaxHeight = screenHeight * 0.25;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Icon
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: TarotTheme.deepNight.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Center(
-                      child: _getSpreadIcon(spread),
+                  // Diagram with fixed height
+                  SizedBox(
+                    height: diagramHeight,
+                    child: SpreadLayout(
+                      spread: spread,
+                      cards: const [],
+                      maxWidth: constraints.maxWidth,
+                      maxHeight: diagramHeight,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  // Title and card count
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          spread.localizedName(locale),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: TarotTheme.moonlight,
-                            height: 1.2,
+                  const SizedBox(height: 16),
+                  // Text section with constrained height
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: textMaxHeight,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  spread.localizedName(locale),
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: TarotTheme.moonlight,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  _cardCountLabel(spread.cardCount, locale),
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: TarotTheme.cosmicAccent,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            _cardCountLabel(spread.cardCount, locale),
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: TarotTheme.cosmicAccent,
+                          const SizedBox(height: 12),
+                          Text(
+                            _getSpreadUseCase(spread, locale),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: TarotTheme.stardust,
+                              height: 1.55,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
-              ),
-              const SizedBox(height: 16),
-              // Description below
-              Text(
-                _getSpreadUseCase(spread, locale),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: TarotTheme.stardust.withValues(alpha: 0.95),
-                  height: 1.5,
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -353,3 +360,6 @@ class _SpreadRow extends StatelessWidget {
     }
   }
 }
+
+
+

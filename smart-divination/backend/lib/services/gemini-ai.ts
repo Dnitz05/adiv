@@ -228,26 +228,29 @@ export async function selectSpreadWithGemini(
     })
     .join('\n');
 
-  const userPrompt = `You are a warm, experienced tarot reader. Select the BEST tarot spread for this question and provide guidance in a natural, conversational way.
+  const userPrompt = `You are a warm, experienced tarot reader. Select the BEST tarot spread for this question and provide rich, valuable guidance.
 
 Question: "${question}"
 
 Available spreads:
 ${spreadsText}
 
-IMPORTANT: Be creative and natural. Each response should feel fresh and personal, like a real tarot reader would speak. Vary your word choice, sentence structure, and approach each time. Avoid formulaic or repetitive language.
+CRITICAL INSTRUCTIONS:
+- Be creative, natural, and varied. Never repeat the same phrases.
+- Each response must feel unique, fresh, and deeply insightful
+- NO generic language. NO filler. Only valuable, specific content.
 
 Respond in ${locale} with ONLY this JSON format:
 {
   "spreadId": "exact_id_from_list",
-  "reason": "Start with a short intro sentence, then add 2 bullet points with • symbol. Format: 'Intro sentence:\\n\\n• First point\\n• Second point'. Each point should be SPECIFIC about tarot reading: mention card positions, what they'll reveal, past/present/future, energy flow, or personal insights. Be concrete, not generic. 10-15 words per point.",
+  "reason": "Two detailed bullet points ONLY. Format: '• First point\\n\\n• Second point'. NO intro sentence before bullets.\\n\\nFirst bullet (30-50 words): Explain WHY this spread is perfect for their specific question/theme. Be concrete: mention what aspects it illuminates, which card positions address their concern, why the structure fits.\\n\\nSecond bullet (30-50 words): Give a READING GUIDANCE - how to interpret this spread for their situation. Mention what to focus on, which positions hold key insights, or how to connect the cards for their answer.",
   "interpretationGuide": ""
 }`;
 
   const response = await callGemini({
     userPrompt,
-    temperature: 0.85,
-    maxTokens: 400,
+    temperature: 0.9,
+    maxTokens: 700,
     requestId,
   });
 
