@@ -20,6 +20,43 @@
       }
     }
   },
+  "@lunarPanelAge": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@lunarPanelElement": {
+    "placeholders": {
+      "elemento": {}
+    }
+  },
+  "@lunarPanelIllumination": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@lunarPanelMoonIn": {
+    "placeholders": {
+      "signo": {}
+    }
+  },
+  "@lunarPanelSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@lunarPanelSpreadSelected": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "@lunarPanelUseSpread": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
   "@methodLabel": {
     "placeholders": {
       "method": {}
@@ -143,6 +180,40 @@
   "interpretationHeading": "Interpretación",
   "language": "Idioma",
   "latestDrawTitle": "Última tirada ({count} cartas)",
+  "lunarElementAir": "aire",
+  "lunarElementEarth": "tierra",
+  "lunarElementFire": "fuego",
+  "lunarElementWater": "agua",
+  "lunarPanelAge": "Edad {days} d",
+  "lunarPanelCalendarTitle": "Calendario lunar",
+  "lunarPanelElement": "Elemento ? {element}",
+  "lunarPanelError": "No se pudo conectar con la luna",
+  "lunarPanelFallbackError": "Revisa tu conexi?n e int?ntalo de nuevo.",
+  "lunarPanelGuidanceTitle": "Gu?a",
+  "lunarPanelIllumination": "Iluminaci?n {percent}%",
+  "lunarPanelLoading": "Sintonizando con la luna...",
+  "lunarPanelMoonIn": "Luna en {sign}",
+  "lunarPanelNoSessions": "A?n no hay lecturas registradas.",
+  "lunarPanelRecommendedSubtitle": "Alinea tu lectura con la energ?a lunar presente.",
+  "lunarPanelRecommendedTitle": "Tiradas para esta fase",
+  "lunarPanelRetry": "Reintentar",
+  "lunarPanelSessionsCount": "{count, plural, one {# lectura registrada} other {# lecturas registradas}}",
+  "lunarPanelSessionsHeadline": "Lecturas en este d?a",
+  "lunarPanelSpreadSelected": "Tirada {spread} seleccionada.",
+  "lunarPanelTitle": "Ritmo lunar",
+  "lunarPanelToday": "Hoy",
+  "lunarPanelUseSpread": "Usar tirada {spread}",
+  "lunarSpreadAstrological": "Astrol?gica",
+  "lunarSpreadCelticCross": "Cruz celta",
+  "lunarSpreadFiveCardCross": "Cruz de cinco cartas",
+  "lunarSpreadHorseshoe": "Herradura",
+  "lunarSpreadPyramid": "Pir?mide",
+  "lunarSpreadRelationship": "Relaci?n",
+  "lunarSpreadSingle": "Carta ?nica",
+  "lunarSpreadStar": "Estrella",
+  "lunarSpreadThreeCard": "Tres cartas",
+  "lunarSpreadTwoCard": "Dos cartas",
+  "lunarSpreadYearAhead": "A?o por delante",
   "methodLabel": "Método: {method}",
   "methodSeedLabel": "Método: {method} • Semilla: {seed}",
   "networkError": "Error de conexión de red. Por favor verifica tu conexión.",
@@ -150,6 +221,7 @@
   "ok": "OK",
   "premium": "Premium",
   "remainingToday": "Restantes hoy: {remaining}",
+  "revealCards": "Revelar las cartas",
   "runes": "Runas",
   "runesDescription": "Símbolos nórdicos de poder",
   "save": "Guardar",
@@ -169,6 +241,5 @@
   "usageMonth": "Este mes: {used}/{limit}",
   "usageToday": "Hoy: {used}/{limit}",
   "usageWeek": "Esta semana: {used}/{limit}",
-  "welcome": "¡Bienvenido/a!",
-  "revealCards": "Revelar las cartas"
+  "welcome": "¡Bienvenido/a!"
 }

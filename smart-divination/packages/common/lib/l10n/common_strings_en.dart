@@ -192,6 +192,129 @@ class CommonStringsEn extends CommonStrings {
   }
 
   @override
+  String get lunarElementAir => 'air';
+
+  @override
+  String get lunarElementEarth => 'earth';
+
+  @override
+  String get lunarElementFire => 'fire';
+
+  @override
+  String get lunarElementWater => 'water';
+
+  @override
+  String lunarPanelAge(Object days) {
+    return 'Age $days d';
+  }
+
+  @override
+  String get lunarPanelCalendarTitle => 'Lunar calendar';
+
+  @override
+  String lunarPanelElement(Object element) {
+    return 'Element ? $element';
+  }
+
+  @override
+  String get lunarPanelError => 'Unable to reach the moon';
+
+  @override
+  String get lunarPanelFallbackError => 'Check your connection and try again.';
+
+  @override
+  String get lunarPanelGuidanceTitle => 'Guidance';
+
+  @override
+  String lunarPanelIllumination(Object percent) {
+    return 'Illumination $percent%';
+  }
+
+  @override
+  String get lunarPanelLoading => 'Tuning into the moon...';
+
+  @override
+  String lunarPanelMoonIn(Object sign) {
+    return 'Moon in $sign';
+  }
+
+  @override
+  String get lunarPanelNoSessions => 'No readings logged yet.';
+
+  @override
+  String get lunarPanelRecommendedSubtitle =>
+      'Align your reading with the current lunar energy.';
+
+  @override
+  String get lunarPanelRecommendedTitle => 'Spreads for this phase';
+
+  @override
+  String get lunarPanelRetry => 'Try again';
+
+  @override
+  String lunarPanelSessionsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# readings logged',
+      one: '# reading logged',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get lunarPanelSessionsHeadline => 'Readings on this day';
+
+  @override
+  String lunarPanelSpreadSelected(Object spread) {
+    return 'Selected $spread spread.';
+  }
+
+  @override
+  String get lunarPanelTitle => 'Moon Rhythm';
+
+  @override
+  String get lunarPanelToday => 'Today';
+
+  @override
+  String lunarPanelUseSpread(Object spread) {
+    return 'Use $spread spread';
+  }
+
+  @override
+  String get lunarSpreadAstrological => 'Astrological';
+
+  @override
+  String get lunarSpreadCelticCross => 'Celtic Cross';
+
+  @override
+  String get lunarSpreadFiveCardCross => 'Five Card Cross';
+
+  @override
+  String get lunarSpreadHorseshoe => 'Horseshoe';
+
+  @override
+  String get lunarSpreadPyramid => 'Pyramid';
+
+  @override
+  String get lunarSpreadRelationship => 'Relationship';
+
+  @override
+  String get lunarSpreadSingle => 'Single Card';
+
+  @override
+  String get lunarSpreadStar => 'Star';
+
+  @override
+  String get lunarSpreadThreeCard => 'Three Card';
+
+  @override
+  String get lunarSpreadTwoCard => 'Two Card';
+
+  @override
+  String get lunarSpreadYearAhead => 'Year Ahead';
+
+  @override
   String methodLabel(Object method) {
     return 'Method: $method';
   }
@@ -220,6 +343,9 @@ class CommonStringsEn extends CommonStrings {
   String remainingToday(int remaining) {
     return 'Remaining today: $remaining';
   }
+
+  @override
+  String get revealCards => 'Reveal the cards';
 
   @override
   String get runes => 'Runes';
@@ -294,7 +420,4 @@ class CommonStringsEn extends CommonStrings {
 
   @override
   String get welcome => 'Welcome!';
-
-  @override
-  String get revealCards => 'Reveal the cards';
 }

@@ -430,6 +430,210 @@ abstract class CommonStrings {
   /// **'Latest draw ({count} cards)'**
   String latestDrawTitle(int count);
 
+  /// No description provided for @lunarElementAir.
+  ///
+  /// In en, this message translates to:
+  /// **'air'**
+  String get lunarElementAir;
+
+  /// No description provided for @lunarElementEarth.
+  ///
+  /// In en, this message translates to:
+  /// **'earth'**
+  String get lunarElementEarth;
+
+  /// No description provided for @lunarElementFire.
+  ///
+  /// In en, this message translates to:
+  /// **'fire'**
+  String get lunarElementFire;
+
+  /// No description provided for @lunarElementWater.
+  ///
+  /// In en, this message translates to:
+  /// **'water'**
+  String get lunarElementWater;
+
+  /// No description provided for @lunarPanelAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Age {days} d'**
+  String lunarPanelAge(Object days);
+
+  /// No description provided for @lunarPanelCalendarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunar calendar'**
+  String get lunarPanelCalendarTitle;
+
+  /// No description provided for @lunarPanelElement.
+  ///
+  /// In en, this message translates to:
+  /// **'Element ? {element}'**
+  String lunarPanelElement(Object element);
+
+  /// No description provided for @lunarPanelError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to reach the moon'**
+  String get lunarPanelError;
+
+  /// No description provided for @lunarPanelFallbackError.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get lunarPanelFallbackError;
+
+  /// No description provided for @lunarPanelGuidanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Guidance'**
+  String get lunarPanelGuidanceTitle;
+
+  /// No description provided for @lunarPanelIllumination.
+  ///
+  /// In en, this message translates to:
+  /// **'Illumination {percent}%'**
+  String lunarPanelIllumination(Object percent);
+
+  /// No description provided for @lunarPanelLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuning into the moon...'**
+  String get lunarPanelLoading;
+
+  /// No description provided for @lunarPanelMoonIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon in {sign}'**
+  String lunarPanelMoonIn(Object sign);
+
+  /// No description provided for @lunarPanelNoSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'No readings logged yet.'**
+  String get lunarPanelNoSessions;
+
+  /// No description provided for @lunarPanelRecommendedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Align your reading with the current lunar energy.'**
+  String get lunarPanelRecommendedSubtitle;
+
+  /// No description provided for @lunarPanelRecommendedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Spreads for this phase'**
+  String get lunarPanelRecommendedTitle;
+
+  /// No description provided for @lunarPanelRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get lunarPanelRetry;
+
+  /// No description provided for @lunarPanelSessionsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one {# reading logged} other {# readings logged}}'**
+  String lunarPanelSessionsCount(int count);
+
+  /// No description provided for @lunarPanelSessionsHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Readings on this day'**
+  String get lunarPanelSessionsHeadline;
+
+  /// No description provided for @lunarPanelSpreadSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected {spread} spread.'**
+  String lunarPanelSpreadSelected(Object spread);
+
+  /// No description provided for @lunarPanelTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon Rhythm'**
+  String get lunarPanelTitle;
+
+  /// No description provided for @lunarPanelToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get lunarPanelToday;
+
+  /// No description provided for @lunarPanelUseSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Use {spread} spread'**
+  String lunarPanelUseSpread(Object spread);
+
+  /// No description provided for @lunarSpreadAstrological.
+  ///
+  /// In en, this message translates to:
+  /// **'Astrological'**
+  String get lunarSpreadAstrological;
+
+  /// No description provided for @lunarSpreadCelticCross.
+  ///
+  /// In en, this message translates to:
+  /// **'Celtic Cross'**
+  String get lunarSpreadCelticCross;
+
+  /// No description provided for @lunarSpreadFiveCardCross.
+  ///
+  /// In en, this message translates to:
+  /// **'Five Card Cross'**
+  String get lunarSpreadFiveCardCross;
+
+  /// No description provided for @lunarSpreadHorseshoe.
+  ///
+  /// In en, this message translates to:
+  /// **'Horseshoe'**
+  String get lunarSpreadHorseshoe;
+
+  /// No description provided for @lunarSpreadPyramid.
+  ///
+  /// In en, this message translates to:
+  /// **'Pyramid'**
+  String get lunarSpreadPyramid;
+
+  /// No description provided for @lunarSpreadRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get lunarSpreadRelationship;
+
+  /// No description provided for @lunarSpreadSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Card'**
+  String get lunarSpreadSingle;
+
+  /// No description provided for @lunarSpreadStar.
+  ///
+  /// In en, this message translates to:
+  /// **'Star'**
+  String get lunarSpreadStar;
+
+  /// No description provided for @lunarSpreadThreeCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Three Card'**
+  String get lunarSpreadThreeCard;
+
+  /// No description provided for @lunarSpreadTwoCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Two Card'**
+  String get lunarSpreadTwoCard;
+
+  /// No description provided for @lunarSpreadYearAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Year Ahead'**
+  String get lunarSpreadYearAhead;
+
   /// No description provided for @methodLabel.
   ///
   /// In en, this message translates to:
@@ -471,6 +675,12 @@ abstract class CommonStrings {
   /// In en, this message translates to:
   /// **'Remaining today: {remaining}'**
   String remainingToday(int remaining);
+
+  /// No description provided for @revealCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Reveal the cards'**
+  String get revealCards;
 
   /// No description provided for @runes.
   ///
@@ -591,12 +801,6 @@ abstract class CommonStrings {
   /// In en, this message translates to:
   /// **'Welcome!'**
   String get welcome;
-
-  /// No description provided for @revealCards.
-  ///
-  /// In en, this message translates to:
-  /// **'Reveal the cards'**
-  String get revealCards;
 }
 
 class _CommonStringsDelegate extends LocalizationsDelegate<CommonStrings> {

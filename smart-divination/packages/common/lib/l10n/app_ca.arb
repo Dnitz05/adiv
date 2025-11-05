@@ -20,6 +20,43 @@
       }
     }
   },
+  "@lunarPanelAge": {
+    "placeholders": {
+      "days": {}
+    }
+  },
+  "@lunarPanelElement": {
+    "placeholders": {
+      "element": {}
+    }
+  },
+  "@lunarPanelIllumination": {
+    "placeholders": {
+      "percent": {}
+    }
+  },
+  "@lunarPanelMoonIn": {
+    "placeholders": {
+      "sign": {}
+    }
+  },
+  "@lunarPanelSessionsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@lunarPanelSpreadSelected": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
+  "@lunarPanelUseSpread": {
+    "placeholders": {
+      "spread": {}
+    }
+  },
   "@methodLabel": {
     "placeholders": {
       "method": {}
@@ -143,6 +180,40 @@
   "interpretationHeading": "Interpretació",
   "language": "Idioma",
   "latestDrawTitle": "Darrera tirada ({count} cartes)",
+  "lunarElementAir": "aire",
+  "lunarElementEarth": "terra",
+  "lunarElementFire": "foc",
+  "lunarElementWater": "aigua",
+  "lunarPanelAge": "Edat {days} d",
+  "lunarPanelCalendarTitle": "Calendari lunar",
+  "lunarPanelElement": "Element ? {element}",
+  "lunarPanelError": "No s'ha pogut connectar amb la lluna",
+  "lunarPanelFallbackError": "Comprova la connexi? i torna-ho a intentar.",
+  "lunarPanelGuidanceTitle": "Guia",
+  "lunarPanelIllumination": "Il?luminaci? {percent}%",
+  "lunarPanelLoading": "Connectant amb la lluna...",
+  "lunarPanelMoonIn": "Lluna a {sign}",
+  "lunarPanelNoSessions": "Encara no hi ha lectures registrades.",
+  "lunarPanelRecommendedSubtitle": "Harmonitza la lectura amb l'energia lunar actual.",
+  "lunarPanelRecommendedTitle": "Tirades per aquesta fase",
+  "lunarPanelRetry": "Torna-ho a provar",
+  "lunarPanelSessionsCount": "{count, plural, one {# lectura registrada} other {# lectures registrades}}",
+  "lunarPanelSessionsHeadline": "Lectures d'aquest dia",
+  "lunarPanelSpreadSelected": "Has seleccionat la tirada {spread}.",
+  "lunarPanelTitle": "Ritme lunar",
+  "lunarPanelToday": "Avui",
+  "lunarPanelUseSpread": "Usa la tirada {spread}",
+  "lunarSpreadAstrological": "Astrol?gica",
+  "lunarSpreadCelticCross": "Creu celta",
+  "lunarSpreadFiveCardCross": "Creu de cinc cartes",
+  "lunarSpreadHorseshoe": "Ferro de cavall",
+  "lunarSpreadPyramid": "Pir?mide",
+  "lunarSpreadRelationship": "Relaci?",
+  "lunarSpreadSingle": "Carta ?nica",
+  "lunarSpreadStar": "Estrella",
+  "lunarSpreadThreeCard": "Tres cartes",
+  "lunarSpreadTwoCard": "Dues cartes",
+  "lunarSpreadYearAhead": "Any per davant",
   "methodLabel": "Mètode: {method}",
   "methodSeedLabel": "Mètode: {method} • Llavor: {seed}",
   "networkError": "Error de connexió de xarxa. Comprova la teva connexió.",
@@ -150,6 +221,7 @@
   "ok": "D'acord",
   "premium": "Premium",
   "remainingToday": "Restants avui: {remaining}",
+  "revealCards": "Revelar les cartes",
   "runes": "Runes",
   "runesDescription": "Símbols nòrdics de poder",
   "save": "Desar",
@@ -169,6 +241,5 @@
   "usageMonth": "Aquest mes: {used}/{limit}",
   "usageToday": "Avui: {used}/{limit}",
   "usageWeek": "Aquesta setmana: {used}/{limit}",
-  "welcome": "Benvingut/da!",
-  "revealCards": "Revelar les cartes"
+  "welcome": "Benvingut/da!"
 }

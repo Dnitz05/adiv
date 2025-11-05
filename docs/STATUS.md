@@ -1,6 +1,6 @@
-# Project Status (October 2025)
+# Project Status (November 2025)
 
-Last Updated: 2025-10-22
+Last Updated: 2025-11-05
 
 ## Current Status: Android Release Ready
 **Focus:** Android signing complete. App successfully tested on physical device. Ready for Play Store assets creation and submission.
@@ -21,6 +21,24 @@ Completed work (total ~45 minutes once secrets were available):
 3. Configure Android signing for CI/CD (20 min)
 4. Fix Android build failure (app_links compileSdk)
 5. Finish localisation migration to CommonStrings
+
+## Recent Progress (2025-11-05)
+
+### Lunar Cycle Integration
+- **New Feature: Lunar Day Tracking**: Complete end-to-end implementation for tracking moon phases, zodiac signs, and personalized lunar guidance.
+  - **Backend**: New lunar service (`lunar-service.ts`) with endpoints for fetching daily lunar data, date ranges, and personalized guidance. Integrated with Gemini AI for generating locale-specific lunar insights.
+  - **Database**: New `lunar_daily_cache` table with RLS policies. Stores daily lunar metadata (phase, illumination, age, zodiac sign) with AI-generated guidance. Supports caching to reduce API calls.
+  - **Flutter Models**: Comprehensive data models (`LunarDayModel`, `LunarZodiac`, `LunarGuidanceModel`, `LunarSessionSummaryModel`) with JSON serialization for lunar data exchange.
+  - **Flutter Services**: Repository pattern implementation (`lunar_cycle_repository.dart`) with HTTP client (`lunar_api.dart`) for backend communication.
+  - **State Management**: Riverpod-based controller (`lunar_cycle_controller.dart`) for reactive lunar data updates.
+  - **UI Component**: New `lunar_home_panel.dart` widget displaying current moon phase, zodiac, and personalized guidance on home screen.
+  - **Recommended Spreads**: Phase-specific tarot spread recommendations (e.g., New Moon → Celtic Cross, Full Moon → Horseshoe, etc.).
+
+### CI/CD Infrastructure Updates
+- **Flutter Version Upgrade**: Updated GitHub Actions workflows from Flutter 3.24.0 → 3.35.3 to resolve `intl` package version conflicts.
+  - Fixed `flutter-tarot-ci.yml` workflow
+  - Fixed `flutter-release.yml` workflow (Android & iOS jobs)
+  - Resolves dependency conflict where `flutter_localizations` now requires `intl ^0.20.2` instead of `^0.19.0`
 
 ## Recent Progress (2025-10-22)
 

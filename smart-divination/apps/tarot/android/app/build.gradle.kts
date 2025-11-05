@@ -63,7 +63,7 @@ System.getenv("ANDROID_KEYSTORE_BASE64")?.trim()?.takeIf { it.isNotEmpty() }?.le
 android {
     namespace = "com.smartdivination.tarot"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = flutter.ndkVersion  // Commented out: causes NullPointerException with AGP 8.9.1
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

@@ -2,8 +2,6 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide UserIdentity;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-import 'auth/auth_exceptions.dart';
-
 class UserIdentity {
   static const _anonUserIdKey = 'anon_user_id';
   static String? _cachedUserId;
@@ -29,9 +27,9 @@ class UserIdentity {
       final response = await client.auth.refreshSession();
       final refreshedUser = response.session?.user;
       if (refreshedUser != null) {
-          final id = refreshedUser.id;
-          _cachedUserId = id;
-          return id;
+        final id = refreshedUser.id;
+        _cachedUserId = id;
+        return id;
       }
     } catch (_) {
       // Ignore refresh failures; fall through to anonymous flow.

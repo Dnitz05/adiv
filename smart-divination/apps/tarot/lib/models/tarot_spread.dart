@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// Represents the position of a card in a spread
 class CardPosition {
   final double x; // Relative position (0.0 to 1.0) from left
@@ -687,8 +685,7 @@ const Map<String, Map<String, String>> _spreadDescriptionTranslations =
 extension TarotSpreadLocalization on TarotSpread {
   String localizedName(String locale) {
     final language = _languageFromLocale(locale);
-    final baseName =
-        (_spreadNameTranslations[language]?[id] ?? name).trim();
+    final baseName = (_spreadNameTranslations[language]?[id] ?? name).trim();
 
     final prefix = _spreadTitlePrefixes[language];
     if (prefix != null && prefix.isNotEmpty) {

@@ -22,7 +22,7 @@ jobs:
     if: ${{ inputs.build_android }}
     runs-on: ubuntu-latest
     env:
-      FLUTTER_VERSION: "3.24.0"
+      FLUTTER_VERSION: "3.35.3"
       API_BASE_URL: ${{ secrets.ANDROID_API_BASE_URL }}
     steps:
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: "3.24.0"
+          flutter-version: "3.35.3"
 
       - name: Flutter doctor
         run: flutter doctor -v
@@ -98,7 +98,7 @@ EOF
     if: ${{ inputs.build_ios }}
     runs-on: macos-latest
     env:
-      FLUTTER_VERSION: "3.24.0"
+      FLUTTER_VERSION: "3.35.3"
       API_BASE_URL: ${{ secrets.IOS_API_BASE_URL }}
     steps:
       - name: Checkout
@@ -108,7 +108,7 @@ EOF
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: "3.24.0"
+          flutter-version: "3.35.3"
 
       - name: Flutter doctor
         run: flutter doctor -v

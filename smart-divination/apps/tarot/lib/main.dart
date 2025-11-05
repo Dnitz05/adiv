@@ -971,12 +971,12 @@ class _HomeState extends State<_Home> {
           recommendationReason = recommendation.reasoning;
           interpretationGuide = recommendation.interpretationGuide;
 
-        debugPrint('🎴 Spread recommendation received:');
-        debugPrint('   - Spread: ${selectedSpread.id}');
-        debugPrint(
-            '   - Reasoning: ${recommendationReason?.substring(0, 50)}...');
-        debugPrint(
-            '   - Interpretation guide: ${interpretationGuide ?? "NULL"}');
+          debugPrint('🎴 Spread recommendation received:');
+          debugPrint('   - Spread: ${selectedSpread.id}');
+          debugPrint(
+              '   - Reasoning: ${recommendationReason?.substring(0, 50)}...');
+          debugPrint(
+              '   - Interpretation guide: ${interpretationGuide ?? "NULL"}');
 
           // Update UI immediately to show the AI-selected spread
           if (mounted) {
@@ -1687,8 +1687,7 @@ class _HomeState extends State<_Home> {
         Expanded(
           child: _QuickActionTile(
             icon: Icons.chat_bubble_outline,
-            title: _qaText(localisation,
-                en: 'Chat', es: 'Chat', ca: 'Xat'),
+            title: _qaText(localisation, en: 'Chat', es: 'Chat', ca: 'Xat'),
             onTap: () => _handleQuickActionChat(localisation),
           ),
         ),
@@ -2970,14 +2969,13 @@ class _HomeState extends State<_Home> {
           children: [
             _buildHeaderAction(
               icon: Icons.home_outlined,
-              label: _qaText(localisation,
-                  en: 'Home', es: 'Inicio', ca: 'Inici'),
+              label:
+                  _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
               onTap: () => _resetToHome(),
             ),
             _buildHeaderAction(
               icon: Icons.chat_bubble_outline,
-              label: _qaText(localisation,
-                  en: 'Chat', es: 'Chat', ca: 'Xat'),
+              label: _qaText(localisation, en: 'Chat', es: 'Chat', ca: 'Xat'),
               onTap: () => _handleQuickActionChat(localisation),
             ),
             _buildHeaderAction(
