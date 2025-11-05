@@ -882,7 +882,7 @@ class _HomeState extends State<_Home> {
       final response = await drawCards(
         count: 3,
         allowReversed: true,
-        spread: 'three-card',
+        spread: 'three_card',
       );
 
       if (!mounted) {
