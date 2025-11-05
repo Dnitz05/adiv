@@ -1661,6 +1661,9 @@ class _HomeState extends State<_Home> {
                 const SizedBox(height: 20),
                 FilledButton.icon(
                   onPressed: _drawing ? null : _drawCards,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: TarotTheme.cosmicPurple,
+                  ),
                   icon: _drawing
                       ? const SizedBox(
                           height: 20,
@@ -1796,16 +1799,16 @@ class _HomeState extends State<_Home> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 20, color: TarotTheme.cosmicAccent),
+            Icon(icon, size: 24, color: TarotTheme.cosmicAccent),
             const SizedBox(height: 2),
             Text(
               label,
               style: const TextStyle(
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
                 color: TarotTheme.stardust,
               ),
@@ -2863,13 +2866,6 @@ class _HomeState extends State<_Home> {
             child: Column(
               children: [
                 const SizedBox(height: 60),
-                // Daily quote card at top
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 0.0),
-                  child: _buildDailyQuoteCard(),
-                ),
-                const SizedBox(height: 24),
                 if (_error != null) ...[
                   const SizedBox(height: 16),
                   Padding(
@@ -3007,14 +3003,10 @@ class _HomeState extends State<_Home> {
       ),
       body: Stack(
         children: [
-          // Solaris Tarot starry background
+          // Plain light background
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/backgrounds/fons.png'),
-                fit: BoxFit.cover,
-                opacity: 0.3,
-              ),
+            decoration: BoxDecoration(
+              color: Colors.purple[50],
             ),
           ),
           // Content
