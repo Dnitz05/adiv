@@ -277,7 +277,7 @@ class LunarHomePanel extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         SizedBox(
-          height: 92,
+          height: 100,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: range.length,
