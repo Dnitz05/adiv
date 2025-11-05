@@ -11,7 +11,7 @@ const String _localDevelopmentApiBase = 'http://localhost:3001';
 const bool _useLocalApi =
     bool.fromEnvironment('USE_LOCAL_API', defaultValue: false);
 const String _productionApiBase =
-    'https://backend-jnmkq4odo-dnitzs-projects.vercel.app';
+    'https://backend-djfxs49bh-dnitzs-projects.vercel.app';
 
 String? _runtimeApiBaseOverride;
 
