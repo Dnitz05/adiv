@@ -891,15 +891,7 @@ class _HomeState extends State<_Home> {
 
       // Convert CardResults to TarotCards
       final cards = response.result.map((card) {
-        final imagePath = mapCardToImagePath(card.name, card.suit);
-        return TarotCard(
-          name: card.name,
-          suit: card.suit,
-          number: card.number,
-          upright: card.upright,
-          position: card.position,
-          imageUrl: imagePath,
-        );
+        return TarotCard.fromCardResult(card);
       }).toList();
 
       setState(() {
