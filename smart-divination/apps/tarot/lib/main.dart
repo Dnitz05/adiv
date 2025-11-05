@@ -19,6 +19,7 @@ import 'models/tarot_card.dart';
 import 'widgets/spread_layout.dart';
 import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
+import 'widgets/lunar_home_panel.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
@@ -26,6 +27,7 @@ import 'services/audio_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
 import 'state/full_screen_step.dart';
+import 'state/lunar_cycle_controller.dart';
 import 'screens/splash_screen.dart';
 
 const String _supabaseUrl = String.fromEnvironment(
@@ -683,6 +685,7 @@ class _HomeState extends State<_Home> {
   final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
   final FocusNode _questionFocusNode = FocusNode();
+  late final LunarCycleController _lunarController;
 
   static const List<String> _supportedQuestionLocales = <String>[
     'ca',
@@ -785,6 +788,7 @@ class _HomeState extends State<_Home> {
   @override
   void initState() {
     super.initState();
+    _lunarController = LunarCycleController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadAll();
       // Auto-focus on question field when on home (no draw active)
@@ -801,6 +805,7 @@ class _HomeState extends State<_Home> {
     _questionController.dispose();
     _seedController.dispose();
     _questionFocusNode.dispose();
+    _lunarController.dispose();
     super.dispose();
   }
 
@@ -830,6 +835,10 @@ class _HomeState extends State<_Home> {
       if (!mounted) {
         return;
       }
+
+      // Initialize lunar controller
+      final locale = CommonStrings.of(context).localeName;
+      await _lunarController.initialise(locale: locale, userId: userId);
 
       setState(() {
         _userId = userId;
@@ -2856,31 +2865,43 @@ class _HomeState extends State<_Home> {
     if (_initialising) {
       bodyContent = const Center(child: CircularProgressIndicator());
     } else if (!hasDraw) {
-      // Initial state: centered logo and draw form
-      bodyContent = CustomScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Column(
-              children: [
-                const SizedBox(height: 60),
-                if (_error != null) ...[
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      _error!,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.error),
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 24),
-                SizedBox(height: bottomSpacing),
-              ],
-            ),
+      // Initial state: lunar panel, centered logo and draw form
+      bodyContent = ListView(
+        padding: EdgeInsets.only(
+          left: 8,
+          right: 8,
+          top: topSpacing,
+          bottom: bottomSpacing + 80, // Extra space for draw form
+        ),
+        children: [
+          // Lunar Panel
+          LunarHomePanel(
+            controller: _lunarController,
+            strings: localisation,
+            onSelectSpread: (spreadId) {
+              final spread = TarotSpreads.getById(spreadId);
+              if (spread != null) {
+                setState(() {
+                  _selectedSpread = spread;
+                });
+                // Optionally scroll to or focus the question field
+                _questionFocusNode.requestFocus();
+              }
+            },
+            onRefresh: () => _lunarController.refresh(force: true),
           ),
+          const SizedBox(height: 24),
+          if (_error != null) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                _error!,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
         ],
       );
     } else {

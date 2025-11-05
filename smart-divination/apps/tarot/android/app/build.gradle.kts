@@ -40,30 +40,13 @@ System.getenv("ANDROID_KEYSTORE_PATH")?.trim()?.takeIf { it.isNotEmpty() }?.let 
     keystoreProperties.setProperty("storeFile", path)
 }
 
-System.getenv("ANDROID_KEYSTORE_BASE64")?.trim()?.takeIf { it.isNotEmpty() }?.let { encoded ->
-    val keystoreOutputDir = File(buildDir, "keystore")
-    if (!keystoreOutputDir.exists()) {
-        keystoreOutputDir.mkdirs()
-    }
-
-    val generatedKeystore = File(keystoreOutputDir, "upload-keystore.jks")
-    val decodedKeystore = try {
-        Base64.getDecoder().decode(encoded)
-    } catch (error: IllegalArgumentException) {
-        throw GradleException("ANDROID_KEYSTORE_BASE64 is not valid Base64 data.", error)
-    }
-
-    if (!generatedKeystore.exists() || !generatedKeystore.readBytes().contentEquals(decodedKeystore)) {
-        generatedKeystore.writeBytes(decodedKeystore)
-    }
-
-    keystoreProperties.setProperty("storeFile", generatedKeystore.absolutePath)
-}
+// Keystore from BASE64 disabled for local builds (uses deprecated buildDir)
+// System.getenv("ANDROID_KEYSTORE_BASE64")...
 
 android {
     namespace = "com.smartdivination.tarot"
     compileSdk = flutter.compileSdkVersion
-    // ndkVersion = flutter.ndkVersion  // Commented out: causes NullPointerException with AGP 8.9.1
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
