@@ -3069,15 +3069,26 @@ class _HomeState extends State<_Home> {
               _resetToHome();
               break;
             case 1: // Chat
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    userId: _userId,
-                    strings: localisation,
+              if (_userId.isEmpty) {
+                _showQuickActionMessage(
+                  _qaText(
+                    localisation,
+                    en: 'Please log in to use chat.',
+                    es: 'Por favor inicia sesión para usar el chat.',
+                    ca: 'Si us plau inicia sessió per utilitzar el xat.',
                   ),
-                ),
-              );
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      userId: _userId,
+                      strings: localisation,
+                    ),
+                  ),
+                );
+              }
               break;
             case 2: // Spreads
               _handleQuickActionSpreads(localisation);
