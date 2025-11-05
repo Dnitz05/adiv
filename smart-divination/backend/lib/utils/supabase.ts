@@ -94,7 +94,7 @@ interface UserStatsRow {
   sessions_this_month: number | null;
 }
 
-function hasServiceCredentials(): boolean {
+export function hasServiceCredentials(): boolean {
   const supabaseUrl = process.env.SUPABASE_URL?.trim();
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
   return Boolean(supabaseUrl && serviceKey);

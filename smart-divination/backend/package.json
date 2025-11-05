@@ -31,6 +31,7 @@
     "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.39.0",
     "@vercel/edge": "^1.1.1",
+    "astronomy-engine": "^2.1.19",
     "bcryptjs": "^2.4.3",
     "google-auth-library": "^9.14.2",
     "joi": "^17.11.0",
