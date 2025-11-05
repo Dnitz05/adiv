@@ -20,6 +20,7 @@ import 'widgets/spread_layout.dart';
 import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
 import 'widgets/lunar_home_panel.dart';
+import 'widgets/daily_draw_panel.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
@@ -686,6 +687,9 @@ class _HomeState extends State<_Home> {
   final TextEditingController _seedController = TextEditingController();
   final FocusNode _questionFocusNode = FocusNode();
   late final LunarCycleController _lunarController;
+  List<TarotCard>? _dailyCards;
+  bool _loadingDailyDraw = false;
+  int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Archive, 4=Settings
 
   static const List<String> _supportedQuestionLocales = <String>[
     'ca',
@@ -840,6 +844,9 @@ class _HomeState extends State<_Home> {
       final locale = CommonStrings.of(context).localeName;
       await _lunarController.initialise(locale: locale, userId: userId);
 
+      // Generate daily draw
+      await _generateDailyDraw();
+
       setState(() {
         _userId = userId;
         _profile = profile;
@@ -858,6 +865,56 @@ class _HomeState extends State<_Home> {
       });
       debugPrint('Failed to load initial data: $error');
       debugPrint('Stack trace: $stackTrace');
+    }
+  }
+
+  Future<void> _generateDailyDraw() async {
+    if (_loadingDailyDraw) {
+      return;
+    }
+
+    setState(() {
+      _loadingDailyDraw = true;
+    });
+
+    try {
+      // Draw 3 cards for the daily draw using the API
+      final response = await drawCards(
+        count: 3,
+        allowReversed: true,
+        spread: 'three-card',
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      // Convert CardResults to TarotCards
+      final cards = response.result.map((card) {
+        final imagePath = mapCardToImagePath(card.name, card.suit);
+        return TarotCard(
+          name: card.name,
+          suit: card.suit,
+          number: card.number,
+          upright: card.upright,
+          position: card.position,
+          imageUrl: imagePath,
+        );
+      }).toList();
+
+      setState(() {
+        _dailyCards = cards;
+        _loadingDailyDraw = false;
+      });
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      debugPrint('Failed to generate daily draw: $error');
+      setState(() {
+        _dailyCards = null;
+        _loadingDailyDraw = false;
+      });
     }
   }
 
@@ -1111,6 +1168,7 @@ class _HomeState extends State<_Home> {
     _briefingAutoAdvanceTimer?.cancel();
     _briefingAutoAdvanceTimer = null;
     setState(() {
+      _selectedBottomNavIndex = 0; // Set to Home tab
       _latestDraw = null;
       _latestInterpretation = null;
       _dealtCardCount = 0;
@@ -2874,6 +2932,19 @@ class _HomeState extends State<_Home> {
           bottom: bottomSpacing + 80, // Extra space for draw form
         ),
         children: [
+          // Daily Draw Panel
+          if (_dailyCards != null && _dailyCards!.isNotEmpty)
+            DailyDrawPanel(
+              cards: _dailyCards!,
+              strings: localisation,
+              isLoading: _loadingDailyDraw,
+              onInterpret: () {
+                // TODO: Implement interpretation for daily draw
+                debugPrint('Interpret daily draw');
+              },
+            ),
+          if (_dailyCards != null && _dailyCards!.isNotEmpty)
+            const SizedBox(height: 24),
           // Lunar Panel
           LunarHomePanel(
             controller: _lunarController,
@@ -2985,40 +3056,66 @@ class _HomeState extends State<_Home> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildHeaderAction(
-              icon: Icons.home_outlined,
-              label:
-                  _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
-              onTap: () => _resetToHome(),
-            ),
-            _buildHeaderAction(
-              icon: Icons.chat_bubble_outline,
-              label: _qaText(localisation, en: 'Chat', es: 'Chat', ca: 'Xat'),
-              onTap: () => _handleQuickActionChat(localisation),
-            ),
-            _buildHeaderAction(
-              icon: Icons.auto_awesome_motion,
-              label: _qaText(localisation,
-                  en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
-              onTap: () => _handleQuickActionSpreads(localisation),
-            ),
-            _buildHeaderAction(
-              icon: Icons.archive_outlined,
-              label: _qaText(localisation,
-                  en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
-              onTap: () => _handleQuickActionArchive(localisation),
-            ),
-            _buildHeaderAction(
-              icon: Icons.settings_outlined,
-              label: _qaText(localisation,
-                  en: 'Settings', es: 'Ajustes', ca: 'Ajustos'),
-              onTap: () => _showSettingsDialog(localisation),
-            ),
-          ],
-        ),
+        title: Text(localisation.appTitle('tarot')),
+        centerTitle: true,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedBottomNavIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: TarotTheme.cosmicPurple,
+        unselectedItemColor: Colors.grey[600],
+        backgroundColor: Colors.white,
+        elevation: 8,
+        onTap: (index) {
+          setState(() {
+            _selectedBottomNavIndex = index;
+          });
+
+          switch (index) {
+            case 0: // Home
+              _resetToHome();
+              break;
+            case 1: // Chat
+              _handleQuickActionChat(localisation);
+              break;
+            case 2: // Spreads
+              _handleQuickActionSpreads(localisation);
+              break;
+            case 3: // Archive
+              _handleQuickActionArchive(localisation);
+              break;
+            case 4: // Settings
+              _showSettingsDialog(localisation);
+              break;
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.chat_bubble_outline),
+            activeIcon: const Icon(Icons.chat_bubble),
+            label: _qaText(localisation, en: 'Chat', es: 'Chat', ca: 'Xat'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.auto_awesome_motion),
+            activeIcon: const Icon(Icons.auto_awesome),
+            label: _qaText(localisation, en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.archive_outlined),
+            activeIcon: const Icon(Icons.archive),
+            label: _qaText(localisation, en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings_outlined),
+            activeIcon: const Icon(Icons.settings),
+            label: _qaText(localisation, en: 'Settings', es: 'Ajustes', ca: 'Ajustos'),
+          ),
+        ],
       ),
       body: Stack(
         children: [

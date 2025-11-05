@@ -6,6 +6,7 @@ import '../models/tarot_spread.dart';
 import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
 import 'package:common/l10n/common_strings.dart';
+import 'lunar_calendar_dialog.dart';
 
 class LunarHomePanel extends StatelessWidget {
   const LunarHomePanel({
@@ -216,6 +217,34 @@ class LunarHomePanel extends StatelessWidget {
                 ),
               ),
             ],
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => LunarCalendarDialog(
+                    controller: controller,
+                    strings: strings,
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              icon: const Icon(Icons.calendar_month, size: 18),
+              label: Text(
+                _getCalendarButtonText(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -554,6 +583,17 @@ class LunarHomePanel extends StatelessWidget {
         return strings.lunarElementWater;
       default:
         return element;
+    }
+  }
+
+  String _getCalendarButtonText() {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Veure calendari mensual';
+      case 'es':
+        return 'Ver calendario mensual';
+      default:
+        return 'View monthly calendar';
     }
   }
 
