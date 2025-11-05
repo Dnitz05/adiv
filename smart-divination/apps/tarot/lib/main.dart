@@ -21,6 +21,7 @@ import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
 import 'widgets/lunar_home_panel.dart';
 import 'widgets/daily_draw_panel.dart';
+import 'screens/chat_screen.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
@@ -3068,7 +3069,15 @@ class _HomeState extends State<_Home> {
               _resetToHome();
               break;
             case 1: // Chat
-              _handleQuickActionChat(localisation);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                    userId: _userId,
+                    strings: localisation,
+                  ),
+                ),
+              );
               break;
             case 2: // Spreads
               _handleQuickActionSpreads(localisation);
