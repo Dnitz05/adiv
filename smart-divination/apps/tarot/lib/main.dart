@@ -3069,7 +3069,8 @@ class _HomeState extends State<_Home> {
               _resetToHome();
               break;
             case 1: // Chat
-              if (_userId == null || _userId.isEmpty) {
+              final userId = _userId;
+              if (userId == null || userId.isEmpty) {
                 _showQuickActionMessage(
                   _qaText(
                     localisation,
@@ -3083,7 +3084,7 @@ class _HomeState extends State<_Home> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ChatScreen(
-                      userId: _userId!,
+                      userId: userId,
                       strings: localisation,
                     ),
                   ),
