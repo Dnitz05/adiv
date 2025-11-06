@@ -121,7 +121,7 @@ async function handleCreate(
     time: body.time ?? null,
     topic: body.topic,
     intention: body.intention,
-    locale: body.locale ?? auth?.locale ?? 'en',
+    locale: body.locale ?? 'en',
     requestId,
   });
 
@@ -160,7 +160,7 @@ async function handleList(
   const reminders = await fetchLunarReminders(userId, {
     from: query.from,
     to: query.to,
-    locale: query.locale ?? auth?.locale,
+    locale: query.locale,
     limit: query.limit,
   });
 
@@ -221,12 +221,12 @@ async function handleDelete(
   res: NextApiResponse,
   requestId: string,
 ) {
-  const { data: body, auth } = await parseApiRequest<{ id: string }>(
+  const { data: body, auth } = await parseApiRequest(
     req,
     baseRequestSchema.extend({
       id: z.string().min(1, 'id is required'),
     }),
-  );
+  ) as { data: { id: string; userId?: string }; auth: any };
 
   const userId = (auth?.userId ?? body.userId ?? '').trim();
   if (!userId) {

@@ -338,7 +338,7 @@ function normaliseAdvice(
     focus: raw.focus.trim(),
     today: raw.today.map((item) => item.trim()).filter(Boolean),
     next: {
-      phaseId: nextPhaseId,
+      phaseId: nextPhaseId as any,
       date: raw.next.date || nextPhase.date,
       name: raw.next.name.trim().length > 0 ? raw.next.name.trim() : nextPhase.phaseName,
       advice: raw.next.advice.trim(),

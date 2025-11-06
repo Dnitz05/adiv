@@ -254,8 +254,8 @@ async function handleGeminiChat(
       if (structured.intent?.shouldDrawSpread) {
         try {
           const preferredSpreadId =
-            structured.intent.spreadId && CHAT_SPREAD_ID_SET.has(structured.intent.spreadId)
-              ? structured.intent.spreadId
+            structured.intent.spreadId && CHAT_SPREAD_ID_SET.has(structured.intent.spreadId as any)
+              ? (structured.intent.spreadId as any)
               : undefined;
 
           const spreadMessage = await createChatSpreadMessage({
@@ -552,7 +552,7 @@ async function createChatSpreadMessage(options: {
 
 function selectChatSpreadDefinition(preferredSpreadId?: string): SpreadDefinition {
   const candidates = SPREADS.filter(
-    (spread) => CHAT_SPREAD_ID_SET.has(spread.id) && spread.cardCount <= 9,
+    (spread) => CHAT_SPREAD_ID_SET.has(spread.id as any) && spread.cardCount <= 9,
   );
 
   if (!candidates.length) {

@@ -24,12 +24,15 @@ import 'widgets/daily_draw_panel.dart';
 import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
 import 'screens/chat_screen.dart';
+import 'screens/spreads_screen.dart';
+import 'screens/learn_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
 import 'services/audio_service.dart';
+import 'services/credits_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
 import 'state/full_screen_step.dart';
@@ -693,7 +696,9 @@ class _HomeState extends State<_Home> {
   List<TarotCard>? _dailyCards;
   CardsDrawResponse? _dailyDrawResponse;
   bool _loadingDailyDraw = false;
-  int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Archive, 4=Settings
+  final CreditsService _creditsService = CreditsService();
+  late final ValueNotifier<DailyCredits> _creditsNotifier;
+  int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Archive, 4=Learn
   late final Future<DailyQuote?> _dailyQuoteFuture;
 
   static const List<String> _supportedQuestionLocales = <String>[
@@ -1108,51 +1113,136 @@ class _HomeState extends State<_Home> {
 
       // Start drawing cards, but also pre-load interpretation in parallel
 
-      final drawFuture = drawCards(
-        count: selectedSpread.cardCount,
-        spread: selectedSpread.id,
-        allowReversed: true,
-        seed: seed.isEmpty ? null : seed,
-        question: finalQuestion,
+      await _performDrawFlow(
+        spread: selectedSpread,
+        localeCode: localeCode,
+        finalQuestion: finalQuestion,
+        displayQuestion: displayQuestion,
+        recommendationReason: recommendationReason,
+        interpretationGuide: interpretationGuide,
+      );
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _error = _formatError(localisation, error);
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _drawing = false;
+        });
+      }
+    }
+  }
+
+  Future<String> _formatQuestionForLocale(
+    String baseQuestion,
+    String localeCode,
+  ) async {
+    try {
+      final formatted = await formatQuestion(
+        question: baseQuestion,
         locale: localeCode,
       );
+      if (formatted.trim().isNotEmpty) {
+        return formatted.trim();
+      }
+    } catch (_) {
+      // Ignore formatting failures and fall back below.
+    }
+    return _formatQuestionLabel(baseQuestion);
+  }
 
-      // Wait for cards to be drawn
-      final response = await drawFuture;
+  Future<void> _performDrawFlow({
+    required TarotSpread spread,
+    required String localeCode,
+    required String finalQuestion,
+    required String displayQuestion,
+    String? recommendationReason,
+    String? interpretationGuide,
+  }) async {
+    final seed = _seedController.text.trim();
+    final response = await drawCards(
+      count: spread.cardCount,
+      spread: spread.id,
+      allowReversed: true,
+      seed: seed.isEmpty ? null : seed,
+      question: finalQuestion,
+      locale: localeCode,
+    );
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _latestDraw = response;
+      _latestInterpretation = null;
+      _dealtCardCount = 0;
+      _dealingCards = false;
+      _revealedCardCount = 0;
+      _revealingCards = false;
+      _requestingInterpretation = false;
+      _showInterpretation = false;
+      _currentQuestion = finalQuestion;
+      _displayQuestion = displayQuestion;
+      _selectedSpread = spread;
+      _spreadRecommendationReason = recommendationReason;
+      _spreadInterpretationGuide = interpretationGuide;
+    });
+    _enterFullScreenFlow();
+
+    if (response.sessionId != null && response.sessionId!.isNotEmpty) {
+      _preloadInterpretation(response, finalQuestion, localeCode);
+    }
+
+    await Future.wait([
+      _refreshHistory(),
+      _refreshProfile(),
+    ]);
+  }
+
+  Future<void> _startThemeConsultation({
+    required SpreadThemeOption theme,
+    required TarotSpread spread,
+    String? question,
+    String? displayLabel,
+  }) async {
+    if (_drawing) {
+      return;
+    }
+    final localisation = CommonStrings.of(context);
+    setState(() {
+      _drawing = true;
+      _error = null;
+    });
+
+    try {
+      final localeCode = _resolveQuestionLocale(question ?? '');
+      final baseQuestion = (question != null && question.trim().isNotEmpty)
+          ? question.trim()
+          : _generalConsultationPrompt(localeCode);
+      final formattedQuestion =
+          await _formatQuestionForLocale(baseQuestion, localeCode);
+      final displayQuestion =
+          (displayLabel != null && displayLabel.trim().isNotEmpty)
+              ? displayLabel.trim()
+              : _formatQuestionLabel(formattedQuestion);
+
+      await _performDrawFlow(
+        spread: spread,
+        localeCode: localeCode,
+        finalQuestion: formattedQuestion,
+        displayQuestion: displayQuestion,
+      );
 
       if (!mounted) {
         return;
       }
       setState(() {
-        _latestDraw = response;
-        _latestInterpretation = null;
-        _dealtCardCount = 0;
-        _dealingCards = false;
-        _revealedCardCount = 0;
-        _revealingCards = false;
-        _requestingInterpretation = false;
-        _showInterpretation = false;
-        _currentQuestion = finalQuestion;
-        _displayQuestion = displayQuestion;
-        _selectedSpread = selectedSpread; // Update to AI-selected spread
-        _spreadRecommendationReason = recommendationReason;
+        _selectedBottomNavIndex = 0;
       });
-      _enterFullScreenFlow();
-
-      _enterFullScreenFlow();
-
-      // Pre-load interpretation in background immediately after cards are available
-      if (response.sessionId != null && response.sessionId!.isNotEmpty) {
-        _preloadInterpretation(response, finalQuestion, localeCode);
-      }
-
-      await Future.wait([
-        _refreshHistory(),
-        _refreshProfile(),
-      ]);
-      if (!mounted) {
-        return;
-      }
     } catch (error) {
       if (!mounted) {
         return;
@@ -1827,14 +1917,9 @@ class _HomeState extends State<_Home> {
   }
 
   void _handleQuickActionSpreads(CommonStrings localisation) {
-    _showQuickActionMessage(
-      _qaText(
-        localisation,
-        en: 'Spread explorer coming soon.',
-        es: 'Explorador de tiradas próximamente.',
-        ca: 'Explorador de tirades properament.',
-      ),
-    );
+    setState(() {
+      _selectedBottomNavIndex = 2;
+    });
   }
 
   void _handleQuickActionRituals(CommonStrings localisation) {
@@ -2920,6 +3005,32 @@ class _HomeState extends State<_Home> {
         userId: _userId!,
         strings: localisation,
         showAppBar: false,
+      );
+    } else if (_selectedBottomNavIndex == 2) {
+      bodyContent = SpreadsScreen(
+        strings: localisation,
+        selectedSpread: _selectedSpread,
+        generalPrompt: _generalConsultationPrompt(localisation.localeName),
+        generalLabel: _generalConsultationLabel(localisation.localeName),
+        onSelectSpread: (spread) {
+          setState(() {
+            _selectedSpread = spread;
+          });
+        },
+        onStartTheme: ({
+          required theme,
+          required spread,
+          String? question,
+          String? displayLabel,
+        }) {
+          _startThemeConsultation(
+            theme: theme,
+            spread: spread,
+            question: question,
+            displayLabel: displayLabel,
+          );
+        },
+        onOpenGallery: _showSpreadGallery,
       );
     } else if (!hasDraw) {
       // Initial state: lunar panel, centered logo and draw form

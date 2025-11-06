@@ -715,7 +715,7 @@ export async function fetchLunarAdviceHistory(
   try {
     const client = getSupabaseServiceClient();
     let query = client
-      .from<LunarAdviceRow>('lunar_queries')
+      .from('lunar_queries')
       .select('id,user_id,topic,intention,advice,context,locale,date,created_at')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
@@ -773,7 +773,7 @@ export async function insertLunarReminder(
   try {
     const client = getSupabaseServiceClient();
     const { data, error } = await client
-      .from<LunarReminderRow>('lunar_reminders')
+      .from('lunar_reminders')
       .insert({
         user_id: params.userId,
         date: params.date,
@@ -838,7 +838,7 @@ export async function updateLunarReminder(
   try {
     const client = getSupabaseServiceClient();
     const { data, error } = await client
-      .from<LunarReminderRow>('lunar_reminders')
+      .from('lunar_reminders')
       .update(patch)
       .eq('id', params.id)
       .eq('user_id', params.userId)
@@ -929,11 +929,11 @@ export async function fetchLunarReminders(
   try {
     const client = getSupabaseServiceClient();
     let query = client
-      .from<LunarReminderRow>('lunar_reminders')
+      .from('lunar_reminders')
       .select('id,user_id,date,time,topic,intention,locale,created_at')
       .eq('user_id', userId)
       .order('date', { ascending: true })
-      .order('time', { ascending: true, nullsLast: true })
+      .order('time', { ascending: true, nullsFirst: false })
       .limit(options.limit ?? 50);
 
     if (options.locale) {
