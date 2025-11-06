@@ -82,17 +82,7 @@ export default async function handler(
       hasHistory: !!body.conversationHistory,
     });
 
-    // Check if using Gemini (for consistency)
-    if (isUsingGemini()) {
-      const geminiResponse = await handleGeminiChat(body, requestId);
-      return res.status(200).json(
-        createApiResponse({
-          reply: geminiResponse,
-        }, requestId)
-      );
-    }
-
-    // Use DeepSeek for general chat
+    // Always use DeepSeek for general chat (Gemini is for card interpretation only)
     const deepseekResponse = await handleDeepSeekChat(body, requestId);
 
     return res.status(200).json(
