@@ -66,14 +66,13 @@ class _ChatInputFieldState extends State<ChatInputField> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
+        color: TarotTheme.midnightBlue,
+        border: Border(
+          top: BorderSide(
+            color: TarotTheme.twilightPurple.withValues(alpha: 0.3),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         child: Row(
@@ -93,7 +92,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 decoration: InputDecoration(
                   hintText: _getHintText(),
                   hintStyle: TextStyle(
-                    color: Colors.grey[400],
+                    color: TarotTheme.stardust.withValues(alpha: 0.6),
                     fontSize: 15,
                   ),
                   border: OutlineInputBorder(
@@ -102,17 +101,18 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   ),
                   filled: true,
                   fillColor: widget.enabled
-                      ? Colors.grey[100]
-                      : Colors.grey[50],
+                      ? TarotTheme.cosmicPurple
+                      : TarotTheme.cosmicPurple.withValues(alpha: 0.5),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 18,
                     vertical: 12,
                   ),
                   isDense: true,
                 ),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   height: 1.4,
+                  color: TarotTheme.moonlight,
                 ),
               ),
             ),
@@ -125,21 +125,42 @@ class _ChatInputFieldState extends State<ChatInputField> {
               child: AnimatedOpacity(
                 opacity: _hasText && widget.enabled ? 1.0 : 0.5,
                 duration: const Duration(milliseconds: 200),
-                child: Material(
-                  color: TarotTheme.cosmicPurple,
-                  shape: const CircleBorder(),
-                  elevation: _hasText && widget.enabled ? 2 : 0,
-                  child: InkWell(
-                    onTap: _hasText && widget.enabled ? _handleSend : null,
-                    customBorder: const CircleBorder(),
-                    child: Container(
-                      width: 44,
-                      height: 44,
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 20,
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        TarotTheme.cosmicBlue,
+                        TarotTheme.cosmicAccent,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    shape: BoxShape.circle,
+                    boxShadow: _hasText && widget.enabled
+                        ? [
+                            BoxShadow(
+                              color: TarotTheme.cosmicBlue.withValues(alpha: 0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      onTap: _hasText && widget.enabled ? _handleSend : null,
+                      customBorder: const CircleBorder(),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),

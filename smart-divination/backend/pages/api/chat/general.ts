@@ -101,7 +101,7 @@ export default async function handler(
       }, requestId)
     );
   } catch (error) {
-    return handleApiError(error, res, METRICS_PATH, requestId);
+    return handleApiError(res, error, requestId);
   }
 }
 

@@ -71,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: TarotTheme.deepNight,
       appBar: _buildAppBar(),
       body: Column(
         children: [
@@ -96,10 +96,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 1,
+      backgroundColor: TarotTheme.midnightBlue,
+      elevation: 0,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black87),
+        icon: Icon(Icons.arrow_back, color: TarotTheme.moonlight),
         onPressed: () => Navigator.pop(context),
       ),
       title: Row(
@@ -112,7 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 colors: [
-                  TarotTheme.cosmicPurple,
+                  TarotTheme.cosmicAccent,
                   TarotTheme.cosmicBlue,
                 ],
               ),
@@ -131,8 +131,8 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Text(
                   _getAssistantName(),
-                  style: const TextStyle(
-                    color: Colors.black87,
+                  style: TextStyle(
+                    color: TarotTheme.moonlight,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
@@ -141,7 +141,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Text(
                     _getTypingText(),
                     style: TextStyle(
-                      color: TarotTheme.cosmicPurple,
+                      color: TarotTheme.cosmicAccent,
                       fontSize: 12,
                     ),
                   ),

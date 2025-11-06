@@ -29,9 +29,23 @@ class ChatMessageBubble extends StatelessWidget {
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
-          color: message.isUser
-              ? TarotTheme.cosmicPurple
-              : Colors.grey[200],
+          gradient: message.isUser
+              ? LinearGradient(
+                  colors: [
+                    TarotTheme.cosmicBlue,
+                    TarotTheme.cosmicAccent,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          color: message.isUser ? null : TarotTheme.midnightBlue,
+          border: message.isUser
+              ? null
+              : Border.all(
+                  color: TarotTheme.twilightPurple.withValues(alpha: 0.3),
+                  width: 1,
+                ),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
             topRight: const Radius.circular(18),
@@ -40,8 +54,8 @@ class ChatMessageBubble extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 4,
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 8,
               offset: const Offset(0, 2),
             ),
           ],
@@ -54,7 +68,9 @@ class ChatMessageBubble extends StatelessWidget {
             Text(
               message.content,
               style: TextStyle(
-                color: message.isUser ? Colors.white : Colors.black87,
+                color: message.isUser
+                    ? Colors.white
+                    : TarotTheme.moonlight,
                 fontSize: 15,
                 height: 1.4,
               ),
@@ -71,7 +87,7 @@ class ChatMessageBubble extends StatelessWidget {
                     fontSize: 11,
                     color: message.isUser
                         ? Colors.white.withValues(alpha: 0.7)
-                        : Colors.black.withValues(alpha: 0.5),
+                        : TarotTheme.stardust.withValues(alpha: 0.8),
                   ),
                 ),
                 if (message.isUser) ...[

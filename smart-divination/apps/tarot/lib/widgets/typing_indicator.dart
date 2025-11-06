@@ -44,8 +44,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 colors: [
-                  Colors.purple[300]!,
-                  Colors.blue[300]!,
+                  Color(0xFF9B87D9), // TarotTheme.cosmicAccent
+                  Color(0xFF6d82cd), // TarotTheme.cosmicBlue
                 ],
               ),
             ),
@@ -60,7 +60,11 @@ class _TypingIndicatorState extends State<TypingIndicator>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
+              color: Color(0xFF1A1530), // TarotTheme.midnightBlue
+              border: Border.all(
+                color: Color(0x4D3D3055), // TarotTheme.twilightPurple with alpha 0.3
+                width: 1,
+              ),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(18),
                 topRight: Radius.circular(18),
@@ -69,8 +73,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 4,
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 8,
                   offset: const Offset(0, 2),
                 ),
               ],
@@ -132,7 +136,7 @@ class _BouncingDot extends StatelessWidget {
           height: 8,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.grey[600]!.withValues(alpha: opacity),
+            color: Color(0xFF9B87D9).withValues(alpha: opacity), // TarotTheme.cosmicAccent
           ),
         ),
       ),
