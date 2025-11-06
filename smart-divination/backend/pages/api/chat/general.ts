@@ -9,6 +9,7 @@ import {
 } from '../../../lib/utils/nextApi';
 import {
   baseRequestSchema,
+  createApiError,
   createApiResponse,
   createRequestId,
   handleApiError,
@@ -16,7 +17,7 @@ import {
   parseApiRequest,
 } from '../../../lib/utils/api';
 import { isUsingGemini } from '../../../lib/services/ai-provider';
-import { interpretCardsWithGemini } from '../../../lib/services/gemini-ai';
+import { callGemini } from '../../../lib/services/gemini-ai';
 
 const METRICS_PATH = '/api/chat/general';
 const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
@@ -25,6 +26,7 @@ const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
 const DEFAULT_MODEL = process.env.DEEPSEEK_MODEL?.trim() ?? 'deepseek-chat';
 const DEEPSEEK_URL = process.env.DEEPSEEK_API_URL ?? 'https://api.deepseek.com/v1/chat/completions';
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY?.trim();
 
 const chatRequestSchema = baseRequestSchema.extend({
   message: z.string().min(1, 'Message is required'),
@@ -82,12 +84,20 @@ export default async function handler(
       hasHistory: !!body.conversationHistory,
     });
 
-    // Always use DeepSeek for general chat (Gemini is for card interpretation only)
-    const deepseekResponse = await handleDeepSeekChat(body, requestId);
+    const useGemini = isUsingGemini();
+
+    log('info', 'Selected chat provider', {
+      requestId,
+      provider: useGemini ? 'gemini' : 'deepseek',
+    });
+
+    const reply = useGemini
+      ? await handleGeminiChat(body, requestId)
+      : await handleDeepSeekChat(body, requestId);
 
     return res.status(200).json(
       createApiResponse({
-        reply: deepseekResponse,
+        reply,
       }, requestId)
     );
   } catch (error) {
@@ -102,20 +112,41 @@ async function handleGeminiChat(
   body: ChatRequestBody,
   requestId: string,
 ): Promise<string> {
+  if (!GEMINI_API_KEY) {
+    throw createApiError(
+      'GEMINI_UNAVAILABLE',
+      'Gemini API key not configured',
+      503,
+      { provider: 'gemini' },
+      requestId,
+    );
+  }
+
   const systemPrompt = buildSystemPrompt(body.locale);
-  const userPrompt = body.message;
+  const userPrompt = buildGeminiPrompt(body);
 
   try {
-    const response = await interpretCardsWithGemini({
+    const response = await callGemini({
       systemPrompt,
       userPrompt,
       temperature: 0.8, // More creative for general chat
+      maxTokens: 1500, // Increased for complete tarot explanations
+      requestId,
     });
 
-    return response.interpretation || 'I apologize, but I could not generate a response at this time.';
+    return response.content.trim();
   } catch (error) {
     log('error', 'Gemini chat failed', { requestId, error });
-    throw new Error('Failed to get response from Gemini');
+    throw createApiError(
+      'GEMINI_CHAT_FAILED',
+      'Failed to get response from Gemini',
+      503,
+      {
+        provider: 'gemini',
+        cause: error instanceof Error ? error.message : String(error),
+      },
+      requestId,
+    );
   }
 }
 
@@ -127,7 +158,13 @@ async function handleDeepSeekChat(
   requestId: string,
 ): Promise<string> {
   if (!DEEPSEEK_API_KEY) {
-    throw new Error('DeepSeek API key not configured');
+    throw createApiError(
+      'DEEPSEEK_UNAVAILABLE',
+      'DeepSeek API key not configured',
+      503,
+      { provider: 'deepseek' },
+      requestId,
+    );
   }
 
   const messages = [];
@@ -181,8 +218,43 @@ async function handleDeepSeekChat(
     return reply.trim();
   } catch (error) {
     log('error', 'DeepSeek chat failed', { requestId, error });
-    throw new Error('Failed to get response from DeepSeek');
+    throw createApiError(
+      'DEEPSEEK_CHAT_FAILED',
+      'Failed to get response from DeepSeek',
+      503,
+      {
+        provider: 'deepseek',
+        cause: error instanceof Error ? error.message : String(error),
+      },
+      requestId,
+    );
   }
+}
+
+function buildGeminiPrompt(body: ChatRequestBody): string {
+  const history = body.conversationHistory ?? [];
+  const recentHistory = history.slice(-10);
+
+  const transcript = recentHistory
+    .map((entry) => `${entry.role === 'assistant' ? 'Assistant' : 'User'}: ${entry.content}`)
+    .join('\n\n');
+
+  const locale = body.locale ?? 'en';
+
+  const instructions = [
+    'Continue the following conversation as the compassionate tarot assistant.',
+    `Respond in ${locale} using warm, mystical language that remains practical when needed.`,
+    'Address the user directly and do not repeat system instructions.',
+  ].join(' ');
+
+  const promptParts = [
+    instructions,
+    transcript ? `Conversation so far:\n${transcript}` : null,
+    `User: ${body.message}`,
+    'Assistant:',
+  ].filter((part): part is string => Boolean(part));
+
+  return promptParts.join('\n\n');
 }
 
 /**

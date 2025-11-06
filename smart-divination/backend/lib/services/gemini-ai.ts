@@ -121,10 +121,22 @@ export async function callGemini({
     });
 
     const response = result.response;
-    const content = response.text();
+    const finishReason = response.candidates?.[0]?.finishReason || 'unknown';
+    const content = extractGeminiText(response);
 
     if (!content) {
-      throw new Error('Empty response from Gemini');
+      const blockReason =
+        response.promptFeedback?.blockReason ??
+        response.candidates?.map((candidate: any) => candidate?.finishReason).join(', ') ??
+        'none';
+
+      log('warn', 'Gemini AI returned empty content', {
+        requestId,
+        finishReason,
+        blockReason,
+      });
+
+      throw new Error(`Empty response from Gemini (finishReason=${finishReason}, blockReason=${blockReason})`);
     }
 
     const duration = Date.now() - startTime;
@@ -132,12 +144,12 @@ export async function callGemini({
       requestId,
       duration,
       contentLength: content.length,
-      finishReason: response.candidates?.[0]?.finishReason || 'unknown',
+      finishReason,
     });
 
     return {
       content,
-      finishReason: response.candidates?.[0]?.finishReason || 'STOP',
+      finishReason,
     };
   } catch (error) {
     const duration = Date.now() - startTime;
@@ -148,6 +160,40 @@ export async function callGemini({
     });
     throw error;
   }
+}
+
+function extractGeminiText(response: any): string {
+  if (!response) {
+    return '';
+  }
+
+  try {
+    const direct = typeof response.text === 'function' ? response.text() : undefined;
+    if (typeof direct === 'string' && direct.trim().length > 0) {
+      return direct.trim();
+    }
+  } catch (_) {
+    // If response.text() throws, continue with manual extraction.
+  }
+
+  const candidates: any[] = Array.isArray(response.candidates) ? response.candidates : [];
+  const parts: string[] = [];
+
+  for (const candidate of candidates) {
+    const contentParts = candidate?.content?.parts;
+    if (!Array.isArray(contentParts)) {
+      continue;
+    }
+
+    for (const part of contentParts) {
+      const text = typeof part?.text === 'string' ? part.text.trim() : '';
+      if (text.length > 0) {
+        parts.push(text);
+      }
+    }
+  }
+
+  return parts.join('\n\n').trim();
 }
 
 /**
