@@ -22,6 +22,8 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _logoOpacityAnimation;
   late Animation<double> _logoScaleAnimation;
   late Animation<double> _rotationAnimation;
+  bool _readyToComplete = false;
+  bool _firstFrameRendered = false;
 
   @override
   void initState() {
@@ -29,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Logo materialization animation (fade in + scale up from background)
     _logoController = AnimationController(
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
 
@@ -67,12 +69,23 @@ class _SplashScreenState extends State<SplashScreen>
     _logoController.forward();
     _rotationController.repeat();
 
-    // Complete splash after 3 seconds
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        widget.onComplete();
-      }
+    // Wait for first frame to be rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _firstFrameRendered = true;
+      _checkAndComplete();
     });
+
+    // Safety timeout - complete after 1 second maximum
+    Timer(const Duration(milliseconds: 1000), () {
+      _readyToComplete = true;
+      _checkAndComplete();
+    });
+  }
+
+  void _checkAndComplete() {
+    if (_readyToComplete && _firstFrameRendered && mounted) {
+      widget.onComplete();
+    }
   }
 
   @override

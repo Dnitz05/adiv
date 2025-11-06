@@ -814,39 +814,91 @@ class _HomeState extends State<_Home> {
     });
 
     try {
+      debugPrint('[Startup] Phase 1: Obtaining userId...');
       final userId = await UserIdentity.obtain();
-
-      // Session eligibility check disabled - not needed for anonymous users
-      // final eligibility = await fetchSessionEligibility(userId: userId);
-
-      // Skip profile and history for anonymous users
-      final UserProfile? profile;
-      final List<TarotSession> history;
-      if (userId.startsWith('anon_')) {
-        profile = null;
-        history = <TarotSession>[];
-      } else {
-        profile = await fetchUserProfile(userId: userId);
-        history = await fetchTarotSessions(userId: userId);
-      }
+      debugPrint('[Startup] Phase 1 complete: userId=$userId');
 
       if (!mounted) {
         return;
       }
 
-      // Initialize lunar controller
-      final locale = CommonStrings.of(context).localeName;
-      await _lunarController.initialise(locale: locale, userId: userId);
-
-      // Generate daily draw
-      await _generateDailyDraw();
-
+      // Store userId immediately
       setState(() {
         _userId = userId;
-        _profile = profile;
-        _history = history;
+      });
+
+      final locale = CommonStrings.of(context).localeName;
+      final isAnonymous = userId.startsWith('anon_');
+
+      debugPrint('[Startup] Phase 2: Parallelizing essential loads (lunar + daily draw)...');
+
+      // Essential parallel loads for first render
+      final essentialFutures = <Future<void>>[
+        // Lunar controller initialization
+        _lunarController.initialise(locale: locale, userId: userId).then((_) {
+          debugPrint('[Startup] Lunar controller initialized');
+        }).catchError((e) {
+          debugPrint('[Startup] Lunar controller error: $e');
+          throw e;
+        }),
+
+        // Daily draw
+        _generateDailyDraw().then((_) {
+          debugPrint('[Startup] Daily draw generated');
+        }).catchError((e) {
+          debugPrint('[Startup] Daily draw error: $e');
+          throw e;
+        }),
+      ];
+
+      // Wait for essential items to complete
+      await Future.wait(essentialFutures);
+
+      if (!mounted) {
+        return;
+      }
+
+      // Mark as ready for first render
+      setState(() {
         _initialising = false;
       });
+
+      debugPrint('[Startup] Phase 2 complete: App ready for first render');
+
+      // Non-essential background loads (profile and history)
+      if (!isAnonymous) {
+        debugPrint('[Startup] Phase 3: Loading profile + history in background...');
+
+        // Load profile in background
+        fetchUserProfile(userId: userId).then((profile) {
+          if (mounted) {
+            setState(() {
+              _profile = profile;
+            });
+            debugPrint('[Startup] Profile loaded');
+          }
+        }).catchError((e) {
+          debugPrint('[Startup] Profile load failed (non-critical): $e');
+        });
+
+        // Load history in background
+        fetchTarotSessions(userId: userId).then((history) {
+          if (mounted) {
+            setState(() {
+              _history = history;
+            });
+            debugPrint('[Startup] History loaded (${history.length} sessions)');
+          }
+        }).catchError((e) {
+          debugPrint('[Startup] History load failed (non-critical): $e');
+        });
+      } else {
+        debugPrint('[Startup] Anonymous user - skipping profile/history load');
+        setState(() {
+          _profile = null;
+          _history = <TarotSession>[];
+        });
+      }
     } catch (error, stackTrace) {
       if (!mounted) {
         return;
