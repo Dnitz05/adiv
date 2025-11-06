@@ -34,9 +34,9 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: TarotTheme.midnightBlue,
+        color: Colors.white,
         border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
@@ -57,11 +57,18 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+                  gradient: LinearGradient(
+                    colors: [
+                      TarotTheme.cosmicBlue,
+                      TarotTheme.cosmicAccent,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
                 child: Icon(
                   Icons.auto_awesome,
-                  color: TarotTheme.cosmicAccent,
+                  color: Colors.white,
                   size: 20,
                 ),
               ),
@@ -73,7 +80,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     Text(
                       _getDailyDrawTitle(),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: TarotTheme.moonlight,
+                        color: TarotTheme.midnightBlue,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -81,7 +88,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     Text(
                       _getDailyDrawSubtitle(),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: TarotTheme.stardust,
+                        color: Colors.black.withValues(alpha: 0.6),
                       ),
                     ),
                   ],

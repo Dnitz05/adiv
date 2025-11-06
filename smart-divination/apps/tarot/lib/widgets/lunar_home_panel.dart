@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:common/l10n/common_strings.dart';
+import 'package:uuid/uuid.dart';
+
+import '../models/chat_message.dart';
 import '../models/lunar_day.dart';
 import '../models/tarot_spread.dart';
+import '../screens/chat_screen.dart';
 import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
-import 'package:common/l10n/common_strings.dart';
+import 'lunar_ai_advisor.dart';
+import 'lunar_advice_history_panel.dart';
 import 'lunar_calendar_dialog.dart';
 
 class LunarHomePanel extends StatelessWidget {
@@ -13,12 +19,14 @@ class LunarHomePanel extends StatelessWidget {
     super.key,
     required this.controller,
     required this.strings,
+    this.userId,
     this.onSelectSpread,
     this.onRefresh,
   });
 
   final LunarCycleController controller;
   final CommonStrings strings;
+  final String? userId;
   final void Function(String spreadId)? onSelectSpread;
   final VoidCallback? onRefresh;
 
@@ -46,6 +54,20 @@ class LunarHomePanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildHeroCard(context, day),
+            const SizedBox(height: 16),
+            LunarAiAdvisor(
+              strings: strings,
+              userId: userId,
+              locale: strings.localeName,
+              onShareAdvice: (message) => _openAdviceInChat(context, message),
+            ),
+            const SizedBox(height: 16),
+            LunarAdviceHistoryPanel(
+              strings: strings,
+              userId: userId,
+              locale: strings.localeName,
+              onShareAdvice: (message) => _openAdviceInChat(context, message),
+            ),
             const SizedBox(height: 16),
             _buildCalendarStrip(context),
             const SizedBox(height: 16),
@@ -315,6 +337,9 @@ class LunarHomePanel extends StatelessWidget {
                     builder: (context) => LunarCalendarDialog(
                       controller: controller,
                       strings: strings,
+                      userId: userId,
+                      locale: strings.localeName,
+                      onShareAdvice: (message) => _openAdviceInChat(context, message),
                     ),
                   );
                 },
@@ -497,6 +522,36 @@ class LunarHomePanel extends StatelessWidget {
     );
   }
 
+  void _openAdviceInChat(BuildContext context, String message) {
+    final activeUserId = userId;
+    if (activeUserId == null || activeUserId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_localisedLoginPrompt()),
+          backgroundColor: Colors.black87,
+        ),
+      );
+      return;
+    }
+
+    final chatMessage = ChatMessage.text(
+      id: const Uuid().v4(),
+      isUser: false,
+      timestamp: DateTime.now(),
+      text: message,
+    );
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(
+          userId: activeUserId,
+          strings: strings,
+          initialMessages: [chatMessage],
+        ),
+      ),
+    );
+  }
+
   BoxDecoration _panelDecoration(BuildContext context) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(20),
@@ -593,6 +648,15 @@ class LunarHomePanel extends StatelessWidget {
 
   static DateTime _normalizeDate(DateTime value) =>
       DateTime.utc(value.year, value.month, value.day);
+
+  String _localisedLoginPrompt() {
+    switch (strings.localeName) {
+      case 'es':
+        return 'Inicia sesión para compartir tu consejo lunar en el chat.';
+      case 'ca':
+        return 'Inicia sessió per compartir el teu consell lunar al xat.';
+      default:
+        return 'Sign in to share your lunar guidance in the chat.';
+    }
+  }
 }
-
-

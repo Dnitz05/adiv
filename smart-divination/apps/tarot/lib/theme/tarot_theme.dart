@@ -62,8 +62,8 @@ class TarotTheme {
 
       // AppBar - mystical and elegant
       appBarTheme: AppBarTheme(
-        backgroundColor: midnightBlue.withValues(alpha: 0.95),
-        foregroundColor: moonlight,
+        backgroundColor: Colors.white,
+        foregroundColor: midnightBlue,
         elevation: 0,
         shadowColor: Colors.transparent,
         centerTitle: true,
@@ -71,7 +71,7 @@ class TarotTheme {
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color: moonlight,
+          color: midnightBlue,
           letterSpacing: 0.5,
         ),
       ),

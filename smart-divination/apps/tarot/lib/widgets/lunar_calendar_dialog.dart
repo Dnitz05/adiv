@@ -5,30 +5,147 @@ import 'package:common/l10n/common_strings.dart';
 import '../theme/tarot_theme.dart';
 import '../state/lunar_cycle_controller.dart';
 import '../models/lunar_day.dart';
+import '../models/lunar_advice.dart';
+import '../models/lunar_reminder.dart';
+import '../api/lunar_api.dart';
 
 class LunarCalendarDialog extends StatefulWidget {
   const LunarCalendarDialog({
     super.key,
     required this.controller,
     required this.strings,
+    this.userId,
+    this.locale,
+    this.onShareAdvice,
   });
 
   final LunarCycleController controller;
   final CommonStrings strings;
+  final String? userId;
+  final String? locale;
+  final ValueChanged<String>? onShareAdvice;
 
   @override
   State<LunarCalendarDialog> createState() => _LunarCalendarDialogState();
 }
 
 class _LunarCalendarDialogState extends State<LunarCalendarDialog> {
+  final LunarApiClient _api = const LunarApiClient();
+
   late DateTime _selectedMonth;
   late DateTime _selectedDate;
+  late LunarAdviceTopic _selectedTopic;
+  LunarAdvice? _advice;
+  bool _isLoadingAdvice = false;
+  String? _adviceError;
+  List<LunarReminder> _reminders = <LunarReminder>[];
+  bool _isLoadingReminders = false;
+  String? _reminderError;
+  bool _isSavingReminder = false;
+  final TextEditingController _reminderTimeController = TextEditingController();
+  final TextEditingController _reminderIntentionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _selectedMonth = DateTime.now();
     _selectedDate = DateTime.now();
+    _selectedTopic = LunarAdviceTopic.intentions;
+    _loadAdviceForDate(_selectedDate);
+    _loadReminders();
+  }
+
+  @override
+  void dispose() {
+    _reminderTimeController.dispose();
+    _reminderIntentionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadAdviceForDate(DateTime date) async {
+    if (widget.userId == null || widget.userId!.isEmpty) {
+      setState(() {
+        _advice = null;
+        _adviceError = null;
+        _isLoadingAdvice = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoadingAdvice = true;
+      _adviceError = null;
+    });
+
+    try {
+      final response = await _api.fetchAdvice(
+        topic: _selectedTopic,
+        date: date,
+        locale: widget.locale ?? widget.strings.localeName,
+        userId: widget.userId,
+      );
+      if (!mounted) return;
+      setState(() {
+        _advice = response.advice;
+        _isLoadingAdvice = false;
+      });
+    } on LunarApiException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _adviceError = error.message;
+        _advice = null;
+        _isLoadingAdvice = false;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _adviceError = error.toString();
+        _advice = null;
+        _isLoadingAdvice = false;
+      });
+    }
+  }
+
+  Future<void> _loadReminders() async {
+    if (widget.userId == null || widget.userId!.isEmpty) {
+      setState(() {
+        _reminders = <LunarReminder>[];
+        _isLoadingReminders = false;
+        _reminderError = null;
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoadingReminders = true;
+      _reminderError = null;
+    });
+
+    try {
+      final reminders = await _api.fetchReminders(
+        userId: widget.userId,
+        locale: widget.locale ?? widget.strings.localeName,
+      );
+      if (!mounted) return;
+      setState(() {
+        _reminders = reminders;
+        _isLoadingReminders = false;
+      });
+    } on LunarApiException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _reminderError = error.message;
+        _reminders = <LunarReminder>[];
+        _isLoadingReminders = false;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _reminderError = error.toString();
+        _reminders = <LunarReminder>[];
+        _isLoadingReminders = false;
+      });
+    }
   }
 
   @override
@@ -64,6 +181,8 @@ class _LunarCalendarDialogState extends State<LunarCalendarDialog> {
             Expanded(
               child: _buildCalendar(theme),
             ),
+            const SizedBox(height: 12),
+            _buildAdviceSection(theme),
             _buildCloseButton(theme),
           ],
         ),
@@ -252,6 +371,7 @@ class _LunarCalendarDialogState extends State<LunarCalendarDialog> {
         setState(() {
           _selectedDate = date;
         });
+        _loadAdviceForDate(date);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -314,6 +434,170 @@ class _LunarCalendarDialogState extends State<LunarCalendarDialog> {
     );
   }
 
+  Widget _buildAdviceSection(ThemeData theme) {
+    if (widget.userId == null || widget.userId!.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        child: Text(
+          _localisedSignInPrompt(),
+          style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.white70,
+              ),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: LunarAdviceTopic.values
+                .map(
+                  (topic) => ChoiceChip(
+                    label: Text(_localisedTopic(topic)),
+                    selected: _selectedTopic == topic,
+                    onSelected: (value) {
+                      if (!value || _selectedTopic == topic) return;
+                      setState(() {
+                        _selectedTopic = topic;
+                      });
+                      _loadAdviceForDate(_selectedDate);
+                    },
+                    labelStyle: theme.textTheme.labelMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    selectedColor: Colors.white.withValues(alpha: 0.2),
+                    backgroundColor: Colors.white.withValues(alpha: 0.08),
+                    side: BorderSide.none,
+                    showCheckmark: false,
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 14),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            padding: const EdgeInsets.all(16),
+            child: _buildAdviceBody(theme),
+          ),
+          const SizedBox(height: 16),
+          _buildReminderSection(theme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdviceBody(ThemeData theme) {
+    if (_isLoadingAdvice) {
+      return Row(
+        children: [
+          const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              _localisedLoadingAdvice(),
+              style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (_adviceError != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _adviceError!,
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.red[200]),
+          ),
+          const SizedBox(height: 8),
+          TextButton(
+            onPressed: () => _loadAdviceForDate(_selectedDate),
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            child: Text(_localisedRetryText()),
+          ),
+        ],
+      );
+    }
+
+    if (_advice == null) {
+      return Text(
+        _localisedNoAdvice(),
+        style: theme.textTheme.bodySmall?.copyWith(color: Colors.white60),
+      );
+    }
+
+    final advice = _advice!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          advice.focus,
+          style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        const SizedBox(height: 10),
+        ...advice.today.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('• ', style: TextStyle(color: Colors.white70)),
+                Expanded(
+                  child: Text(
+                    item,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.white70,
+                          height: 1.4,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                '${advice.next.name} • ${advice.next.date}',
+                style: theme.textTheme.labelSmall?.copyWith(
+                      color: Colors.white60,
+                    ),
+              ),
+            ),
+            TextButton(
+              onPressed: widget.onShareAdvice == null
+                  ? null
+                  : () => widget.onShareAdvice!(_composeShareMessage(advice)),
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              child: Text(_localisedShareText()),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   // Helper methods
   String _getCalendarTitle() {
     switch (widget.strings.localeName) {
@@ -346,6 +630,383 @@ class _LunarCalendarDialogState extends State<LunarCalendarDialog> {
       default:
         return 'Close';
     }
+  }
+
+  String _localisedTopic(LunarAdviceTopic topic) {
+    switch (widget.strings.localeName) {
+      case 'es':
+        switch (topic) {
+          case LunarAdviceTopic.intentions:
+            return 'Intenciones';
+          case LunarAdviceTopic.projects:
+            return 'Proyectos';
+          case LunarAdviceTopic.relationships:
+            return 'Relaciones';
+          case LunarAdviceTopic.wellbeing:
+            return 'Bienestar';
+          case LunarAdviceTopic.creativity:
+            return 'Creatividad';
+        }
+      case 'ca':
+        switch (topic) {
+          case LunarAdviceTopic.intentions:
+            return 'Intencions';
+          case LunarAdviceTopic.projects:
+            return 'Projectes';
+          case LunarAdviceTopic.relationships:
+            return 'Relacions';
+          case LunarAdviceTopic.wellbeing:
+            return 'Benestar';
+          case LunarAdviceTopic.creativity:
+            return 'Creativitat';
+        }
+      default:
+        switch (topic) {
+          case LunarAdviceTopic.intentions:
+            return 'Intentions';
+          case LunarAdviceTopic.projects:
+            return 'Projects';
+          case LunarAdviceTopic.relationships:
+            return 'Relationships';
+          case LunarAdviceTopic.wellbeing:
+            return 'Wellbeing';
+          case LunarAdviceTopic.creativity:
+            return 'Creativity';
+        }
+    }
+  }
+
+  String _localisedLoadingAdvice() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'La luna prepara tu mensaje...';
+      case 'ca':
+        return 'La lluna prepara el teu missatge...';
+      default:
+        return 'The moon is preparing your message...';
+    }
+  }
+
+  String _localisedRetryText() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Intentar de nuevo';
+      case 'ca':
+        return 'Tornar a intentar';
+      default:
+        return 'Try again';
+    }
+  }
+
+  String _localisedNoAdvice() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'No hay consejo disponible por ahora.';
+      case 'ca':
+        return 'No hi ha cap consell disponible ara mateix.';
+      default:
+        return 'No guidance available right now.';
+    }
+  }
+
+  String _localisedShareText() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Abrir en el chat';
+      case 'ca':
+        return 'Obrir al xat';
+      default:
+        return 'Open in chat';
+    }
+  }
+
+  String _localisedSignInPrompt() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Inicia sesion para guardar y revisar tus consejos lunares.';
+      case 'ca':
+        return 'Inicia sessio per guardar i revisar els teus consells lunars.';
+      default:
+        return 'Sign in to save and revisit your lunar guidance.';
+    }
+  }
+
+  String _composeShareMessage(LunarAdvice advice) {
+    final buffer = StringBuffer()
+      ..writeln(advice.focus)
+      ..writeln();
+
+    for (final item in advice.today.take(3)) {
+      buffer.writeln('• $item');
+    }
+
+    buffer
+      ..writeln()
+      ..writeln('${advice.next.name} (${advice.next.date}) → ${advice.next.advice}');
+    return buffer.toString().trim();
+  }
+
+  Future<void> _createReminder() async {
+    if (widget.userId == null || widget.userId!.isEmpty) {
+      setState(() {
+        _reminderError = _localisedSignInPrompt();
+      });
+      return;
+    }
+
+    final time = _reminderTimeController.text.trim();
+    if (time.isNotEmpty && !_timeRegex.hasMatch(time)) {
+      setState(() {
+        _reminderError = _localisedInvalidTime();
+      });
+      return;
+    }
+
+    setState(() {
+      _isSavingReminder = true;
+      _reminderError = null;
+    });
+
+    try {
+      await _api.createReminder(
+        topic: _selectedTopic,
+        date: _selectedDate,
+        time: time.isEmpty ? null : time,
+        intention: _reminderIntentionController.text.trim().isEmpty
+            ? null
+            : _reminderIntentionController.text.trim(),
+        locale: widget.locale ?? widget.strings.localeName,
+        userId: widget.userId,
+      );
+      if (!mounted) return;
+      _reminderTimeController.clear();
+      _reminderIntentionController.clear();
+      await _loadReminders();
+    } on LunarApiException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _reminderError = error.message;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _reminderError = error.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSavingReminder = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _deleteReminder(String id) async {
+    if (widget.userId == null || widget.userId!.isEmpty) {
+      return;
+    }
+    try {
+      await _api.deleteReminder(
+        id: id,
+        userId: widget.userId!,
+        locale: widget.locale ?? widget.strings.localeName,
+      );
+      await _loadReminders();
+    } catch (error) {
+      setState(() {
+        _reminderError = error.toString();
+      });
+    }
+  }
+
+  static final RegExp _timeRegex = RegExp(r'^\d{2}:\d{2}$');
+
+  Widget _buildReminderSection(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          _localisedRemindersTitle(),
+          style: theme.textTheme.titleSmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: _reminderTimeController,
+          keyboardType: TextInputType.datetime,
+          decoration: InputDecoration(
+            hintText: 'HH:MM',
+            hintStyle: const TextStyle(color: Colors.white60),
+            filled: true,
+            fillColor: Colors.white.withValues(alpha: 0.08),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          ),
+          style: const TextStyle(color: Colors.white),
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: _reminderIntentionController,
+          maxLines: 2,
+          decoration: InputDecoration(
+            hintText: _localisedReminderIntentionHint(),
+            hintStyle: const TextStyle(color: Colors.white60),
+            filled: true,
+            fillColor: Colors.white.withValues(alpha: 0.08),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          ),
+          style: const TextStyle(color: Colors.white),
+        ),
+        if (_reminderError != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            _reminderError!,
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.red[200]),
+          ),
+        ],
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.centerRight,
+          child: FilledButton.icon(
+            onPressed: _isSavingReminder ? null : _createReminder,
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: TarotTheme.cosmicPurple,
+            ),
+            icon: _isSavingReminder
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.add),
+            label: Text(_localisedAddReminderText()),
+          ),
+        ),
+        const SizedBox(height: 12),
+        if (_isLoadingReminders)
+          const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+            ),
+          )
+        else if (_reminders.isEmpty)
+          Text(
+            _localisedNoReminders(),
+            style: theme.textTheme.bodySmall?.copyWith(color: Colors.white54),
+          )
+        else
+          Column(
+            children: _reminders.map((reminder) {
+              return Card(
+                color: Colors.white.withValues(alpha: 0.08),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(
+                    '${_formatReminderDate(reminder.date)} ${reminder.time ?? ''}',
+                    style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white),
+                  ),
+                  subtitle: reminder.intention != null
+                      ? Text(
+                          reminder.intention!,
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),
+                        )
+                      : null,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline, color: Colors.white70),
+                    tooltip: _localisedDeleteReminderText(),
+                    onPressed: _isSavingReminder ? null : () => _deleteReminder(reminder.id),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+      ],
+    );
+  }
+
+  String _localisedRemindersTitle() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Recordatorios lunares';
+      case 'ca':
+        return 'Recordatoris lunars';
+      default:
+        return 'Lunar reminders';
+    }
+  }
+
+  String _localisedReminderIntentionHint() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Intencion o nota (opcional)';
+      case 'ca':
+        return 'Intencio o nota (opcional)';
+      default:
+        return 'Intention or note (optional)';
+    }
+  }
+
+  String _localisedAddReminderText() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Guardar recordatorio';
+      case 'ca':
+        return 'Desar recordatori';
+      default:
+        return 'Save reminder';
+    }
+  }
+
+  String _localisedNoReminders() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Aun no tienes recordatorios guardados.';
+      case 'ca':
+        return 'Encara no tens recordatoris guardats.';
+      default:
+        return 'No reminders saved yet.';
+    }
+  }
+
+  String _localisedDeleteReminderText() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Eliminar recordatorio';
+      case 'ca':
+        return 'Eliminar recordatori';
+      default:
+        return 'Delete reminder';
+    }
+  }
+
+  String _localisedInvalidTime() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Introduce la hora en formato HH:MM.';
+      case 'ca':
+        return 'Introdueix l\'hora en format HH:MM.';
+      default:
+        return 'Enter time as HH:MM.';
+    }
+  }
+
+  String _formatReminderDate(DateTime date) {
+    return '${date.year.toString().padLeft(4, '0')}-'
+        '${date.month.toString().padLeft(2, '0')}-'
+        '${date.day.toString().padLeft(2, '0')}';
   }
 
   List<String> _getWeekdayNames() {

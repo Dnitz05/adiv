@@ -406,5 +406,20 @@ Example structure:
     requestId,
   });
 
-  return response.content.trim();
+  // Substitute [CARD_X] placeholders with actual card names
+  let interpretation = response.content.trim();
+
+  cards.forEach((card, index) => {
+    const placeholder = `[CARD_${index}]`;
+    // Use global regex to replace all occurrences of this placeholder
+    const regex = new RegExp(`\\[CARD_${index}\\]`, 'g');
+    interpretation = interpretation.replace(regex, card.name);
+  });
+
+  log('info', 'Card placeholders substituted', {
+    requestId,
+    numPlaceholdersSubstituted: cards.length,
+  });
+
+  return interpretation;
 }

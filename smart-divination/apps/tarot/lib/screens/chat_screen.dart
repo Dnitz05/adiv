@@ -4,6 +4,8 @@ import 'package:uuid/uuid.dart';
 
 import '../models/chat_message.dart';
 import '../widgets/chat_message_bubble.dart';
+import '../widgets/chat_spread_bubble.dart';
+import '../widgets/chat_action_bubble.dart';
 import '../widgets/chat_input_field.dart';
 import '../widgets/typing_indicator.dart';
 import '../theme/tarot_theme.dart';
@@ -24,11 +26,13 @@ class ChatScreen extends StatefulWidget {
     required this.userId,
     required this.strings,
     this.showAppBar = true,
+    this.initialMessages,
   });
 
   final String userId;
   final CommonStrings strings;
   final bool showAppBar;
+  final List<ChatMessage>? initialMessages;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -59,13 +63,30 @@ class _ChatScreenState extends State<ChatScreen> {
 
   /// Initialize chat with welcome message
   void _initializeChat() {
-    setState(() {
-      _messages.add(ChatMessage(
+    final messages = <ChatMessage>[
+      ChatMessage.text(
         id: _uuid.v4(),
-        content: _getWelcomeMessage(),
         isUser: false,
         timestamp: DateTime.now(),
-      ));
+        text: _getWelcomeMessage(),
+      ),
+    ];
+
+    if (widget.initialMessages != null && widget.initialMessages!.isNotEmpty) {
+      final sanitized = widget.initialMessages!
+          .map(
+            (message) => message.copyWith(
+              id: message.id.isEmpty ? _uuid.v4() : message.id,
+              timestamp: message.timestamp,
+              status: MessageStatus.sent,
+            ),
+          )
+          .toList();
+      messages.addAll(sanitized);
+    }
+
+    setState(() {
+      _messages.addAll(messages);
       _isInitialized = true;
     });
   }
@@ -73,35 +94,60 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F7), // Light grey background
+      backgroundColor: Colors.white,
       appBar: widget.showAppBar ? _buildAppBar() : null,
-      body: Column(
-        children: [
-          // Messages list
-          Expanded(
-            child: _buildMessagesList(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.white,
+              TarotTheme.cosmicAccent.withValues(alpha: 0.03),
+              TarotTheme.cosmicBlue.withValues(alpha: 0.05),
+            ],
+            stops: const [0.0, 0.5, 1.0],
           ),
-          // Typing indicator
-          if (_isTyping) const TypingIndicator(),
-          // Input field
-          ChatInputField(
-            controller: _textController,
-            onSend: _handleSendMessage,
-            strings: widget.strings,
-            enabled: !_isTyping,
-            focusNode: _focusNode,
-          ),
-        ],
+        ),
+        child: Column(
+          children: [
+            // Messages list
+            Expanded(
+              child: _buildMessagesList(),
+            ),
+            // Typing indicator
+            if (_isTyping) const TypingIndicator(),
+            // Input field
+            ChatInputField(
+              controller: _textController,
+              onSend: _handleSendMessage,
+              strings: widget.strings,
+              enabled: !_isTyping,
+              focusNode: _focusNode,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0.5,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              TarotTheme.cosmicBlue,
+              TarotTheme.cosmicAccent,
+            ],
+          ),
+        ),
+      ),
+      elevation: 4,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1A1A)),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.pop(context),
       ),
       title: Row(
@@ -112,11 +158,10 @@ class _ChatScreenState extends State<ChatScreen> {
             height: 40,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(
-                colors: [
-                  TarotTheme.cosmicAccent.withValues(alpha: 0.8),
-                  TarotTheme.cosmicBlue.withValues(alpha: 0.8),
-                ],
+              color: Colors.white.withValues(alpha: 0.2),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.3),
+                width: 2,
               ),
             ),
             child: const Icon(
@@ -134,16 +179,16 @@ class _ChatScreenState extends State<ChatScreen> {
                 Text(
                   _getAssistantName(),
                   style: const TextStyle(
-                    color: Color(0xFF1A1A1A),
+                    color: Colors.white,
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 if (_isTyping)
                   Text(
                     _getTypingText(),
                     style: TextStyle(
-                      color: TarotTheme.cosmicAccent,
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 12,
                     ),
                   ),
@@ -170,10 +215,33 @@ class _ChatScreenState extends State<ChatScreen> {
       itemBuilder: (context, index) {
         // Reverse index to show latest at bottom
         final message = _messages[_messages.length - 1 - index];
-        return ChatMessageBubble(
-          message: message,
-          animate: index == 0, // Animate only the latest message
-        );
+        final animate = index == 0;
+        switch (message.kind) {
+          case ChatMessageKind.text:
+            return ChatMessageBubble(
+              message: message,
+              animate: animate,
+            );
+          case ChatMessageKind.spread:
+            final spread = message.spread;
+            if (spread == null) {
+              return const SizedBox.shrink();
+            }
+            return ChatSpreadBubble(
+              spread: spread,
+              animate: animate,
+            );
+          case ChatMessageKind.action:
+            final action = message.action;
+            if (action == null) {
+              return const SizedBox.shrink();
+            }
+            return ChatActionBubble(
+              action: action,
+              animate: animate,
+              onPressed: () => _handleActionTap(message),
+            );
+        }
       },
     );
   }
@@ -181,12 +249,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _handleSendMessage(String text) async {
     if (text.trim().isEmpty) return;
 
-    // Create user message
-    final userMessage = ChatMessage(
+    // Build conversation history BEFORE adding the new message to avoid duplication
+    final conversationHistory = _buildConversationHistory();
+
+    final userMessage = ChatMessage.text(
       id: _uuid.v4(),
-      content: text,
       isUser: true,
       timestamp: DateTime.now(),
+      text: text,
       status: MessageStatus.sending,
     );
 
@@ -198,34 +268,19 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
 
     try {
-      // Call API to get AI response
-      final aiResponse = await sendChatMessage(
+      final aiMessages = await sendChatMessage(
         message: text,
         userId: widget.userId,
         locale: widget.strings.localeName,
+        conversationHistory: conversationHistory.isEmpty ? null : conversationHistory,
       );
 
-      // Update user message status to sent
-      final updatedUserMessage = userMessage.copyWith(
-        status: MessageStatus.sent,
-      );
       setState(() {
         final index = _messages.indexOf(userMessage);
         if (index != -1) {
-          _messages[index] = updatedUserMessage;
+          _messages[index] = userMessage.copyWith(status: MessageStatus.sent);
         }
-      });
-
-      // Add AI response
-      final aiMessage = ChatMessage(
-        id: _uuid.v4(),
-        content: aiResponse,
-        isUser: false,
-        timestamp: DateTime.now(),
-      );
-
-      setState(() {
-        _messages.add(aiMessage);
+        _messages.addAll(aiMessages);
         _isTyping = false;
       });
 
@@ -243,21 +298,141 @@ class _ChatScreenState extends State<ChatScreen> {
         _isTyping = false;
       });
 
-      // Show error snackbar
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_getErrorMessage()),
-            backgroundColor: Colors.red[700],
-            action: SnackBarAction(
-              label: _getRetryText(),
-              textColor: Colors.white,
-              onPressed: () => _handleSendMessage(text),
-            ),
-          ),
-        );
+      _showSnackBar(
+        _getErrorMessage(),
+        actionLabel: _getRetryText(),
+        onAction: () => _handleSendMessage(text),
+      );
+    }
+  }
+
+  List<Map<String, String>> _buildConversationHistory() {
+    final history = <Map<String, String>>[];
+    for (var i = _messages.length - 1; i >= 0; i--) {
+      final message = _messages[i];
+      if (!message.isText) continue;
+      final text = message.text;
+      if (text == null || text.trim().isEmpty) continue;
+      history.add({
+        'role': message.isUser ? 'user' : 'assistant',
+        'content': text.trim(),
+      });
+      if (history.length >= 12) {
+        break;
       }
     }
+    return history.reversed.toList();
+  }
+
+  Future<void> _handleActionTap(ChatMessage message) async {
+    final action = message.action;
+    if (action == null) {
+      return;
+    }
+
+    if (action.state == ChatActionState.loading || action.state == ChatActionState.completed) {
+      return;
+    }
+
+    final spreadMessage = _findSpreadMessage(action.spreadMessageId);
+    final spreadData = spreadMessage?.spread;
+    if (spreadData == null) {
+      setState(() {
+        _updateMessageAction(message.id, action.copyWith(state: ChatActionState.error));
+      });
+      _showSnackBar(_getErrorMessage());
+      return;
+    }
+    if (spreadData.cards.isEmpty) {
+      setState(() {
+        _updateMessageAction(message.id, action.copyWith(state: ChatActionState.error));
+      });
+      _showSnackBar(_getErrorMessage());
+      return;
+    }
+
+    setState(() {
+      _updateMessageAction(message.id, action.copyWith(state: ChatActionState.loading));
+      _isTyping = true;
+    });
+
+    try {
+      final interpretationMessages = await interpretChatSpread(
+        spreadId: action.spreadId,
+        spreadMessageId: action.spreadMessageId,
+        cards: spreadData.cards,
+        question: _getLatestUserQuestion(),
+        userId: widget.userId,
+        locale: widget.strings.localeName,
+      );
+
+      setState(() {
+        _updateMessageAction(message.id, action.copyWith(state: ChatActionState.completed));
+        _messages.addAll(interpretationMessages);
+        _isTyping = false;
+      });
+
+      _scrollToBottom();
+    } catch (error) {
+      setState(() {
+        _updateMessageAction(message.id, action.copyWith(state: ChatActionState.error));
+        _isTyping = false;
+      });
+      _showSnackBar(_getErrorMessage());
+    }
+  }
+
+  ChatMessage? _findSpreadMessage(String spreadMessageId) {
+    for (final message in _messages) {
+      if (message.id == spreadMessageId && message.kind == ChatMessageKind.spread) {
+        return message;
+      }
+    }
+    return null;
+  }
+
+  void _updateMessageAction(String messageId, ChatActionData updatedAction) {
+    final index = _messages.indexWhere((message) => message.id == messageId);
+    if (index != -1) {
+      _messages[index] = _messages[index].copyWith(action: updatedAction);
+    }
+  }
+
+  String? _getLatestUserQuestion() {
+    for (var i = _messages.length - 1; i >= 0; i--) {
+      final message = _messages[i];
+      if (!message.isUser || !message.isText) {
+        continue;
+      }
+      final text = message.text;
+      if (text != null && text.trim().isNotEmpty) {
+        return text.trim();
+      }
+    }
+    return null;
+  }
+
+  void _showSnackBar(
+    String text, {
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) {
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+        backgroundColor: Colors.red[700],
+        action: (actionLabel != null && onAction != null)
+            ? SnackBarAction(
+                label: actionLabel,
+                textColor: Colors.white,
+                onPressed: onAction,
+              )
+            : null,
+      ),
+    );
   }
 
   void _scrollToBottom() {

@@ -2,6 +2,8 @@
  * API Types - Canonical Backend Type System
  */
 
+import type { LunarPhaseId } from './lunar';
+
 export type JsonValue = string | number | boolean | null | JsonRecord | JsonValue[];
 
 export interface JsonRecord {
@@ -206,6 +208,125 @@ export interface Rune {
 
 export interface DrawRunesResponse extends DivinationResponse<Rune[]> {
   data: Rune[];
+}
+
+// Lunar
+export type LunarAdviceTopic =
+  | 'intentions'
+  | 'projects'
+  | 'relationships'
+  | 'wellbeing'
+  | 'creativity';
+
+export interface LunarAdvicePayload {
+  focus: string;
+  today: string[];
+  next: {
+    phaseId: LunarPhaseId;
+    date: string;
+    name: string;
+    advice: string;
+  };
+}
+
+export interface LunarAdviceContext {
+  date: string;
+  phaseId: LunarPhaseId;
+  phaseName: string;
+  phaseEmoji: string;
+  illumination: number;
+  zodiac: {
+    id: string;
+    name: string;
+    element: string;
+    symbol: string;
+  };
+}
+
+export interface LunarAdviceResponseData {
+  advice: LunarAdvicePayload;
+  context: LunarAdviceContext;
+}
+
+export interface LunarAdviceHistoryItem {
+  id: string;
+  date: string;
+  topic: LunarAdviceTopic;
+  intention?: string | null;
+  advice: LunarAdvicePayload;
+  context: LunarAdviceContext;
+  locale: string;
+  createdAt: string;
+}
+
+export interface LunarReminderPayload {
+  id: string;
+  userId: string;
+  date: string;
+  time?: string | null;
+  topic: LunarAdviceTopic;
+  intention?: string | null;
+  locale: string;
+  createdAt: string;
+}
+
+// Chat
+export type ChatMessageType = 'text' | 'tarot_spread' | 'cta';
+
+export interface ChatMessageBase {
+  id: string;
+  type: ChatMessageType;
+}
+
+export interface ChatTextMessage extends ChatMessageBase {
+  type: 'text';
+  text: string;
+}
+
+export interface ChatSpreadCard {
+  id: string;
+  name: string;
+  suit: string;
+  number: number | null;
+  upright: boolean;
+  position: number;
+  row: number;
+  column: number;
+  image?: string;
+  meaning?: string;
+  meaningShort?: string;
+}
+
+export interface ChatSpreadLayout {
+  rows: number;
+  columns: number;
+}
+
+export interface ChatSpreadMessage extends ChatMessageBase {
+  type: 'tarot_spread';
+  spreadId: string;
+  spreadName: string;
+  spreadDescription?: string;
+  layout: ChatSpreadLayout;
+  cards: ChatSpreadCard[];
+}
+
+export interface ChatCtaPayload {
+  action: 'interpret_spread';
+  spreadMessageId: string;
+  spreadId: string;
+}
+
+export interface ChatCtaMessage extends ChatMessageBase {
+  type: 'cta';
+  label: string;
+  payload: ChatCtaPayload;
+}
+
+export type ChatResponseMessage = ChatTextMessage | ChatSpreadMessage | ChatCtaMessage;
+
+export interface ChatResponseData {
+  messages: ChatResponseMessage[];
 }
 
 // AI Interpretation

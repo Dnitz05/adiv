@@ -20,6 +20,8 @@ class ChatMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(message.kind == ChatMessageKind.text, 'ChatMessageBubble only supports text messages.');
+    final text = message.text ?? '';
     final bubble = Align(
       alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
@@ -66,7 +68,7 @@ class ChatMessageBubble extends StatelessWidget {
           children: [
             // Message content
             Text(
-              message.content,
+              text,
               style: TextStyle(
                 color: message.isUser
                     ? Colors.white
@@ -108,13 +110,14 @@ class ChatMessageBubble extends StatelessWidget {
         tween: Tween<double>(begin: 0, end: 1),
         curve: Curves.easeOutBack,
         builder: (context, value, child) {
+          final opacity = value.clamp(0.0, 1.0);
           return Transform.scale(
             scale: value,
             alignment: message.isUser
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
             child: Opacity(
-              opacity: value,
+              opacity: opacity,
               child: child,
             ),
           );

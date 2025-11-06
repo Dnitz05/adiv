@@ -1,6 +1,13 @@
 import { createClient, SupabaseClient, PostgrestError, User } from '@supabase/supabase-js';
 import { randomUUID } from 'crypto';
-import type { DivinationTechnique } from '../types/api';
+import type {
+  DivinationTechnique,
+  LunarAdviceContext,
+  LunarAdvicePayload,
+  LunarAdviceTopic,
+  LunarAdviceHistoryItem,
+  LunarReminderPayload,
+} from '../types/api';
 import { log } from './logger';
 
 interface SupabaseArtifact {
@@ -92,6 +99,76 @@ interface UserStatsRow {
   total_sessions: number | null;
   sessions_this_week: number | null;
   sessions_this_month: number | null;
+}
+
+interface LunarAdviceRow {
+  id: string;
+  user_id: string;
+  topic: string;
+  intention: string | null;
+  advice: Record<string, any>;
+  context: Record<string, any>;
+  locale: string;
+  date: string;
+  created_at: string;
+}
+
+interface LunarReminderRow {
+  id: string;
+  user_id: string;
+  date: string;
+  time: string | null;
+  topic: string;
+  intention: string | null;
+  locale: string;
+  created_at: string;
+}
+
+interface InsertLunarAdviceParams {
+  userId: string;
+  topic: LunarAdviceTopic;
+  intention?: string | null;
+  locale: string;
+  date: string;
+  advice: LunarAdvicePayload;
+  context: LunarAdviceContext;
+  requestId?: string;
+}
+
+interface FetchLunarAdviceHistoryOptions {
+  limit?: number;
+  locale?: string;
+  topic?: LunarAdviceTopic;
+  from?: string;
+  to?: string;
+}
+
+interface InsertLunarReminderParams {
+  userId: string;
+  date: string;
+  time?: string | null;
+  topic: LunarAdviceTopic;
+  intention?: string | null;
+  locale: string;
+  requestId?: string;
+}
+
+interface UpdateLunarReminderParams {
+  id: string;
+  userId: string;
+  date?: string;
+  time?: string | null;
+  topic?: LunarAdviceTopic;
+  intention?: string | null;
+  locale?: string;
+  requestId?: string;
+}
+
+interface FetchLunarRemindersOptions {
+  locale?: string;
+  from?: string;
+  to?: string;
+  limit?: number;
 }
 
 export function hasServiceCredentials(): boolean {
@@ -210,6 +287,47 @@ export async function ensureUserRecord(user: User): Promise<void> {
     log('warn', 'ensureUserRecord failed', {
       error: error instanceof Error ? error.message : String(error),
       userId: user.id,
+    });
+  }
+}
+
+/**
+ * Ensure a user exists in the database (upsert with minimal data)
+ * Used when we only have a userId but need to create sessions
+ */
+export async function ensureUser(userId: string): Promise<void> {
+  try {
+    const client = getSupabaseServiceClient();
+
+    // Use upsert to create user if doesn't exist
+    const { error } = await client
+      .from('users')
+      .upsert(
+        {
+          id: userId,
+          tier: 'free',
+          metadata: {
+            createdVia: 'auto',
+            createdAt: new Date().toISOString(),
+          },
+        },
+        {
+          onConflict: 'id',
+          ignoreDuplicates: true,
+        }
+      );
+
+    if (error && error.code !== '23505') {
+      // 23505 is duplicate key error, which we can ignore
+      log('warn', 'ensureUser failed', {
+        error: error.message,
+        userId,
+      });
+    }
+  } catch (error) {
+    log('warn', 'ensureUser exception', {
+      error: error instanceof Error ? error.message : String(error),
+      userId,
     });
   }
 }
@@ -340,6 +458,9 @@ export async function createSession(input: {
   summary?: string | null;
   metadata?: Record<string, any> | null;
 }): Promise<SupabaseSession> {
+  // Ensure user exists before creating session
+  await ensureUser(input.userId);
+
   const client = getSupabaseServiceClient();
   const now = new Date().toISOString();
   const sessionId = input.id ?? randomUUID();
@@ -547,6 +668,309 @@ export async function checkSupabaseHealth(): Promise<{
       responseTime,
       error: error instanceof Error ? error.message : String(error),
     };
+  }
+}
+
+export async function insertLunarAdviceRecord(params: InsertLunarAdviceParams): Promise<void> {
+  if (!hasServiceCredentials()) {
+    return;
+  }
+
+  try {
+    const client = getSupabaseServiceClient();
+    const { error } = await client.from('lunar_queries').insert({
+      user_id: params.userId,
+      topic: params.topic,
+      intention: params.intention ?? null,
+      locale: params.locale,
+      date: params.date,
+      advice: params.advice,
+      context: params.context,
+    });
+
+    if (error) {
+      log('warn', 'Failed to insert lunar advice record', {
+        requestId: params.requestId,
+        userId: params.userId,
+        error: error.message,
+      });
+    }
+  } catch (error: unknown) {
+    log('error', 'Unexpected error inserting lunar advice record', {
+      requestId: params.requestId,
+      userId: params.userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
+export async function fetchLunarAdviceHistory(
+  userId: string,
+  options: FetchLunarAdviceHistoryOptions = {}
+): Promise<LunarAdviceHistoryItem[]> {
+  if (!hasServiceCredentials()) {
+    return [];
+  }
+
+  try {
+    const client = getSupabaseServiceClient();
+    let query = client
+      .from<LunarAdviceRow>('lunar_queries')
+      .select('id,user_id,topic,intention,advice,context,locale,date,created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(options.limit ?? 10);
+
+    if (options.locale) {
+      query = query.eq('locale', options.locale);
+    }
+    if (options.topic) {
+      query = query.eq('topic', options.topic);
+    }
+    if (options.from) {
+      query = query.gte('date', options.from);
+    }
+    if (options.to) {
+      query = query.lte('date', options.to);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      log('warn', 'Failed to fetch lunar advice history', {
+        userId,
+        error: error.message,
+      });
+      return [];
+    }
+
+    return (data ?? []).map<LunarAdviceHistoryItem>((row) => ({
+      id: row.id,
+      date: row.date,
+      topic: (row.topic as LunarAdviceTopic) ?? 'intentions',
+      intention: row.intention,
+      advice: row.advice as LunarAdvicePayload,
+      context: row.context as LunarAdviceContext,
+      locale: row.locale,
+      createdAt: row.created_at,
+    }));
+  } catch (error: unknown) {
+    log('error', 'Unexpected error fetching lunar advice history', {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
+  }
+}
+
+export async function insertLunarReminder(
+  params: InsertLunarReminderParams
+): Promise<LunarReminderPayload | null> {
+  if (!hasServiceCredentials()) {
+    return null;
+  }
+
+  try {
+    const client = getSupabaseServiceClient();
+    const { data, error } = await client
+      .from<LunarReminderRow>('lunar_reminders')
+      .insert({
+        user_id: params.userId,
+        date: params.date,
+        time: params.time ?? null,
+        topic: params.topic,
+        intention: params.intention ?? null,
+        locale: params.locale,
+      })
+      .select('id,user_id,date,time,topic,intention,locale,created_at')
+      .maybeSingle();
+
+    if (error) {
+      log('warn', 'Failed to insert lunar reminder', {
+        requestId: params.requestId,
+        userId: params.userId,
+        error: error.message,
+      });
+      return null;
+    }
+    if (!data) {
+      return null;
+    }
+
+    return {
+      id: data.id,
+      userId: data.user_id,
+      date: data.date,
+      time: data.time,
+      topic: (data.topic as LunarAdviceTopic) ?? 'intentions',
+      intention: data.intention,
+      locale: data.locale,
+      createdAt: data.created_at,
+    };
+  } catch (error: unknown) {
+    log('error', 'Unexpected error inserting lunar reminder', {
+      requestId: params.requestId,
+      userId: params.userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+export async function updateLunarReminder(
+  params: UpdateLunarReminderParams
+): Promise<LunarReminderPayload | null> {
+  if (!hasServiceCredentials()) {
+    return null;
+  }
+
+  const patch: Record<string, any> = {};
+  if (params.date !== undefined) patch.date = params.date;
+  if (params.time !== undefined) patch.time = params.time ?? null;
+  if (params.topic !== undefined) patch.topic = params.topic;
+  if (params.intention !== undefined) patch.intention = params.intention ?? null;
+  if (params.locale !== undefined) patch.locale = params.locale;
+
+  if (Object.keys(patch).length === 0) {
+    return null;
+  }
+
+  try {
+    const client = getSupabaseServiceClient();
+    const { data, error } = await client
+      .from<LunarReminderRow>('lunar_reminders')
+      .update(patch)
+      .eq('id', params.id)
+      .eq('user_id', params.userId)
+      .select('id,user_id,date,time,topic,intention,locale,created_at')
+      .maybeSingle();
+
+    if (error) {
+      log('warn', 'Failed to update lunar reminder', {
+        requestId: params.requestId,
+        userId: params.userId,
+        reminderId: params.id,
+        error: error.message,
+      });
+      return null;
+    }
+    if (!data) {
+      return null;
+    }
+
+    return {
+      id: data.id,
+      userId: data.user_id,
+      date: data.date,
+      time: data.time,
+      topic: (data.topic as LunarAdviceTopic) ?? 'intentions',
+      intention: data.intention,
+      locale: data.locale,
+      createdAt: data.created_at,
+    };
+  } catch (error: unknown) {
+    log('error', 'Unexpected error updating lunar reminder', {
+      requestId: params.requestId,
+      userId: params.userId,
+      reminderId: params.id,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
+export async function deleteLunarReminder(
+  id: string,
+  userId: string,
+  requestId?: string
+): Promise<boolean> {
+  if (!hasServiceCredentials()) {
+    return false;
+  }
+
+  try {
+    const client = getSupabaseServiceClient();
+    const { error } = await client
+      .from('lunar_reminders')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId);
+
+    if (error) {
+      log('warn', 'Failed to delete lunar reminder', {
+        requestId,
+        userId,
+        reminderId: id,
+        error: error.message,
+      });
+      return false;
+    }
+
+    return true;
+  } catch (error: unknown) {
+    log('error', 'Unexpected error deleting lunar reminder', {
+      requestId,
+      userId,
+      reminderId: id,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return false;
+  }
+}
+
+export async function fetchLunarReminders(
+  userId: string,
+  options: FetchLunarRemindersOptions = {}
+): Promise<LunarReminderPayload[]> {
+  if (!hasServiceCredentials()) {
+    return [];
+  }
+
+  try {
+    const client = getSupabaseServiceClient();
+    let query = client
+      .from<LunarReminderRow>('lunar_reminders')
+      .select('id,user_id,date,time,topic,intention,locale,created_at')
+      .eq('user_id', userId)
+      .order('date', { ascending: true })
+      .order('time', { ascending: true, nullsLast: true })
+      .limit(options.limit ?? 50);
+
+    if (options.locale) {
+      query = query.eq('locale', options.locale);
+    }
+    if (options.from) {
+      query = query.gte('date', options.from);
+    }
+    if (options.to) {
+      query = query.lte('date', options.to);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      log('warn', 'Failed to fetch lunar reminders', {
+        userId,
+        error: error.message,
+      });
+      return [];
+    }
+
+    return (data ?? []).map<LunarReminderPayload>((row) => ({
+      id: row.id,
+      userId: row.user_id,
+      date: row.date,
+      time: row.time,
+      topic: (row.topic as LunarAdviceTopic) ?? 'intentions',
+      intention: row.intention,
+      locale: row.locale,
+      createdAt: row.created_at,
+    }));
+  } catch (error: unknown) {
+    log('error', 'Unexpected error fetching lunar reminders', {
+      userId,
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return [];
   }
 }
 

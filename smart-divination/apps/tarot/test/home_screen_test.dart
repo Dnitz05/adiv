@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:common/l10n/common_strings_en.dart';
 import 'package:smart_tarot/main.dart';
 
 void main() {
@@ -18,40 +18,39 @@ void main() {
     }
   });
 
-  testWidgets('shows auth screen by default', (tester) async {
-    const app = SmartTarotApp();
-    final strings = CommonStringsEn();
-
-    await tester.pumpWidget(app);
+  Future<void> _pumpApp(WidgetTester tester) async {
+    await tester.pumpWidget(const SmartTarotApp());
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
+  }
 
-    expect(find.text(strings.authSignInTitle), findsOneWidget);
-    expect(find.text(strings.authEmailLabel), findsOneWidget);
-    expect(find.text(strings.authPasswordLabel), findsOneWidget);
+  testWidgets('shows navigation after splash', (tester) async {
+    await _pumpApp(tester);
+
+    expect(find.text('Today'), findsOneWidget);
+    expect(find.text('Chat'), findsOneWidget);
+    expect(find.text('Spreads'), findsOneWidget);
   });
 
-  testWidgets('forgot password link is rendered', (tester) async {
-    const app = SmartTarotApp();
-    final strings = CommonStringsEn();
+  testWidgets('chat tab shows welcome message when selected', (tester) async {
+    await _pumpApp(tester);
 
-    await tester.pumpWidget(app);
+    await tester.tap(find.text('Chat'));
     await tester.pumpAndSettle();
 
-    expect(find.text(strings.authForgotPasswordLink), findsOneWidget);
+    expect(find.textContaining('tarot assistant'), findsOneWidget);
   });
 
-  testWidgets('toggle changes to sign up copy', (tester) async {
-    const app = SmartTarotApp();
-    final strings = CommonStringsEn();
+  testWidgets('learn panel becomes visible when scrolling', (tester) async {
+    await _pumpApp(tester);
 
-    await tester.pumpWidget(app);
+    final listFinder = find.byType(ListView);
+    expect(listFinder, findsOneWidget);
+
+    await tester.drag(listFinder, const Offset(0, -800));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(strings.authToggleToSignUp));
-    await tester.pumpAndSettle();
-
-    expect(find.text(strings.authSignUpTitle), findsOneWidget);
-    expect(find.text(strings.authSignUpButton), findsOneWidget);
-    expect(find.text(strings.authPasswordLabelWithHint), findsOneWidget);
+    expect(find.text('Learn Tarot'), findsOneWidget);
   });
 }

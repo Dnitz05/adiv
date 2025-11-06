@@ -21,8 +21,11 @@ import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
 import 'widgets/lunar_home_panel.dart';
 import 'widgets/daily_draw_panel.dart';
+import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
 import 'screens/chat_screen.dart';
+import 'screens/daily_interpretation_screen.dart';
+import 'screens/smart_selection_screen.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
@@ -688,6 +691,7 @@ class _HomeState extends State<_Home> {
   final TextEditingController _seedController = TextEditingController();
   late final LunarCycleController _lunarController;
   List<TarotCard>? _dailyCards;
+  CardsDrawResponse? _dailyDrawResponse;
   bool _loadingDailyDraw = false;
   int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Archive, 4=Settings
   late final Future<DailyQuote?> _dailyQuoteFuture;
@@ -942,11 +946,13 @@ class _HomeState extends State<_Home> {
 
       // Convert CardResults to TarotCards
       final cards = response.result.map((card) {
-        return TarotCard.fromCardResult(card);
+        final imagePath = _getCardImagePath(card);
+        return TarotCard.fromCardResult(card, imagePath: imagePath);
       }).toList();
 
       setState(() {
         _dailyCards = cards;
+        _dailyDrawResponse = response;
         _loadingDailyDraw = false;
       });
     } catch (error) {
@@ -2932,8 +2938,22 @@ class _HomeState extends State<_Home> {
               strings: localisation,
               isLoading: _loadingDailyDraw,
               onInterpret: () {
-                // TODO: Implement interpretation for daily draw
-                debugPrint('Interpret daily draw');
+                final response = _dailyDrawResponse;
+                if (response == null || response.sessionId == null || response.sessionId!.isEmpty) {
+                  debugPrint('No session ID available for daily draw interpretation');
+                  return;
+                }
+
+                // Navigate to daily interpretation screen
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DailyInterpretationScreen(
+                      cards: _dailyCards!,
+                      draw: response,
+                      sessionId: response.sessionId!,
+                    ),
+                  ),
+                );
               },
             ),
           if (_dailyCards != null && _dailyCards!.isNotEmpty)
@@ -2942,6 +2962,7 @@ class _HomeState extends State<_Home> {
           LunarHomePanel(
             controller: _lunarController,
             strings: localisation,
+            userId: _userId,
             onSelectSpread: (spreadId) {
               final spread = TarotSpreads.getById(spreadId);
               if (spread != null) {
@@ -2951,6 +2972,42 @@ class _HomeState extends State<_Home> {
               }
             },
             onRefresh: () => _lunarController.refresh(force: true),
+          ),
+          const SizedBox(height: 24),
+          // Smart Draws Panel
+          SmartDrawsPanel(
+            strings: localisation,
+            onSmartSelection: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SmartSelectionScreen(),
+                ),
+              );
+            },
+            onLove: () {
+              // TODO: Show love-themed spreads
+              debugPrint('Love category tapped');
+            },
+            onCareer: () {
+              // TODO: Show career-themed spreads
+              debugPrint('Career category tapped');
+            },
+            onFinances: () {
+              // TODO: Show finance-themed spreads
+              debugPrint('Finances category tapped');
+            },
+            onPersonalGrowth: () {
+              // TODO: Show personal growth spreads
+              debugPrint('Personal Growth category tapped');
+            },
+            onDecisions: () {
+              // TODO: Show decision-making spreads
+              debugPrint('Decisions category tapped');
+            },
+            onGeneral: () {
+              // TODO: Show general spreads
+              debugPrint('General category tapped');
+            },
           ),
           const SizedBox(height: 24),
           // Learn Panel
@@ -2971,6 +3028,14 @@ class _HomeState extends State<_Home> {
             onNavigateToAstrology: () {
               // TODO: Navigate to astrology learning screen
               debugPrint('Navigate to astrology resources');
+            },
+            onNavigateToKabbalah: () {
+              // TODO: Navigate to Kabbalah & Tarot learning screen
+              debugPrint('Navigate to Kabbalah & Tarot');
+            },
+            onNavigateToMoonPowers: () {
+              // TODO: Navigate to Moon Powers learning screen
+              debugPrint('Navigate to Moon Powers');
             },
           ),
           const SizedBox(height: 24),
@@ -3068,14 +3133,19 @@ class _HomeState extends State<_Home> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(_formatTodayDate(localisation.localeName)),
-        centerTitle: true,
+        title: Text(
+          _formatTodayDate(localisation.localeName),
+          style: const TextStyle(color: TarotTheme.cosmicAccent),
+        ),
+        centerTitle: false,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedBottomNavIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: TarotTheme.cosmicPurple,
-        unselectedItemColor: Colors.grey[600],
+        selectedItemColor: TarotTheme.cosmicAccent,
+        unselectedItemColor: TarotTheme.cosmicAccent90,
+        selectedFontSize: 13,
+        unselectedFontSize: 12,
         backgroundColor: Colors.white,
         elevation: 8,
         onTap: (index) {
@@ -3117,8 +3187,8 @@ class _HomeState extends State<_Home> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.home_outlined),
-            activeIcon: const Icon(Icons.home),
+            icon: const Icon(Icons.wb_sunny_outlined),
+            activeIcon: const Icon(Icons.wb_sunny),
             label: _qaText(localisation, en: 'Today', es: 'Hoy', ca: 'Avui'),
           ),
           BottomNavigationBarItem(
@@ -3165,11 +3235,11 @@ class _HomeState extends State<_Home> {
 
     switch (locale) {
       case 'ca':
-        return DateFormat('d \'de\' MMMM \'de\' y', 'ca').format(now);
+        return DateFormat('EEEE, d \'de\' MMMM \'de\' y', 'ca').format(now);
       case 'es':
-        return DateFormat('d \'de\' MMMM \'de\' y', 'es').format(now);
+        return DateFormat('EEEE, d \'de\' MMMM \'de\' y', 'es').format(now);
       default:
-        return DateFormat('MMMM d, y', 'en').format(now);
+        return DateFormat('EEEE, MMMM d, y', 'en').format(now);
     }
   }
 }

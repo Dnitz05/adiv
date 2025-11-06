@@ -64,17 +64,35 @@ class _ChatInputFieldState extends State<ChatInputField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0xFFF8F7FC),
+            Colors.white,
+          ],
+        ),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(28),
+          topRight: Radius.circular(28),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, -4),
+          ),
+        ],
         border: Border(
           top: BorderSide(
-            color: const Color(0xFFE0E0E0),
-            width: 1,
+            color: Colors.white.withValues(alpha: 0.9),
+            width: 1.5,
           ),
         ),
       ),
       child: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(16, 10, 16, 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
@@ -118,8 +136,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   ),
                   filled: true,
                   fillColor: widget.enabled
-                      ? const Color(0xFFF5F5F7)
-                      : const Color(0xFFE0E0E0),
+                      ? Colors.white
+                      : const Color(0xFFF0F0F0),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 18,
                     vertical: 12,
