@@ -16,12 +16,14 @@ class LearnPanel extends StatelessWidget {
     required this.onNavigateToCards,
     required this.onNavigateToKnowledge,
     required this.onNavigateToSpreads,
+    required this.onNavigateToAstrology,
   });
 
   final CommonStrings strings;
   final VoidCallback onNavigateToCards;
   final VoidCallback onNavigateToKnowledge;
   final VoidCallback onNavigateToSpreads;
+  final VoidCallback onNavigateToAstrology;
 
   @override
   Widget build(BuildContext context) {
@@ -88,25 +90,39 @@ class LearnPanel extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           // Learning categories
-          _LearnCategory(
-            icon: Icons.style,
-            title: _getCardsTitle(),
-            description: _getCardsDescription(),
-            onTap: onNavigateToCards,
-          ),
-          const SizedBox(height: 12),
-          _LearnCategory(
-            icon: Icons.lightbulb_outline,
-            title: _getKnowledgeTitle(),
-            description: _getKnowledgeDescription(),
-            onTap: onNavigateToKnowledge,
-          ),
-          const SizedBox(height: 12),
-          _LearnCategory(
-            icon: Icons.grid_view,
-            title: _getSpreadsTitle(),
-            description: _getSpreadsDescription(),
-            onTap: onNavigateToSpreads,
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 1.25,
+            children: [
+              _LearnCategory(
+                icon: Icons.style,
+                title: _getCardsTitle(),
+                description: _getCardsDescription(),
+                onTap: onNavigateToCards,
+              ),
+              _LearnCategory(
+                icon: Icons.auto_awesome,
+                title: _getAstrologyTitle(),
+                description: _getAstrologyDescription(),
+                onTap: onNavigateToAstrology,
+              ),
+              _LearnCategory(
+                icon: Icons.lightbulb_outline,
+                title: _getKnowledgeTitle(),
+                description: _getKnowledgeDescription(),
+                onTap: onNavigateToKnowledge,
+              ),
+              _LearnCategory(
+                icon: Icons.grid_view,
+                title: _getSpreadsTitle(),
+                description: _getSpreadsDescription(),
+                onTap: onNavigateToSpreads,
+              ),
+            ],
           ),
         ],
       ),
@@ -179,6 +195,28 @@ class LearnPanel extends StatelessWidget {
     }
   }
 
+  String _getAstrologyTitle() {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Astrologia';
+      case 'es':
+        return 'Astrologia';
+      default:
+        return 'Astrology';
+    }
+  }
+
+  String _getAstrologyDescription() {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Zodiac i fases lunars per interpretar energies';
+      case 'es':
+        return 'Zodiaco y fases lunares para interpretar energias';
+      default:
+        return 'Zodiac and lunar phases to interpret energy';
+    }
+  }
+
   String _getSpreadsTitle() {
     switch (strings.localeName) {
       case 'ca':
@@ -232,7 +270,8 @@ class _LearnCategory extends StatelessWidget {
               width: 1,
             ),
           ),
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: 40,
@@ -254,34 +293,35 @@ class _LearnCategory extends StatelessWidget {
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        color: TarotTheme.moonlight,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        color: TarotTheme.stardust,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: TextStyle(
+                  color: TarotTheme.moonlight,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: TarotTheme.stardust,
-                size: 16,
+              const SizedBox(height: 6),
+              Expanded(
+                child: Text(
+                  description,
+                  style: TextStyle(
+                    color: TarotTheme.stardust,
+                    fontSize: 13,
+                  ),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  color: TarotTheme.stardust,
+                  size: 16,
+                ),
               ),
             ],
           ),

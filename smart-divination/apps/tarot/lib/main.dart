@@ -2911,6 +2911,10 @@ class _HomeState extends State<_Home> {
               // TODO: Navigate to spreads explanation screen
               debugPrint('Navigate to spreads explanation');
             },
+            onNavigateToAstrology: () {
+              // TODO: Navigate to astrology learning screen
+              debugPrint('Navigate to astrology resources');
+            },
           ),
           const SizedBox(height: 24),
           if (_error != null) ...[
