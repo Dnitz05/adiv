@@ -684,9 +684,7 @@ class _HomeState extends State<_Home> {
   String? _lastQuestionLocale;
   FullScreenStep? _fullScreenStep;
   Timer? _briefingAutoAdvanceTimer;
-  final TextEditingController _questionController = TextEditingController();
   final TextEditingController _seedController = TextEditingController();
-  final FocusNode _questionFocusNode = FocusNode();
   late final LunarCycleController _lunarController;
   List<TarotCard>? _dailyCards;
   bool _loadingDailyDraw = false;
@@ -796,10 +794,6 @@ class _HomeState extends State<_Home> {
     _lunarController = LunarCycleController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadAll();
-      // Auto-focus on question field when on home (no draw active)
-      if (_latestDraw == null) {
-        _questionFocusNode.requestFocus();
-      }
     });
   }
 
@@ -807,9 +801,7 @@ class _HomeState extends State<_Home> {
   void dispose() {
     _briefingAutoAdvanceTimer?.cancel();
     _briefingAutoAdvanceTimer = null;
-    _questionController.dispose();
     _seedController.dispose();
-    _questionFocusNode.dispose();
     _lunarController.dispose();
     super.dispose();
   }
@@ -975,7 +967,7 @@ class _HomeState extends State<_Home> {
 
     try {
       final seed = _seedController.text.trim();
-      final typedQuestion = _questionController.text.trim();
+      final typedQuestion = '';
       final localeCode = _resolveQuestionLocale(typedQuestion);
       _lastQuestionLocale = localeCode;
       final baseQuestion = typedQuestion.isNotEmpty
@@ -1175,14 +1167,7 @@ class _HomeState extends State<_Home> {
       _lastQuestionLocale = null;
       _displayQuestion = null;
       _fullScreenStep = null;
-      _questionController.clear();
       _error = null;
-    });
-    // Auto-focus on question field after reset
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        _questionFocusNode.requestFocus();
-      }
     });
   }
 
@@ -1246,8 +1231,7 @@ class _HomeState extends State<_Home> {
     });
 
     try {
-      final originalQuestion =
-          _currentQuestion ?? _questionController.text.trim();
+      final originalQuestion = _currentQuestion ?? '';
       final localeCode =
           _lastQuestionLocale ?? _resolveQuestionLocale(originalQuestion);
       final result = await submitInterpretation(
@@ -1689,55 +1673,6 @@ class _HomeState extends State<_Home> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildDrawFormCard(CommonStrings localisation) {
-    final theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Card(
-          color: TarotTheme.midnightBlue70,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextField(
-                  controller: _questionController,
-                  focusNode: _questionFocusNode,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    fontSize: 18, // 2 punts més gran que el default (16)
-                  ),
-                  decoration: InputDecoration(
-                    labelText: localisation.askQuestion,
-                    labelStyle: theme.textTheme.bodyLarge?.copyWith(
-                      fontSize: 18,
-                    ),
-                  ),
-                  maxLines: 2,
-                ),
-                const SizedBox(height: 20),
-                FilledButton.icon(
-                  onPressed: _drawing ? null : _drawCards,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: TarotTheme.cosmicPurple,
-                  ),
-                  icon: _drawing
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Icon(Icons.auto_awesome),
-                  label: const Text('Consultar'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -2948,8 +2883,6 @@ class _HomeState extends State<_Home> {
                 setState(() {
                   _selectedSpread = spread;
                 });
-                // Optionally scroll to or focus the question field
-                _questionFocusNode.requestFocus();
               }
             },
             onRefresh: () => _lunarController.refresh(force: true),
@@ -3142,14 +3075,6 @@ class _HomeState extends State<_Home> {
           bodyContent,
           if (fullScreenOverlay != null)
             Positioned.fill(child: fullScreenOverlay),
-          // Form card fixed at bottom (above button) - only show on home page
-          if (!hasDraw)
-            Positioned(
-              bottom: bottomSafeInset + extraBottomPadding,
-              left: 8,
-              right: 8,
-              child: _buildDrawFormCard(localisation),
-            ),
         ],
       ),
     );
