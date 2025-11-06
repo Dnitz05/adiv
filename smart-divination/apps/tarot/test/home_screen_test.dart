@@ -31,6 +31,7 @@ void main() {
     expect(find.text('Today'), findsOneWidget);
     expect(find.text('Chat'), findsOneWidget);
     expect(find.text('Spreads'), findsOneWidget);
+    expect(find.text('Learn'), findsOneWidget);
   });
 
   testWidgets('chat tab shows welcome message when selected', (tester) async {
@@ -42,13 +43,10 @@ void main() {
     expect(find.textContaining('tarot assistant'), findsOneWidget);
   });
 
-  testWidgets('learn panel becomes visible when scrolling', (tester) async {
+  testWidgets('learn tab displays panel', (tester) async {
     await _pumpApp(tester);
 
-    final listFinder = find.byType(ListView);
-    expect(listFinder, findsOneWidget);
-
-    await tester.drag(listFinder, const Offset(0, -800));
+    await tester.tap(find.text('Learn'));
     await tester.pumpAndSettle();
 
     expect(find.text('Learn Tarot'), findsOneWidget);

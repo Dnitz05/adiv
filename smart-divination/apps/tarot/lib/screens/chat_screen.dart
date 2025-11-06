@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:common/l10n/common_strings.dart';
 import 'package:uuid/uuid.dart';
@@ -10,6 +12,7 @@ import '../widgets/chat_input_field.dart';
 import '../widgets/typing_indicator.dart';
 import '../theme/tarot_theme.dart';
 import '../api/chat_api.dart';
+import '../services/credits_service.dart';
 
 const _uuid = Uuid();
 
@@ -43,6 +46,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
+  final CreditsService _creditsService = CreditsService();
+  late final ValueNotifier<DailyCredits> _creditsNotifier;
 
   bool _isTyping = false;
   bool _isInitialized = false;
@@ -50,6 +55,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    _creditsNotifier = _creditsService.notifier;
+    unawaited(_creditsService.initialize());
     _initializeChat();
   }
 
@@ -118,12 +125,43 @@ class _ChatScreenState extends State<ChatScreen> {
             // Typing indicator
             if (_isTyping) const TypingIndicator(),
             // Input field
-            ChatInputField(
-              controller: _textController,
-              onSend: _handleSendMessage,
-              strings: widget.strings,
-              enabled: !_isTyping,
-              focusNode: _focusNode,
+            ValueListenableBuilder<DailyCredits>(
+              valueListenable: _creditsNotifier,
+              builder: (context, credits, _) {
+                final hasCredits = credits.remaining > 0;
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (!hasCredits)
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF3E0),
+                          border: Border(
+                            top: BorderSide(color: Colors.orange.withValues(alpha: 0.4)),
+                            bottom: BorderSide(color: Colors.orange.withValues(alpha: 0.2)),
+                          ),
+                        ),
+                        child: Text(
+                          _getNoCreditsBannerText(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Color(0xFFBF360C),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ChatInputField(
+                      controller: _textController,
+                      onSend: _handleSendMessage,
+                      strings: widget.strings,
+                      enabled: !_isTyping && hasCredits,
+                      focusNode: _focusNode,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
@@ -249,6 +287,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _handleSendMessage(String text) async {
     if (text.trim().isEmpty) return;
 
+    await _creditsService.initialize();
+    if (!_creditsService.hasCredits) {
+      _showSnackBar(_getNoCreditsSnackText());
+      return;
+    }
+
     // Build conversation history BEFORE adding the new message to avoid duplication
     final conversationHistory = _buildConversationHistory();
 
@@ -284,6 +328,7 @@ class _ChatScreenState extends State<ChatScreen> {
         _isTyping = false;
       });
 
+      await _creditsService.consume();
       _scrollToBottom();
     } catch (error) {
       // Update user message status to error
@@ -351,6 +396,12 @@ class _ChatScreenState extends State<ChatScreen> {
       return;
     }
 
+    await _creditsService.initialize();
+    if (!_creditsService.hasCredits) {
+      _showSnackBar(_getNoCreditsSnackText());
+      return;
+    }
+
     setState(() {
       _updateMessageAction(message.id, action.copyWith(state: ChatActionState.loading));
       _isTyping = true;
@@ -371,7 +422,7 @@ class _ChatScreenState extends State<ChatScreen> {
         _messages.addAll(interpretationMessages);
         _isTyping = false;
       });
-
+      await _creditsService.consume();
       _scrollToBottom();
     } catch (error) {
       setState(() {
@@ -503,6 +554,28 @@ class _ChatScreenState extends State<ChatScreen> {
         return 'Reintentar';
       default:
         return 'Retry';
+    }
+  }
+
+  String _getNoCreditsBannerText() {
+    switch (widget.strings.localeName) {
+      case 'ca':
+        return 'Has utilitzat tots els credits d avui. Torna dema!';
+      case 'es':
+        return 'Has usado todos los creditos de hoy. Vuelve manana.';
+      default:
+        return 'You\'ve used all today\'s credits. Come back tomorrow!';
+    }
+  }
+
+  String _getNoCreditsSnackText() {
+    switch (widget.strings.localeName) {
+      case 'ca':
+        return 'No et queden credits avui.';
+      case 'es':
+        return 'No te quedan creditos hoy.';
+      default:
+        return 'No credits left for today.';
     }
   }
 }

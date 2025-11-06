@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -708,27 +708,27 @@ class _HomeState extends State<_Home> {
   ];
 
   static const Set<String> _catalanPriorityTokens = {
-    'perquè',
+    'perquÃ¨',
     'perque',
-    'què',
+    'quÃ¨',
     'aquest',
     'aquesta',
     'aquests',
     'aquestes',
-    'això',
+    'aixÃ²',
     'aixo',
     'doncs',
     'vosaltres',
     'nostre',
     'nostra',
-    'camí',
+    'camÃ­',
     'cami',
     'camins',
     'dubte',
     'dubtes',
     'consell',
     'guia',
-    'relació',
+    'relaciÃ³',
     'relacio',
     'energia',
     'llum',
@@ -740,13 +740,13 @@ class _HomeState extends State<_Home> {
 
   static const Set<String> _spanishPriorityTokens = {
     'porque',
-    'porqué',
-    'qué',
+    'porquÃ©',
+    'quÃ©',
     'esta',
     'este',
     'estos',
     'estas',
-    'mañana',
+    'maÃ±ana',
     'ayer',
     'pareja',
     'trabajo',
@@ -756,11 +756,11 @@ class _HomeState extends State<_Home> {
     'necesito',
     'quiero',
     'ayuda',
-    'situación',
+    'situaciÃ³n',
     'situacion',
-    'relación',
+    'relaciÃ³n',
     'relacion',
-    'decisión',
+    'decisiÃ³n',
     'decision',
     'cartas',
     'carta',
@@ -802,6 +802,8 @@ class _HomeState extends State<_Home> {
   @override
   void initState() {
     super.initState();
+    _creditsNotifier = _creditsService.notifier;
+    unawaited(_creditsService.initialize());
     _lunarController = LunarCycleController();
     // Memoize daily quote future to prevent repeated asset loads
     _dailyQuoteFuture = DailyQuoteService.getTodayQuote();
@@ -1091,7 +1093,7 @@ class _HomeState extends State<_Home> {
           recommendationReason = recommendation.reasoning;
           interpretationGuide = recommendation.interpretationGuide;
 
-          debugPrint('🎴 Spread recommendation received:');
+          debugPrint('ðŸŽ´ Spread recommendation received:');
           debugPrint('   - Spread: ${selectedSpread.id}');
           debugPrint(
               '   - Reasoning: ${recommendationReason?.substring(0, 50)}...');
@@ -1502,9 +1504,9 @@ class _HomeState extends State<_Home> {
     final language = locale.split(RegExp('[_-]')).first.toLowerCase();
     switch (language) {
       case 'ca':
-        return 'Consulta general: què necessito saber ara mateix per avançar?';
+        return 'Consulta general: quÃ¨ necessito saber ara mateix per avanÃ§ar?';
       case 'es':
-        return 'Consulta general: ¿qué necesito saber ahora mismo para avanzar?';
+        return 'Consulta general: Â¿quÃ© necesito saber ahora mismo para avanzar?';
       case 'en':
         return 'General reading: what do I most need to understand right now?';
       default:
@@ -1899,8 +1901,8 @@ class _HomeState extends State<_Home> {
       _qaText(
         localisation,
         en: 'Chat mode is coming soon.',
-        es: 'El modo chat llegará pronto.',
-        ca: 'El mode xat arribarà ben aviat.',
+        es: 'El modo chat llegarÃ¡ pronto.',
+        ca: 'El mode xat arribarÃ  ben aviat.',
       ),
     );
   }
@@ -1910,8 +1912,8 @@ class _HomeState extends State<_Home> {
       _qaText(
         localisation,
         en: 'Archive will be available shortly.',
-        es: 'El archivo estará disponible en breve.',
-        ca: 'L\'arxiu estarà disponible ben aviat.',
+        es: 'El archivo estarÃ¡ disponible en breve.',
+        ca: 'L\'arxiu estarÃ  disponible ben aviat.',
       ),
     );
   }
@@ -1927,7 +1929,7 @@ class _HomeState extends State<_Home> {
       _qaText(
         localisation,
         en: 'Guided rituals coming soon.',
-        es: 'Rituales guiados próximamente.',
+        es: 'Rituales guiados prÃ³ximamente.',
         ca: 'Rituals guiats properament.',
       ),
     );
@@ -1964,12 +1966,120 @@ class _HomeState extends State<_Home> {
     );
   }
 
+  void _showLearnComingSoon(CommonStrings localisation) {
+    _showQuickActionMessage(
+      _qaText(
+        localisation,
+        en: 'Learning journeys coming soon.',
+        es: 'Experiencias de aprendizaje proximamente.',
+        ca: 'Experiencies d aprenentatge ben aviat.',
+      ),
+    );
+  }
+
+  void _openHeaderMenu(CommonStrings localisation) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              _HeaderMenuItem(
+                icon: Icons.person_outline,
+                label: _qaText(localisation, en: 'Profile', es: 'Perfil', ca: 'Perfil'),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  _showQuickActionMessage(
+                    _qaText(
+                      localisation,
+                      en: 'Profile coming soon.',
+                      es: 'Perfil proximamente.',
+                      ca: 'Perfil ben aviat.',
+                    ),
+                  );
+                },
+              ),
+              _HeaderMenuItem(
+                icon: Icons.notifications_none,
+                label: _qaText(localisation, en: 'Notifications', es: 'Notificaciones', ca: 'Notificacions'),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  _showQuickActionMessage(
+                    _qaText(
+                      localisation,
+                      en: 'Notifications coming soon.',
+                      es: 'Notificaciones proximamente.',
+                      ca: 'Notificacions ben aviat.',
+                    ),
+                  );
+                },
+              ),
+              _HeaderMenuItem(
+                icon: Icons.settings_outlined,
+                label: _qaText(localisation, en: 'Settings', es: 'Ajustes', ca: 'Ajustos'),
+                onTap: () {
+                  Navigator.of(sheetContext).pop();
+                  _showQuickActionMessage(
+                    _qaText(
+                      localisation,
+                      en: 'Settings coming soon.',
+                      es: 'Ajustes proximamente.',
+                      ca: 'Ajustos ben aviat.',
+                    ),
+                  );
+                },
+              ),
+              const Divider(height: 0),
+              _HeaderMenuItem(
+                icon: Icons.logout,
+                label: _qaText(localisation, en: 'Sign out', es: 'Cerrar sesion', ca: 'Tancar sessio'),
+                onTap: () async {
+                  Navigator.of(sheetContext).pop();
+                  try {
+                    await Supabase.instance.client.auth.signOut();
+                  } catch (_) {
+                    if (!mounted) {
+                      return;
+                    }
+                    _showQuickActionMessage(
+                      _qaText(
+                        localisation,
+                        en: 'Unable to sign out.',
+                        es: 'No se pudo cerrar sesion.',
+                        ca: 'No s ha pogut tancar la sessio.',
+                      ),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _showSettingsDialog(CommonStrings localisation) {
     _showQuickActionMessage(
       _qaText(
         localisation,
         en: 'Settings coming soon.',
-        es: 'Ajustes próximamente.',
+        es: 'Ajustes prÃ³ximamente.',
         ca: 'Ajustos properament.',
       ),
     );
@@ -2399,7 +2509,7 @@ class _HomeState extends State<_Home> {
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
-                                        'Interpretación',
+                                        'InterpretaciÃ³n',
                                         style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w700,
@@ -2544,7 +2654,7 @@ class _HomeState extends State<_Home> {
           );
         }),
 
-        // Síntesis section (if present)
+        // SÃ­ntesis section (if present)
         if (synthesis != null) ...[
           const SizedBox(height: 12),
           _buildSpecialSectionBubble(
@@ -2555,7 +2665,7 @@ class _HomeState extends State<_Home> {
           ),
         ],
 
-        // Guía section (if present)
+        // GuÃ­a section (if present)
         if (guide != null) ...[
           const SizedBox(height: 12),
           _buildSpecialSectionBubble(
@@ -2659,7 +2769,7 @@ class _HomeState extends State<_Home> {
     final bool isReversed = section['isReversed'];
     final String interpretationText = section['interpretationText'];
 
-    // Check if this is a special section (Conclusión, Consejo, etc.)
+    // Check if this is a special section (ConclusiÃ³n, Consejo, etc.)
     final lowercardName = cardName.toLowerCase();
     final isSpecialSection = lowercardName.contains('conclusi') ||
         lowercardName.contains('consejo') ||
@@ -2752,7 +2862,7 @@ class _HomeState extends State<_Home> {
     );
   }
 
-  /// Build a styled bubble for special sections (Síntesis, Guía)
+  /// Build a styled bubble for special sections (SÃ­ntesis, GuÃ­a)
   Widget _buildSpecialSectionBubble(
     String sectionName,
     String sectionText,
@@ -2830,7 +2940,7 @@ class _HomeState extends State<_Home> {
     Map<String, String> cardImages,
     CommonStrings localisation,
   ) {
-    // Pattern: **🃏 Card Name** or **Card Name**
+    // Pattern: **ðŸƒ Card Name** or **Card Name**
     final cardReferencePattern = RegExp(r'\*\*(.+?)\*\*');
     final matches = cardReferencePattern.allMatches(markdown).toList();
 
@@ -2889,10 +2999,10 @@ class _HomeState extends State<_Home> {
           .replaceAll(RegExp(r'\s*invertit\s*', caseSensitive: false), '')
           .trim();
 
-      // Check if this is a special section (Síntesis or Guía)
-      final isSpecialSection = loweredName.contains('síntesi') ||
-          loweredName.contains('síntesis') ||
-          loweredName.contains('guía') ||
+      // Check if this is a special section (SÃ­ntesis or GuÃ­a)
+      final isSpecialSection = loweredName.contains('sÃ­ntesi') ||
+          loweredName.contains('sÃ­ntesis') ||
+          loweredName.contains('guÃ­a') ||
           loweredName.contains('guia');
 
       if (isSpecialSection) {
@@ -2902,10 +3012,10 @@ class _HomeState extends State<_Home> {
           'sectionText': interpretationText,
         };
 
-        if (loweredName.contains('síntesi') ||
-            loweredName.contains('síntesis')) {
+        if (loweredName.contains('sÃ­ntesi') ||
+            loweredName.contains('sÃ­ntesis')) {
           synthesis = sectionData;
-        } else if (loweredName.contains('guía') ||
+        } else if (loweredName.contains('guÃ­a') ||
             loweredName.contains('guia')) {
           guide = sectionData;
         }
@@ -3032,6 +3142,16 @@ class _HomeState extends State<_Home> {
         },
         onOpenGallery: _showSpreadGallery,
       );
+    } else if (_selectedBottomNavIndex == 4) {
+      bodyContent = LearnScreen(
+        strings: localisation,
+        onNavigateToCards: () => _showLearnComingSoon(localisation),
+        onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
+        onNavigateToSpreads: () => _showLearnComingSoon(localisation),
+        onNavigateToAstrology: () => _showLearnComingSoon(localisation),
+        onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
+        onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
+      );
     } else if (!hasDraw) {
       // Initial state: lunar panel, centered logo and draw form
       bodyContent = ListView(
@@ -3124,30 +3244,12 @@ class _HomeState extends State<_Home> {
           // Learn Panel
           LearnPanel(
             strings: localisation,
-            onNavigateToCards: () {
-              // TODO: Navigate to cards meanings screen
-              debugPrint('Navigate to cards meanings');
-            },
-            onNavigateToKnowledge: () {
-              // TODO: Navigate to general knowledge screen
-              debugPrint('Navigate to general knowledge');
-            },
-            onNavigateToSpreads: () {
-              // TODO: Navigate to spreads explanation screen
-              debugPrint('Navigate to spreads explanation');
-            },
-            onNavigateToAstrology: () {
-              // TODO: Navigate to astrology learning screen
-              debugPrint('Navigate to astrology resources');
-            },
-            onNavigateToKabbalah: () {
-              // TODO: Navigate to Kabbalah & Tarot learning screen
-              debugPrint('Navigate to Kabbalah & Tarot');
-            },
-            onNavigateToMoonPowers: () {
-              // TODO: Navigate to Moon Powers learning screen
-              debugPrint('Navigate to Moon Powers');
-            },
+            onNavigateToCards: () => _showLearnComingSoon(localisation),
+            onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
+            onNavigateToSpreads: () => _showLearnComingSoon(localisation),
+            onNavigateToAstrology: () => _showLearnComingSoon(localisation),
+            onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
+            onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
           ),
           const SizedBox(height: 24),
           if (_error != null) ...[
@@ -3243,12 +3345,60 @@ class _HomeState extends State<_Home> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          _formatTodayDate(localisation.localeName),
-          style: const TextStyle(color: TarotTheme.cosmicAccent),
-        ),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
         centerTitle: false,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 76,
+        titleSpacing: 16,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localisation.appTitle('tarot'),
+              style: const TextStyle(
+                color: TarotTheme.stardust,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _formatTodayDate(localisation.localeName),
+              style: const TextStyle(
+                color: TarotTheme.cosmicAccent,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          ValueListenableBuilder<DailyCredits>(
+            valueListenable: _creditsNotifier,
+            builder: (context, credits, _) {
+              final creditLabel = _qaText(
+                localisation,
+                en: 'Credits',
+                es: 'Creditos',
+                ca: 'Credits',
+              );
+              return Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: _CreditsBadge(
+                  credits: credits,
+                  label: creditLabel,
+                  onTap: () => _showCreditsInfoDialog(credits, localisation),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_vert, color: TarotTheme.cosmicAccent),
+            tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
+            onPressed: () => _openHeaderMenu(localisation),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedBottomNavIndex,
@@ -3275,8 +3425,8 @@ class _HomeState extends State<_Home> {
                   _qaText(
                     localisation,
                     en: 'Please log in to use chat.',
-                    es: 'Por favor inicia sesión para usar el chat.',
-                    ca: 'Si us plau inicia sessió per utilitzar el xat.',
+                    es: 'Por favor inicia sesiÃ³n para usar el chat.',
+                    ca: 'Si us plau inicia sessiÃ³ per utilitzar el xat.',
                   ),
                 );
               } else {
@@ -3291,8 +3441,10 @@ class _HomeState extends State<_Home> {
             case 3: // Archive
               _handleQuickActionArchive(localisation);
               break;
-            case 4: // Settings
-              _showSettingsDialog(localisation);
+            case 4: // Learn
+              setState(() {
+                _selectedBottomNavIndex = 4;
+              });
               break;
           }
         },
@@ -3318,9 +3470,9 @@ class _HomeState extends State<_Home> {
             label: _qaText(localisation, en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.settings_outlined),
-            activeIcon: const Icon(Icons.settings),
-            label: _qaText(localisation, en: 'Settings', es: 'Ajustes', ca: 'Ajustos'),
+            icon: const Icon(Icons.menu_book_outlined),
+            activeIcon: const Icon(Icons.menu_book),
+            label: _qaText(localisation, en: 'Learn', es: 'Aprende', ca: 'Apren'),
           ),
         ],
       ),
@@ -3346,12 +3498,56 @@ class _HomeState extends State<_Home> {
 
     switch (locale) {
       case 'ca':
-        return DateFormat('EEEE, d \'de\' MMMM \'de\' y', 'ca').format(now);
+        return DateFormat('d \'de\' MMMM', 'ca').format(now);
       case 'es':
-        return DateFormat('EEEE, d \'de\' MMMM \'de\' y', 'es').format(now);
+        return DateFormat('d \'de\' MMMM', 'es').format(now);
       default:
-        return DateFormat('EEEE, MMMM d, y', 'en').format(now);
+        return DateFormat('MMMM d', 'en').format(now);
     }
+  }
+
+  void _showCreditsInfoDialog(DailyCredits credits, CommonStrings localisation) {
+    final countdown = _timeUntilNextResetString(localisation.localeName);
+    final title = _qaText(localisation, en: 'Daily credits', es: 'Creditos diarios', ca: 'Credits diaris');
+    final message = _qaText(
+      localisation,
+      en: 'You can use ${credits.max} credits per day.\n${credits.remaining} left today.\nResets in $countdown.',
+      es: 'Puedes usar ${credits.max} creditos al dia.\nTe quedan ${credits.remaining} hoy.\nSe reinicia en $countdown.',
+      ca: 'Pots usar ${credits.max} credits al dia.\nEt queden ${credits.remaining} avui.\nEs reinicia en $countdown.',
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(_qaText(localisation, en: 'Close', es: 'Cerrar', ca: 'Tancar')),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String _timeUntilNextResetString(String locale) {
+    final duration = _timeUntilNextReset();
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    return '$hours h ${minutes} m';
+  }
+
+  Duration _timeUntilNextReset() {
+    final now = DateTime.now();
+    final nextMidnight = DateTime(now.year, now.month, now.day + 1);
+    return nextMidnight.difference(now);
   }
 }
 
@@ -3441,5 +3637,105 @@ class _StarryNightPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+class _CreditsBadge extends StatelessWidget {
+  const _CreditsBadge({
+    required this.credits,
+    required this.label,
+    required this.onTap,
+  });
+
+  final DailyCredits credits;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              colors: [
+                TarotTheme.cosmicBlue,
+                TarotTheme.cosmicAccent,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: TarotTheme.cosmicBlue.withValues(alpha: 0.35),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    '${credits.remaining} / ${credits.max}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HeaderMenuItem extends StatelessWidget {
+  const _HeaderMenuItem({
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: TarotTheme.cosmicAccent),
+      title: Text(
+        label,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          color: TarotTheme.midnightBlue,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+}
+
 
 

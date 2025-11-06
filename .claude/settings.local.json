@@ -136,7 +136,8 @@
       "Bash(./supabase.exe status:*)",
       "Bash(nslookup:*)",
       "Bash(ping:*)",
-      "Bash(netsh advfirewall firewall show rule:*)"
+      "Bash(netsh advfirewall firewall show rule:*)",
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter build:*)"
     ],
     "deny": [],
     "ask": []
