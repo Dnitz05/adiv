@@ -3058,7 +3058,7 @@ class _HomeState extends State<_Home> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.home_outlined),
             activeIcon: const Icon(Icons.home),
-            label: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
+            label: _qaText(localisation, en: 'Today', es: 'Hoy', ca: 'Avui'),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.chat_bubble_outline),
