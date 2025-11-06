@@ -21,6 +21,7 @@ import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
 import 'widgets/lunar_home_panel.dart';
 import 'widgets/daily_draw_panel.dart';
+import 'widgets/learn_panel.dart';
 import 'screens/chat_screen.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
@@ -2895,6 +2896,23 @@ class _HomeState extends State<_Home> {
             onRefresh: () => _lunarController.refresh(force: true),
           ),
           const SizedBox(height: 24),
+          // Learn Panel
+          LearnPanel(
+            strings: localisation,
+            onNavigateToCards: () {
+              // TODO: Navigate to cards meanings screen
+              debugPrint('Navigate to cards meanings');
+            },
+            onNavigateToKnowledge: () {
+              // TODO: Navigate to general knowledge screen
+              debugPrint('Navigate to general knowledge');
+            },
+            onNavigateToSpreads: () {
+              // TODO: Navigate to spreads explanation screen
+              debugPrint('Navigate to spreads explanation');
+            },
+          ),
+          const SizedBox(height: 24),
           if (_error != null) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -2989,7 +3007,7 @@ class _HomeState extends State<_Home> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(localisation.appTitle('tarot')),
+        title: Text(_formatTodayDate(localisation.localeName)),
         centerTitle: true,
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -3080,6 +3098,19 @@ class _HomeState extends State<_Home> {
       ),
     );
   }
+
+  String _formatTodayDate(String locale) {
+    final now = DateTime.now();
+
+    switch (locale) {
+      case 'ca':
+        return DateFormat('d \'de\' MMMM \'de\' y', 'ca').format(now);
+      case 'es':
+        return DateFormat('d \'de\' MMMM \'de\' y', 'es').format(now);
+      default:
+        return DateFormat('MMMM d, y', 'en').format(now);
+    }
+  }
 }
 
 // Custom painter for starry night background
@@ -3168,3 +3199,5 @@ class _StarryNightPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+

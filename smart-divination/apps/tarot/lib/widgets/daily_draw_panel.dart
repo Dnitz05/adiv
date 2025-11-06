@@ -34,19 +34,16 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.cosmicPurple.withValues(alpha: 0.9),
-            TarotTheme.cosmicAccent.withValues(alpha: 0.9),
-          ],
+        color: TarotTheme.midnightBlue,
+        border: Border.all(
+          color: TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
-            blurRadius: 28,
-            offset: const Offset(0, 18),
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -60,11 +57,11 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.15),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.auto_awesome,
-                  color: Colors.white,
+                  color: TarotTheme.cosmicAccent,
                   size: 20,
                 ),
               ),
@@ -76,7 +73,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     Text(
                       _getDailyDrawTitle(),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
+                        color: TarotTheme.moonlight,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -84,7 +81,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     Text(
                       _getDailyDrawSubtitle(),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white70,
+                        color: TarotTheme.stardust,
                       ),
                     ),
                   ],
@@ -96,9 +93,9 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           SizedBox(
             height: 200,
             child: widget.isLoading
-                ? const Center(
+                ? Center(
                     child: CircularProgressIndicator(
-                      color: Colors.white,
+                      color: TarotTheme.cosmicAccent,
                       strokeWidth: 2,
                     ),
                   )
@@ -132,8 +129,8 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
             FilledButton.icon(
               onPressed: widget.onInterpret,
               style: FilledButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: TarotTheme.cosmicPurple,
+                backgroundColor: TarotTheme.cosmicBlue,
+                foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 14,

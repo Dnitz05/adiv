@@ -49,8 +49,6 @@ class LunarHomePanel extends StatelessWidget {
             const SizedBox(height: 16),
             _buildCalendarStrip(context),
             const SizedBox(height: 16),
-            _buildRecommendedSpreads(context, day),
-            const SizedBox(height: 16),
             _buildSessionsSummary(context, day),
           ],
         );
@@ -217,34 +215,65 @@ class LunarHomePanel extends StatelessWidget {
                 ),
               ),
             ],
-            const SizedBox(height: 16),
-            OutlinedButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => LunarCalendarDialog(
-                    controller: controller,
-                    strings: strings,
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-                side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+            // Recommended spreads integradas aquí
+            if (day.recommendedSpreads.isNotEmpty) ...[
+              const SizedBox(height: 20),
+              Divider(
+                color: Colors.white.withValues(alpha: 0.2),
+                thickness: 1,
               ),
-              icon: const Icon(Icons.calendar_month, size: 18),
-              label: Text(
-                _getCalendarButtonText(),
-                style: const TextStyle(
+              const SizedBox(height: 16),
+              Text(
+                strings.lunarPanelRecommendedTitle,
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
                 ),
               ),
-            ),
+              const SizedBox(height: 4),
+              Text(
+                strings.lunarPanelRecommendedSubtitle,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: Colors.white70,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: day.recommendedSpreads
+                    .map(TarotSpreads.getById)
+                    .whereType<TarotSpread>()
+                    .map((spread) {
+                  final spreadName = _localisedSpreadName(spread);
+                  return FilledButton.icon(
+                    onPressed: onSelectSpread == null
+                        ? null
+                        : () => onSelectSpread!(spread.id),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white.withValues(alpha: 0.2),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    icon: const Icon(Icons.auto_awesome, size: 16),
+                    label: Text(
+                      strings.lunarPanelUseSpread(spreadName),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
           ],
         ),
       ),
@@ -265,14 +294,50 @@ class LunarHomePanel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header row con título y botón
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Text(
-            strings.lunarPanelCalendarTitle,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: TarotTheme.cosmicPurple,
-                  fontWeight: FontWeight.w600,
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  strings.lunarPanelCalendarTitle,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: TarotTheme.cosmicPurple,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => LunarCalendarDialog(
+                      controller: controller,
+                      strings: strings,
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: TarotTheme.cosmicAccent,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                icon: const Icon(Icons.calendar_month, size: 16),
+                label: Text(
+                  _getCalendarButtonText(),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 8),
@@ -283,6 +348,7 @@ class LunarHomePanel extends StatelessWidget {
             itemCount: range.length,
             padding: const EdgeInsets.symmetric(horizontal: 4),
             separatorBuilder: (_, __) => const SizedBox(width: 10),
+            physics: const PageScrollPhysics(), // Swipe por páginas
             itemBuilder: (context, index) {
               final item = range[index];
               final dayDate = _normalizeDate(item.date);
@@ -382,78 +448,6 @@ class LunarHomePanel extends StatelessWidget {
     );
   }
 
-  Widget _buildRecommendedSpreads(BuildContext context, LunarDayModel day) {
-    final spreads = day.recommendedSpreads
-        .map(TarotSpreads.getById)
-        .whereType<TarotSpread>()
-        .toList(growable: false);
-
-    if (spreads.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 18,
-            offset: const Offset(0, 12),
-            color: Colors.black.withValues(alpha: 0.05),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            strings.lunarPanelRecommendedTitle,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: TarotTheme.cosmicPurple,
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            strings.lunarPanelRecommendedSubtitle,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: TarotTheme.cosmicBlue,
-                  height: 1.4,
-                ),
-          ),
-          const SizedBox(height: 14),
-          Wrap(
-            spacing: 12,
-            runSpacing: 12,
-            children: spreads.map((spread) {
-              final spreadName = _localisedSpreadName(spread);
-              return FilledButton.icon(
-                onPressed: onSelectSpread == null
-                    ? null
-                    : () => onSelectSpread!(spread.id),
-                style: FilledButton.styleFrom(
-                  backgroundColor: TarotTheme.cosmicAccent,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                icon: const Icon(Icons.auto_awesome, size: 18),
-                label: Text(
-                  strings.lunarPanelUseSpread(spreadName),
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildSessionsSummary(BuildContext context, LunarDayModel day) {
     final sessionCount = day.sessionCount;
@@ -600,3 +594,5 @@ class LunarHomePanel extends StatelessWidget {
   static DateTime _normalizeDate(DateTime value) =>
       DateTime.utc(value.year, value.month, value.day);
 }
+
+
