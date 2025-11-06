@@ -20,7 +20,6 @@ import { isUsingGemini } from '../../../lib/services/ai-provider';
 import { callGemini } from '../../../lib/services/gemini-ai';
 
 const METRICS_PATH = '/api/chat/general';
-const ALLOW_HEADER_VALUE = 'OPTIONS, POST';
 
 // Use DeepSeek Chat for general conversation
 const DEFAULT_MODEL = process.env.DEEPSEEK_MODEL?.trim() ?? 'deepseek-chat';
@@ -56,17 +55,19 @@ export default async function handler(
 ) {
   const requestId = createRequestId();
 
-  applyCorsHeaders(res, ALLOW_HEADER_VALUE);
+  applyCorsHeaders(res);
   applyStandardResponseHeaders(res);
 
   if (req.method === 'OPTIONS') {
-    return handleCorsPreflight(res);
+    return handleCorsPreflight(req, res);
   }
 
   if (req.method !== 'POST') {
-    return sendJsonError(res, 405, 'METHOD_NOT_ALLOWED', 'Method not allowed', {
-      allowedMethods: ['POST'],
+    return sendJsonError(res, 405, {
+      code: 'METHOD_NOT_ALLOWED',
+      message: 'Method not allowed',
       requestId,
+      details: { allowedMethods: ['POST'] },
     });
   }
 
@@ -74,7 +75,6 @@ export default async function handler(
     const { data: body, auth } = await parseApiRequest<ChatRequestBody>(
       req,
       chatRequestSchema,
-      requestId,
     );
 
     log('info', `Chat request from user ${body.userId}`, {
@@ -98,7 +98,7 @@ export default async function handler(
     return res.status(200).json(
       createApiResponse({
         reply,
-      }, requestId)
+      }, { requestId })
     );
   } catch (error) {
     return handleApiError(res, error, requestId);
