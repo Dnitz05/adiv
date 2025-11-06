@@ -690,6 +690,7 @@ class _HomeState extends State<_Home> {
   List<TarotCard>? _dailyCards;
   bool _loadingDailyDraw = false;
   int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Archive, 4=Settings
+  late final Future<DailyQuote?> _dailyQuoteFuture;
 
   static const List<String> _supportedQuestionLocales = <String>[
     'ca',
@@ -793,6 +794,8 @@ class _HomeState extends State<_Home> {
   void initState() {
     super.initState();
     _lunarController = LunarCycleController();
+    // Memoize daily quote future to prevent repeated asset loads
+    _dailyQuoteFuture = DailyQuoteService.getTodayQuote();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadAll();
     });
@@ -842,8 +845,8 @@ class _HomeState extends State<_Home> {
           throw e;
         }),
 
-        // Daily draw
-        _generateDailyDraw().then((_) {
+        // Daily draw with userId to avoid re-fetch
+        _generateDailyDraw(userId: userId).then((_) {
           debugPrint('[Startup] Daily draw generated');
         }).catchError((e) {
           debugPrint('[Startup] Daily draw error: $e');
@@ -914,7 +917,7 @@ class _HomeState extends State<_Home> {
     }
   }
 
-  Future<void> _generateDailyDraw() async {
+  Future<void> _generateDailyDraw({String? userId}) async {
     if (_loadingDailyDraw) {
       return;
     }
@@ -925,10 +928,12 @@ class _HomeState extends State<_Home> {
 
     try {
       // Draw 3 cards for the daily draw using the API
+      // Pass userId to avoid re-fetching in drawCards
       final response = await drawCards(
         count: 3,
         allowReversed: true,
         spread: 'three_card',
+        userId: userId,
       );
 
       if (!mounted) {
@@ -1698,7 +1703,7 @@ class _HomeState extends State<_Home> {
     final locale = Localizations.localeOf(context).languageCode;
 
     return FutureBuilder<DailyQuote?>(
-      future: DailyQuoteService.getTodayQuote(),
+      future: _dailyQuoteFuture,
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.data == null) {
           return const SizedBox.shrink();
