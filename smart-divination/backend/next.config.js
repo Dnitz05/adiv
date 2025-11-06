@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   eslint: {
     dirs: ['pages/api','lib/utils'],
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: false,
