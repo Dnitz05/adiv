@@ -32,18 +32,18 @@ class ChatMessageBubble extends StatelessWidget {
           gradient: message.isUser
               ? LinearGradient(
                   colors: [
-                    TarotTheme.cosmicBlue,
-                    TarotTheme.cosmicAccent,
+                    TarotTheme.cosmicBlue.withValues(alpha: 0.9),
+                    TarotTheme.cosmicAccent.withValues(alpha: 0.9),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 )
               : null,
-          color: message.isUser ? null : TarotTheme.midnightBlue,
+          color: message.isUser ? null : Colors.white,
           border: message.isUser
               ? null
               : Border.all(
-                  color: TarotTheme.twilightPurple.withValues(alpha: 0.3),
+                  color: const Color(0xFFE0E0E0),
                   width: 1,
                 ),
           borderRadius: BorderRadius.only(
@@ -70,7 +70,7 @@ class ChatMessageBubble extends StatelessWidget {
               style: TextStyle(
                 color: message.isUser
                     ? Colors.white
-                    : TarotTheme.moonlight,
+                    : const Color(0xFF1A1A1A),
                 fontSize: 15,
                 height: 1.4,
               ),
@@ -87,7 +87,7 @@ class ChatMessageBubble extends StatelessWidget {
                     fontSize: 11,
                     color: message.isUser
                         ? Colors.white.withValues(alpha: 0.7)
-                        : TarotTheme.stardust.withValues(alpha: 0.8),
+                        : const Color(0xFF757575),
                   ),
                 ),
                 if (message.isUser) ...[

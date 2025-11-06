@@ -60,9 +60,9 @@ class _TypingIndicatorState extends State<TypingIndicator>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: Color(0xFF1A1530), // TarotTheme.midnightBlue
+              color: Colors.white,
               border: Border.all(
-                color: Color(0x4D3D3055), // TarotTheme.twilightPurple with alpha 0.3
+                color: const Color(0xFFE0E0E0),
                 width: 1,
               ),
               borderRadius: const BorderRadius.only(
@@ -136,7 +136,7 @@ class _BouncingDot extends StatelessWidget {
           height: 8,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Color(0xFF9B87D9).withValues(alpha: opacity), // TarotTheme.cosmicAccent
+            color: const Color(0xFF757575).withValues(alpha: opacity), // Grey dots
           ),
         ),
       ),

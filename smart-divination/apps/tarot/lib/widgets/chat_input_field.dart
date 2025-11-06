@@ -66,10 +66,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
-        color: TarotTheme.midnightBlue,
+        color: Colors.white,
         border: Border(
           top: BorderSide(
-            color: TarotTheme.twilightPurple.withValues(alpha: 0.3),
+            color: const Color(0xFFE0E0E0),
             width: 1,
           ),
         ),
@@ -91,28 +91,45 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 onSubmitted: (_) => _handleSend(),
                 decoration: InputDecoration(
                   hintText: _getHintText(),
-                  hintStyle: TextStyle(
-                    color: TarotTheme.stardust.withValues(alpha: 0.6),
+                  hintStyle: const TextStyle(
+                    color: Color(0xFF9E9E9E),
                     fontSize: 15,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide.none,
+                    borderSide: const BorderSide(
+                      color: Color(0xFFE0E0E0),
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    borderSide: const BorderSide(
+                      color: Color(0xFFE0E0E0),
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    borderSide: BorderSide(
+                      color: TarotTheme.cosmicAccent,
+                      width: 1.5,
+                    ),
                   ),
                   filled: true,
                   fillColor: widget.enabled
-                      ? TarotTheme.cosmicPurple
-                      : TarotTheme.cosmicPurple.withValues(alpha: 0.5),
+                      ? const Color(0xFFF5F5F7)
+                      : const Color(0xFFE0E0E0),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 18,
                     vertical: 12,
                   ),
                   isDense: true,
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15,
                   height: 1.4,
-                  color: TarotTheme.moonlight,
+                  color: Color(0xFF1A1A1A),
                 ),
               ),
             ),

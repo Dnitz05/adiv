@@ -73,7 +73,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TarotTheme.deepNight,
+      backgroundColor: const Color(0xFFF5F5F7), // Light grey background
       appBar: widget.showAppBar ? _buildAppBar() : null,
       body: Column(
         children: [
@@ -98,10 +98,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: TarotTheme.midnightBlue,
-      elevation: 0,
+      backgroundColor: Colors.white,
+      elevation: 0.5,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: TarotTheme.moonlight),
+        icon: const Icon(Icons.arrow_back, color: Color(0xFF1A1A1A)),
         onPressed: () => Navigator.pop(context),
       ),
       title: Row(
@@ -114,8 +114,8 @@ class _ChatScreenState extends State<ChatScreen> {
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 colors: [
-                  TarotTheme.cosmicAccent,
-                  TarotTheme.cosmicBlue,
+                  TarotTheme.cosmicAccent.withValues(alpha: 0.8),
+                  TarotTheme.cosmicBlue.withValues(alpha: 0.8),
                 ],
               ),
             ),
@@ -133,8 +133,8 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Text(
                   _getAssistantName(),
-                  style: TextStyle(
-                    color: TarotTheme.moonlight,
+                  style: const TextStyle(
+                    color: Color(0xFF1A1A1A),
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
