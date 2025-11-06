@@ -2844,12 +2844,19 @@ class _HomeState extends State<_Home> {
     const double topSpacing =
         12.0; // Reduced from 32.0 for less space below AppBar
 
-    // Build content based on whether there's a draw or not
+    // Build content based on selected tab and draw state
     Widget bodyContent;
     Widget? fullScreenOverlay;
 
     if (_initialising) {
       bodyContent = const Center(child: CircularProgressIndicator());
+    } else if (_selectedBottomNavIndex == 1 && _userId != null && _userId!.isNotEmpty) {
+      // Chat screen (shown inside main scaffold, no app bar)
+      bodyContent = ChatScreen(
+        userId: _userId!,
+        strings: localisation,
+        showAppBar: false,
+      );
     } else if (!hasDraw) {
       // Initial state: lunar panel, centered logo and draw form
       bodyContent = ListView(
@@ -3013,15 +3020,9 @@ class _HomeState extends State<_Home> {
                   ),
                 );
               } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatScreen(
-                      userId: userId,
-                      strings: localisation,
-                    ),
-                  ),
-                );
+                setState(() {
+                  _selectedBottomNavIndex = 1;
+                });
               }
               break;
             case 2: // Spreads

@@ -23,10 +23,12 @@ class ChatScreen extends StatefulWidget {
     super.key,
     required this.userId,
     required this.strings,
+    this.showAppBar = true,
   });
 
   final String userId;
   final CommonStrings strings;
+  final bool showAppBar;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -72,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TarotTheme.deepNight,
-      appBar: _buildAppBar(),
+      appBar: widget.showAppBar ? _buildAppBar() : null,
       body: Column(
         children: [
           // Messages list
