@@ -1,150 +1,306 @@
 <svg viewBox="0 0 300 527" xmlns="http://www.w3.org/2000/svg">
-  <!-- Dark indigo/deep purple solid background -->
-  <rect width="300" height="527" fill="#231b4b"/>
+  <defs>
+    <!-- Deep celestial background gradient -->
+    <radialGradient id="bgGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#2d1b4e;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#1f1439;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f0820;stop-opacity:1" />
+    </radialGradient>
 
-  <!-- Outer border (thin double border in soft ivory) -->
-  <rect x="15" y="15" width="270" height="497"
-        fill="none" stroke="#f5f0e8" stroke-width="1.5" rx="8"/>
+    <!-- Luxury gold foil gradient -->
+    <linearGradient id="goldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4e4c1;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f9f6e8;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b7355;stop-opacity:1" />
+    </linearGradient>
 
-  <!-- Inner border -->
-  <rect x="22" y="22" width="256" height="483"
-        fill="none" stroke="#f5f0e8" stroke-width="1" rx="6"/>
+    <!-- Warm gold gradient -->
+    <linearGradient id="warmGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
 
-  <!-- Radial lines from center (subtle, mystical effect) -->
-  <g opacity="0.3" stroke="#f5f0e8" stroke-width="0.5">
-    <!-- 0° (right) -->
-    <line x1="150" y1="263.5" x2="265" y2="263.5"/>
-    <!-- 45° (top-right) -->
-    <line x1="150" y1="263.5" x2="235" y2="148.5"/>
-    <!-- 90° (top) -->
-    <line x1="150" y1="263.5" x2="150" y2="45"/>
-    <!-- 135° (top-left) -->
-    <line x1="150" y1="263.5" x2="65" y2="148.5"/>
-    <!-- 180° (left) -->
-    <line x1="150" y1="263.5" x2="35" y2="263.5"/>
-    <!-- 225° (bottom-left) -->
-    <line x1="150" y1="263.5" x2="65" y2="378.5"/>
-    <!-- 270° (bottom) -->
-    <line x1="150" y1="263.5" x2="150" y2="482"/>
-    <!-- 315° (bottom-right) -->
-    <line x1="150" y1="263.5" x2="235" y2="378.5"/>
+    <!-- Silver highlights -->
+    <linearGradient id="silver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f0e8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#c0c0c0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8e8e8;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Central mandala glow -->
+    <radialGradient id="mandalaGlow">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:0.6" />
+      <stop offset="40%" style="stop-color:#d4af37;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#2d1b4e;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Ornate pattern for corners -->
+    <pattern id="ornatePattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="1" fill="#d4af37" opacity="0.3"/>
+      <circle cx="0" cy="0" r="0.5" fill="#f4e4c1" opacity="0.2"/>
+      <circle cx="20" cy="20" r="0.5" fill="#f4e4c1" opacity="0.2"/>
+    </pattern>
+  </defs>
+
+  <!-- Deep celestial background -->
+  <rect width="300" height="527" fill="url(#bgGradient)"/>
+
+  <!-- Subtle star field -->
+  <g opacity="0.4">
+    <circle cx="45" cy="80" r="0.8" fill="#f5f0e8"/>
+    <circle cx="255" cy="95" r="1" fill="#d4af37"/>
+    <circle cx="70" cy="150" r="0.6" fill="#f4e4c1"/>
+    <circle cx="230" cy="180" r="0.9" fill="#f5f0e8"/>
+    <circle cx="50" cy="240" r="0.7" fill="#d4af37"/>
+    <circle cx="250" cy="270" r="1.1" fill="#f4e4c1"/>
+    <circle cx="80" cy="350" r="0.8" fill="#f5f0e8"/>
+    <circle cx="220" cy="380" r="0.6" fill="#d4af37"/>
+    <circle cx="60" cy="440" r="1" fill="#f4e4c1"/>
+    <circle cx="240" cy="470" r="0.9" fill="#f5f0e8"/>
   </g>
 
-  <!-- Central vertical diamond shape -->
-  <path d="M 150,163.5 L 210,263.5 L 150,363.5 L 90,263.5 Z"
-        fill="none" stroke="#f5f0e8" stroke-width="2"/>
+  <!-- Ornate outer border with filigree -->
+  <g>
+    <!-- Main golden border -->
+    <rect x="10" y="10" width="280" height="507" fill="none"
+          stroke="url(#goldFoil)" stroke-width="3" rx="12"/>
 
-  <!-- Crescent moon (facing left) above sun inside diamond -->
-  <g transform="translate(150, 223.5)">
-    <!-- Crescent moon facing left -->
-    <path d="M -15,-10 A 12 12 0 0 1 -15,10 A 16 16 0 0 0 -15,-10"
-          fill="none" stroke="#f5f0e8" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Inner decorative border -->
+    <rect x="16" y="16" width="268" height="495" fill="none"
+          stroke="url(#silver)" stroke-width="1.5" rx="10" opacity="0.8"/>
+
+    <!-- Innermost border -->
+    <rect x="22" y="22" width="256" height="483" fill="none"
+          stroke="url(#goldFoil)" stroke-width="0.8" rx="8" opacity="0.6"/>
   </g>
 
-  <!-- Small sun disk with short straight rays -->
-  <g transform="translate(150, 303.5)">
-    <!-- Sun circle -->
-    <circle r="10" fill="none" stroke="#f5f0e8" stroke-width="2"/>
+  <!-- Ornate corner decorations (filigree) -->
+  <g stroke="url(#goldFoil)" stroke-width="1.5" fill="none">
+    <!-- Top-Left Corner -->
+    <path d="M 28,28 L 28,55 M 28,28 L 55,28"/>
+    <path d="M 32,32 Q 32,45 45,45 M 32,32 Q 45,32 45,45"/>
+    <circle cx="38" cy="38" r="4" stroke-width="1"/>
 
-    <!-- 12 straight rays -->
-    <!-- 0° -->
-    <line x1="14" y1="0" x2="22" y2="0" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 30° -->
-    <line x1="12.1" y1="-7" x2="19.1" y2="-11" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 60° -->
-    <line x1="7" y1="-12.1" x2="11" y2="-19.1" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 90° -->
-    <line x1="0" y1="-14" x2="0" y2="-22" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 120° -->
-    <line x1="-7" y1="-12.1" x2="-11" y2="-19.1" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 150° -->
-    <line x1="-12.1" y1="-7" x2="-19.1" y2="-11" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 180° -->
-    <line x1="-14" y1="0" x2="-22" y2="0" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 210° -->
-    <line x1="-12.1" y1="7" x2="-19.1" y2="11" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 240° -->
-    <line x1="-7" y1="12.1" x2="-11" y2="19.1" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 270° -->
-    <line x1="0" y1="14" x2="0" y2="22" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 300° -->
-    <line x1="7" y1="12.1" x2="11" y2="19.1" stroke="#f5f0e8" stroke-width="1.5"/>
-    <!-- 330° -->
-    <line x1="12.1" y1="7" x2="19.1" y2="11" stroke="#f5f0e8" stroke-width="1.5"/>
+    <!-- Top-Right Corner -->
+    <path d="M 272,28 L 272,55 M 272,28 L 245,28"/>
+    <path d="M 268,32 Q 268,45 255,45 M 268,32 Q 255,32 255,45"/>
+    <circle cx="262" cy="38" r="4" stroke-width="1"/>
+
+    <!-- Bottom-Left Corner -->
+    <path d="M 28,499 L 28,472 M 28,499 L 55,499"/>
+    <path d="M 32,495 Q 32,482 45,482 M 32,495 Q 45,495 45,482"/>
+    <circle cx="38" cy="489" r="4" stroke-width="1"/>
+
+    <!-- Bottom-Right Corner -->
+    <path d="M 272,499 L 272,472 M 272,499 L 245,499"/>
+    <path d="M 268,495 Q 268,482 255,482 M 268,495 Q 255,495 255,482"/>
+    <circle cx="262" cy="489" r="4" stroke-width="1"/>
   </g>
 
-  <!-- Subtle halo of dots around central diamond -->
-  <g fill="#f5f0e8">
-    <!-- Top -->
-    <circle cx="150" cy="153.5" r="1"/>
-    <circle cx="140" cy="158.5" r="1"/>
-    <circle cx="160" cy="158.5" r="1"/>
+  <!-- Art Nouveau floral ornaments on sides -->
+  <g opacity="0.7" stroke="url(#goldFoil)" stroke-width="1.2" fill="none">
+    <!-- Left side ornament -->
+    <path d="M 35,160 Q 30,170 35,180 Q 32,175 28,175 M 35,180 Q 30,190 35,200"/>
+    <path d="M 35,165 Q 40,170 35,175 M 35,175 Q 40,180 35,185"/>
 
-    <!-- Right -->
-    <circle cx="220" cy="263.5" r="1"/>
-    <circle cx="215" cy="253.5" r="1"/>
-    <circle cx="215" cy="273.5" r="1"/>
-
-    <!-- Bottom -->
-    <circle cx="150" cy="373.5" r="1"/>
-    <circle cx="140" cy="368.5" r="1"/>
-    <circle cx="160" cy="368.5" r="1"/>
-
-    <!-- Left -->
-    <circle cx="80" cy="263.5" r="1"/>
-    <circle cx="85" cy="253.5" r="1"/>
-    <circle cx="85" cy="273.5" r="1"/>
-
-    <!-- Diagonals -->
-    <circle cx="180" cy="193.5" r="1"/>
-    <circle cx="180" cy="333.5" r="1"/>
-    <circle cx="120" cy="193.5" r="1"/>
-    <circle cx="120" cy="333.5" r="1"/>
+    <!-- Right side ornament -->
+    <path d="M 265,347 Q 270,357 265,367 Q 268,362 272,362 M 265,367 Q 270,377 265,387"/>
+    <path d="M 265,352 Q 260,357 265,362 M 265,362 Q 260,367 265,372"/>
   </g>
 
-  <!-- Symmetric decorative lines around diamond -->
-  <!-- Top horizontal lines -->
-  <line x1="130" y1="173.5" x2="140" y2="173.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
-  <line x1="160" y1="173.5" x2="170" y2="173.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
+  <!-- Central mandala glow effect -->
+  <circle cx="150" cy="263.5" r="140" fill="url(#mandalaGlow)"/>
 
-  <!-- Bottom horizontal lines -->
-  <line x1="130" y1="353.5" x2="140" y2="353.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
-  <line x1="160" y1="353.5" x2="170" y2="353.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
+  <!-- Outer mandala circle with intricate pattern -->
+  <g>
+    <!-- Outermost protection circle -->
+    <circle cx="150" cy="263.5" r="105" fill="none" stroke="url(#goldFoil)" stroke-width="2.5" opacity="0.9"/>
+    <circle cx="150" cy="263.5" r="102" fill="none" stroke="url(#silver)" stroke-width="1" opacity="0.6"/>
 
-  <!-- Left vertical lines -->
-  <line x1="100" y1="253.5" x2="100" y2="243.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
-  <line x1="100" y1="273.5" x2="100" y2="283.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
+    <!-- Geometric sacred pattern ring -->
+    <circle cx="150" cy="263.5" r="95" fill="none" stroke="url(#goldFoil)" stroke-width="1.5" opacity="0.8"/>
 
-  <!-- Right vertical lines -->
-  <line x1="200" y1="253.5" x2="200" y2="243.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
-  <line x1="200" y1="273.5" x2="200" y2="283.5" stroke="#f5f0e8" stroke-width="1" opacity="0.6"/>
+    <!-- Decorative dots ring -->
+    <g fill="url(#goldFoil)" opacity="0.7">
+      <circle cx="150" cy="168.5" r="2"/>
+      <circle cx="217.2" cy="196.3" r="2"/>
+      <circle cx="245" cy="263.5" r="2"/>
+      <circle cx="217.2" cy="330.7" r="2"/>
+      <circle cx="150" cy="358.5" r="2"/>
+      <circle cx="82.8" cy="330.7" r="2"/>
+      <circle cx="55" cy="263.5" r="2"/>
+      <circle cx="82.8" cy="196.3" r="2"/>
+    </g>
 
-  <!-- Corner celestial icons (perfectly symmetric) -->
+    <!-- Intricate star pattern -->
+    <g stroke="url(#goldFoil)" stroke-width="1.5" fill="none" opacity="0.75">
+      <path d="M 150,178.5 L 212,202 L 235,264 L 212,325 L 150,348.5 L 88,325 L 65,264 L 88,202 Z"/>
+    </g>
 
-  <!-- Top-Left: 4-pointed star -->
-  <g transform="translate(45, 60)" stroke="#f5f0e8" stroke-width="1.5" fill="none">
-    <line x1="-8" y1="0" x2="8" y2="0"/>
-    <line x1="0" y1="-8" x2="0" y2="8"/>
-    <circle r="2" fill="#f5f0e8"/>
+    <!-- Inner decorative circle -->
+    <circle cx="150" cy="263.5" r="80" fill="none" stroke="url(#silver)" stroke-width="1.2" opacity="0.7"/>
+
+    <!-- Flower of Life pattern (partial) -->
+    <g stroke="url(#goldFoil)" stroke-width="0.8" fill="none" opacity="0.5">
+      <circle cx="150" cy="263.5" r="25"/>
+      <circle cx="150" cy="238.5" r="25"/>
+      <circle cx="171.65" cy="251" r="25"/>
+      <circle cx="171.65" cy="276" r="25"/>
+      <circle cx="150" cy="288.5" r="25"/>
+      <circle cx="128.35" cy="276" r="25"/>
+      <circle cx="128.35" cy="251" r="25"/>
+    </g>
   </g>
 
-  <!-- Top-Right: Planet with ring (Saturn style) -->
-  <g transform="translate(255, 60)" stroke="#f5f0e8" stroke-width="1.5" fill="none">
-    <circle r="7"/>
-    <ellipse rx="12" ry="3" transform="rotate(-20)"/>
+  <!-- Celestial central diamond -->
+  <g>
+    <!-- Large diamond frame -->
+    <path d="M 150,183.5 L 195,263.5 L 150,343.5 L 105,263.5 Z"
+          fill="none" stroke="url(#goldFoil)" stroke-width="2.5"/>
+
+    <!-- Inner diamond -->
+    <path d="M 150,193.5 L 185,263.5 L 150,333.5 L 115,263.5 Z"
+          fill="none" stroke="url(#silver)" stroke-width="1.5" opacity="0.7"/>
+
+    <!-- Diamond corner ornaments -->
+    <g fill="url(#goldFoil)">
+      <circle cx="150" cy="183.5" r="3"/>
+      <circle cx="195" cy="263.5" r="3"/>
+      <circle cx="150" cy="343.5" r="3"/>
+      <circle cx="105" cy="263.5" r="3"/>
+    </g>
   </g>
 
-  <!-- Bottom-Left: Full moon -->
-  <g transform="translate(45, 467)" stroke="#f5f0e8" stroke-width="1.5" fill="none">
-    <circle r="7"/>
-    <!-- Subtle craters -->
-    <circle cx="-2" cy="-2" r="1.5" opacity="0.6"/>
-    <circle cx="3" cy="1" r="1" opacity="0.6"/>
+  <!-- Ornate Moon (upper) with human face -->
+  <g transform="translate(150, 223)">
+    <!-- Moon crescent base -->
+    <path d="M -18,-15 A 15 15 0 0 1 -18,15 A 20 20 0 0 0 -18,-15"
+          fill="none" stroke="url(#goldFoil)" stroke-width="2.5"/>
+    <path d="M -16,-13 A 13 13 0 0 1 -16,13 A 18 18 0 0 0 -16,-13"
+          fill="none" stroke="url(#silver)" stroke-width="1" opacity="0.6"/>
+
+    <!-- Moon face details -->
+    <g opacity="0.8" stroke="url(#goldFoil)" stroke-width="0.8" fill="none">
+      <!-- Eye -->
+      <circle cx="-10" cy="-3" r="1.5"/>
+      <!-- Nose -->
+      <path d="M -8,0 Q -6,2 -8,3"/>
+      <!-- Smile -->
+      <path d="M -12,4 Q -9,6 -6,4"/>
+    </g>
+
+    <!-- Moon ornamental rays -->
+    <g stroke="url(#silver)" stroke-width="1" opacity="0.5">
+      <line x1="-22" y1="-8" x2="-26" y2="-12"/>
+      <line x1="-22" y1="0" x2="-28" y2="0"/>
+      <line x1="-22" y1="8" x2="-26" y2="12"/>
+    </g>
   </g>
 
-  <!-- Bottom-Right: 5-pointed star -->
-  <g transform="translate(255, 467)" fill="#f5f0e8">
-    <path d="M 0,-8 L -2.4,-2.4 L -8,0 L -2.4,2.4 L 0,8 L 2.4,2.4 L 8,0 L 2.4,-2.4 Z"/>
-    <circle r="2" fill="#231b4b"/>
+  <!-- Ornate Sun (lower) with human face -->
+  <g transform="translate(150, 304)">
+    <!-- Sun circle base -->
+    <circle r="14" fill="none" stroke="url(#goldFoil)" stroke-width="2.5"/>
+    <circle r="12" fill="none" stroke="url(#warmGold)" stroke-width="1.5" opacity="0.7"/>
+
+    <!-- Sun face details -->
+    <g opacity="0.9" stroke="url(#goldFoil)" stroke-width="0.8" fill="url(#warmGold)">
+      <!-- Eyes -->
+      <circle cx="-4" cy="-2" r="1.2"/>
+      <circle cx="4" cy="-2" r="1.2"/>
+      <!-- Nose -->
+      <line x1="0" y1="-1" x2="0" y2="2"/>
+      <!-- Smile -->
+      <path d="M -4,4 Q 0,6 4,4" fill="none"/>
+    </g>
+
+    <!-- Ornate sun rays (16 rays, alternating long/short) -->
+    <g stroke="url(#goldFoil)" stroke-width="2" stroke-linecap="round">
+      <!-- Long rays -->
+      <line x1="16" y1="0" x2="26" y2="0"/>
+      <line x1="11.3" y1="11.3" x2="18.4" y2="18.4"/>
+      <line x1="0" y1="16" x2="0" y2="26"/>
+      <line x1="-11.3" y1="11.3" x2="-18.4" y2="18.4"/>
+      <line x1="-16" y1="0" x2="-26" y2="0"/>
+      <line x1="-11.3" y1="-11.3" x2="-18.4" y2="-18.4"/>
+      <line x1="0" y1="-16" x2="0" y2="-26"/>
+      <line x1="11.3" y1="-11.3" x2="18.4" y2="-18.4"/>
+    </g>
+    <g stroke="url(#warmGold)" stroke-width="1.5" stroke-linecap="round" opacity="0.7">
+      <!-- Short rays between long ones -->
+      <line x1="14.8" y1="5.9" x2="20.5" y2="8.2"/>
+      <line x1="5.9" y1="14.8" x2="8.2" y2="20.5"/>
+      <line x1="-5.9" y1="14.8" x2="-8.2" y2="20.5"/>
+      <line x1="-14.8" y1="5.9" x2="-20.5" y2="8.2"/>
+      <line x1="-14.8" y1="-5.9" x2="-20.5" y2="-8.2"/>
+      <line x1="-5.9" y1="-14.8" x2="-8.2" y2="-20.5"/>
+      <line x1="5.9" y1="-14.8" x2="8.2" y2="-20.5"/>
+      <line x1="14.8" y1="-5.9" x2="20.5" y2="-8.2"/>
+    </g>
+  </g>
+
+  <!-- Decorative halo of stars around diamond -->
+  <g fill="url(#goldFoil)">
+    <path transform="translate(150, 168)" d="M 0,-4 L -1,-1 L -4,0 L -1,1 L 0,4 L 1,1 L 4,0 L 1,-1 Z"/>
+    <path transform="translate(210, 220)" d="M 0,-3 L -0.7,-0.7 L -3,0 L -0.7,0.7 L 0,3 L 0.7,0.7 L 3,0 L 0.7,-0.7 Z"/>
+    <path transform="translate(210, 307)" d="M 0,-3 L -0.7,-0.7 L -3,0 L -0.7,0.7 L 0,3 L 0.7,0.7 L 3,0 L 0.7,-0.7 Z"/>
+    <path transform="translate(150, 359)" d="M 0,-4 L -1,-1 L -4,0 L -1,1 L 0,4 L 1,1 L 4,0 L 1,-1 Z"/>
+    <path transform="translate(90, 307)" d="M 0,-3 L -0.7,-0.7 L -3,0 L -0.7,0.7 L 0,3 L 0.7,0.7 L 3,0 L 0.7,-0.7 Z"/>
+    <path transform="translate(90, 220)" d="M 0,-3 L -0.7,-0.7 L -3,0 L -0.7,0.7 L 0,3 L 0.7,0.7 L 3,0 L 0.7,-0.7 Z"/>
+  </g>
+
+  <!-- Subtle connecting lines (mystical energy) -->
+  <g stroke="url(#goldFoil)" stroke-width="0.5" opacity="0.3">
+    <line x1="150" y1="168" x2="150" y2="183.5"/>
+    <line x1="210" y1="220" x2="195" y2="235"/>
+    <line x1="210" y1="307" x2="195" y2="292"/>
+    <line x1="150" y1="359" x2="150" y2="343.5"/>
+    <line x1="90" y1="307" x2="105" y2="292"/>
+    <line x1="90" y1="220" x2="105" y2="235"/>
+  </g>
+
+  <!-- Astrological symbols in corners -->
+  <g opacity="0.8">
+    <!-- Top-Left: Mercury symbol -->
+    <g transform="translate(45, 75)" stroke="url(#goldFoil)" stroke-width="1.5" fill="none">
+      <circle r="5"/>
+      <path d="M 0,-5 L 0,-12"/>
+      <path d="M -4,-9 L 4,-9"/>
+      <path d="M -3,5 Q 0,8 3,5"/>
+    </g>
+
+    <!-- Top-Right: Venus symbol -->
+    <g transform="translate(255, 75)" stroke="url(#goldFoil)" stroke-width="1.5" fill="none">
+      <circle r="5"/>
+      <path d="M 0,5 L 0,12"/>
+      <path d="M -4,10 L 4,10"/>
+    </g>
+
+    <!-- Bottom-Left: Mars symbol -->
+    <g transform="translate(45, 452)" stroke="url(#goldFoil)" stroke-width="1.5" fill="none">
+      <circle r="5"/>
+      <path d="M 3.5,-3.5 L 10,-10"/>
+      <path d="M 10,-7 L 10,-10 L 7,-10"/>
+    </g>
+
+    <!-- Bottom-Right: Jupiter symbol -->
+    <g transform="translate(255, 452)" stroke="url(#goldFoil)" stroke-width="1.5" fill="none">
+      <path d="M -6,-8 L -6,8"/>
+      <path d="M -6,0 L 6,0"/>
+      <path d="M 0,-4 L 6,-8"/>
+    </g>
+  </g>
+
+  <!-- Subtle shimmer particles -->
+  <g fill="url(#silver)" opacity="0.5">
+    <circle cx="120" cy="140" r="0.8"/>
+    <circle cx="180" cy="160" r="1"/>
+    <circle cx="110" cy="380" r="0.9"/>
+    <circle cx="190" cy="400" r="0.7"/>
+    <circle cx="100" cy="263" r="0.8"/>
+    <circle cx="200" cy="263" r="1"/>
   </g>
 </svg>
