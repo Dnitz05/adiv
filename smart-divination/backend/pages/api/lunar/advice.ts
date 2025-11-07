@@ -28,6 +28,10 @@ import {
   hasServiceCredentials,
   insertLunarAdviceRecord,
 } from '../../../lib/utils/supabase';
+import {
+  getPhaseKnowledge,
+  getZodiacKnowledge,
+} from '../../../lib/data/lunar-guidance-knowledge';
 
 const SUPPORTED_LOCALES = new Set(['en', 'es', 'ca']);
 const MAX_LOOKAHEAD_DAYS = 32;
@@ -240,18 +244,42 @@ async function findNextPhaseDay(
 
 function buildSystemPrompt(locale: 'en' | 'es' | 'ca'): string {
   const base = {
-    en: `You are Luna, a calm and mystical lunar coach. You blend astronomy and intuition to guide daily actions.`,
-    es: `Eres Luna, una guía lunar suave y mística. Combinas astronomía e intuición para orientar acciones diarias.`,
-    ca: `Ets Lluna, una guia lunar serena i mística. Combines astronomia i intuïció per orientar accions diàries.`,
+    en: `You are Luna, a calm and mystical lunar coach. You blend traditional astrology and lunar wisdom to guide daily actions.`,
+    es: `Eres Luna, una guía lunar suave y mística. Combinas astrología tradicional y sabiduría lunar para orientar acciones diarias.`,
+    ca: `Ets Lluna, una guia lunar serena i mística. Combines astrologia tradicional i saviesa lunar per orientar accions diàries.`,
+  };
+
+  const authenticity = {
+    en: `AUTHENTICITY POLICY:
+- Base ALL advice on documented traditions: Hellenistic Astrology, Western Modern Astrology, Wicca/Witchcraft moon wisdom
+- NEVER invent meanings or make unsupported claims
+- Reference specific astrological traditions when relevant
+- Traditional moon phase knowledge comes from Wicca and Western Astrology
+- Zodiac interpretations based on Hellenistic and Western Modern schools`,
+    es: `POLÍTICA DE AUTENTICIDAD:
+- Basa TODO el consejo en tradiciones documentadas: Astrología Helenística, Astrología Occidental Moderna, sabiduría lunar Wicca/Brujería
+- NUNCA inventes significados ni hagas afirmaciones sin fundamento
+- Referencia tradiciones astrológicas específicas cuando sea relevante
+- El conocimiento tradicional de fases lunares proviene de Wicca y Astrología Occidental
+- Interpretaciones zodiacales basadas en escuelas Helenística y Occidental Moderna`,
+    ca: `POLÍTICA D'AUTENTICITAT:
+- Basa TOT el consell en tradicions documentades: Astrologia Hel·lenística, Astrologia Occidental Moderna, saviesa lunar Wicca/Bruixeria
+- MAI inventis significats ni facis afirmacions sense fonament
+- Referència tradicions astrològiques específiques quan sigui rellevant
+- El coneixement tradicional de fases lunars prové de Wicca i Astrologia Occidental
+- Interpretacions zodiacals basades en escoles Hel·lenística i Occidental Moderna`,
   };
 
   return `${base[locale]}
 
+${authenticity[locale]}
+
 Principles:
-- Speak warmly, poetically, but keep guidance actionable.
-- Tie advice to the current lunar phase, zodiac sign, illumination, and topic provided.
-- Keep sentences concise; avoid lists longer than 3 items.
-- NEVER give medical or legal recommendations.`;
+- Speak warmly, poetically, but keep guidance actionable
+- Tie advice to the traditional meanings provided for the lunar phase and zodiac sign
+- Use the "bestFor" and "avoid" guidance from traditional sources
+- Keep sentences concise; avoid lists longer than 3 items
+- NEVER give medical or legal recommendations`;
 }
 
 function buildUserPrompt(options: {
@@ -263,14 +291,42 @@ function buildUserPrompt(options: {
 }): string {
   const { topic, intention, locale, current, nextPhase } = options;
 
+  // Get traditional knowledge for current phase and zodiac
+  const phaseKnowledge = getPhaseKnowledge(current.phaseId);
+  const zodiacKnowledge = getZodiacKnowledge(current.zodiac.id);
+
+  const phaseInfo = phaseKnowledge ? [
+    `\nTRADITIONAL PHASE KNOWLEDGE (${current.phaseName}):`,
+    `Meaning: ${phaseKnowledge.meaning[locale]}`,
+    `Energy: ${phaseKnowledge.energy[locale]}`,
+    `Best for: ${phaseKnowledge.bestFor[locale].join(', ')}`,
+    phaseKnowledge.avoid[locale].length > 0
+      ? `Avoid: ${phaseKnowledge.avoid[locale].join(', ')}`
+      : null,
+  ].filter(Boolean).join('\n') : '';
+
+  const zodiacInfo = zodiacKnowledge ? [
+    `\nTRADITIONAL ZODIAC KNOWLEDGE (Moon in ${current.zodiac.name}):`,
+    `Emotional tone: ${zodiacKnowledge.emotionalTone[locale]}`,
+    `Focus areas: ${zodiacKnowledge.focusAreas[locale].join(', ')}`,
+    `Element: ${zodiacKnowledge.element}`,
+  ].join('\n') : '';
+
+  const nextPhaseKnowledge = getPhaseKnowledge(nextPhase.phaseId);
+  const nextPhaseInfo = nextPhaseKnowledge ? [
+    `\nNEXT PHASE PREPARATION (${nextPhase.phaseName}):`,
+    `Meaning: ${nextPhaseKnowledge.meaning[locale]}`,
+    `Energy: ${nextPhaseKnowledge.energy[locale]}`,
+  ].join('\n') : '';
+
   const schemaDescription = `{
-  "focus": "One evocative sentence describing the day's lunar focus",
+  "focus": "One evocative sentence describing the day's lunar focus based on traditional knowledge",
   "today": ["Actionable suggestion 1", "Actionable suggestion 2", "Optional third suggestion"],
   "next": {
     "phaseId": "lunar phase ID e.g. new_moon",
     "date": "ISO date YYYY-MM-DD",
     "name": "Localized phase name",
-    "advice": "Short preparation tip for that phase"
+    "advice": "Short preparation tip for that phase based on traditional meaning"
   }
 }`;
 
@@ -279,10 +335,17 @@ function buildUserPrompt(options: {
     `Date: ${current.date}`,
     `Topic: ${topic}`,
     intention ? `User intention: ${intention}` : null,
-    `Current phase: ${current.phaseName} (${current.phaseId}) ${current.phaseEmoji}`,
+    '',
+    `CURRENT LUNAR CONTEXT:`,
+    `Phase: ${current.phaseName} (${current.phaseId}) ${current.phaseEmoji}`,
     `Illumination: ${current.illumination.toFixed(1)}%`,
-    `Zodiac: ${current.zodiac.name} (${current.zodiac.element})`,
-    `Next distinct phase: ${nextPhase.phaseName} on ${nextPhase.date} (${nextPhase.phaseId})`,
+    `Zodiac: ${current.zodiac.name} (${current.zodiac.element}) ${current.zodiac.symbol}`,
+    phaseInfo,
+    zodiacInfo,
+    nextPhaseInfo,
+    '',
+    `TASK: Generate personalized lunar guidance for the topic "${topic}" based on the traditional knowledge provided above.`,
+    `The advice should integrate both the phase energy and zodiac influence.`,
     '',
     'Respond ONLY with valid JSON matching this schema:',
     schemaDescription,
@@ -371,55 +434,81 @@ function buildFallbackAdvice(options: {
 }): LunarAdvicePayload {
   const { locale, current, nextPhase, intention } = options;
 
-  const phaseLabel = current.phaseName.toLowerCase();
-  const zodiacLabel = current.zodiac.name.toLowerCase();
+  // Get traditional knowledge
+  const phaseKnowledge = getPhaseKnowledge(current.phaseId);
+  const nextPhaseKnowledge = getPhaseKnowledge(nextPhase.phaseId);
 
-  const focusMap: Record<'en' | 'es' | 'ca', string> = {
-    en: 'Let the ' + phaseLabel + ' guide your ' + zodiacLabel + ' heart.',
-    es: 'Deja que la ' + phaseLabel + ' inspire tu corazon ' + zodiacLabel + '.',
-    ca: 'Deixa que la ' + phaseLabel + ' inspiri el teu cor ' + zodiacLabel + '.',
-  };
+  // Build focus based on traditional meaning
+  let focus: string;
+  if (phaseKnowledge) {
+    const energyWord = phaseKnowledge.energy[locale].split(',')[0].toLowerCase();
+    focus = locale === 'en'
+      ? `Today's ${current.phaseName} brings ${energyWord} energy in ${current.zodiac.name}.`
+      : locale === 'es'
+      ? `La ${current.phaseName} de hoy trae energía ${energyWord} en ${current.zodiac.name}.`
+      : `La ${current.phaseName} d'avui porta energia ${energyWord} a ${current.zodiac.name}.`;
+  } else {
+    focus = locale === 'en'
+      ? `The ${current.phaseName} guides your path today.`
+      : locale === 'es'
+      ? `La ${current.phaseName} guía tu camino hoy.`
+      : `La ${current.phaseName} guia el teu camí avui.`;
+  }
 
-  const todayBase: Record<'en' | 'es' | 'ca', string[]> = {
-    en: [
-      'Take a mindful moment to honour your intention.',
-      'Act in small, meaningful steps while the moon is ' + phaseLabel + '.',
-    ],
-    es: [
-      'Reserva un momento consciente para honrar tu intencion.',
-      'Da pasos pequenos y sentidos mientras la luna esta ' + phaseLabel + '.',
-    ],
-    ca: [
-      'Reserva un instant conscient per honrar la teva intencio.',
-      'Fes passos petits i sentits mentre la lluna es ' + phaseLabel + '.',
-    ],
-  };
+  // Build suggestions based on traditional "bestFor"
+  const todaySuggestions: string[] = [];
+  if (phaseKnowledge && phaseKnowledge.bestFor[locale].length >= 2) {
+    todaySuggestions.push(
+      phaseKnowledge.bestFor[locale][0],
+      phaseKnowledge.bestFor[locale][1]
+    );
+  } else {
+    // Generic fallback
+    todaySuggestions.push(
+      locale === 'en' ? 'Honor this lunar moment with mindful action.'
+        : locale === 'es' ? 'Honra este momento lunar con acción consciente.'
+        : 'Honra aquest moment lunar amb acció conscient.',
+      locale === 'en' ? 'Trust the moon\'s natural rhythm.'
+        : locale === 'es' ? 'Confía en el ritmo natural de la luna.'
+        : 'Confia en el ritme natural de la lluna.'
+    );
+  }
 
-  const nextAdviceMap: Record<'en' | 'es' | 'ca', string> = {
-    en: 'Prepare for the ' + nextPhase.phaseName.toLowerCase() + ' by reflecting on progress so far.',
-    es: 'Preparate para la ' + nextPhase.phaseName.toLowerCase() + ' revisando tus avances.',
-    ca: 'Prepara la ' + nextPhase.phaseName.toLowerCase() + ' revisant els avancos fets.',
-  };
-
-  const todaySuggestions = [...todayBase[locale]];
-
+  // Add intention if provided
   if (intention && todaySuggestions.length < 3) {
     const whisper = {
-      en: 'Whisper your intention: "' + intention + '".',
-      es: 'Susurra tu intencion: "' + intention + '".',
-      ca: 'Murmura la teva intencio: "' + intention + '".',
+      en: `Hold your intention: "${intention}".`,
+      es: `Mantén tu intención: "${intention}".`,
+      ca: `Mantingues la teva intenció: "${intention}".`,
     }[locale];
     todaySuggestions.push(whisper);
   }
 
+  // Build next phase advice based on traditional meaning
+  let nextAdvice: string;
+  if (nextPhaseKnowledge) {
+    const nextMeaning = nextPhaseKnowledge.meaning[locale].split('.')[0];
+    nextAdvice = locale === 'en'
+      ? `As ${nextPhase.phaseName} approaches: ${nextMeaning.toLowerCase()}.`
+      : locale === 'es'
+      ? `Cuando se acerque ${nextPhase.phaseName}: ${nextMeaning.toLowerCase()}.`
+      : `Quan s'acosti ${nextPhase.phaseName}: ${nextMeaning.toLowerCase()}.`;
+  } else {
+    nextAdvice = locale === 'en'
+      ? `Prepare for the ${nextPhase.phaseName} with reflection.`
+      : locale === 'es'
+      ? `Prepárate para ${nextPhase.phaseName} con reflexión.`
+      : `Prepara't per ${nextPhase.phaseName} amb reflexió.`;
+  }
+
   return {
-    focus: focusMap[locale],
+    focus,
     today: todaySuggestions,
     next: {
       phaseId: nextPhase.phaseId,
       date: nextPhase.date,
       name: nextPhase.phaseName,
-      advice: nextAdviceMap[locale],
+      advice: nextAdvice,
     },
   };
 }

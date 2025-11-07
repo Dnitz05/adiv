@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:common/l10n/common_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -26,46 +28,49 @@ class LearnPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final categories = _buildCategories();
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(26),
         gradient: LinearGradient(
+          colors: [
+            TarotTheme.deepNight,
+            TarotTheme.midnightBlue,
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.cosmicAccent,
-            TarotTheme.cosmicBlue,
-          ],
         ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
-            blurRadius: 28,
-            offset: const Offset(0, 18),
+            color: TarotTheme.midnightBlue.withValues(alpha: 0.35),
+            blurRadius: 36,
+            offset: const Offset(0, 20),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(22),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: Colors.white.withValues(alpha: 0.08),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.4),
+                  ),
                 ),
+                padding: const EdgeInsets.all(10),
                 child: const Icon(
-                  Icons.school,
+                  Icons.auto_stories,
                   color: Colors.white,
-                  size: 22,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,15 +80,14 @@ class LearnPanel extends StatelessWidget {
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w800,
-                        letterSpacing: 0.4,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       _getLearnSubtitle(strings),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
-                        height: 1.4,
+                        color: Colors.white.withValues(alpha: 0.85),
+                        height: 1.45,
                       ),
                     ),
                   ],
@@ -94,13 +98,16 @@ class LearnPanel extends StatelessWidget {
                 onPressed: onNavigateToKnowledge,
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
-                  side: BorderSide(color: Colors.white.withValues(alpha: 0.5)),
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  side: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.45),
                   ),
                 ),
-                icon: const Icon(Icons.chevron_right, size: 18),
+                icon: const Icon(Icons.play_arrow_rounded),
                 label: Text(
                   _getHeaderActionLabel(strings),
                   style: const TextStyle(fontWeight: FontWeight.w600),
@@ -108,351 +115,431 @@ class LearnPanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 14,
-            crossAxisSpacing: 14,
-            childAspectRatio: 1.05,
-            children: [
-              _LearnCategory(
-                icon: Icons.style,
-                title: _getCardsTitle(strings),
-                description: _getCardsDescription(strings),
-                onTap: onNavigateToCards,
-                accentColor: TarotTheme.cosmicAccent,
-              ),
-              _LearnCategory(
-                icon: Icons.auto_awesome,
-                title: _getAstrologyTitle(strings),
-                description: _getAstrologyDescription(strings),
-                onTap: onNavigateToAstrology,
-                accentColor: TarotTheme.cosmicBlue,
-              ),
-              _LearnCategory(
-                icon: Icons.grid_view,
-                title: _getSpreadsTitle(strings),
-                description: _getSpreadsDescription(strings),
-                onTap: onNavigateToSpreads,
-                accentColor: TarotTheme.cosmicPurple,
-              ),
-              _LearnCategory(
-                icon: Icons.explore,
-                title: _getFoundationsTitle(strings),
-                description: _getFoundationsDescription(strings),
-                onTap: onNavigateToKnowledge,
-                accentColor: Colors.white,
-                quickLinks: [
-                  _QuickActionLink(label: _getKabbalahChipLabel(strings), onTap: onNavigateToKabbalah),
-                  _QuickActionLink(label: _getMoonChipLabel(strings), onTap: onNavigateToMoonPowers),
-                ],
-              ),
-            ],
+          const SizedBox(height: 28),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth > 620;
+              final itemsPerRow = isWide ? 3 : 2;
+              const gap = 16.0;
+              final itemWidth =
+                  (constraints.maxWidth - (itemsPerRow - 1) * gap) /
+                      itemsPerRow;
+
+              return Wrap(
+                spacing: gap,
+                runSpacing: gap,
+                children: categories
+                    .map(
+                      (category) => SizedBox(
+                        width: itemWidth,
+                        child: _LearnCategoryCard(category: category),
+                      ),
+                    )
+                    .toList(),
+              );
+            },
           ),
         ],
       ),
     );
   }
-}
 
-String _getLearnTitle(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Apren Tarot';
-    case 'es':
-      return 'Aprende Tarot';
-    default:
-      return 'Learn Tarot';
+  List<_LearnCategoryData> _buildCategories() {
+    return [
+      _LearnCategoryData(
+        icon: Icons.style,
+        title: _getCardsTitle(strings),
+        description: _getCardsDescription(strings),
+        onTap: onNavigateToCards,
+        colors: const [Color(0xFFFB7BA2), Color(0xFFFCE043)],
+      ),
+      _LearnCategoryData(
+        icon: Icons.auto_awesome,
+        title: _getAstrologyTitle(strings),
+        description: _getAstrologyDescription(strings),
+        onTap: onNavigateToAstrology,
+        colors: const [Color(0xFF4FACFE), Color(0xFF00F2FE)],
+      ),
+      _LearnCategoryData(
+        icon: Icons.grid_view,
+        title: _getSpreadsTitle(strings),
+        description: _getSpreadsDescription(strings),
+        onTap: onNavigateToSpreads,
+        colors: const [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
+        tags: [
+          _resolveLink(strings, 'basic'),
+          _resolveLink(strings, 'advanced'),
+        ],
+      ),
+      _LearnCategoryData(
+        icon: Icons.psychology_alt,
+        title: _getKnowledgeTitle(strings),
+        description: _getKnowledgeDescription(strings),
+        onTap: onNavigateToKnowledge,
+        colors: const [Color(0xFF833AB4), Color(0xFFFF5F6D)],
+      ),
+      _LearnCategoryData(
+        icon: Icons.brightness_3,
+        title: _getMoonTitle(strings),
+        description: _getMoonDescription(strings),
+        onTap: onNavigateToMoonPowers,
+        colors: const [Color(0xFF00C6FB), Color(0xFF005BEA)],
+        tags: [
+          _resolveLink(strings, 'rituals'),
+        ],
+      ),
+      _LearnCategoryData(
+        icon: Icons.auto_stories,
+        title: _getKabbalahTitle(strings),
+        description: _getKabbalahDescription(strings),
+        onTap: onNavigateToKabbalah,
+        colors: const [Color(0xFFFBD986), Color(0xFFF7797D)],
+      ),
+    ];
+  }
+
+  String _resolveLink(CommonStrings strings, String id) {
+    return _getLinkLabel(strings, id);
+  }
+
+  String _getLinkLabel(CommonStrings strings, String id) {
+    switch (id) {
+      case 'basic':
+        switch (strings.localeName) {
+          case 'ca':
+            return 'Bàsic';
+          case 'es':
+            return 'Básico';
+          default:
+            return 'Basics';
+        }
+      case 'advanced':
+        switch (strings.localeName) {
+          case 'ca':
+            return 'Avançat';
+          case 'es':
+            return 'Avanzado';
+          default:
+            return 'Advanced';
+        }
+      case 'rituals':
+        switch (strings.localeName) {
+          case 'ca':
+            return 'Rituals';
+          case 'es':
+            return 'Rituales';
+          default:
+            return 'Rituals';
+        }
+      default:
+        return '';
+    }
+  }
+
+  String _getLearnTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Aprèn Tarot amb nosaltres';
+      case 'es':
+        return 'Aprende Tarot con nosotros';
+      default:
+        return 'Learn Tarot';
+    }
+  }
+
+  String _getLearnSubtitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Guies premium, rituals i art del tarot per créixer cada dia.';
+      case 'es':
+        return 'Guías premium, rituales y arte del tarot para crecer cada día.';
+      default:
+        return 'Premium guides, rituals and tarot art to grow every day.';
+    }
+  }
+
+  String _getHeaderActionLabel(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Explora';
+      case 'es':
+        return 'Explorar';
+      default:
+        return 'Explore';
+    }
+  }
+
+  String _getCardsTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Cartes & simbolisme';
+      case 'es':
+        return 'Cartas & simbolismo';
+      default:
+        return 'Cards & symbolism';
+    }
+  }
+
+  String _getCardsDescription(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Significat detallat de cada arcà, correspondències i inversions.';
+      case 'es':
+        return 'Significado detallado de cada arcano, correspondencias e inversiones.';
+      default:
+        return 'Detailed meaning of every arcana, correspondences and reversals.';
+    }
+  }
+
+  String _getAstrologyTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Astrologia & Tarot';
+      case 'es':
+        return 'Astrología & Tarot';
+      default:
+        return 'Astrology & Tarot';
+    }
+  }
+
+  String _getAstrologyDescription(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Integra signes, cases i fases lunars a les lectures.';
+      case 'es':
+        return 'Integra signos, casas y fases lunares en las lecturas.';
+      default:
+        return 'Blend star signs, houses and moon phases into your readings.';
+    }
+  }
+
+  String _getSpreadsTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Tirades i mètodes';
+      case 'es':
+        return 'Tiradas y métodos';
+      default:
+        return 'Spreads & methods';
+    }
+  }
+
+  String _getSpreadsDescription(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Des de tirades bàsiques fins a dissenys avançats per sessions pro.';
+      case 'es':
+        return 'Desde tiradas básicas hasta diseños avanzados para sesiones pro.';
+      default:
+        return 'From foundational spreads to advanced layouts for pro sessions.';
+    }
+  }
+
+  String _getKnowledgeTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Coneixement sacre';
+      case 'es':
+        return 'Conocimiento sagrado';
+      default:
+        return 'Sacred knowledge';
+    }
+  }
+
+  String _getKnowledgeDescription(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Història del tarot, codis ètics i pràctica professional.';
+      case 'es':
+        return 'Historia del tarot, códigos éticos y práctica profesional.';
+      default:
+        return 'Tarot history, ethical codes and professional practice.';
+    }
+  }
+
+  String _getMoonTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Poder lunar';
+      case 'es':
+        return 'Poder lunar';
+      default:
+        return 'Moon power';
+    }
+  }
+
+  String _getMoonDescription(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Rituals, intencions i calendaris per manifestar amb la lluna.';
+      case 'es':
+        return 'Rituales, intenciones y calendarios para manifestar con la luna.';
+      default:
+        return 'Rituals, intentions and calendars to manifest with the moon.';
+    }
+  }
+
+  String _getKabbalahTitle(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Mística & Kabbalah';
+      case 'es':
+        return 'Mística & Kabbalah';
+      default:
+        return 'Mysticism & Kabbalah';
+    }
+  }
+
+  String _getKabbalahDescription(CommonStrings strings) {
+    switch (strings.localeName) {
+      case 'ca':
+        return 'Arbre de la vida, camins i correspondències amb els arcanes.';
+      case 'es':
+        return 'Árbol de la vida, caminos y correspondencias con los arcanos.';
+      default:
+        return 'Tree of life, paths and correspondences with the arcana.';
+    }
   }
 }
 
-String _getLearnSubtitle(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Biblioteca viva amb guies de tarot, astrologia i lluna';
-    case 'es':
-      return 'Biblioteca viva con guias de tarot, astrologia y luna';
-    default:
-      return 'A living library of tarot, astrology, and lunar wisdom';
-  }
-}
-
-String _getHeaderActionLabel(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Explora';
-    case 'es':
-      return 'Explorar';
-    default:
-      return 'Explore';
-  }
-}
-
-String _getCardsTitle(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Cartes Essentials';
-    case 'es':
-      return 'Cartas Esenciales';
-    default:
-      return 'Tarot Essentials';
-  }
-}
-
-String _getCardsDescription(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Significats, simbologia i trucs per memoritzar arcans';
-    case 'es':
-      return 'Significados, simbolos y tips para memorizar arcanos';
-    default:
-      return 'Meanings, symbolism, and tips to internalise the arcana';
-  }
-}
-
-String _getAstrologyTitle(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Astrologia';
-    case 'es':
-      return 'Astrologia';
-    default:
-      return 'Astrology';
-  }
-}
-
-String _getAstrologyDescription(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Zodiac i fases lunars en dues capes: energia i calendari';
-    case 'es':
-      return 'Zodiaco y fases lunares en dos capas: energia y calendario';
-    default:
-      return 'Zodiac and lunar phases in two layers: energy plus timing';
-  }
-}
-
-String _getSpreadsTitle(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Tirades i guies';
-    case 'es':
-      return 'Tiradas y guias';
-    default:
-      return 'Spreads & Guides';
-  }
-}
-
-String _getSpreadsDescription(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Apren tirades clau i passa a passa per interpretar-les';
-    case 'es':
-      return 'Aprende tiradas clave y paso a paso para interpretarlas';
-    default:
-      return 'Learn signature spreads and the steps to interpret them';
-  }
-}
-
-String _getFoundationsTitle(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Fonaments Mistcs';
-    case 'es':
-      return 'Fundamentos Misticos';
-    default:
-      return 'Mystic Foundations';
-  }
-}
-
-String _getFoundationsDescription(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Histories, rituals i com unir Cabala i Lluna a les lectures';
-    case 'es':
-      return 'Historias, rituales y como unir Cabala y Luna en lecturas';
-    default:
-      return 'Stories, rituals, and weaving Kabbalah and lunar magic into spreads';
-  }
-}
-
-String _getKabbalahChipLabel(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Camins Cabala';
-    case 'es':
-      return 'Caminos Cabala';
-    default:
-      return 'Kabbalah paths';
-  }
-}
-
-String _getMoonChipLabel(CommonStrings strings) {
-  switch (strings.localeName) {
-    case 'ca':
-      return 'Rituals Lluna';
-    case 'es':
-      return 'Rituales Luna';
-    default:
-      return 'Lunar rituals';
-  }
-}
-
-class _LearnCategory extends StatelessWidget {
-  const _LearnCategory({
+class _LearnCategoryData {
+  const _LearnCategoryData({
     required this.icon,
     required this.title,
     required this.description,
     required this.onTap,
-    this.accentColor,
-    this.quickLinks = const [],
+    required this.colors,
+    this.tags = const [],
   });
 
   final IconData icon;
   final String title;
   final String description;
   final VoidCallback onTap;
-  final Color? accentColor;
-  final List<_QuickActionLink> quickLinks;
+  final List<String> tags;
+  final List<Color> colors;
+}
+
+class _LearnCategoryCard extends StatelessWidget {
+  const _LearnCategoryCard({
+    required this.category,
+  });
+
+  final _LearnCategoryData category;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.white.withValues(alpha: 0.12),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.3),
-              width: 1,
+    final gradient = LinearGradient(
+      colors: category.colors,
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+    final cardHeight = category.tags.isNotEmpty ? 195.0 : 175.0;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(22),
+      onTap: category.onTap,
+      child: Container(
+        constraints: BoxConstraints(minHeight: cardHeight),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(22),
+          gradient: gradient,
+          boxShadow: [
+            BoxShadow(
+              color: category.colors.last.withValues(alpha: 0.3),
+              blurRadius: 18,
+              offset: const Offset(0, 10),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: (accentColor ?? Colors.white).withValues(alpha: 0.28),
-                ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -10,
+              top: -6,
+              child: Transform.rotate(
+                angle: math.pi / 6,
                 child: Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 22,
+                  Icons.auto_awesome_motion,
+                  size: 68,
+                  color: Colors.white.withValues(alpha: 0.08),
                 ),
               ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Expanded(
-                child: Text(
-                  description,
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.9),
-                    fontSize: 13,
-                    height: 1.4,
-                  ),
-                  maxLines: quickLinks.isNotEmpty ? 3 : 4,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (quickLinks.isNotEmpty) ...[
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  children: quickLinks
-                      .map(
-                        (link) => _QuickLinkChip(
-                          label: link.label,
-                          onTap: link.onTap,
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-              const SizedBox(height: 14),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  width: 34,
-                  height: 34,
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.45),
-                      width: 1.5,
-                    ),
-                    color: Colors.white.withValues(alpha: 0.08),
+                    color: Colors.white.withValues(alpha: 0.18),
                   ),
-                  child: const Icon(
-                    Icons.chevron_right,
+                  padding: const EdgeInsets.all(8),
+                  child: Icon(
+                    category.icon,
                     color: Colors.white,
-                    size: 18,
+                    size: 20,
                   ),
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(height: 10),
+                Text(
+                  category.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  category.description,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.92),
+                    height: 1.35,
+                    fontSize: 13,
+                  ),
+                  maxLines: category.tags.isEmpty ? 3 : 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (category.tags.isNotEmpty) ...[
+                  const SizedBox(height: 6),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 6,
+                    children: category.tags
+                        .map(
+                          (tag) => Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.35),
+                              ),
+                            ),
+                            child: Text(
+                              tag,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.2,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ],
+            ),
+          ],
         ),
-      ),
-    );
-  }
-}
-
-class _QuickActionLink {
-  const _QuickActionLink({
-    required this.label,
-    required this.onTap,
-  });
-
-  final String label;
-  final VoidCallback onTap;
-}
-
-class _QuickLinkChip extends StatelessWidget {
-  const _QuickLinkChip({
-    required this.label,
-    required this.onTap,
-  });
-
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ActionChip(
-      onPressed: onTap,
-      backgroundColor: Colors.white.withValues(alpha: 0.16),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      label: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.2,
-        ),
-      ),
-      side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
       ),
     );
   }

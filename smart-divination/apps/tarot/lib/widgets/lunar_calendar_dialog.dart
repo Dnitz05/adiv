@@ -1058,3 +1058,293 @@ class _LunarCalendarDialogState extends State<LunarCalendarDialog> {
     }
   }
 }
+
+// Reusable calendar content for the Unified Lunar Widget
+class LunarCalendarContent extends StatefulWidget {
+  const LunarCalendarContent({
+    super.key,
+    required this.controller,
+    required this.strings,
+  });
+
+  final LunarCycleController controller;
+  final CommonStrings strings;
+
+  @override
+  State<LunarCalendarContent> createState() => _LunarCalendarContentState();
+}
+
+class _LunarCalendarContentState extends State<LunarCalendarContent> {
+  late DateTime _currentMonth;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentMonth = DateTime.now();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildMonthNavigation(),
+        const SizedBox(height: 16),
+        _buildCalendarGrid(),
+        const SizedBox(height: 20),
+        _buildUpcomingPhases(),
+      ],
+    );
+  }
+
+  Widget _buildMonthNavigation() {
+    final monthNames = _getMonthNames();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            TarotTheme.cosmicBlue.withValues(alpha: 0.3),
+            TarotTheme.cosmicPurple.withValues(alpha: 0.3),
+          ],
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.chevron_left, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
+              });
+            },
+          ),
+          Text(
+            '${monthNames[_currentMonth.month - 1]} ${_currentMonth.year}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.chevron_right, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCalendarGrid() {
+    final firstDayOfMonth = DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final lastDayOfMonth = DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
+    final daysInMonth = lastDayOfMonth.day;
+    final firstWeekday = firstDayOfMonth.weekday;
+
+    // Day headers
+    final dayNames = _getDayNames();
+    final dayHeaders = dayNames.map((name) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            name,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.6),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      );
+    }).toList();
+
+    // Calendar days
+    final List<Widget> dayWidgets = [];
+
+    // Add empty cells for days before month starts
+    for (int i = 1; i < firstWeekday; i++) {
+      dayWidgets.add(const Expanded(child: SizedBox()));
+    }
+
+    // Add days of month
+    for (int day = 1; day <= daysInMonth; day++) {
+      final date = DateTime(_currentMonth.year, _currentMonth.month, day);
+      final isToday = date.year == DateTime.now().year &&
+          date.month == DateTime.now().month &&
+          date.day == DateTime.now().day;
+
+      dayWidgets.add(
+        Expanded(
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              margin: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                color: isToday
+                    ? TarotTheme.cosmicAccent.withValues(alpha: 0.3)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+                border: isToday
+                    ? Border.all(color: TarotTheme.cosmicAccent, width: 2)
+                    : null,
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      day.toString(),
+                      style: TextStyle(
+                        color: isToday ? Colors.white : Colors.white70,
+                        fontSize: 14,
+                        fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      _getMoonPhaseEmoji(date),
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Build grid rows
+    final List<Widget> rows = [Row(children: dayHeaders)];
+    for (int i = 0; i < dayWidgets.length; i += 7) {
+      rows.add(
+        Row(
+          children: dayWidgets.sublist(
+            i,
+            i + 7 > dayWidgets.length ? dayWidgets.length : i + 7,
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.black.withValues(alpha: 0.2),
+      ),
+      child: Column(children: rows),
+    );
+  }
+
+  Widget _buildUpcomingPhases() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [
+            TarotTheme.cosmicBlue.withValues(alpha: 0.2),
+            TarotTheme.cosmicPurple.withValues(alpha: 0.2),
+          ],
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _localisedLabel('upcoming_phases'),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _buildPhaseItem('🌑', _localisedLabel('new_moon'), 'Nov 13'),
+          _buildPhaseItem('🌓', _localisedLabel('first_quarter'), 'Nov 20'),
+          _buildPhaseItem('🌕', _localisedLabel('full_moon'), 'Nov 27'),
+          _buildPhaseItem('🌗', _localisedLabel('last_quarter'), 'Dec 5'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhaseItem(String emoji, String label, String date) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text(emoji, style: const TextStyle(fontSize: 20)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+          ),
+          Text(
+            date,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getMoonPhaseEmoji(DateTime date) {
+    // Simplified moon phase calculation (approximate)
+    final daysSinceNewMoon = (date.millisecondsSinceEpoch / 86400000) % 29.53;
+    if (daysSinceNewMoon < 3.7) return '🌑';
+    if (daysSinceNewMoon < 7.4) return '🌒';
+    if (daysSinceNewMoon < 11.1) return '🌓';
+    if (daysSinceNewMoon < 14.8) return '🌔';
+    if (daysSinceNewMoon < 18.4) return '🌕';
+    if (daysSinceNewMoon < 22.1) return '🌖';
+    if (daysSinceNewMoon < 25.8) return '🌗';
+    return '🌘';
+  }
+
+  List<String> _getMonthNames() {
+    final locale = widget.strings.localeName;
+    final months = {
+      'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      'es': ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      'ca': ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre'],
+    };
+    return months[locale] ?? months['en']!;
+  }
+
+  List<String> _getDayNames() {
+    final locale = widget.strings.localeName;
+    final days = {
+      'en': ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      'es': ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+      'ca': ['Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds', 'Dg'],
+    };
+    return days[locale] ?? days['en']!;
+  }
+
+  String _localisedLabel(String key) {
+    final locale = widget.strings.localeName;
+    final labels = {
+      'upcoming_phases': {'en': 'Upcoming Phases', 'es': 'Próximas Fases', 'ca': 'Properes Fases'},
+      'new_moon': {'en': 'New Moon', 'es': 'Luna Nueva', 'ca': 'Lluna Nova'},
+      'first_quarter': {'en': 'First Quarter', 'es': 'Cuarto Creciente', 'ca': 'Quart Creixent'},
+      'full_moon': {'en': 'Full Moon', 'es': 'Luna Llena', 'ca': 'Lluna Plena'},
+      'last_quarter': {'en': 'Last Quarter', 'es': 'Cuarto Menguante', 'ca': 'Quart Minvant'},
+    };
+    return labels[key]?[locale] ?? labels[key]?['en'] ?? key;
+  }
+}

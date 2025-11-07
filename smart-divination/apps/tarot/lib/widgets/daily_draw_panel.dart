@@ -270,15 +270,7 @@ class _FlippableCardState extends State<_FlippableCard>
   Widget _buildCardBack() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.8),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.8),
-          ],
-        ),
+        borderRadius: BorderRadius.circular(0),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.3),
           width: 2,
@@ -291,11 +283,21 @@ class _FlippableCardState extends State<_FlippableCard>
           ),
         ],
       ),
-      child: Center(
-        child: Icon(
-          Icons.auto_awesome,
-          color: Colors.white.withValues(alpha: 0.5),
-          size: 32,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(0),
+        child: Image.asset(
+          'assets/cards/CardBacks.jpg',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Container(
+            color: TarotTheme.cosmicBlue,
+            child: Center(
+              child: Icon(
+                Icons.auto_awesome,
+                color: Colors.white.withValues(alpha: 0.5),
+                size: 32,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -307,7 +309,7 @@ class _FlippableCardState extends State<_FlippableCard>
       transform: Matrix4.identity()..rotateY(math.pi),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(0),
           color: Colors.white,
           border: Border.all(
             color: TarotTheme.cosmicAccent.withValues(alpha: 0.5),
@@ -323,7 +325,7 @@ class _FlippableCardState extends State<_FlippableCard>
         ),
         child: widget.card.imageUrl != null
             ? ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(0),
                 child: Image.asset(
                   widget.card.imageUrl!,
                   fit: BoxFit.cover,

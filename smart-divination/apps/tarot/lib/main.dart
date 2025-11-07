@@ -19,7 +19,7 @@ import 'models/tarot_card.dart';
 import 'widgets/spread_layout.dart';
 import 'widgets/draw_fullscreen_flow.dart';
 import 'widgets/spread_gallery_modal.dart';
-import 'widgets/lunar_home_panel.dart';
+import 'widgets/unified_lunar_widget.dart';
 import 'widgets/daily_draw_panel.dart';
 import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
@@ -3189,8 +3189,8 @@ class _HomeState extends State<_Home> {
             ),
           if (_dailyCards != null && _dailyCards!.isNotEmpty)
             const SizedBox(height: 24),
-          // Lunar Panel
-          LunarHomePanel(
+          // Unified Lunar Wisdom Center
+          UnifiedLunarWidget(
             controller: _lunarController,
             strings: localisation,
             userId: _userId,
@@ -3285,7 +3285,7 @@ class _HomeState extends State<_Home> {
       }
 
       // Place AI recommendation first when available
-      children.add(_buildLatestDrawCard(localisation));
+      // children.add(_buildLatestDrawCard(localisation)); // Removed: user requested removal
 
       bodyContent = ListView(
         padding: EdgeInsets.only(
@@ -3651,60 +3651,40 @@ class _CreditsBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              colors: [
-                TarotTheme.cosmicBlue,
-                TarotTheme.cosmicAccent,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: TarotTheme.cosmicBlue.withValues(alpha: 0.35),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    '${credits.remaining} / ${credits.max}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        gradient: LinearGradient(
+          colors: [
+            TarotTheme.cosmicBlue.withValues(alpha: 0.75),
+            TarotTheme.cosmicAccent.withValues(alpha: 0.75),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: TarotTheme.cosmicBlue.withValues(alpha: 0.25),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.wb_sunny, color: Colors.white, size: 16),
+          const SizedBox(width: 6),
+          Text(
+            '${credits.remaining}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -137,7 +137,16 @@
       "Bash(nslookup:*)",
       "Bash(ping:*)",
       "Bash(netsh advfirewall firewall show rule:*)",
-      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter build:*)"
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter build:*)",
+      "WebFetch(domain:www.biddytarot.com)",
+      "WebFetch(domain:astrostyle.com)",
+      "WebFetch(domain:wayfindertarot.com)",
+      "WebFetch(domain:theembroideredforest.com)",
+      "WebFetch(domain:www.the-numinous.com)",
+      "Bash(node --version:*)",
+      "Bash(npm:*)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe --version:*)",
+      "Bash(/c/Users/neo/AppData/Local/Pub/Cache/bin/melos.bat --version)"
     ],
     "deny": [],
     "ask": []
