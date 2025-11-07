@@ -7,7 +7,7 @@ import '../models/journal_filters.dart';
 class JournalController extends ChangeNotifier {
   JournalController({
     JournalApiClient? apiClient,
-  }) : _apiClient = apiClient ?? const JournalApiClient();
+  }) : _apiClient = apiClient ?? JournalApiClient();
 
   final JournalApiClient _apiClient;
 
@@ -16,6 +16,8 @@ class JournalController extends ChangeNotifier {
   bool _isLoading = false;
   bool _hasMore = true;
   String? _cursor;
+  String? _userId;
+  String? _locale;
 
   JournalFilters get filters => _filters;
   List<JournalEntry> get entries => _entries;
@@ -26,18 +28,31 @@ class JournalController extends ChangeNotifier {
     required String userId,
     required String locale,
   }) async {
+    if (userId.isEmpty) {
+      _entries = const [];
+      _cursor = null;
+      _hasMore = false;
+      notifyListeners();
+      return;
+    }
+    _userId = userId;
+    _locale = locale;
     _entries = [];
     _cursor = null;
     _hasMore = true;
-    await loadMore(userId: userId, locale: locale, reset: true);
+    await loadMore(reset: true);
   }
 
   Future<void> loadMore({
-    required String userId,
-    required String locale,
     bool reset = false,
   }) async {
     if (_isLoading || (!_hasMore && !reset)) {
+      return;
+    }
+
+    final userId = _userId;
+    final locale = _locale;
+    if (userId == null || locale == null || userId.isEmpty) {
       return;
     }
 
@@ -66,8 +81,18 @@ class JournalController extends ChangeNotifier {
     }
   }
 
-  void updateFilters(JournalFilters filters) {
+  Future<void> refresh() async {
+    if (_userId == null || _locale == null) {
+      return;
+    }
+    await loadInitial(userId: _userId!, locale: _locale!);
+  }
+
+  Future<void> updateFilters(JournalFilters filters) async {
     _filters = filters;
     notifyListeners();
+    if (_userId != null && _locale != null) {
+      await loadInitial(userId: _userId!, locale: _locale!);
+    }
   }
 }

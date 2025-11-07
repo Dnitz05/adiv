@@ -3388,27 +3388,13 @@ class _HomeState extends State<_Home> {
         automaticallyImplyLeading: false,
         toolbarHeight: 76,
         titleSpacing: 16,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              localisation.appTitle('tarot'),
-              style: const TextStyle(
-                color: TarotTheme.stardust,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              _formatTodayDate(localisation.localeName),
-              style: const TextStyle(
-                color: TarotTheme.cosmicAccent,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
+        title: Text(
+          _formatTodayDate(localisation.localeName),
+          style: const TextStyle(
+            color: TarotTheme.cosmicAccent,
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         actions: [
           ValueListenableBuilder<DailyCredits>(

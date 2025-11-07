@@ -4,7 +4,7 @@ import 'journal_entry.dart';
 
 class JournalFilters extends Equatable {
   const JournalFilters({
-    this.types = const {},
+    this.types = const <JournalActivityType>{},
     this.phase = 'any',
     this.period = JournalFilterPeriod.today,
     this.searchTerm,

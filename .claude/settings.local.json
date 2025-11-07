@@ -147,7 +147,11 @@
       "Bash(npm:*)",
       "Bash(C:/tarot/supabase_cli/supabase.exe --version:*)",
       "Bash(/c/Users/neo/AppData/Local/Pub/Cache/bin/melos.bat --version)",
-      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter clean:*)"
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter clean:*)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe migration new journal_user_activities)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe gen types typescript --linked --schema public)",
+      "Bash(lib/types/generated/supabase.ts)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe gen types:*)"
     ],
     "deny": [],
     "ask": []

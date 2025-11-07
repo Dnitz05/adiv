@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../models/lunar_day.dart';
-
 enum JournalActivityType {
   tarotReading('tarot_reading'),
   ichingCast('iching_cast'),
@@ -155,28 +153,6 @@ class JournalLunarMetadata extends Equatable {
   final String? phaseName;
   final String? zodiac;
   final String? guidance;
-
-  LunarPhaseModel? toLunarPhaseModel() {
-    if (phaseId == null) {
-      return null;
-    }
-    return LunarPhaseModel(
-      id: phaseId!,
-      emoji: null,
-      angleStart: 0,
-      angleEnd: 0,
-      names: PhaseLocalizedName(
-        en: phaseName ?? phaseId!,
-        es: phaseName ?? phaseId!,
-        ca: phaseName ?? phaseId!,
-      ),
-      focus: PhaseLocalizedName(
-        en: guidance ?? '',
-        es: guidance ?? '',
-        ca: guidance ?? '',
-      ),
-    );
-  }
 
   @override
   List<Object?> get props => [phaseId, phaseName, zodiac, guidance];

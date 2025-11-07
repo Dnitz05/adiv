@@ -7,9 +7,9 @@ import '../models/journal_filters.dart';
 import 'api_client.dart';
 
 class JournalApiClient {
-  const JournalApiClient({
+  JournalApiClient({
     http.Client? httpClient,
-  }) : _httpClient = httpClient ?? const http.Client();
+  }) : _httpClient = httpClient ?? http.Client();
 
   final http.Client _httpClient;
 
@@ -45,11 +45,11 @@ class JournalApiClient {
     final query = <String, String>{
       'limit': limit.toString(),
       if (cursor != null) 'cursor': cursor,
-      if (filters?.phase != null) 'phase': filters!.phase,
-      if (filters?.searchTerm != null && filters!.searchTerm!.isNotEmpty)
+      if (filters != null && filters.phase != 'any') 'phase': filters.phase,
+      if (filters != null && (filters.searchTerm?.isNotEmpty ?? false))
         'search': filters.searchTerm!,
-      if (filters?.types != null && filters!.types!.isNotEmpty)
-        'types': filters.types!.map((type) => type.value).join(','),
+      if (filters != null && filters.types.isNotEmpty)
+        'types': filters.types.map((type) => type.value).join(','),
     };
 
     final data = await _performGet(
