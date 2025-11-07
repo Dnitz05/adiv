@@ -27,7 +27,6 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
   final LunarApiClient _api = const LunarApiClient();
   final TextEditingController _intentionController = TextEditingController();
 
-  LunarAdviceTopic _selectedTopic = LunarAdviceTopic.intentions;
   LunarAdviceResponse? _response;
   bool _isLoading = false;
   String? _errorMessage;
@@ -49,8 +48,8 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
         children: [
           _buildHeader(context),
           const SizedBox(height: 16),
-          _buildTopicSelector(context),
-          const SizedBox(height: 12),
+          _buildHowToAskSection(context),
+          const SizedBox(height: 14),
           _buildIntentionField(context),
           const SizedBox(height: 16),
           _buildActionButton(context),
@@ -86,38 +85,52 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
     );
   }
 
-  Widget _buildTopicSelector(BuildContext context) {
+  Widget _buildHowToAskSection(BuildContext context) {
+    final theme = Theme.of(context);
+    final tips = _localisedInstructionTips();
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<LunarAdviceTopic>(
-          value: _selectedTopic,
-          dropdownColor: TarotTheme.cosmicPurple,
-          iconEnabledColor: Colors.white70,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-          items: LunarAdviceTopic.values
-              .map(
-                (topic) => DropdownMenuItem<LunarAdviceTopic>(
-                  value: topic,
-                  child: Text(_localisedTopicLabel(topic)),
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            if (value != null) {
-              setState(() {
-                _selectedTopic = value;
-              });
-            }
-          },
+        color: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.12),
         ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _localisedInstructionTitle(),
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...tips.map(
+            (tip) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.star, color: Colors.white70, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      tip,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: Colors.white70,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
