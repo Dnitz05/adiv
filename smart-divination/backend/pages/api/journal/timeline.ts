@@ -6,19 +6,19 @@ import {
   applyStandardResponseHeaders,
   handleCorsPreflight,
   sendJsonError,
-} from '../../../../lib/utils/nextApi';
+} from '../../../lib/utils/nextApi';
 import {
   baseRequestSchema,
   createApiResponse,
   handleApiError,
   parseApiRequest,
   type AuthContext,
-} from '../../../../lib/utils/api';
+} from '../../../lib/utils/api';
 import {
   getJournalTimeline,
   type JournalActivityType,
-} from '../../../../lib/services/journal-service';
-import { recordApiMetric } from '../../../../lib/utils/metrics';
+} from '../../../lib/services/journal-service';
+import { recordApiMetric } from '../../../lib/utils/metrics';
 
 const METRICS_PATH = '/api/journal/timeline';
 const corsConfig = { methods: 'GET,OPTIONS' } as const;
@@ -101,7 +101,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       from: data.from ?? null,
       to: data.to ?? null,
       types: Array.isArray(data.types) ? (data.types as JournalActivityType[]) : undefined,
-      phase: data.phase ?? 'any',
+      phase: (data.phase ?? 'any') as any,
       search: data.search ?? null,
     });
 

@@ -6,16 +6,16 @@ import {
   applyStandardResponseHeaders,
   handleCorsPreflight,
   sendJsonError,
-} from '../../../../../lib/utils/nextApi';
+} from '../../../../lib/utils/nextApi';
 import {
   baseRequestSchema,
   createApiResponse,
   handleApiError,
   parseApiRequest,
   type AuthContext,
-} from '../../../../../lib/utils/api';
-import { getJournalDaySummary } from '../../../../../lib/services/journal-service';
-import { recordApiMetric } from '../../../../../lib/utils/metrics';
+} from '../../../../lib/utils/api';
+import { getJournalDaySummary } from '../../../../lib/services/journal-service';
+import { recordApiMetric } from '../../../../lib/utils/metrics';
 
 const METRICS_PATH = '/api/journal/day/[date]';
 const corsConfig = { methods: 'GET,OPTIONS' } as const;

@@ -125,8 +125,12 @@ function mapRowToTimelineItem(row: UserActivityRow): JournalTimelineItem {
     title: row.title,
     summary: row.summary,
     timestamp: row.activity_date,
-    payload: row.payload ?? {},
-    metadata: row.metadata ?? undefined,
+    payload: (row.payload && typeof row.payload === 'object' && !Array.isArray(row.payload))
+      ? row.payload as Record<string, unknown>
+      : {},
+    metadata: (row.metadata && typeof row.metadata === 'object' && !Array.isArray(row.metadata))
+      ? row.metadata as Record<string, unknown>
+      : undefined,
     lunarPhase: row.lunar_phase_id ?? null,
     lunarZodiac: row.lunar_zodiac_name ?? null,
   };
