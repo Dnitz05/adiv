@@ -46,10 +46,12 @@ Service layer: `journal-service.ts`
    - Commit: `699b1dfd` - fix: resolve TypeScript build errors in journal API endpoints
    - Pushat a origin/master ✅
 
-### ✅ Flutter App - Header Redesign
-- **Commit:** `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
+### ✅ Flutter App - Header Redesign & Floating Behavior
+- **Commits:**
+  - `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
+  - `396b07aa` - feat: add floating header with hide-on-scroll behavior
 - **Data:** 2025-11-07
-- **STATUS:** DEPLOYED TO GITHUB ✅
+- **STATUS:** LIVE ON DEVICE ✅
 
 #### Canvis Implementats:
 1. **Layout Header:**
@@ -70,11 +72,19 @@ Service layer: `journal-service.ts`
    - CTAs: "Potser Més Tard" / "Millorar Ara"
    - Multilingüe (EN/ES/CA)
 
-4. **Assets:**
+4. **Floating Header (Hide-on-Scroll):**
+   - ✨ Header desapareix quan fas scroll avall
+   - ✨ Header apareix quan fas scroll amunt
+   - Implementat amb `NestedScrollView` + `SliverAppBar`
+   - Properties: `floating: true`, `snap: true`, `pinned: false`
+   - Patró UX modern (similar a Instagram, Twitter, Google Maps)
+   - Maximitza espai per contingut sense perdre accessibilitat
+
+5. **Assets:**
    - Nou logo: `assets/branding/logo.png`
 
 - **Flutter Analyze:** ✅ (només warnings menors)
-- **APK Build:** ✅ (68.2MB, 48.9s build time)
+- **APK Build:** ✅ (68.4MB, 49.0s build time)
 - **Installation:** ✅ Deployed to device RCWSWS9LJRFADQSC
 - **STATUS:** LIVE ON DEVICE ✅
 
