@@ -57,7 +57,7 @@ This document captures the deep‑dive analysis for the new Archive experience. 
   - Scans existing sessions and lunar data, batches inserts into `user_activities`.
   - Validates counts per user, checks duplicates, logs metrics.
   - CLI steps: `cd backend && npm run ts-node scripts/backfill_journal_activities.ts --limit=500`.
-- Placeholder CLI entry lives at `smart-divination/backend/scripts/backfill_user_activities.mjs`. Today it only performs dry-run inspection (`--dry-run`) while we finish ETL logic; once data contracts stabilize we will extend it to insert/update records in batches.
+- Backfill CLI lives at `smart-divination/backend/scripts/backfill_user_activities.mjs`. Dry-run mode (`--dry-run`) logs batches; without it the script upserts sessions, lunar queries, and reminders into `user_activities`. Environment vars: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optional `JOURNAL_BACKFILL_BATCH`, `JOURNAL_BACKFILL_MAX`, and offsets per source (`JOURNAL_BACKFILL_SESSIONS_OFFSET`, etc.).
 
 - **Validation**:
   - Supabase CLI: `supabase db reset` with new migrations; ensure tests pass.
@@ -128,10 +128,11 @@ This document captures the deep‑dive analysis for the new Archive experience. 
 ## 5. Testing & Validation
 
 - **Backend**
-  - Unit tests for `journal-service` (timeline grouping, filters, stats).
-  - Endpoint tests using `supertest` (auth required, filtering, pagination).
-  - Integration tests with Supabase (migrations applied) verifying triggers/backfill.
-  - Load tests for timeline with >10k activities per user, target <200 ms per page.
+    - Unit tests for `journal-service` (timeline grouping, filters, stats).
+    - Endpoint tests using `supertest` (auth required, filtering, pagination).
+    - Integration tests with Supabase (migrations applied) verifying triggers/backfill.
+    - Load tests for timeline with >10k activities per user, target <200 ms per page.
+- **QA checklist** lives in `docs/journal_archive_qa_checklist.md`.
 
 - **Frontend**
   - Unit tests for `JournalController` (filter changes, pagination).

@@ -3383,11 +3383,10 @@ class _HomeState extends State<_Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0.5,
-        centerTitle: false,
+        elevation: 0,
+        centerTitle: true,
         automaticallyImplyLeading: false,
         toolbarHeight: 76,
-        titleSpacing: 16,
         title: Text(
           _formatTodayDate(localisation.localeName),
           style: const TextStyle(
@@ -3396,42 +3395,58 @@ class _HomeState extends State<_Home> {
             fontWeight: FontWeight.w700,
           ),
         ),
+        leading: ValueListenableBuilder<DailyCredits>(
+          valueListenable: _creditsNotifier,
+          builder: (context, credits, _) {
+            final creditLabel = _qaText(
+              localisation,
+              en: 'Credits',
+              es: 'Creditos',
+              ca: 'Credits',
+            );
+            return Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: _CreditsBadge(
+                credits: credits,
+                label: creditLabel,
+                onTap: () => _showCreditsInfoDialog(credits, localisation),
+              ),
+            );
+          },
+        ),
         actions: [
-          ValueListenableBuilder<DailyCredits>(
-            valueListenable: _creditsNotifier,
-            builder: (context, credits, _) {
-              final creditLabel = _qaText(
-                localisation,
-                en: 'Credits',
-                es: 'Creditos',
-                ca: 'Credits',
-              );
-              return Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: _CreditsBadge(
-                  credits: credits,
-                  label: creditLabel,
-                  onTap: () => _showCreditsInfoDialog(credits, localisation),
-                ),
-              );
-            },
-          ),
           IconButton(
             icon: const Icon(Icons.more_vert, color: TarotTheme.cosmicAccent),
             tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
             onPressed: () => _openHeaderMenu(localisation),
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: Colors.grey.withValues(alpha: 0.2),
+            height: 1,
+          ),
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedBottomNavIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: TarotTheme.cosmicAccent,
-        unselectedItemColor: TarotTheme.cosmicAccent90,
-        selectedFontSize: 13,
-        unselectedFontSize: 12,
-        backgroundColor: Colors.white,
-        elevation: 8,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey.withValues(alpha: 0.2),
+              width: 1,
+            ),
+          ),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedBottomNavIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: TarotTheme.cosmicAccent,
+          unselectedItemColor: TarotTheme.cosmicAccent90,
+          selectedFontSize: 13,
+          unselectedFontSize: 12,
+          backgroundColor: Colors.white,
+          elevation: 0,
         onTap: (index) {
           setState(() {
             _selectedBottomNavIndex = index;
@@ -3498,6 +3513,7 @@ class _HomeState extends State<_Home> {
             label: _qaText(localisation, en: 'Learn', es: 'Aprende', ca: 'Apren'),
           ),
         ],
+        ),
       ),
       body: Stack(
         children: [

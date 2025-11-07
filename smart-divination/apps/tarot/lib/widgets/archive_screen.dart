@@ -14,10 +14,12 @@ class ArchiveScreen extends StatefulWidget {
     super.key,
     required this.userId,
     this.locale,
+    this.apiClient,
   });
 
   final String userId;
   final String? locale;
+  final JournalApiClient? apiClient;
 
   @override
   State<ArchiveScreen> createState() => _ArchiveScreenState();
@@ -25,7 +27,7 @@ class ArchiveScreen extends StatefulWidget {
 
 class _ArchiveScreenState extends State<ArchiveScreen> {
   late final JournalController _controller;
-  final JournalApiClient _apiClient = JournalApiClient();
+  late final JournalApiClient _apiClient;
   JournalStats? _stats;
   bool _loadingStats = false;
   JournalDaySummary? _selectedDaySummary;
@@ -35,6 +37,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   @override
   void initState() {
     super.initState();
+    _apiClient = widget.apiClient ?? JournalApiClient();
     _controller = JournalController(apiClient: _apiClient);
     if (widget.userId.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _initializeData());
