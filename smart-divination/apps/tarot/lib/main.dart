@@ -3381,69 +3381,35 @@ class _HomeState extends State<_Home> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 48,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/branding/logo.png',
-              width: 24,
-              height: 24,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              _formatTodayDate(localisation.localeName),
-              style: const TextStyle(
-                color: TarotTheme.cosmicAccent,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: TarotTheme.cosmicAccent, size: 22),
-          tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
-          onPressed: () => _openHeaderMenu(localisation),
-        ),
-        actions: [
-          ValueListenableBuilder<DailyCredits>(
-            valueListenable: _creditsNotifier,
-            builder: (context, credits, _) {
-              final creditLabel = _qaText(
-                localisation,
-                en: 'Credits',
-                es: 'Creditos',
-                ca: 'Credits',
-              );
-              return Padding(
-                padding: const EdgeInsets.only(right: 4),
-                child: _CreditsWithProBadge(
-                  credits: credits,
-                  label: creditLabel,
-                  onCreditsTap: () => _showCreditsInfoDialog(credits, localisation),
-                  onProTap: () => _showGoProModal(localisation),
+      bottomNavigationBar: LayoutBuilder(
+        builder: (context, constraints) {
+          final itemWidth = constraints.maxWidth / 5;
+          return Stack(
+            children: [
+              // Top indicator line
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                left: _selectedBottomNavIndex * itemWidth,
+                top: 0,
+                child: Container(
+                  width: itemWidth,
+                  height: 3,
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: itemWidth * 0.6,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      color: TarotTheme.cosmicAccent,
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(2),
+                      ),
+                    ),
+                  ),
                 ),
-              );
-            },
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
-            height: 1,
-          ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+              ),
+              Container(
+                decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
               color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
@@ -3528,6 +3494,10 @@ class _HomeState extends State<_Home> {
         ],
         ),
       ),
+            ],
+          );
+        },
+      ),
       body: Stack(
         children: [
           // Plain light background
@@ -3536,8 +3506,79 @@ class _HomeState extends State<_Home> {
               color: Colors.purple[50],
             ),
           ),
-          // Content
-          bodyContent,
+          // NestedScrollView with floating header
+          NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  centerTitle: true,
+                  automaticallyImplyLeading: false,
+                  floating: true,
+                  snap: true,
+                  pinned: false,
+                  forceElevated: innerBoxIsScrolled,
+                  toolbarHeight: 48,
+                  title: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/branding/logo.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        _formatTodayDate(localisation.localeName),
+                        style: const TextStyle(
+                          color: TarotTheme.cosmicAccent,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  leading: IconButton(
+                    icon: const Icon(Icons.menu, color: TarotTheme.cosmicAccent, size: 22),
+                    tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
+                    onPressed: () => _openHeaderMenu(localisation),
+                  ),
+                  actions: [
+                    ValueListenableBuilder<DailyCredits>(
+                      valueListenable: _creditsNotifier,
+                      builder: (context, credits, _) {
+                        final creditLabel = _qaText(
+                          localisation,
+                          en: 'Credits',
+                          es: 'Creditos',
+                          ca: 'Credits',
+                        );
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: _CreditsWithProBadge(
+                            credits: credits,
+                            label: creditLabel,
+                            onCreditsTap: () => _showCreditsInfoDialog(credits, localisation),
+                            onProTap: () => _showGoProModal(localisation),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(1),
+                    child: Container(
+                      color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
+                      height: 1,
+                    ),
+                  ),
+                ),
+              ];
+            },
+            body: bodyContent,
+          ),
           if (fullScreenOverlay != null)
             Positioned.fill(child: fullScreenOverlay),
         ],
