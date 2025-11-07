@@ -30,7 +30,7 @@ class TodayTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildPhaseEssence(context),
+          _buildPhaseGuide(context),
           const SizedBox(height: 16),
           LunarAiAdvisor(
             strings: strings,
@@ -39,96 +39,13 @@ class TodayTab extends StatelessWidget {
             onShareAdvice: (message) => _openAdviceInChat(context, message),
           ),
           const SizedBox(height: 16),
-          _buildOptimalActivities(context),
-          const SizedBox(height: 16),
           _buildPowerHours(context),
         ],
       ),
     );
   }
 
-  Widget _buildPhaseEssence(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.2),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.2),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-          width: 1,
-        ),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [TarotTheme.cosmicBlue, TarotTheme.cosmicAccent],
-                  ),
-                ),
-                child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                _localisedLabel('phase_essence'),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            _getPhaseDescription(day.phaseId),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.95),
-                  height: 1.5,
-                ),
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _getPhaseKeywords(day.phaseId).map((keyword) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.5),
-                  ),
-                ),
-                child: Text(
-                  keyword,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOptimalActivities(BuildContext context) {
+  Widget _buildPhaseGuide(BuildContext context) {
     final activities = _getOptimalActivities(day.phaseId, day.zodiac.element);
 
     return Container(
@@ -151,6 +68,7 @@ class TodayTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header
           Row(
             children: [
               Container(
@@ -161,12 +79,11 @@ class TodayTab extends StatelessWidget {
                     colors: [TarotTheme.cosmicBlue, TarotTheme.cosmicAccent],
                   ),
                 ),
-                child: const Icon(Icons.check_circle_outline,
-                    color: Colors.white, size: 18),
+                child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
               ),
               const SizedBox(width: 12),
               Text(
-                _localisedLabel('optimal_activities'),
+                _localisedLabel('phase_guide'),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
@@ -174,53 +91,113 @@ class TodayTab extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          ...activities['favored']!.map((activity) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.check_circle,
-                      color: Colors.greenAccent, size: 18),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      activity,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.9),
-                          ),
-                    ),
+          const SizedBox(height: 12),
+
+          // Phase Description
+          Text(
+            _getPhaseDescription(day.phaseId),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.white.withValues(alpha: 0.95),
+                  height: 1.5,
+                ),
+          ),
+          const SizedBox(height: 12),
+
+          // Keywords
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: _getPhaseKeywords(day.phaseId).map((keyword) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.5),
                   ),
-                ],
-              ),
-            );
-          }),
-          if (activities['avoid']!.isNotEmpty) ...[
-            const SizedBox(height: 12),
-            const Divider(color: Colors.white24),
-            const SizedBox(height: 12),
-            ...activities['avoid']!.map((activity) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
+                ),
+                child: Text(
+                  keyword,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+
+          const SizedBox(height: 16),
+          const Divider(color: Colors.white24, height: 1),
+          const SizedBox(height: 16),
+
+          // Optimal Activities - Compact format
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.check_circle, color: Colors.greenAccent, size: 16),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.warning_amber_rounded,
-                        color: Colors.orangeAccent, size: 18),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        activity,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.7),
-                            ),
+                    Text(
+                      _localisedLabel('optimal'),
+                      style: const TextStyle(
+                        color: Colors.greenAccent,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
                       ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      activities['favored']!.join(' • '),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.white.withValues(alpha: 0.9),
+                            height: 1.4,
+                          ),
                     ),
                   ],
                 ),
-              );
-            }),
+              ),
+            ],
+          ),
+
+          if (activities['avoid']!.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.warning_amber_rounded,
+                    color: Colors.orangeAccent, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _localisedLabel('avoid'),
+                        style: const TextStyle(
+                          color: Colors.orangeAccent,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        activities['avoid']!.join(' • '),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.white.withValues(alpha: 0.7),
+                              height: 1.4,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ],
       ),
@@ -583,6 +560,21 @@ class TodayTab extends StatelessWidget {
   String _localisedLabel(String key) {
     final locale = strings.localeName;
     final labels = {
+      'phase_guide': {
+        'en': 'Phase Guide',
+        'es': 'Guía de Fase',
+        'ca': 'Guia de Fase'
+      },
+      'optimal': {
+        'en': 'OPTIMAL',
+        'es': 'ÓPTIMO',
+        'ca': 'ÒPTIM'
+      },
+      'avoid': {
+        'en': 'AVOID',
+        'es': 'EVITAR',
+        'ca': 'EVITAR'
+      },
       'phase_essence': {
         'en': 'Phase Essence',
         'es': 'Esencia de la Fase',
