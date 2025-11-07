@@ -145,13 +145,13 @@ class SmartDrawsPanel extends StatelessWidget {
               _buildThemeCategory(
                 icon: Icons.self_improvement,
                 label: _getPersonalGrowthLabel(locale),
-                color: TarotTheme.cosmicPurple,
+                color: Colors.purple[400]!,
                 onTap: onPersonalGrowth,
               ),
               _buildThemeCategory(
                 icon: Icons.balance,
                 label: _getDecisionsLabel(locale),
-                color: TarotTheme.midnightBlue,
+                color: Colors.teal[400]!,
                 onTap: onDecisions,
               ),
               _buildThemeCategory(
