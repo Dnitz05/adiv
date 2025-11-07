@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:common/l10n/common_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +31,7 @@ class LearnPanel extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
           colors: [
             TarotTheme.deepNight,
@@ -49,7 +48,7 @@ class LearnPanel extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(22),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -115,12 +114,12 @@ class LearnPanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 28),
+          const SizedBox(height: 16),
           LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth > 620;
               final itemsPerRow = isWide ? 3 : 2;
-              const gap = 16.0;
+              const gap = 12.0;
               final itemWidth =
                   (constraints.maxWidth - (itemsPerRow - 1) * gap) /
                       itemsPerRow;
@@ -437,12 +436,12 @@ class _LearnCategoryCard extends StatelessWidget {
     final cardHeight = category.tags.isNotEmpty ? 195.0 : 175.0;
 
     return InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(16),
       onTap: category.onTap,
       child: Container(
         constraints: BoxConstraints(minHeight: cardHeight),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(16),
           gradient: gradient,
           boxShadow: [
             BoxShadow(

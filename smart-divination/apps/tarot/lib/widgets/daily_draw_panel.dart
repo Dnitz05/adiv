@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:common/l10n/common_strings.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../models/tarot_card.dart';
 import '../theme/tarot_theme.dart';
@@ -285,8 +286,8 @@ class _FlippableCardState extends State<_FlippableCard>
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(0),
-        child: Image.asset(
-          'assets/cards/CardBacks.jpg',
+        child: SvgPicture.asset(
+          'assets/cards/card-back.svg',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => Container(
             color: TarotTheme.cosmicBlue,
@@ -326,7 +327,7 @@ class _FlippableCardState extends State<_FlippableCard>
         child: widget.card.imageUrl != null
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(0),
-                child: Image.asset(
+                child: SvgPicture.asset(
                   widget.card.imageUrl!,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
