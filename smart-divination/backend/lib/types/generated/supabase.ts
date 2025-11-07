@@ -1,302 +1,689 @@
-﻿/*
- * Supabase type definitions (manually curated for the Smart Divination schema).
- *
- * If the Supabase schema changes, regenerate types via
- * `npm run supabase:types:ci` and update any additional fields below.
- */
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
-
-type TableRow<T> = {
-  Row: T;
-  Insert: Partial<T>;
-  Update: Partial<T>;
-};
-
-export interface Database {
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "13.0.5"
+  }
   public: {
     Tables: {
-      users: TableRow<{
-        id: string;
-        email: string | null;
-        name: string | null;
-        tier: 'free' | 'premium' | 'premium_annual';
-        created_at: string;
-        last_activity: string;
-        preferences: Record<string, any>;
-        metadata: Record<string, any> | null;
-      }>;
-      user_stats: TableRow<{
-        user_id: string;
-        technique: 'tarot' | 'iching' | 'runes';
-        total_sessions: number;
-        sessions_this_week: number;
-        sessions_this_month: number;
-        last_session_at: string | null;
-        favorite_spread: string | null;
-        average_rating: number | null;
-        updated_at: string;
-      }>;
-      sessions: TableRow<{
-        id: string;
-        user_id: string;
-        technique: 'tarot' | 'iching' | 'runes';
-        locale: string;
-        created_at: string;
-        last_activity: string;
-        question: string | null;
-        results: Record<string, any> | null;
-        interpretation: string | null;
-        summary: string | null;
-        metadata: Record<string, any> | null;
-        is_deleted: boolean;
-        deleted_at: string | null;
-      }>;
-      session_artifacts: TableRow<{
-        id: string;
-        session_id: string;
-        artifact_type:
-          | 'tarot_draw'
-          | 'iching_cast'
-          | 'rune_cast'
-          | 'interpretation'
-          | 'message_bundle'
-          | 'note';
-        source: 'user' | 'assistant' | 'system';
-        created_at: string;
-        payload: Record<string, any>;
-        metadata: Record<string, any> | null;
-        version: number;
-      }>;
-      session_messages: TableRow<{
-        id: string;
-        session_id: string;
-        sender: 'user' | 'assistant' | 'system';
-        sequence: number;
-        created_at: string;
-        content: string;
-        metadata: Record<string, any> | null;
-      }>;
-      user_activities: TableRow<{
-        id: string;
-        user_id: string;
-        activity_type:
-          | 'tarot_reading'
-          | 'iching_cast'
-          | 'rune_cast'
-          | 'chat'
-          | 'lunar_advice'
-          | 'ritual'
-          | 'meditation'
-          | 'note'
-          | 'reminder'
-          | 'insight'
-          | 'custom';
-        activity_status:
-          | 'draft'
-          | 'scheduled'
-          | 'in_progress'
-          | 'completed'
-          | 'missed'
-          | 'cancelled'
-          | 'archived';
-        source: 'user' | 'assistant' | 'system' | 'import';
-        activity_date: string;
-        timezone: string | null;
-        lunar_phase_id:
-          | 'new_moon'
-          | 'waxing_crescent'
-          | 'first_quarter'
-          | 'waxing_gibbous'
-          | 'full_moon'
-          | 'waning_gibbous'
-          | 'last_quarter'
-          | 'waning_crescent'
-          | null;
-        lunar_phase_name: string | null;
-        lunar_zodiac_id: string | null;
-        lunar_zodiac_name: string | null;
-        title: string | null;
-        summary: string | null;
-        tags: string[] | null;
-        mood: string | null;
-        duration_minutes: number | null;
-        reference_table: string | null;
-        reference_id: string | null;
-        payload: Record<string, any>;
-        metadata: Record<string, any>;
-        created_at: string;
-        updated_at: string;
-        deleted_at: string | null;
-      }>;
-      journal_notes: TableRow<{
-        id: string;
-        user_id: string;
-        activity_id: string | null;
-        title: string | null;
-        body: string;
-        mood: string | null;
-        tags: string[] | null;
-        is_private: boolean;
-        source: 'user' | 'assistant' | 'system' | 'import';
-        created_at: string;
-        updated_at: string;
-      }>;
-      journal_reminders: TableRow<{
-        id: string;
-        user_id: string;
-        activity_type:
-          | 'tarot_reading'
-          | 'chat'
-          | 'lunar_advice'
-          | 'ritual'
-          | 'meditation'
-          | 'note'
-          | 'reminder'
-          | 'insight'
-          | 'custom';
-        status:
-          | 'draft'
-          | 'scheduled'
-          | 'in_progress'
-          | 'completed'
-          | 'missed'
-          | 'cancelled'
-          | 'archived';
-        scheduled_at: string;
-        timezone: string | null;
-        title: string | null;
-        description: string | null;
-        payload: Record<string, any>;
-        metadata: Record<string, any>;
-        last_notification_at: string | null;
-        last_notification_error: string | null;
-        created_at: string;
-        updated_at: string;
-      }>;
-      journal_activity_links: TableRow<{
-        id: string;
-        user_id: string;
-        source_activity_id: string;
-        target_activity_id: string;
-        relation: string;
-        created_at: string;
-      }>;
-      journal_insights: TableRow<{
-        id: string;
-        user_id: string;
-        period: string;
-        headline: string | null;
-        summary: string | null;
-        metrics: Record<string, any>;
-        provider: string | null;
-        request_id: string | null;
-        generated_at: string;
-        expires_at: string | null;
-        created_at: string;
-        updated_at: string;
-      }>;
-      lunar_queries: TableRow<{
-        id: string;
-        user_id: string;
-        topic: string;
-        intention: string | null;
-        advice: Record<string, any>;
-        context: Record<string, any>;
-        locale: string;
-        date: string;
-        created_at: string;
-      }>;
-      lunar_reminders: TableRow<{
-        id: string;
-        user_id: string;
-        date: string;
-        time: string | null;
-        topic: string;
-        intention: string | null;
-        locale: string;
-        created_at: string;
-      }>;
-      api_usage: TableRow<{
-        id: string;
-        user_id: string | null;
-        endpoint: string;
-        method: string;
-        status_code: number;
-        processing_time_ms: number;
-        technique: 'tarot' | 'iching' | 'runes' | null;
-        created_at: string;
-        metadata: Record<string, any> | null;
-      }>;
-    };
+      api_usage: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          metadata: Json | null
+          method: string
+          processing_time_ms: number
+          status_code: number
+          technique: Database["public"]["Enums"]["divination_technique"] | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          metadata?: Json | null
+          method: string
+          processing_time_ms: number
+          status_code: number
+          technique?: Database["public"]["Enums"]["divination_technique"] | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          metadata?: Json | null
+          method?: string
+          processing_time_ms?: number
+          status_code?: number
+          technique?: Database["public"]["Enums"]["divination_technique"] | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_usage_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_engagement"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_usage_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lunar_daily_cache: {
+        Row: {
+          age: number
+          data: Json
+          date: string
+          guidance: string | null
+          illumination: number
+          phase: Database["public"]["Enums"]["lunar_phase"]
+          updated_at: string
+          zodiac_sign: string
+        }
+        Insert: {
+          age: number
+          data?: Json
+          date: string
+          guidance?: string | null
+          illumination: number
+          phase: Database["public"]["Enums"]["lunar_phase"]
+          updated_at?: string
+          zodiac_sign: string
+        }
+        Update: {
+          age?: number
+          data?: Json
+          date?: string
+          guidance?: string | null
+          illumination?: number
+          phase?: Database["public"]["Enums"]["lunar_phase"]
+          updated_at?: string
+          zodiac_sign?: string
+        }
+        Relationships: []
+      }
+      session_artifacts: {
+        Row: {
+          artifact_type: Database["public"]["Enums"]["session_artifact_type"]
+          created_at: string
+          id: string
+          metadata: Json
+          payload: Json
+          session_id: string
+          source: Database["public"]["Enums"]["session_actor_type"]
+          version: number
+        }
+        Insert: {
+          artifact_type: Database["public"]["Enums"]["session_artifact_type"]
+          created_at?: string
+          id?: string
+          metadata?: Json
+          payload: Json
+          session_id: string
+          source?: Database["public"]["Enums"]["session_actor_type"]
+          version?: number
+        }
+        Update: {
+          artifact_type?: Database["public"]["Enums"]["session_artifact_type"]
+          created_at?: string
+          id?: string
+          metadata?: Json
+          payload?: Json
+          session_id?: string
+          source?: Database["public"]["Enums"]["session_actor_type"]
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_artifacts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "session_history_expanded"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_artifacts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      session_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          metadata: Json
+          sender: Database["public"]["Enums"]["session_actor_type"]
+          sequence: number
+          session_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          sender: Database["public"]["Enums"]["session_actor_type"]
+          sequence?: never
+          session_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          sender?: Database["public"]["Enums"]["session_actor_type"]
+          sequence?: never
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "session_history_expanded"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          id: string
+          interpretation: string | null
+          is_deleted: boolean
+          last_activity: string
+          locale: string
+          metadata: Json
+          question: string | null
+          results: Json | null
+          summary: string | null
+          technique: Database["public"]["Enums"]["divination_technique"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          interpretation?: string | null
+          is_deleted?: boolean
+          last_activity?: string
+          locale?: string
+          metadata?: Json
+          question?: string | null
+          results?: Json | null
+          summary?: string | null
+          technique: Database["public"]["Enums"]["divination_technique"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          interpretation?: string | null
+          is_deleted?: boolean
+          last_activity?: string
+          locale?: string
+          metadata?: Json
+          question?: string | null
+          results?: Json | null
+          summary?: string | null
+          technique?: Database["public"]["Enums"]["divination_technique"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_engagement"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_activities: {
+        Row: {
+          activity_date: string
+          activity_status: Database["public"]["Enums"]["journal_activity_status"]
+          activity_type: Database["public"]["Enums"]["journal_activity_type"]
+          created_at: string
+          deleted_at: string | null
+          id: string
+          lunar_phase_id: Database["public"]["Enums"]["lunar_phase"] | null
+          lunar_zodiac_name: string | null
+          metadata: Json
+          payload: Json
+          session_id: string | null
+          summary: string | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_date: string
+          activity_status?: Database["public"]["Enums"]["journal_activity_status"]
+          activity_type: Database["public"]["Enums"]["journal_activity_type"]
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          lunar_phase_id?: Database["public"]["Enums"]["lunar_phase"] | null
+          lunar_zodiac_name?: string | null
+          metadata?: Json
+          payload?: Json
+          session_id?: string | null
+          summary?: string | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_date?: string
+          activity_status?: Database["public"]["Enums"]["journal_activity_status"]
+          activity_type?: Database["public"]["Enums"]["journal_activity_type"]
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          lunar_phase_id?: Database["public"]["Enums"]["lunar_phase"] | null
+          lunar_zodiac_name?: string | null
+          metadata?: Json
+          payload?: Json
+          session_id?: string | null
+          summary?: string | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_activities_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "session_history_expanded"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_activities_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_stats: {
+        Row: {
+          average_rating: number | null
+          favorite_spread: string | null
+          last_session_at: string | null
+          sessions_this_month: number
+          sessions_this_week: number
+          technique: Database["public"]["Enums"]["divination_technique"]
+          total_sessions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          average_rating?: number | null
+          favorite_spread?: string | null
+          last_session_at?: string | null
+          sessions_this_month?: number
+          sessions_this_week?: number
+          technique: Database["public"]["Enums"]["divination_technique"]
+          total_sessions?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          average_rating?: number | null
+          favorite_spread?: string | null
+          last_session_at?: string | null
+          sessions_this_month?: number
+          sessions_this_week?: number
+          technique?: Database["public"]["Enums"]["divination_technique"]
+          total_sessions?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_stats_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_engagement"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_stats_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          last_activity: string
+          metadata: Json | null
+          name: string | null
+          preferences: Json
+          tier: Database["public"]["Enums"]["user_tier"]
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_activity?: string
+          metadata?: Json | null
+          name?: string | null
+          preferences?: Json
+          tier?: Database["public"]["Enums"]["user_tier"]
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_activity?: string
+          metadata?: Json | null
+          name?: string | null
+          preferences?: Json
+          tier?: Database["public"]["Enums"]["user_tier"]
+        }
+        Relationships: []
+      }
+    }
     Views: {
+      daily_usage_stats: {
+        Row: {
+          avg_processing_time_ms: number | null
+          date: string | null
+          session_count: number | null
+          technique: Database["public"]["Enums"]["divination_technique"] | null
+          unique_users: number | null
+        }
+        Relationships: []
+      }
       session_history_expanded: {
-        Row: Database['public']['Tables']['sessions']['Row'] & {
-          artifacts: Array<{
-            id: string;
-            type: Database['public']['Tables']['session_artifacts']['Row']['artifact_type'];
-            source: Database['public']['Tables']['session_artifacts']['Row']['source'];
-            createdAt?: string;
-            created_at?: string;
-            version?: number | null;
-            payload?: Record<string, any> | null;
-            metadata?: Record<string, any> | null;
-          }> | null;
-          messages: Array<{
-            id?: string;
-            sender?: Database['public']['Tables']['session_messages']['Row']['sender'];
-            sequence?: number;
-            createdAt?: string;
-            created_at?: string;
-            content?: string;
-            metadata?: Record<string, any> | null;
-          }> | null;
-        };
-      };
-    };
-    Functions: Record<string, never>;
+        Row: {
+          artifacts: Json | null
+          created_at: string | null
+          id: string | null
+          interpretation: string | null
+          last_activity: string | null
+          locale: string | null
+          messages: Json | null
+          metadata: Json | null
+          question: string | null
+          results: Json | null
+          summary: string | null
+          technique: Database["public"]["Enums"]["divination_technique"] | null
+          user_id: string | null
+        }
+        Insert: {
+          artifacts?: never
+          created_at?: string | null
+          id?: string | null
+          interpretation?: string | null
+          last_activity?: string | null
+          locale?: string | null
+          messages?: never
+          metadata?: Json | null
+          question?: string | null
+          results?: Json | null
+          summary?: string | null
+          technique?: Database["public"]["Enums"]["divination_technique"] | null
+          user_id?: string | null
+        }
+        Update: {
+          artifacts?: never
+          created_at?: string | null
+          id?: string | null
+          interpretation?: string | null
+          last_activity?: string | null
+          locale?: string | null
+          messages?: never
+          metadata?: Json | null
+          question?: string | null
+          results?: Json | null
+          summary?: string | null
+          technique?: Database["public"]["Enums"]["divination_technique"] | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_engagement"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sessions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_engagement: {
+        Row: {
+          first_session: string | null
+          id: string | null
+          last_activity: string | null
+          last_session: string | null
+          techniques_used: number | null
+          tier: Database["public"]["Enums"]["user_tier"] | null
+          total_sessions: number | null
+          user_created_at: string | null
+        }
+        Relationships: []
+      }
+    }
+    Functions: {
+      cleanup_old_deleted_sessions: { Args: never; Returns: number }
+      refresh_user_stats: { Args: { user_uuid: string }; Returns: undefined }
+    }
     Enums: {
-      divination_technique: 'tarot' | 'iching' | 'runes';
-      user_tier: 'free' | 'premium' | 'premium_annual';
-      session_actor_type: 'user' | 'assistant' | 'system';
-      session_artifact_type:
-        | 'tarot_draw'
-        | 'iching_cast'
-        | 'rune_cast'
-        | 'interpretation'
-        | 'message_bundle'
-        | 'note';
+      divination_technique: "tarot" | "iching" | "runes"
+      journal_activity_status: "completed" | "partial" | "archived"
       journal_activity_type:
-        | 'tarot_reading'
-        | 'iching_cast'
-        | 'rune_cast'
-        | 'chat'
-        | 'lunar_advice'
-        | 'ritual'
-        | 'meditation'
-        | 'note'
-        | 'reminder'
-        | 'insight'
-        | 'custom';
-      journal_activity_status:
-        | 'draft'
-        | 'scheduled'
-        | 'in_progress'
-        | 'completed'
-        | 'missed'
-        | 'cancelled'
-        | 'archived';
-      journal_activity_source: 'user' | 'assistant' | 'system' | 'import';
+        | "tarot_reading"
+        | "iching_reading"
+        | "rune_reading"
+        | "lunar_guidance"
+        | "chat_session"
+        | "daily_draw"
       lunar_phase:
-        | 'new_moon'
-        | 'waxing_crescent'
-        | 'first_quarter'
-        | 'waxing_gibbous'
-        | 'full_moon'
-        | 'waning_gibbous'
-        | 'last_quarter'
-        | 'waning_crescent';
-    };
-    CompositeTypes: Record<string, never>;
-  };
+        | "new_moon"
+        | "waxing_crescent"
+        | "first_quarter"
+        | "waxing_gibbous"
+        | "full_moon"
+        | "waning_gibbous"
+        | "last_quarter"
+        | "waning_crescent"
+      notification_type: "email" | "push" | "marketing"
+      session_actor_type: "user" | "assistant" | "system"
+      session_artifact_type:
+        | "tarot_draw"
+        | "iching_cast"
+        | "rune_cast"
+        | "interpretation"
+        | "message_bundle"
+        | "note"
+      user_tier: "free" | "premium" | "premium_annual"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
 }
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      divination_technique: ["tarot", "iching", "runes"],
+      journal_activity_status: ["completed", "partial", "archived"],
+      journal_activity_type: [
+        "tarot_reading",
+        "iching_reading",
+        "rune_reading",
+        "lunar_guidance",
+        "chat_session",
+        "daily_draw",
+      ],
+      lunar_phase: [
+        "new_moon",
+        "waxing_crescent",
+        "first_quarter",
+        "waxing_gibbous",
+        "full_moon",
+        "waning_gibbous",
+        "last_quarter",
+        "waning_crescent",
+      ],
+      notification_type: ["email", "push", "marketing"],
+      session_actor_type: ["user", "assistant", "system"],
+      session_artifact_type: [
+        "tarot_draw",
+        "iching_cast",
+        "rune_cast",
+        "interpretation",
+        "message_bundle",
+        "note",
+      ],
+      user_tier: ["free", "premium", "premium_annual"],
+    },
+  },
+} as const

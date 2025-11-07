@@ -1,4 +1,4 @@
-﻿-- =====================================================================
+-- =====================================================================
 -- Smart Divination Platform - Lunar Cache Schema Migration
 -- Adds persistent cache for lunar metadata to support home panel.
 -- =====================================================================
@@ -49,12 +49,14 @@ COMMENT ON TABLE lunar_daily_cache IS 'Daily lunar metadata cache used by the ho
 -- ---------------------------------------------------------------------
 ALTER TABLE lunar_daily_cache ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS lunar_daily_cache_service_all ON lunar_daily_cache
+DROP POLICY IF EXISTS lunar_daily_cache_service_all ON lunar_daily_cache;
+CREATE POLICY lunar_daily_cache_service_all ON lunar_daily_cache
     FOR ALL TO service_role
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY IF NOT EXISTS lunar_daily_cache_read ON lunar_daily_cache
+DROP POLICY IF EXISTS lunar_daily_cache_read ON lunar_daily_cache;
+CREATE POLICY lunar_daily_cache_read ON lunar_daily_cache
     FOR SELECT TO authenticated, anon
     USING (true);
 

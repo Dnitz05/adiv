@@ -3145,7 +3145,9 @@ class _HomeState extends State<_Home> {
       );
     } else if (_selectedBottomNavIndex == 3) {
       // Archive/Journal screen
-      bodyContent = const ArchiveScreen();
+      final userId = _userId ?? '';
+      final locale = localisation.localeName;
+      bodyContent = ArchiveScreen(userId: userId, locale: locale);
     } else if (_selectedBottomNavIndex == 4) {
       bodyContent = LearnScreen(
         strings: localisation,
