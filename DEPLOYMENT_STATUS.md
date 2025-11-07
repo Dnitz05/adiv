@@ -1,7 +1,9 @@
 # Journal/Archive Deployment Status
 
-**Data:** 2025-11-07 19:30
-**Execució:** Deployment automàtic
+**Data:** 2025-11-07 23:10
+**Execució:** Deployment completat
+
+---
 
 ## Estat Components
 
@@ -10,31 +12,130 @@
 - Taula `user_activities` creada
 - ETL trigger `sync_session_to_activities` actiu
 - RLS policies aplicades
-- **STATUS:** LIVE
+- **STATUS:** LIVE ✅
 
 ### ✅ TypeScript Types
 - Schema types regenerats amb últim schema
 - Fitxer: `backend/lib/types/generated/supabase.ts` (692 línies)
-- **STATUS:** UPDATED
+- **STATUS:** UPDATED ✅
 
-### ⏳ Backend API (Vercel)
-- Endpoints implementats:
-  - `/api/journal/timeline`
-  - `/api/journal/stats`
-  - `/api/journal/day/[date]`
-- Service layer: `journal-service.ts`
-- **STATUS:** PENDING AUTO-DEPLOY
+### ✅ Backend API (Vercel)
+- **URL Producció:** https://backend-dnitzs-projects.vercel.app
+- **Deployment:** backend-564homt86-dnitzs-projects.vercel.app
+- **Build Time:** 30s
+- **Status:** Ready ✅
 
-### ✅ Flutter App
-- Tots els widgets implementats i testats (8/8 tests passing)
-- **STATUS:** READY FOR BUILD
+#### Endpoints Verificats:
+1. ✅ `/api/journal/timeline` → 401 (auth working)
+2. ✅ `/api/journal/stats` → 401 (auth working)
+3. ✅ `/api/journal/day/[date]` → 401 (auth working)
+
+Service layer: `journal-service.ts`
+
+### ✅ Fixes Aplicats
+1. **TypeScript Type Errors:**
+   - ✅ Corregit casting de `Json` a `Record<string, unknown>` en `journal-service.ts`
+   - ✅ Corregits imports paths als 3 endpoints (nombre incorrecte de `../`)
+   - ✅ Corregit type assertion per `phase` parameter en timeline
+
+2. **Build Success:**
+   - ✅ Compilació TypeScript exitosa
+   - ✅ Tots els endpoints apareixen al Next.js build output
+
+3. **Commit:**
+   - Commit: `699b1dfd` - fix: resolve TypeScript build errors in journal API endpoints
+   - Pushat a origin/master ✅
+
+### ✅ Flutter App - Header Redesign
+- **Commit:** `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
+- **Data:** 2025-11-07
+- **STATUS:** DEPLOYED TO GITHUB ✅
+
+#### Canvis Implementats:
+1. **Layout Header:**
+   - Menú hamburger a l'esquerra (leading)
+   - Logo lunar circular + data centrada (title)
+   - Crèdits amb badge GO PRO a la dreta (actions)
+   - Altura reduïda: 76px → 48px
+
+2. **Nou Widget:**
+   - `_CreditsWithProBadge`: Badge dorat amb gradient 🟡→🟠
+   - Icona sol + nombre de crèdits
+   - Botó GO PRO amb ombra
+
+3. **Modal GO PRO:**
+   - Header amb gradient daurat
+   - 4 beneficis clau (crèdits il·limitats, spreads, IA prioritària, sense ads)
+   - Info box amb crèdits gratuïts
+   - CTAs: "Potser Més Tard" / "Millorar Ara"
+   - Multilingüe (EN/ES/CA)
+
+4. **Assets:**
+   - Nou logo: `assets/branding/logo.png`
+
+- **Flutter Analyze:** ✅ (només warnings menors)
+- **APK Build:** ✅ (68.2MB, 48.9s build time)
+- **Installation:** ✅ Deployed to device RCWSWS9LJRFADQSC
+- **STATUS:** LIVE ON DEVICE ✅
+
+---
+
+## Verificació Endpoints
+
+```bash
+# Timeline
+curl https://backend-dnitzs-projects.vercel.app/api/journal/timeline?limit=1
+# Response: 401 (auth required) ✅
+
+# Stats
+curl https://backend-dnitzs-projects.vercel.app/api/journal/stats
+# Response: 401 (auth required) ✅
+
+# Day
+curl https://backend-dnitzs-projects.vercel.app/api/journal/day/2025-11-07
+# Response: 401 (auth required) ✅
+```
+
+---
 
 ## Pròxims Passos
 
-1. Esperar auto-deploy Vercel (~2-5 minuts)
-2. Verificar endpoints API
-3. Build Flutter APK
-4. QA testing
+1. ✅ ~~Database migration~~
+2. ✅ ~~Backend deployment~~
+3. ✅ ~~Endpoints verification~~
+4. ⏳ Build Flutter APK amb API_BASE_URL correcte
+5. ⏳ QA testing amb l'app
+6. ⏳ Release a stores
 
 ---
-*Generat automàticament per Claude Code*
+
+## Notes Tècniques
+
+### Issues Resolts:
+1. **404 errors:** Els endpoints estaven al projecte "backend" de Vercel, no "smart-divination"
+2. **Build errors:** Import paths incorrectes (4-5 `../` en lloc de 3-4)
+3. **Type errors:** `Json` vs `Record<string, unknown>` casting
+4. **Phase type:** String vs LunarPhase enum union
+
+### Configuració Vercel:
+- Projecte backend: `prj_1W7dSxmVE6qwzuX4xaqr9EkoCbAC`
+- Aliases:
+  - https://backend-dnitzs-projects.vercel.app (PRODUCTION)
+  - https://backend-three-ruddy-25.vercel.app
+  - https://backend-dnitz05-dnitzs-projects.vercel.app
+
+### Build Output:
+```
+Route (pages)
+├ ƒ /api/journal/day/[date]                0 B            79.8 kB
+├ ƒ /api/journal/stats                     0 B            79.8 kB
+├ ƒ /api/journal/timeline                  0 B            79.8 kB
+```
+
+---
+
+**Deployment Status:** ✅ **SUCCESS**
+**Endpoints:** ✅ **LIVE**
+**Tests:** ✅ **PASSING (8/8)**
+
+*Actualitzat automàticament per Claude Code*
