@@ -83,7 +83,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
             _buildTabBar(),
             const SizedBox(height: 16),
             SizedBox(
-              height: 400,
+              height: 300,
               child: _buildTabContent(day),
             ),
           ],
