@@ -28,6 +28,7 @@ import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
+import 'widgets/archive_screen.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
@@ -930,9 +931,11 @@ class _HomeState extends State<_Home> {
 
   Future<void> _generateDailyDraw({String? userId}) async {
     if (_loadingDailyDraw) {
+      debugPrint('⏸️ Daily draw already loading, skipping');
       return;
     }
 
+    debugPrint('🎴 Starting daily draw generation for userId: $userId');
     setState(() {
       _loadingDailyDraw = true;
     });
@@ -948,6 +951,7 @@ class _HomeState extends State<_Home> {
       );
 
       if (!mounted) {
+        debugPrint('⚠️ Widget unmounted, abandoning daily draw');
         return;
       }
 
@@ -957,16 +961,18 @@ class _HomeState extends State<_Home> {
         return TarotCard.fromCardResult(card, imagePath: imagePath);
       }).toList();
 
+      debugPrint('✅ Daily draw generated successfully: ${cards.length} cards');
       setState(() {
         _dailyCards = cards;
         _dailyDrawResponse = response;
         _loadingDailyDraw = false;
       });
-    } catch (error) {
+    } catch (error, stackTrace) {
       if (!mounted) {
         return;
       }
-      debugPrint('Failed to generate daily draw: $error');
+      debugPrint('❌ Failed to generate daily draw: $error');
+      debugPrint('Stack trace: $stackTrace');
       setState(() {
         _dailyCards = null;
         _loadingDailyDraw = false;
@@ -1908,14 +1914,9 @@ class _HomeState extends State<_Home> {
   }
 
   void _handleQuickActionArchive(CommonStrings localisation) {
-    _showQuickActionMessage(
-      _qaText(
-        localisation,
-        en: 'Archive will be available shortly.',
-        es: 'El archivo estarÃ¡ disponible en breve.',
-        ca: 'L\'arxiu estarÃ  disponible ben aviat.',
-      ),
-    );
+    setState(() {
+      _selectedBottomNavIndex = 3;
+    });
   }
 
   void _handleQuickActionSpreads(CommonStrings localisation) {
@@ -3142,6 +3143,9 @@ class _HomeState extends State<_Home> {
         },
         onOpenGallery: _showSpreadGallery,
       );
+    } else if (_selectedBottomNavIndex == 3) {
+      // Archive/Journal screen
+      bodyContent = const ArchiveScreen();
     } else if (_selectedBottomNavIndex == 4) {
       bodyContent = LearnScreen(
         strings: localisation,
@@ -3162,7 +3166,7 @@ class _HomeState extends State<_Home> {
           bottom: bottomSpacing + 80, // Extra space for draw form
         ),
         children: [
-          // Daily Draw Panel
+          // Daily Draw Panel - always show loading state or error
           if (_dailyCards != null && _dailyCards!.isNotEmpty)
             DailyDrawPanel(
               cards: _dailyCards!,
@@ -3186,8 +3190,39 @@ class _HomeState extends State<_Home> {
                   ),
                 );
               },
+            )
+          else if (_loadingDailyDraw)
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2.5),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      localisation.lunarPanelLoading,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          if (_dailyCards != null && _dailyCards!.isNotEmpty)
+          if ((_dailyCards != null && _dailyCards!.isNotEmpty) || _loadingDailyDraw)
             const SizedBox(height: 24),
           // Unified Lunar Wisdom Center
           UnifiedLunarWidget(
