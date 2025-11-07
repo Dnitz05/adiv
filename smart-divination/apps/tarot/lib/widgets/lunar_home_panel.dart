@@ -54,13 +54,12 @@ class LunarHomePanel extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildHeroCard(context, day),
+            const SizedBox(height: 12),
+            _buildAskTheMoonPrompt(context),
             const SizedBox(height: 16),
-            LunarAiAdvisor(
-              strings: strings,
-              userId: userId,
-              locale: strings.localeName,
-              onShareAdvice: (message) => _openAdviceInChat(context, message),
-            ),
+            _buildCalendarStrip(context),
+            const SizedBox(height: 16),
+            _buildSessionsSummary(context, day),
             const SizedBox(height: 16),
             LunarAdviceHistoryPanel(
               strings: strings,
@@ -68,10 +67,6 @@ class LunarHomePanel extends StatelessWidget {
               locale: strings.localeName,
               onShareAdvice: (message) => _openAdviceInChat(context, message),
             ),
-            const SizedBox(height: 16),
-            _buildCalendarStrip(context),
-            const SizedBox(height: 16),
-            _buildSessionsSummary(context, day),
           ],
         );
       },
@@ -522,6 +517,142 @@ class LunarHomePanel extends StatelessWidget {
     );
   }
 
+  Widget _buildAskTheMoonPrompt(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(18),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  TarotTheme.cosmicBlue,
+                  TarotTheme.cosmicAccent,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: const Icon(
+              Icons.nightlight_round,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _askMoonTitle(),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: TarotTheme.midnightBlue,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  _askMoonSubtitle(),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: TarotTheme.midnightBlue.withValues(alpha: 0.7),
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 120),
+            child: FilledButton(
+              onPressed: () => _showAskTheMoonSheet(context),
+              style: FilledButton.styleFrom(
+                backgroundColor: TarotTheme.cosmicAccent,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              ),
+              child: Text(
+                _askMoonButtonLabel(),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showAskTheMoonSheet(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        final bottomInset = MediaQuery.of(sheetContext).viewInsets.bottom;
+        return FractionallySizedBox(
+          heightFactor: 0.92,
+          child: Container(
+            decoration: BoxDecoration(
+              color: TarotTheme.midnightBlue,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            ),
+            child: SafeArea(
+              top: false,
+              child: Column(
+                children: [
+                  const SizedBox(height: 8),
+                  Container(
+                    width: 44,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 24 + bottomInset),
+                      child: SingleChildScrollView(
+                        child: LunarAiAdvisor(
+                          strings: strings,
+                          userId: userId,
+                          locale: strings.localeName,
+                          onShareAdvice: (message) {
+                            Navigator.of(sheetContext).pop();
+                            _openAdviceInChat(context, message);
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _openAdviceInChat(BuildContext context, String message) {
     final activeUserId = userId;
     if (activeUserId == null || activeUserId.isEmpty) {
@@ -657,6 +788,39 @@ class LunarHomePanel extends StatelessWidget {
         return 'Inicia sessió per compartir el teu consell lunar al xat.';
       default:
         return 'Sign in to share your lunar guidance in the chat.';
+    }
+  }
+
+  String _askMoonTitle() {
+    switch (strings.localeName) {
+      case 'es':
+        return 'Preguntar a la luna';
+      case 'ca':
+        return 'Pregunta a la lluna';
+      default:
+        return 'Ask the moon';
+    }
+  }
+
+  String _askMoonSubtitle() {
+    switch (strings.localeName) {
+      case 'es':
+        return 'Descubre en qué fase apoyar rituales, proyectos o cuidados.';
+      case 'ca':
+        return 'Descobreix en quina fase potenciar rituals, projectes o cures.';
+      default:
+        return 'Find the phase that boosts your rituals, projects or self-care.';
+    }
+  }
+
+  String _askMoonButtonLabel() {
+    switch (strings.localeName) {
+      case 'es':
+        return 'Abrir guia';
+      case 'ca':
+        return 'Obrir guia';
+      default:
+        return 'Open guide';
     }
   }
 }

@@ -3690,36 +3690,18 @@ class _CreditsBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.75),
-            TarotTheme.cosmicAccent.withValues(alpha: 0.75),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: TarotTheme.cosmicBlue.withValues(alpha: 0.25),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return GestureDetector(
+      onTap: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.wb_sunny, color: Colors.white, size: 16),
+          Icon(Icons.wb_sunny, color: TarotTheme.cosmicAccent, size: 20),
           const SizedBox(width: 6),
           Text(
             '${credits.remaining}',
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+              color: TarotTheme.cosmicAccent,
+              fontSize: 16,
               fontWeight: FontWeight.w700,
             ),
           ),

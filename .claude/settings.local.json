@@ -151,7 +151,8 @@
       "Bash(C:/tarot/supabase_cli/supabase.exe migration new journal_user_activities)",
       "Bash(C:/tarot/supabase_cli/supabase.exe gen types typescript --linked --schema public)",
       "Bash(lib/types/generated/supabase.ts)",
-      "Bash(C:/tarot/supabase_cli/supabase.exe gen types:*)"
+      "Bash(C:/tarot/supabase_cli/supabase.exe gen types:*)",
+      "Bash(git ls-tree:*)"
     ],
     "deny": [],
     "ask": []
