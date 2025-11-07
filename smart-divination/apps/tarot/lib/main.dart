@@ -3424,7 +3424,7 @@ class _HomeState extends State<_Home> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: Colors.grey.withValues(alpha: 0.2),
+            color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
             height: 1,
           ),
         ),
@@ -3433,7 +3433,7 @@ class _HomeState extends State<_Home> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Colors.grey.withValues(alpha: 0.2),
+              color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
