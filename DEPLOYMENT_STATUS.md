@@ -46,11 +46,12 @@ Service layer: `journal-service.ts`
    - Commit: `699b1dfd` - fix: resolve TypeScript build errors in journal API endpoints
    - Pushat a origin/master ✅
 
-### ✅ Flutter App - Header Redesign, Floating Behavior & Card-Back
+### ✅ Flutter App - Header Redesign, Floating Behavior & Luxury Card-Back
 - **Commits:**
   - `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
   - `396b07aa` - feat: add floating header with hide-on-scroll behavior
   - `c52ee21d` - feat: redesign card-back with minimalist esoteric line art
+  - `71e3290f` - feat: luxury celestial card-back with ornate gold foil design
 - **Data:** 2025-11-07/08
 - **STATUS:** LIVE ON DEVICE ✅
 
@@ -84,15 +85,22 @@ Service layer: `journal-service.ts`
 5. **Assets:**
    - Nou logo: `assets/branding/logo.png`
 
-6. **Card-Back Redesign (Minimalist Esoteric):**
-   - ✨ Només 2 colors: #231b4b + #f5f0e8
-   - ✨ Clean monoline vector strokes (sense gradients)
-   - ✨ Simetria perfecta vertical/horitzontal
-   - Elements: marc doble, diamant vertical, lluna creixent, sol amb raigs
-   - Halo de punts subtils + línies radials místiques
-   - Icones celestials a les 4 cantonades (estrella, planeta, lluna)
-   - Estil: professional, minimalista, adequat per app moderna
-   - Reduït de 210 línies → 150 línies SVG (29% més lleuger)
+6. **Card-Back Luxury Redesign (Hiperrealista):**
+   - ✨ Gradients celestials profunds (radial purple/indigo)
+   - ✨ Efecte gold foil amb gradient de 5 stops
+   - ✨ Marc triple ornamental amb filigrana als cantons
+   - ✨ Mandala central intrincada (5+ capes):
+     * Geometria sagrada: Flower of Life
+     * Estrella de 8 puntes
+     * Múltiples cercles decoratius
+   - 🌙 Lluna amb cara humana (estil clàssic celestial)
+   - ☀️ Sol amb cara humana + 16 raigs ornamentals
+   - 🌿 Ornaments florals Art Nouveau als laterals
+   - ♀️♂️ Símbols astrològics als cantons (Mercury, Venus, Mars, Jupiter)
+   - ⭐ Halo d'estrelles daurades + camp estel·lar subtil
+   - ✨ Partícules shimmer + línies d'energia mística
+   - Inspirat en: Rider-Waite, Golden Thread, Apollo Tarot luxury decks
+   - SVG: 307 línies (efecte multicapa professional)
 
 - **Flutter Analyze:** ✅ (només warnings menors)
 - **APK Build:** ✅ (68.4MB, 49.5s build time)
