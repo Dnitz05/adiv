@@ -77,6 +77,146 @@ export interface Database {
         content: string;
         metadata: Record<string, any> | null;
       }>;
+      user_activities: TableRow<{
+        id: string;
+        user_id: string;
+        activity_type:
+          | 'tarot_reading'
+          | 'iching_cast'
+          | 'rune_cast'
+          | 'chat'
+          | 'lunar_advice'
+          | 'ritual'
+          | 'meditation'
+          | 'note'
+          | 'reminder'
+          | 'insight'
+          | 'custom';
+        activity_status:
+          | 'draft'
+          | 'scheduled'
+          | 'in_progress'
+          | 'completed'
+          | 'missed'
+          | 'cancelled'
+          | 'archived';
+        source: 'user' | 'assistant' | 'system' | 'import';
+        activity_date: string;
+        timezone: string | null;
+        lunar_phase_id:
+          | 'new_moon'
+          | 'waxing_crescent'
+          | 'first_quarter'
+          | 'waxing_gibbous'
+          | 'full_moon'
+          | 'waning_gibbous'
+          | 'last_quarter'
+          | 'waning_crescent'
+          | null;
+        lunar_phase_name: string | null;
+        lunar_zodiac_id: string | null;
+        lunar_zodiac_name: string | null;
+        title: string | null;
+        summary: string | null;
+        tags: string[] | null;
+        mood: string | null;
+        duration_minutes: number | null;
+        reference_table: string | null;
+        reference_id: string | null;
+        payload: Record<string, any>;
+        metadata: Record<string, any>;
+        created_at: string;
+        updated_at: string;
+        deleted_at: string | null;
+      }>;
+      journal_notes: TableRow<{
+        id: string;
+        user_id: string;
+        activity_id: string | null;
+        title: string | null;
+        body: string;
+        mood: string | null;
+        tags: string[] | null;
+        is_private: boolean;
+        source: 'user' | 'assistant' | 'system' | 'import';
+        created_at: string;
+        updated_at: string;
+      }>;
+      journal_reminders: TableRow<{
+        id: string;
+        user_id: string;
+        activity_type:
+          | 'tarot_reading'
+          | 'chat'
+          | 'lunar_advice'
+          | 'ritual'
+          | 'meditation'
+          | 'note'
+          | 'reminder'
+          | 'insight'
+          | 'custom';
+        status:
+          | 'draft'
+          | 'scheduled'
+          | 'in_progress'
+          | 'completed'
+          | 'missed'
+          | 'cancelled'
+          | 'archived';
+        scheduled_at: string;
+        timezone: string | null;
+        title: string | null;
+        description: string | null;
+        payload: Record<string, any>;
+        metadata: Record<string, any>;
+        last_notification_at: string | null;
+        last_notification_error: string | null;
+        created_at: string;
+        updated_at: string;
+      }>;
+      journal_activity_links: TableRow<{
+        id: string;
+        user_id: string;
+        source_activity_id: string;
+        target_activity_id: string;
+        relation: string;
+        created_at: string;
+      }>;
+      journal_insights: TableRow<{
+        id: string;
+        user_id: string;
+        period: string;
+        headline: string | null;
+        summary: string | null;
+        metrics: Record<string, any>;
+        provider: string | null;
+        request_id: string | null;
+        generated_at: string;
+        expires_at: string | null;
+        created_at: string;
+        updated_at: string;
+      }>;
+      lunar_queries: TableRow<{
+        id: string;
+        user_id: string;
+        topic: string;
+        intention: string | null;
+        advice: Record<string, any>;
+        context: Record<string, any>;
+        locale: string;
+        date: string;
+        created_at: string;
+      }>;
+      lunar_reminders: TableRow<{
+        id: string;
+        user_id: string;
+        date: string;
+        time: string | null;
+        topic: string;
+        intention: string | null;
+        locale: string;
+        created_at: string;
+      }>;
       api_usage: TableRow<{
         id: string;
         user_id: string | null;
@@ -126,6 +266,36 @@ export interface Database {
         | 'interpretation'
         | 'message_bundle'
         | 'note';
+      journal_activity_type:
+        | 'tarot_reading'
+        | 'iching_cast'
+        | 'rune_cast'
+        | 'chat'
+        | 'lunar_advice'
+        | 'ritual'
+        | 'meditation'
+        | 'note'
+        | 'reminder'
+        | 'insight'
+        | 'custom';
+      journal_activity_status:
+        | 'draft'
+        | 'scheduled'
+        | 'in_progress'
+        | 'completed'
+        | 'missed'
+        | 'cancelled'
+        | 'archived';
+      journal_activity_source: 'user' | 'assistant' | 'system' | 'import';
+      lunar_phase:
+        | 'new_moon'
+        | 'waxing_crescent'
+        | 'first_quarter'
+        | 'waxing_gibbous'
+        | 'full_moon'
+        | 'waning_gibbous'
+        | 'last_quarter'
+        | 'waning_crescent';
     };
     CompositeTypes: Record<string, never>;
   };

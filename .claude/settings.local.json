@@ -146,7 +146,8 @@
       "Bash(node --version:*)",
       "Bash(npm:*)",
       "Bash(C:/tarot/supabase_cli/supabase.exe --version:*)",
-      "Bash(/c/Users/neo/AppData/Local/Pub/Cache/bin/melos.bat --version)"
+      "Bash(/c/Users/neo/AppData/Local/Pub/Cache/bin/melos.bat --version)",
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter clean:*)"
     ],
     "deny": [],
     "ask": []

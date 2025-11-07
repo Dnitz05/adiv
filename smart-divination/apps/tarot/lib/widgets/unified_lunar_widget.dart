@@ -214,7 +214,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
 
     return Container(
       decoration: BoxDecoration(
-        color: TarotTheme.midnightBlue.withValues(alpha: 0.3),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
       ),
       child: TabBar(
@@ -233,7 +233,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           ),
         ),
         labelColor: Colors.white,
-        unselectedLabelColor: Colors.white60,
+        unselectedLabelColor: TarotTheme.stardust,
         labelStyle: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,

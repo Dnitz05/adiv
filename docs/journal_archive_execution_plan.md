@@ -57,6 +57,7 @@ This document captures the deep‑dive analysis for the new Archive experience. 
   - Scans existing sessions and lunar data, batches inserts into `user_activities`.
   - Validates counts per user, checks duplicates, logs metrics.
   - CLI steps: `cd backend && npm run ts-node scripts/backfill_journal_activities.ts --limit=500`.
+- Placeholder CLI entry lives at `smart-divination/backend/scripts/backfill_user_activities.mjs`. Today it only performs dry-run inspection (`--dry-run`) while we finish ETL logic; once data contracts stabilize we will extend it to insert/update records in batches.
 
 - **Validation**:
   - Supabase CLI: `supabase db reset` with new migrations; ensure tests pass.
