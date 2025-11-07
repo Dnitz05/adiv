@@ -3386,39 +3386,52 @@ class _HomeState extends State<_Home> {
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        toolbarHeight: 76,
-        title: Text(
-          _formatTodayDate(localisation.localeName),
-          style: const TextStyle(
-            color: TarotTheme.cosmicAccent,
-            fontSize: 17,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        leading: ValueListenableBuilder<DailyCredits>(
-          valueListenable: _creditsNotifier,
-          builder: (context, credits, _) {
-            final creditLabel = _qaText(
-              localisation,
-              en: 'Credits',
-              es: 'Creditos',
-              ca: 'Credits',
-            );
-            return Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: _CreditsBadge(
-                credits: credits,
-                label: creditLabel,
-                onTap: () => _showCreditsInfoDialog(credits, localisation),
+        toolbarHeight: 48,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/branding/logo.png',
+              width: 24,
+              height: 24,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              _formatTodayDate(localisation.localeName),
+              style: const TextStyle(
+                color: TarotTheme.cosmicAccent,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
               ),
-            );
-          },
+            ),
+          ],
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: TarotTheme.cosmicAccent, size: 22),
+          tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
+          onPressed: () => _openHeaderMenu(localisation),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.more_vert, color: TarotTheme.cosmicAccent),
-            tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
-            onPressed: () => _openHeaderMenu(localisation),
+          ValueListenableBuilder<DailyCredits>(
+            valueListenable: _creditsNotifier,
+            builder: (context, credits, _) {
+              final creditLabel = _qaText(
+                localisation,
+                en: 'Credits',
+                es: 'Creditos',
+                ca: 'Credits',
+              );
+              return Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: _CreditsWithProBadge(
+                  credits: credits,
+                  label: creditLabel,
+                  onCreditsTap: () => _showCreditsInfoDialog(credits, localisation),
+                  onProTap: () => _showGoProModal(localisation),
+                ),
+              );
+            },
           ),
         ],
         bottom: PreferredSize(
@@ -3573,6 +3586,225 @@ class _HomeState extends State<_Home> {
           ],
         );
       },
+    );
+  }
+
+  void _showGoProModal(CommonStrings localisation) {
+    final title = _qaText(
+      localisation,
+      en: 'Upgrade to PRO',
+      es: 'Pasa a PRO',
+      ca: 'Passa a PRO',
+    );
+
+    final subtitle = _qaText(
+      localisation,
+      en: 'Unlock unlimited access',
+      es: 'Desbloquea acceso ilimitado',
+      ca: 'Desbloqueja accés il·limitat',
+    );
+
+    final benefitsTitle = _qaText(
+      localisation,
+      en: 'PRO Benefits:',
+      es: 'Beneficios PRO:',
+      ca: 'Beneficis PRO:',
+    );
+
+    final benefit1 = _qaText(
+      localisation,
+      en: 'Unlimited daily credits',
+      es: 'Créditos diarios ilimitados',
+      ca: 'Crèdits diaris il·limitats',
+    );
+
+    final benefit2 = _qaText(
+      localisation,
+      en: 'Access to all spreads',
+      es: 'Acceso a todas las tiradas',
+      ca: 'Accés a totes les tirades',
+    );
+
+    final benefit3 = _qaText(
+      localisation,
+      en: 'Priority AI interpretations',
+      es: 'Interpretaciones IA prioritarias',
+      ca: 'Interpretacions IA prioritàries',
+    );
+
+    final benefit4 = _qaText(
+      localisation,
+      en: 'Ad-free experience',
+      es: 'Experiencia sin anuncios',
+      ca: 'Experiència sense anuncis',
+    );
+
+    final freeInfo = _qaText(
+      localisation,
+      en: 'Free: 5 credits per day',
+      es: 'Gratis: 5 créditos al día',
+      ca: 'Gratis: 5 crèdits al dia',
+    );
+
+    final upgradeButton = _qaText(
+      localisation,
+      en: 'Upgrade Now',
+      es: 'Mejorar Ahora',
+      ca: 'Millorar Ara',
+    );
+
+    final closeButton = _qaText(
+      localisation,
+      en: 'Maybe Later',
+      es: 'Quizás Luego',
+      ca: 'Potser Més Tard',
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          contentPadding: const EdgeInsets.all(24),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header with gradient
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              // Benefits
+              Text(
+                benefitsTitle,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: TarotTheme.cosmicAccent,
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildBenefit(Icons.all_inclusive, benefit1),
+              _buildBenefit(Icons.auto_awesome, benefit2),
+              _buildBenefit(Icons.bolt, benefit3),
+              _buildBenefit(Icons.block, benefit4),
+              const SizedBox(height: 16),
+              // Free info
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline, size: 18, color: TarotTheme.cosmicAccent),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        freeInfo,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: TarotTheme.cosmicAccent,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(
+                closeButton,
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                // TODO: Implement upgrade flow
+                _showQuickActionMessage(
+                  _qaText(
+                    localisation,
+                    en: 'Upgrade feature coming soon!',
+                    es: '¡Función de mejora próximamente!',
+                    ca: 'Funció de millora properament!',
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFFA500),
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                upgradeButton,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildBenefit(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: const Color(0xFFFFA500)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -3738,5 +3970,76 @@ class _HeaderMenuItem extends StatelessWidget {
   }
 }
 
+class _CreditsWithProBadge extends StatelessWidget {
+  const _CreditsWithProBadge({
+    required this.credits,
+    required this.label,
+    required this.onCreditsTap,
+    required this.onProTap,
+  });
 
+  final DailyCredits credits;
+  final String label;
+  final VoidCallback onCreditsTap;
+  final VoidCallback onProTap;
 
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Credits badge
+        GestureDetector(
+          onTap: onCreditsTap,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.wb_sunny, color: TarotTheme.cosmicAccent, size: 20),
+              const SizedBox(width: 6),
+              Text(
+                '${credits.remaining}',
+                style: const TextStyle(
+                  color: TarotTheme.cosmicAccent,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 8),
+        // GO PRO badge
+        GestureDetector(
+          onTap: onProTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.orange.withValues(alpha: 0.3),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: const Text(
+              'GO PRO',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
