@@ -46,11 +46,12 @@ Service layer: `journal-service.ts`
    - Commit: `699b1dfd` - fix: resolve TypeScript build errors in journal API endpoints
    - Pushat a origin/master ✅
 
-### ✅ Flutter App - Header Redesign & Floating Behavior
+### ✅ Flutter App - Header Redesign, Floating Behavior & Card-Back
 - **Commits:**
   - `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
   - `396b07aa` - feat: add floating header with hide-on-scroll behavior
-- **Data:** 2025-11-07
+  - `c52ee21d` - feat: redesign card-back with minimalist esoteric line art
+- **Data:** 2025-11-07/08
 - **STATUS:** LIVE ON DEVICE ✅
 
 #### Canvis Implementats:
@@ -83,8 +84,18 @@ Service layer: `journal-service.ts`
 5. **Assets:**
    - Nou logo: `assets/branding/logo.png`
 
+6. **Card-Back Redesign (Minimalist Esoteric):**
+   - ✨ Només 2 colors: #231b4b + #f5f0e8
+   - ✨ Clean monoline vector strokes (sense gradients)
+   - ✨ Simetria perfecta vertical/horitzontal
+   - Elements: marc doble, diamant vertical, lluna creixent, sol amb raigs
+   - Halo de punts subtils + línies radials místiques
+   - Icones celestials a les 4 cantonades (estrella, planeta, lluna)
+   - Estil: professional, minimalista, adequat per app moderna
+   - Reduït de 210 línies → 150 línies SVG (29% més lleuger)
+
 - **Flutter Analyze:** ✅ (només warnings menors)
-- **APK Build:** ✅ (68.4MB, 49.0s build time)
+- **APK Build:** ✅ (68.4MB, 49.5s build time)
 - **Installation:** ✅ Deployed to device RCWSWS9LJRFADQSC
 - **STATUS:** LIVE ON DEVICE ✅
 
