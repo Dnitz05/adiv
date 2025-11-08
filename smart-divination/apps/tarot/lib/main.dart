@@ -3386,28 +3386,6 @@ class _HomeState extends State<_Home> {
           final itemWidth = constraints.maxWidth / 5;
           return Stack(
             children: [
-              // Top indicator line
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeInOut,
-                left: _selectedBottomNavIndex * itemWidth,
-                top: 0,
-                child: Container(
-                  width: itemWidth,
-                  height: 4,
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: itemWidth * 0.8,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF44385c),
-                      borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(2),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               Container(
                 decoration: BoxDecoration(
                   border: Border(
@@ -3501,6 +3479,28 @@ class _HomeState extends State<_Home> {
         ],
         ),
       ),
+              // Top indicator line (drawn on top)
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                left: _selectedBottomNavIndex * itemWidth,
+                top: 0,
+                child: Container(
+                  width: itemWidth,
+                  height: 4,
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: itemWidth * 0.8,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF44385c),
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(2),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           );
         },
