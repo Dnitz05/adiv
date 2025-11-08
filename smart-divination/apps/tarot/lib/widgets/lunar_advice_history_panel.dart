@@ -5,6 +5,7 @@ import 'package:common/l10n/common_strings.dart';
 import '../api/lunar_api.dart';
 import '../models/lunar_advice_history.dart';
 import '../theme/tarot_theme.dart';
+import 'lunar_card_helpers.dart';
 
 class LunarAdviceHistoryPanel extends StatefulWidget {
   const LunarAdviceHistoryPanel({
@@ -55,26 +56,27 @@ class _LunarAdviceHistoryPanelState extends State<LunarAdviceHistoryPanel> {
       future: _future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildContainer(
-            context,
+          return LunarCardHelpers.buildWhiteCard(
+            context: context,
             child: const Center(
               child: SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: TarotTheme.brightBlue,
+                ),
               ),
             ),
           );
         }
 
         if (snapshot.hasError) {
-          return _buildContainer(
-            context,
+          return LunarCardHelpers.buildWhiteCard(
+            context: context,
             child: Text(
               _localisedError(),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white,
-                  ),
+              style: LunarCardHelpers.cardBodyStyle,
             ),
           );
         }
@@ -84,19 +86,13 @@ class _LunarAdviceHistoryPanelState extends State<LunarAdviceHistoryPanel> {
           return const SizedBox.shrink();
         }
 
-        return _buildContainer(
-          context,
-          child: Column(
+        return LunarCardHelpers.buildCardWithHeader(
+          context: context,
+          icon: Icons.history,
+          title: _localisedTitle(),
+          content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                _localisedTitle(),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-              const SizedBox(height: 12),
               ...items.take(3).map((item) => _HistoryCard(
                     item: item,
                     strings: widget.strings,
@@ -106,31 +102,6 @@ class _LunarAdviceHistoryPanelState extends State<LunarAdviceHistoryPanel> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildContainer(BuildContext context, {required Widget child}) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicPurple.withValues(alpha: 0.8),
-            TarotTheme.cosmicBlue.withValues(alpha: 0.8),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: TarotTheme.cosmicPurple.withValues(alpha: 0.25),
-            blurRadius: 18,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(18),
-      child: child,
     );
   }
 
@@ -170,15 +141,18 @@ class _HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final dateLabel = _formatDate(item.date);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.14),
-        borderRadius: BorderRadius.circular(16),
+        color: TarotTheme.brightBlue10,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: TarotTheme.brightBlue20,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,36 +161,28 @@ class _HistoryCard extends StatelessWidget {
             children: [
               Text(
                 dateLabel,
-                style: theme.textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: LunarCardHelpers.cardSmallStyle.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const Spacer(),
-              Text(
-                _localisedTopic(item.topic),
-                style: theme.textTheme.labelSmall?.copyWith(
-                      color: Colors.white54,
-                    ),
+              LunarCardHelpers.buildBadge(
+                text: _localisedTopic(item.topic),
+                backgroundColor: TarotTheme.brightBlue,
+                textColor: Colors.white,
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             item.advice.focus,
-            style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
+            style: LunarCardHelpers.cardSubtitleStyle,
           ),
           const SizedBox(height: 8),
           if (item.advice.today.isNotEmpty)
             Text(
               '- ${item.advice.today.first}',
-              style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.white70,
-                    height: 1.4,
-                  ),
+              style: LunarCardHelpers.cardBodyStyle,
             ),
           const SizedBox(height: 10),
           TextButton(
@@ -224,7 +190,7 @@ class _HistoryCard extends StatelessWidget {
                 ? null
                 : () => onShareAdvice!(_buildShareMessage(item)),
             style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
+              foregroundColor: TarotTheme.brightBlue,
             ),
             child: Text(_localisedShare()),
           ),

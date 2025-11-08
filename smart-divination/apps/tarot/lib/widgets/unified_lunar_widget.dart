@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:common/l10n/common_strings.dart';
 
+import 'package:uuid/uuid.dart';
+
+import '../models/chat_message.dart';
 import '../models/lunar_day.dart';
+import '../screens/chat_screen.dart';
 import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
+import 'lunar_ai_advisor.dart';
 import 'lunar_tabs/today_tab.dart';
 import 'lunar_tabs/calendar_tab.dart';
 import 'lunar_tabs/rituals_tab.dart';
@@ -75,130 +80,164 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           return _buildLoadingState();
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildLunarHeader(day),
-            const SizedBox(height: 16),
-            _buildTabBar(),
-            const SizedBox(height: 16),
-            SizedBox(
-              height: 300,
-              child: _buildTabContent(day),
+        // ✅ Widget únic amb cohesió visual completa
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                TarotTheme.lunarLavenderLight,
+                TarotTheme.lunarLavenderSoft,
+              ],
             ),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: TarotTheme.lunarMysticShadow,
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: TarotTheme.lunarMysticShadow,
+                blurRadius: 32,
+                offset: const Offset(0, 8),
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildCompactHeader(day),
+              const SizedBox(height: 16),
+              _buildAskTheMoonCard(context),
+              const SizedBox(height: 16),
+              _buildTabBar(),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 300,
+                child: _buildTabContent(day),
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  Widget _buildLunarHeader(LunarDayModel day) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue,
-            TarotTheme.cosmicPurple,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: TarotTheme.cosmicBlue.withValues(alpha: 0.4),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+  // ✅ Header compacte integrat amb text fosc per màxima llegibilitat
+  Widget _buildCompactHeader(LunarDayModel day) {
+    return Row(
+      children: [
+        // Emoji fase lunar
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: TarotTheme.brightBlue20,
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-        ],
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+          padding: const EdgeInsets.all(12),
+          child: Text(
+            day.phaseEmoji,
+            style: const TextStyle(fontSize: 24),
+          ),
+        ),
+        const SizedBox(width: 14),
+
+        // Info principal
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                day.phaseEmoji,
-                style: const TextStyle(fontSize: 32),
+                day.phaseName,
+                style: const TextStyle(
+                  color: TarotTheme.deepNavy,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.3,
+                ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      day.phaseName,
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Text(
+                    day.zodiac.symbol,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    day.zodiac.name,
+                    style: const TextStyle(
+                      color: TarotTheme.softBlueGrey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: _getElementColor(day.zodiac.element),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      day.zodiac.element,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      _formatDate(day.date.toIso8601String()),
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '${day.illumination.toStringAsFixed(0)}%',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
                   ),
-                ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Text(
-                day.zodiac.symbol,
-                style: const TextStyle(fontSize: 20),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                day.zodiac.name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: _getElementColor(day.zodiac.element),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  day.zodiac.element,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+        ),
+
+        // Badge il·luminació
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: TarotTheme.brightBlue,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: TarotTheme.brightBlue20,
+                blurRadius: 6,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
-        ],
-      ),
+          child: Text(
+            '${day.illumination.toStringAsFixed(0)}%',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAskTheMoonCard(BuildContext context) {
+    return LunarAiAdvisor(
+      strings: widget.strings,
+      userId: widget.userId,
+      locale: widget.strings.localeName,
+      onShareAdvice: (message) => _openAdviceInChat(context, message),
     );
   }
 
@@ -212,9 +251,10 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       _buildTab(_localisedTab('history'), Icons.history),
     ];
 
+    // ✅ TabBar integrat sense decoració redundant
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.white.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(16),
       ),
       child: TabBar(
@@ -225,15 +265,17 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
         dividerColor: Colors.transparent,
         indicator: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            colors: [
-              TarotTheme.cosmicBlue,
-              TarotTheme.cosmicAccent,
-            ],
-          ),
+          color: TarotTheme.brightBlue,
+          boxShadow: [
+            BoxShadow(
+              color: TarotTheme.brightBlue20,
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         labelColor: Colors.white,
-        unselectedLabelColor: TarotTheme.stardust,
+        unselectedLabelColor: TarotTheme.softBlueGrey,
         labelStyle: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
@@ -269,10 +311,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       children: [
         TodayTab(
           day: day,
-          controller: widget.controller,
           strings: widget.strings,
-          userId: widget.userId,
-          onSelectSpread: widget.onSelectSpread,
         ),
         CalendarTab(
           controller: widget.controller,
@@ -291,7 +330,6 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
         GuidanceTab(
           day: day,
           strings: widget.strings,
-          userId: widget.userId,
         ),
         HistoryTab(
           strings: widget.strings,
@@ -358,16 +396,20 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       borderRadius: BorderRadius.circular(20),
       gradient: LinearGradient(
         colors: [
-          TarotTheme.cosmicBlue.withValues(alpha: 0.15),
-          TarotTheme.cosmicPurple.withValues(alpha: 0.15),
+          TarotTheme.lunarLavenderLight,
+          TarotTheme.lunarLavenderSoft,
         ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      border: Border.all(
-        color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-        width: 1,
-      ),
+      boxShadow: [
+        BoxShadow(
+          color: TarotTheme.lunarMysticShadow,
+          blurRadius: 16,
+          offset: const Offset(0, 4),
+          spreadRadius: 0,
+        ),
+      ],
     );
   }
 
@@ -436,20 +478,20 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       case 'fire':
       case 'foc':
       case 'fuego':
-        return Colors.deepOrange.withValues(alpha: 0.7);
+        return const Color(0xFFFF6B35); // Warm coral-orange
       case 'earth':
       case 'terra':
       case 'tierra':
-        return Colors.green.withValues(alpha: 0.7);
+        return const Color(0xFF2ECC71); // Fresh green
       case 'air':
       case 'aire':
-        return Colors.lightBlue.withValues(alpha: 0.7);
+        return const Color(0xFF54C5F8); // Sky blue
       case 'water':
       case 'aigua':
       case 'agua':
-        return Colors.blue.withValues(alpha: 0.7);
+        return const Color(0xFF4A90E2); // Ocean blue
       default:
-        return TarotTheme.cosmicAccent.withValues(alpha: 0.7);
+        return TarotTheme.brightBlue;
     }
   }
 
@@ -464,5 +506,46 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       'history': {'en': 'History', 'es': 'Historial', 'ca': 'Historial'},
     };
     return translations[key]?[locale] ?? translations[key]?['en'] ?? key;
+  }
+
+  void _openAdviceInChat(BuildContext context, String message) {
+    final activeUserId = widget.userId;
+    if (activeUserId == null || activeUserId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_localisedLoginPrompt()),
+          backgroundColor: Colors.black87,
+        ),
+      );
+      return;
+    }
+
+    final chatMessage = ChatMessage.text(
+      id: const Uuid().v4(),
+      isUser: false,
+      timestamp: DateTime.now(),
+      text: message,
+    );
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(
+          userId: activeUserId,
+          strings: widget.strings,
+          initialMessages: [chatMessage],
+        ),
+      ),
+    );
+  }
+
+  String _localisedLoginPrompt() {
+    switch (widget.strings.localeName) {
+      case 'es':
+        return 'Inicia sesión para compartir tu consejo lunar en el chat.';
+      case 'ca':
+        return 'Inicia sessió per compartir el teu consell lunar al xat.';
+      default:
+        return 'Sign in to share your lunar guidance in the chat.';
+    }
   }
 }

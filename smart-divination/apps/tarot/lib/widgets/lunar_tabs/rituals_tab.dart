@@ -4,6 +4,7 @@ import 'package:common/l10n/common_strings.dart';
 import '../../models/lunar_day.dart';
 import '../../models/lunar_ritual.dart';
 import '../../theme/tarot_theme.dart';
+import '../lunar_card_helpers.dart';
 
 class RitualsTab extends StatefulWidget {
   const RitualsTab({
@@ -45,46 +46,12 @@ class _RitualsTabState extends State<RitualsTab> {
   }
 
   Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.3),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.3),
-          ],
-        ),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.auto_awesome, color: Colors.white, size: 32),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _localisedLabel('lunar_rituals'),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _localisedLabel('rituals_subtitle'),
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return LunarCardHelpers.buildCardWithHeader(
+      context: context,
+      icon: Icons.auto_awesome,
+      title: _localisedLabel('lunar_rituals'),
+      subtitle: _localisedLabel('rituals_subtitle'),
+      content: const SizedBox.shrink(),
     );
   }
 
@@ -119,21 +86,26 @@ class _RitualsTabState extends State<RitualsTab> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isSelected
-              ? TarotTheme.cosmicAccent.withValues(alpha: 0.3)
-              : Colors.black.withValues(alpha: 0.2),
-          border: isSelected
-              ? Border.all(color: TarotTheme.cosmicAccent, width: 2)
-              : null,
+              ? TarotTheme.brightBlue
+              : Colors.white,
+          border: Border.all(
+            color: isSelected ? TarotTheme.brightBlue : TarotTheme.brightBlue20,
+            width: isSelected ? 2 : 1,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 16),
+            Icon(
+              icon,
+              color: isSelected ? Colors.white : TarotTheme.deepNavy,
+              size: 16,
+            ),
             const SizedBox(width: 8),
             Text(
               label,
               style: TextStyle(
-                color: Colors.white,
+                color: isSelected ? Colors.white : TarotTheme.deepNavy,
                 fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
               ),
@@ -146,27 +118,16 @@ class _RitualsTabState extends State<RitualsTab> {
 
   Widget _buildRitualCard(LunarRitual ritual, BuildContext context) {
     final locale = widget.strings.localeName;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            _getCategoryColor(ritual.category).withValues(alpha: 0.2),
-            _getCategoryColor(ritual.category).withValues(alpha: 0.1),
-          ],
-        ),
-        border: Border.all(
-          color: _getCategoryColor(ritual.category).withValues(alpha: 0.3),
-          width: 1,
-        ),
-      ),
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
+      padding: EdgeInsets.zero,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           onTap: () => _showRitualDetails(ritual, context),
-          child: Padding(
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,11 +145,7 @@ class _RitualsTabState extends State<RitualsTab> {
                         children: [
                           Text(
                             ritual.getName(locale),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: LunarCardHelpers.cardTitleStyle,
                           ),
                           const SizedBox(height: 4),
                           Row(
@@ -207,20 +164,16 @@ class _RitualsTabState extends State<RitualsTab> {
                         ],
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.chevron_right,
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: TarotTheme.softBlueGrey,
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
                 Text(
                   ritual.getDescription(locale),
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    fontSize: 14,
-                    height: 1.4,
-                  ),
+                  style: LunarCardHelpers.cardBodyStyle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -229,19 +182,10 @@ class _RitualsTabState extends State<RitualsTab> {
                   spacing: 6,
                   runSpacing: 6,
                   children: ritual.getIntentions(locale).take(3).map((intention) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white.withValues(alpha: 0.1),
-                      ),
-                      child: Text(
-                        intention,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.9),
-                          fontSize: 11,
-                        ),
-                      ),
+                    return LunarCardHelpers.buildBadge(
+                      text: intention,
+                      backgroundColor: _getCategoryColor(ritual.category).withValues(alpha: 0.2),
+                      textColor: TarotTheme.deepNavy,
                     );
                   }).toList(),
                 ),
@@ -258,18 +202,16 @@ class _RitualsTabState extends State<RitualsTab> {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.white.withValues(alpha: 0.15),
+        color: TarotTheme.brightBlue10,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: Colors.white70),
+          Icon(icon, size: 12, color: TarotTheme.softBlueGrey),
           const SizedBox(width: 4),
           Text(
             text,
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 11,
+            style: LunarCardHelpers.cardSmallStyle.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),

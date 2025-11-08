@@ -13,20 +13,43 @@ class TarotTheme {
   static const Color moonlight = Color(0xFFF0EFF7); // Primary text
   static const Color subtleGold = Color(0xFFB8A280); // Accent (warm gold)
   static const Color cosmicAccent =
-      Color(0xFFA78BFF); // Secondary accent (vibrant purple)
+      Color(0xFFC084FC); // Secondary accent (bright vibrant purple)
   static const Color cosmicBlue = Color(0xFF6d82cd); // Quote accent / CTA
   static const Color starGlow = Color(0xFFE8E5F5); // High contrast text
+
+  // Educational blue palette - friendly and approachable
+  static const Color skyBlueLight = Color(0xFFF0F7FF); // Ultra soft sky blue background
+  static const Color skyBlueSoft = Color(0xFFE3F2FD); // Soft blue alternative
+  static const Color oceanBlue = Color(0xFFB3D9F2); // Medium ocean blue
+  static const Color deepNavy = Color(0xFF1E3A5F); // Deep navy for primary text
+  static const Color slateBlue = Color(0xFF475569); // Slate blue for secondary text
+  static const Color brightBlue = Color(0xFF3B82F6); // Vibrant blue for icons/accents
+  static const Color warmGold = Color(0xFFF59E0B); // Warm gold accent
+  static const Color softBlueGrey = Color(0xFF64748B); // Soft blue-grey for descriptions
+
+  // Lunar mystical palette - elegant lavender-blue tones
+  static const Color lunarLavenderLight = Color(0xFFF0EBFF); // Soft lavender background
+  static const Color lunarLavenderSoft = Color(0xFFE8E1FF); // Elegant lilac-blue
+  static const Color lunarMysticShadow = Color(0x1A8B7FC4); // Mystical lavender shadow
+
+  // Educational palette opacity variants
+  static const Color brightBlue10 = Color(0x1A3B82F6); // 10% opacity
+  static const Color brightBlue20 = Color(0x333B82F6); // 20% opacity
+  static const Color brightBlue80 = Color(0xCC3B82F6); // 80% opacity
+  static const Color deepNavy70 = Color(0xB31E3A5F); // 70% opacity
+  static const Color slateBlue60 = Color(0x99475569); // 60% opacity
+  static const Color skyBlueShadow = Color(0x1A3B82F6); // Soft blue shadow
 
   // Optimized opacity variants (avoid withOpacity() in builds)
   static const Color deepNightOverlay = Color(0xFA0F0B1F); // 98% opacity
   static const Color midnightBlueTransparent = Color(0xD91A1530); // 85% opacity
   static const Color midnightBlueAppBar = Color(0xF21A1530); // 95% opacity
   static const Color midnightBlue70 = Color(0xB31A1530); // 70% opacity
-  static const Color cosmicAccentSubtle = Color(0x33A78BFF); // 20% opacity
-  static const Color cosmicAccentFaint = Color(0x1FA78BFF); // 12% opacity
-  static const Color cosmicAccent15 = Color(0x26A78BFF); // 15% opacity
-  static const Color cosmicAccent08 = Color(0x14A78BFF); // 8% opacity
-  static const Color cosmicAccent90 = Color(0xE6A78BFF); // 90% opacity
+  static const Color cosmicAccentSubtle = Color(0x33C084FC); // 20% opacity
+  static const Color cosmicAccentFaint = Color(0x1FC084FC); // 12% opacity
+  static const Color cosmicAccent15 = Color(0x26C084FC); // 15% opacity
+  static const Color cosmicAccent08 = Color(0x14C084FC); // 8% opacity
+  static const Color cosmicAccent90 = Color(0xE6C084FC); // 90% opacity
   static const Color twilightPurpleLight = Color(0x993D3055); // 60% opacity
   static const Color twilightPurpleFaint = Color(0x333D3055); // 20% opacity
   static const Color twilightPurpleBorder = Color(0x4D3D3055); // 30% opacity

@@ -41,97 +41,57 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
   Widget build(BuildContext context) {
     return Container(
       decoration: _cardDecoration(),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildHeader(context),
-          const SizedBox(height: 16),
-          _buildHowToAskSection(context),
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
+          Text(
+            _localisedHeaderSubtitle(),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: TarotTheme.midnightBlue.withValues(alpha: 0.7),
+                  height: 1.4,
+                ),
+          ),
+          const SizedBox(height: 12),
           _buildIntentionField(context),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           _buildActionButton(context),
-          const SizedBox(height: 16),
-          if (_isLoading) _buildLoadingState(context),
-          if (!_isLoading && _errorMessage != null) _buildErrorState(context),
-          if (!_isLoading && _response != null) _buildAdviceResult(context),
+          const SizedBox(height: 12),
+          _buildStatusArea(context),
         ],
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          _localisedHeaderTitle(),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-              ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: TarotTheme.skyBlueSoft,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: const Icon(
+            Icons.calendar_month,
+            color: TarotTheme.brightBlue,
+          ),
         ),
-        const SizedBox(height: 4),
-        Text(
-          _localisedHeaderSubtitle(),
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white70,
-                height: 1.4,
-              ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            _localisedHeaderTitle(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: TarotTheme.midnightBlue,
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
         ),
       ],
-    );
-  }
-
-  Widget _buildHowToAskSection(BuildContext context) {
-    final theme = Theme.of(context);
-    final tips = _localisedInstructionTips();
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.12),
-        ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _localisedInstructionTitle(),
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 10),
-          ...tips.map(
-            (tip) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.star, color: Colors.white70, size: 16),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      tip,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white70,
-                        height: 1.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -141,72 +101,75 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
       maxLines: 2,
       minLines: 1,
       textCapitalization: TextCapitalization.sentences,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: TarotTheme.midnightBlue),
       decoration: InputDecoration(
         hintText: _localisedIntentionPlaceholder(),
-        hintStyle: const TextStyle(color: Colors.white70),
+        hintStyle: const TextStyle(color: TarotTheme.midnightBlue70),
         filled: true,
-        fillColor: Colors.white.withValues(alpha: 0.1),
+        fillColor: TarotTheme.skyBlueSoft,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       ),
     );
   }
 
   Widget _buildActionButton(BuildContext context) {
     final label = _localisedAskButton();
-    return FilledButton(
+    return FilledButton.icon(
       onPressed: _isLoading ? null : _handleRequestAdvice,
       style: FilledButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: TarotTheme.cosmicBlue,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        minimumSize: const Size.fromHeight(44),
+        backgroundColor: TarotTheme.brightBlue,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (_isLoading)
-            const SizedBox(
+      icon: _isLoading
+          ? const SizedBox(
               width: 16,
               height: 16,
-              child: CircularProgressIndicator(strokeWidth: 2),
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
             )
-          else
-            const Icon(Icons.auto_awesome, size: 18),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 15,
-            ),
-          ),
-        ],
+          : const Icon(Icons.auto_awesome),
+      label: Text(
+        label,
+        style: const TextStyle(fontWeight: FontWeight.w700),
       ),
     );
+  }
+
+  Widget _buildStatusArea(BuildContext context) {
+    if (_isLoading) {
+      return _buildLoadingState(context);
+    }
+    if (_errorMessage != null) {
+      return _buildErrorState(context);
+    }
+    if (_response != null) {
+      return _buildAdviceResult(context, _response!);
+    }
+    return const SizedBox.shrink();
   }
 
   Widget _buildLoadingState(BuildContext context) {
     return Row(
       children: [
         const SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
+          width: 18,
+          height: 18,
+          child: CircularProgressIndicator(strokeWidth: 2),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 10),
         Expanded(
           child: Text(
             _localisedLoadingText(),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white70,
-                  height: 1.3,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: TarotTheme.midnightBlue,
                 ),
           ),
         ),
@@ -216,78 +179,66 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
 
   Widget _buildErrorState(BuildContext context) {
     return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.red[400]!.withValues(alpha: 0.25),
-        borderRadius: BorderRadius.circular(14),
+        color: Colors.red.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
       ),
-      padding: const EdgeInsets.all(14),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.error_outline, color: Colors.white, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _errorMessage ?? '',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
-                        height: 1.4,
-                      ),
+          Text(
+            _errorMessage ?? _localisedRetryText(),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.red[700],
                 ),
-                const SizedBox(height: 6),
-                TextButton(
-                  onPressed: _isLoading ? null : _handleRequestAdvice,
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.zero,
-                  ),
-                  child: Text(_localisedRetryText()),
-                ),
-              ],
-            ),
+          ),
+          TextButton(
+            onPressed: _handleRequestAdvice,
+            child: Text(_localisedRetryText()),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildAdviceResult(BuildContext context) {
-    final advice = _response!.advice;
-    final contextInfo = _response!.context;
-
+  Widget _buildAdviceResult(BuildContext context, LunarAdviceResponse response) {
+    final advice = response.advice;
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(18),
-      ),
+      width: double.infinity,
       padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: TarotTheme.skyBlueSoft,
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             advice.focus,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.white,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: TarotTheme.midnightBlue,
                   fontWeight: FontWeight.w700,
-                  height: 1.3,
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ...advice.today.map(
-            (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 6),
+            (line) => Padding(
+              padding: const EdgeInsets.only(bottom: 4),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('• ', style: TextStyle(color: Colors.white, height: 1.4)),
+                  const Text('• ',
+                      style: TextStyle(
+                        color: TarotTheme.midnightBlue,
+                        fontWeight: FontWeight.w700,
+                      )),
                   Expanded(
                     child: Text(
-                      item,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white,
+                      line,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: TarotTheme.midnightBlue.withValues(alpha: 0.85),
                             height: 1.4,
                           ),
                     ),
@@ -298,28 +249,14 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
           ),
           const SizedBox(height: 12),
           _buildNextPhaseChip(context, advice),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${contextInfo.phaseEmoji} ${contextInfo.phaseName}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
-                    ),
-              ),
-              TextButton.icon(
-                onPressed: () => _handleShareAdvice(advice),
-                icon: const Icon(Icons.chat_bubble_outline, size: 18, color: Colors.white70),
-                label: Text(
-                  _localisedShareText(),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-              ),
-            ],
+          const SizedBox(height: 8),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () => _handleShareAdvice(advice),
+              icon: const Icon(Icons.chat_bubble_outline),
+              label: Text(_localisedShareText()),
+            ),
           ),
         ],
       ),
@@ -327,10 +264,10 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
   }
 
   Widget _buildNextPhaseChip(BuildContext context, LunarAdvice advice) {
-    final label = '${advice.next.name} • ${advice.next.date}';
+    final label = '${advice.next.name} · ${advice.next.date}';
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(12),
@@ -340,7 +277,7 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
           Text(
             label,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.white,
+                  color: TarotTheme.midnightBlue,
                   fontWeight: FontWeight.w600,
                 ),
           ),
@@ -348,7 +285,7 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
           Text(
             advice.next.advice,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white70,
+                  color: TarotTheme.midnightBlue.withValues(alpha: 0.8),
                   height: 1.4,
                 ),
           ),
@@ -365,7 +302,7 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
 
     try {
       final response = await _api.fetchAdvice(
-        topic: _selectedTopic,
+        topic: _advisorTopic,
         intention: _intentionController.text.trim(),
         locale: widget.locale ?? widget.strings.localeName,
         userId: widget.userId,
@@ -412,108 +349,74 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
 
   BoxDecoration _cardDecoration() {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(22),
-      gradient: LinearGradient(
-        colors: [
-          TarotTheme.cosmicBlue,
-          TarotTheme.cosmicPurple,
-        ],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
       boxShadow: [
         BoxShadow(
-          color: TarotTheme.cosmicPurple.withValues(alpha: 0.25),
-          blurRadius: 24,
-          offset: const Offset(0, 12),
+          color: Colors.black.withValues(alpha: 0.04),
+          blurRadius: 20,
+          offset: const Offset(0, 10),
         ),
       ],
+      border: Border.all(
+        color: TarotTheme.skyBlueSoft,
+        width: 1,
+      ),
     );
   }
+
+  LunarAdviceTopic get _advisorTopic => LunarAdviceTopic.projects;
 
   String _localisedHeaderTitle() {
     switch (widget.strings.localeName) {
       case 'es':
-        return 'Consejo lunar con IA';
+        return 'Pregunta a la luna';
       case 'ca':
-        return 'Consell lunar amb IA';
+        return 'Pregunta a la lluna';
       default:
-        return 'Lunar guidance with AI';
+        return 'Ask the moon';
     }
   }
 
   String _localisedHeaderSubtitle() {
     switch (widget.strings.localeName) {
       case 'es':
-        return 'Elige un tema y deja que la luna marque tus pasos.';
+        return 'Explica el ritual o proyecto i te orienta con el mejor momentum lunar.';
       case 'ca':
-        return 'Tria un tema i deixa que la lluna marqui els teus passos.';
+        return 'Descriu el ritual o projecte i rebràs el millor moment lunar.';
       default:
-        return 'Choose a theme and let the moon suggest your next moves.';
+        return 'Describe your plan and get the best lunar timing.';
     }
   }
 
-  String _localisedTopicLabel(LunarAdviceTopic topic) {
+  String _localisedPromptHelper() {
     switch (widget.strings.localeName) {
       case 'es':
-        switch (topic) {
-          case LunarAdviceTopic.intentions:
-            return 'Intenciones';
-          case LunarAdviceTopic.projects:
-            return 'Proyectos';
-          case LunarAdviceTopic.relationships:
-            return 'Relaciones';
-          case LunarAdviceTopic.wellbeing:
-            return 'Bienestar';
-          case LunarAdviceTopic.creativity:
-            return 'Creatividad';
-        }
+        return 'Comparte lo que quieres iniciar, cuidar o cerrar y obtén el enfoque lunar recomendado.';
       case 'ca':
-        switch (topic) {
-          case LunarAdviceTopic.intentions:
-            return 'Intencions';
-          case LunarAdviceTopic.projects:
-            return 'Projectes';
-          case LunarAdviceTopic.relationships:
-            return 'Relacions';
-          case LunarAdviceTopic.wellbeing:
-            return 'Benestar';
-          case LunarAdviceTopic.creativity:
-            return 'Creativitat';
-        }
+        return 'Explica què vols iniciar, cuidar o tancar i rep l’enfocament lunar recomanat.';
       default:
-        switch (topic) {
-          case LunarAdviceTopic.intentions:
-            return 'Intentions';
-          case LunarAdviceTopic.projects:
-            return 'Projects';
-          case LunarAdviceTopic.relationships:
-            return 'Relationships';
-          case LunarAdviceTopic.wellbeing:
-            return 'Wellbeing';
-          case LunarAdviceTopic.creativity:
-            return 'Creativity';
-        }
+        return 'Share what you want to launch, nurture or close and get the recommended lunar focus.';
     }
   }
 
   String _localisedIntentionPlaceholder() {
     switch (widget.strings.localeName) {
       case 'es':
-        return '¿Cuál es tu intención o deseo hoy? (opcional)';
+        return 'Ej: Preparar un llançament o cuidar una relació';
       case 'ca':
-        return 'Quina és la teva intenció o desig avui? (opcional)';
+        return 'Ex: Preparar un llançament o cuidar un vincle';
       default:
-        return 'What is your intention today? (optional)';
+        return 'Ex: Launch a project or slow down to rest';
     }
   }
 
   String _localisedAskButton() {
     switch (widget.strings.localeName) {
       case 'es':
-        return 'Preguntar a la luna';
+        return 'Consultar a la luna';
       case 'ca':
-        return 'Preguntar a la lluna';
+        return 'Consultar la lluna';
       default:
         return 'Ask the moon';
     }

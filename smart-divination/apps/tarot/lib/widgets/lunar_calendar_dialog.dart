@@ -8,6 +8,7 @@ import '../models/lunar_day.dart';
 import '../models/lunar_advice.dart';
 import '../models/lunar_reminder.dart';
 import '../api/lunar_api.dart';
+import 'lunar_card_helpers.dart';
 
 class LunarCalendarDialog extends StatefulWidget {
   const LunarCalendarDialog({
@@ -1099,22 +1100,14 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
 
   Widget _buildMonthNavigation() {
     final monthNames = _getMonthNames();
-    return Container(
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.3),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.3),
-          ],
-        ),
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: const Icon(Icons.chevron_left, color: Colors.white),
+            icon: const Icon(Icons.chevron_left, color: TarotTheme.deepNavy),
             onPressed: () {
               setState(() {
                 _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
@@ -1123,14 +1116,10 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
           ),
           Text(
             '${monthNames[_currentMonth.month - 1]} ${_currentMonth.year}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
+            style: LunarCardHelpers.cardTitleStyle.copyWith(fontSize: 18),
           ),
           IconButton(
-            icon: const Icon(Icons.chevron_right, color: Colors.white),
+            icon: const Icon(Icons.chevron_right, color: TarotTheme.deepNavy),
             onPressed: () {
               setState(() {
                 _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
@@ -1155,9 +1144,7 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
         child: Center(
           child: Text(
             name,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.6),
-              fontSize: 12,
+            style: LunarCardHelpers.cardSmallStyle.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -1188,12 +1175,12 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
               margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: isToday
-                    ? TarotTheme.cosmicAccent.withValues(alpha: 0.3)
+                    ? TarotTheme.brightBlue10
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
                 border: isToday
-                    ? Border.all(color: TarotTheme.cosmicAccent, width: 2)
-                    : null,
+                    ? Border.all(color: TarotTheme.brightBlue, width: 2)
+                    : Border.all(color: TarotTheme.brightBlue20, width: 1),
               ),
               child: Center(
                 child: Column(
@@ -1202,7 +1189,7 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
                     Text(
                       day.toString(),
                       style: TextStyle(
-                        color: isToday ? Colors.white : Colors.white70,
+                        color: TarotTheme.deepNavy,
                         fontSize: 14,
                         fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
                       ),
@@ -1234,40 +1221,21 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
       );
     }
 
-    return Container(
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.black.withValues(alpha: 0.2),
-      ),
       child: Column(children: rows),
     );
   }
 
   Widget _buildUpcomingPhases() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.2),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.2),
-          ],
-        ),
-      ),
-      child: Column(
+    return LunarCardHelpers.buildCardWithHeader(
+      context: context,
+      icon: Icons.calendar_month,
+      title: _localisedLabel('upcoming_phases'),
+      content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            _localisedLabel('upcoming_phases'),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 12),
           _buildPhaseItem('🌑', _localisedLabel('new_moon'), 'Nov 13'),
           _buildPhaseItem('🌓', _localisedLabel('first_quarter'), 'Nov 20'),
           _buildPhaseItem('🌕', _localisedLabel('full_moon'), 'Nov 27'),
@@ -1287,16 +1255,12 @@ class _LunarCalendarContentState extends State<LunarCalendarContent> {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(color: Colors.white70, fontSize: 14),
+              style: LunarCardHelpers.cardBodyStyle,
             ),
           ),
           Text(
             date,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            style: LunarCardHelpers.cardSubtitleStyle,
           ),
         ],
       ),

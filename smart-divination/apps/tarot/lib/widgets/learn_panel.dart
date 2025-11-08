@@ -31,16 +31,30 @@ class LearnPanel extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: TarotTheme.midnightBlue,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            TarotTheme.skyBlueLight,
+            TarotTheme.skyBlueSoft,
+          ],
+        ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.midnightBlue.withValues(alpha: 0.3),
-            blurRadius: 24,
-            offset: const Offset(0, 12),
+            color: TarotTheme.skyBlueShadow,
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: TarotTheme.brightBlue10,
+            blurRadius: 32,
+            offset: const Offset(0, 8),
+            spreadRadius: 0,
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -50,12 +64,19 @@ class LearnPanel extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: TarotTheme.brightBlue20,
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.all(10),
                 child: const Icon(
                   Icons.auto_stories,
-                  color: Colors.white,
+                  color: TarotTheme.brightBlue,
                   size: 20,
                 ),
               ),
@@ -67,15 +88,17 @@ class LearnPanel extends StatelessWidget {
                     Text(
                       _getLearnTitle(strings),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
+                        color: TarotTheme.deepNavy,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       _getLearnSubtitle(strings),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.8),
+                        color: TarotTheme.softBlueGrey,
+                        height: 1.4,
                       ),
                     ),
                   ],
@@ -338,10 +361,19 @@ class _LearnCategoryCard extends StatelessWidget {
         height: 115,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white.withValues(alpha: 0.08),
+          color: Colors.white,
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.15),
+            color: TarotTheme.brightBlue20,
+            width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: TarotTheme.brightBlue10,
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+              spreadRadius: 0,
+            ),
+          ],
         ),
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -350,16 +382,17 @@ class _LearnCategoryCard extends StatelessWidget {
           children: [
             Icon(
               category.icon,
-              color: TarotTheme.cosmicAccent,
+              color: TarotTheme.brightBlue,
               size: 24,
             ),
             const SizedBox(height: 10),
             Text(
               category.title,
               style: const TextStyle(
-                color: Colors.white,
+                color: TarotTheme.deepNavy,
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
+                letterSpacing: 0.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -367,8 +400,8 @@ class _LearnCategoryCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               category.description,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.75),
+              style: const TextStyle(
+                color: TarotTheme.softBlueGrey,
                 fontSize: 12,
                 height: 1.3,
               ),

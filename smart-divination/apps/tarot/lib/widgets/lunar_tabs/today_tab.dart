@@ -1,28 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:common/l10n/common_strings.dart';
 
-import '../../models/chat_message.dart';
 import '../../models/lunar_day.dart';
-import '../../screens/chat_screen.dart';
-import '../../state/lunar_cycle_controller.dart';
 import '../../theme/tarot_theme.dart';
-import '../lunar_ai_advisor.dart';
+import '../lunar_card_helpers.dart';
 
 class TodayTab extends StatelessWidget {
   const TodayTab({
     super.key,
     required this.day,
-    required this.controller,
     required this.strings,
-    this.userId,
-    this.onSelectSpread,
   });
 
   final LunarDayModel day;
-  final LunarCycleController controller;
   final CommonStrings strings;
-  final String? userId;
-  final void Function(String spreadId)? onSelectSpread;
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +22,6 @@ class TodayTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildPhaseGuide(context),
-          const SizedBox(height: 16),
-          LunarAiAdvisor(
-            strings: strings,
-            userId: userId,
-            locale: strings.localeName,
-            onShareAdvice: (message) => _openAdviceInChat(context, message),
-          ),
           const SizedBox(height: 16),
           _buildPowerHours(context),
         ],
@@ -48,58 +32,17 @@ class TodayTab extends StatelessWidget {
   Widget _buildPhaseGuide(BuildContext context) {
     final activities = _getOptimalActivities(day.phaseId, day.zodiac.element);
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.2),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.2),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-          width: 1,
-        ),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
+    return LunarCardHelpers.buildCardWithHeader(
+      context: context,
+      icon: Icons.auto_awesome,
+      title: _localisedLabel('phase_guide'),
+      content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [TarotTheme.cosmicBlue, TarotTheme.cosmicAccent],
-                  ),
-                ),
-                child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                _localisedLabel('phase_guide'),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
           // Phase Description
           Text(
             _getPhaseDescription(day.phaseId),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.95),
-                  height: 1.5,
-                ),
+            style: LunarCardHelpers.cardBodyStyle,
           ),
           const SizedBox(height: 12),
 
@@ -108,36 +51,21 @@ class TodayTab extends StatelessWidget {
             spacing: 8,
             runSpacing: 8,
             children: _getPhaseKeywords(day.phaseId).map((keyword) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.5),
-                  ),
-                ),
-                child: Text(
-                  keyword,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+              return LunarCardHelpers.buildBadge(
+                text: keyword,
+                backgroundColor: TarotTheme.brightBlue20,
+                textColor: TarotTheme.brightBlue,
               );
             }).toList(),
           ),
 
-          const SizedBox(height: 16),
-          const Divider(color: Colors.white24, height: 1),
-          const SizedBox(height: 16),
+          LunarCardHelpers.buildCardDivider(),
 
           // Optimal Activities - Compact format
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.check_circle, color: Colors.greenAccent, size: 16),
+              const Icon(Icons.check_circle, color: Color(0xFF2ECC71), size: 16),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -146,7 +74,7 @@ class TodayTab extends StatelessWidget {
                     Text(
                       _localisedLabel('optimal'),
                       style: const TextStyle(
-                        color: Colors.greenAccent,
+                        color: Color(0xFF2ECC71),
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
@@ -597,26 +525,6 @@ class TodayTab extends StatelessWidget {
       },
     };
     return labels[key]?[locale] ?? labels[key]?['en'] ?? key;
-  }
-
-  void _openAdviceInChat(BuildContext context, String advice) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ChatScreen(
-          strings: strings,
-          userId: userId ?? 'guest',
-          initialMessages: [
-            ChatMessage(
-              id: DateTime.now().millisecondsSinceEpoch.toString(),
-              kind: ChatMessageKind.text,
-              isUser: false,
-              text: advice,
-              timestamp: DateTime.now(),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   String _getPhaseDescription(String phaseId) {

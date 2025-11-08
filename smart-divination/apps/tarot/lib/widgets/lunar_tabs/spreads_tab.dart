@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/lunar_day.dart';
 import '../../models/lunar_spread.dart';
 import '../../theme/tarot_theme.dart';
+import '../lunar_card_helpers.dart';
 
 class SpreadsTab extends StatefulWidget {
   const SpreadsTab({
@@ -49,41 +50,12 @@ class _SpreadsTabState extends State<SpreadsTab> {
   }
 
   Widget _buildHeader() {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: TarotTheme.cosmicPurple.withValues(alpha: 0.3),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Icon(Icons.style, color: Colors.white, size: 24),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _localisedLabel('header_title'),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                _localisedLabel('header_subtitle'),
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.7),
-                  fontSize: 13,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+    return LunarCardHelpers.buildCardWithHeader(
+      context: context,
+      icon: Icons.style,
+      title: _localisedLabel('header_title'),
+      subtitle: _localisedLabel('header_subtitle'),
+      content: const SizedBox.shrink(),
     );
   }
 
@@ -119,28 +91,18 @@ class _SpreadsTabState extends State<SpreadsTab> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          gradient: selected
-              ? LinearGradient(
-                  colors: [
-                    TarotTheme.cosmicBlue,
-                    TarotTheme.cosmicPurple,
-                  ],
-                )
-              : null,
-          color: selected ? null : TarotTheme.midnightBlue.withValues(alpha: 0.3),
+          color: selected ? TarotTheme.brightBlue : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selected
-                ? Colors.transparent
-                : TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-            width: 1,
+            color: selected ? TarotTheme.brightBlue : TarotTheme.brightBlue20,
+            width: selected ? 2 : 1,
           ),
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: selected ? Colors.white : Colors.white60,
+            color: selected ? Colors.white : TarotTheme.deepNavy,
             fontSize: 14,
             fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
           ),
@@ -150,30 +112,20 @@ class _SpreadsTabState extends State<SpreadsTab> {
   }
 
   Widget _buildNoSpreads() {
-    return Container(
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: TarotTheme.midnightBlue.withValues(alpha: 0.3),
-        border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-          width: 1,
-        ),
-      ),
       child: Column(
         children: [
-          Icon(
+          const Icon(
             Icons.info_outline,
-            color: Colors.white.withValues(alpha: 0.5),
+            color: TarotTheme.softBlueGrey,
             size: 48,
           ),
           const SizedBox(height: 12),
           Text(
             _localisedLabel('no_spreads'),
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
-              fontSize: 14,
-            ),
+            style: LunarCardHelpers.cardBodyStyle,
             textAlign: TextAlign.center,
           ),
         ],
@@ -183,27 +135,16 @@ class _SpreadsTabState extends State<SpreadsTab> {
 
   Widget _buildSpreadCard(LunarSpread spread, BuildContext context) {
     final locale = widget.strings.localeName;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicPurple.withValues(alpha: 0.15),
-            TarotTheme.cosmicBlue.withValues(alpha: 0.15),
-          ],
-        ),
-        border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-          width: 1,
-        ),
-      ),
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
+      padding: EdgeInsets.zero,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           onTap: () => _showSpreadDetails(spread, context),
-          child: Padding(
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,47 +162,36 @@ class _SpreadsTabState extends State<SpreadsTab> {
                         children: [
                           Text(
                             spread.getName(locale),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: LunarCardHelpers.cardTitleStyle,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             '${spread.numberOfCards} ${_localisedLabel('cards')}',
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.6),
-                              fontSize: 12,
+                            style: LunarCardHelpers.cardSmallStyle.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.chevron_right,
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: TarotTheme.softBlueGrey,
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
                 Text(
                   spread.getDescription(locale),
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    fontSize: 13,
-                    height: 1.4,
-                  ),
+                  style: LunarCardHelpers.cardBodyStyle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 12),
                 Text(
                   spread.getSource(locale),
-                  style: TextStyle(
-                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.8),
-                    fontSize: 11,
+                  style: LunarCardHelpers.cardSmallStyle.copyWith(
+                    color: TarotTheme.brightBlue,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
