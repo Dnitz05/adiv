@@ -23,6 +23,7 @@ import 'widgets/unified_lunar_widget.dart';
 import 'widgets/daily_draw_panel.dart';
 import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
+import 'widgets/chat_banner.dart';
 import 'screens/chat_screen.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
@@ -3513,9 +3514,9 @@ class _HomeState extends State<_Home> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFFFAF9FC), // Very light lavender (top)
-                  Color(0xFFFDFCFE), // Almost white with hint of purple (middle)
-                  Color(0xFFFAF8FC), // Soft lavender-white (bottom)
+                  Color(0xFFFEFEFF), // Nearly pure white with tiny blue hint (top)
+                  Color(0xFFFFFFFF), // Pure white (middle)
+                  Color(0xFFFEFDFF), // Nearly white with tiny lavender (bottom)
                 ],
                 stops: [0.0, 0.5, 1.0],
               ),
