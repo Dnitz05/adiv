@@ -3097,7 +3097,7 @@ class _HomeState extends State<_Home> {
     final localisation = CommonStrings.of(context);
     final hasDraw = _latestDraw != null;
     final mediaQuery = MediaQuery.of(context);
-    const double extraBottomPadding = 32.0;
+    const double extraBottomPadding = 8.0;
     final bottomSafeInset =
         math.max(mediaQuery.viewPadding.bottom, mediaQuery.padding.bottom);
     final bottomSpacing = bottomSafeInset + extraBottomPadding;
@@ -3165,7 +3165,7 @@ class _HomeState extends State<_Home> {
           left: 8,
           right: 8,
           top: topSpacing,
-          bottom: bottomSpacing + 80, // Extra space for draw form
+          bottom: bottomSpacing, // Consistent spacing without extra gap
         ),
         children: [
           // Daily Draw Panel - always show loading state or error
@@ -3288,7 +3288,6 @@ class _HomeState extends State<_Home> {
             onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
             onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
           ),
-          const SizedBox(height: 8),
           if (_error != null) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
