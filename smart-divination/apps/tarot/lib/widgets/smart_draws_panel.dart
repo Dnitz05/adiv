@@ -113,7 +113,7 @@ class SmartDrawsPanel extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
 
           // Themed categories grid (2x3)
           GridView.count(
