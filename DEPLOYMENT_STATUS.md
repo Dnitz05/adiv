@@ -54,6 +54,7 @@ Service layer: `journal-service.ts`
   - `71e3290f` - feat: luxury celestial card-back with ornate gold foil design
   - `9d240df3` - feat: use real tarot card images in Daily Draw
   - `420e2143` - feat: change credits icon from sun to stars in header
+  - `a82dd234` - feat: harmonize Learn panel colors with app theme
 - **Data:** 2025-11-07/08
 - **STATUS:** LIVE ON DEVICE ✅
 
