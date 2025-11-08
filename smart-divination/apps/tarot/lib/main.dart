@@ -3563,7 +3563,7 @@ class _HomeState extends State<_Home> {
                         width: 32,
                         height: 32,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: 3),
                       const Text(
                         'Luna Tarot',
                         style: TextStyle(
@@ -4071,7 +4071,7 @@ class _CreditsWithProBadge extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.diamond, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 20),
-              const SizedBox(width: 6),
+              const SizedBox(width: 3),
               Text(
                 '${credits.remaining}',
                 style: TextStyle(
