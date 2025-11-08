@@ -47,7 +47,7 @@ class SmartDrawsPanel extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -97,23 +97,22 @@ class SmartDrawsPanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 10),
 
           // Smart Selection Hero Card
           _buildSmartSelectionHero(context, locale),
 
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
 
           // "Or choose by theme" text
           Text(
             _getChooseByThemeText(locale),
+            textAlign: TextAlign.center,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: Colors.black.withValues(alpha: 0.5),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              color: Colors.black.withValues(alpha: 0.6),
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 6),
 
           // Themed categories grid (2x3)
           GridView.count(
