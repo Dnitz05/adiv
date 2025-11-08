@@ -3487,11 +3487,11 @@ class _HomeState extends State<_Home> {
                 top: 0,
                 child: Container(
                   width: itemWidth,
-                  height: 4,
+                  height: 3,
                   alignment: Alignment.center,
                   child: Container(
                     width: itemWidth * 0.8,
-                    height: 4,
+                    height: 3,
                     decoration: BoxDecoration(
                       color: Color(0xFF44385c),
                       borderRadius: const BorderRadius.vertical(
