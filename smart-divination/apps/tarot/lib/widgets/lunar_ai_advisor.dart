@@ -47,14 +47,6 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildHeader(context),
-          const SizedBox(height: 8),
-          Text(
-            _localisedHeaderSubtitle(),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: TarotTheme.midnightBlue.withValues(alpha: 0.7),
-                  height: 1.4,
-                ),
-          ),
           const SizedBox(height: 12),
           _buildIntentionField(context),
           const SizedBox(height: 12),
@@ -83,12 +75,27 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(
-            _localisedHeaderTitle(),
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: TarotTheme.midnightBlue,
-                  fontWeight: FontWeight.w700,
-                ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _localisedHeaderTitle(),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: TarotTheme.midnightBlue,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                _localisedHeaderSubtitle(),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: TarotTheme.midnightBlue.withValues(alpha: 0.7),
+                      fontSize: 12,
+                    ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ],
@@ -381,11 +388,11 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
   String _localisedHeaderSubtitle() {
     switch (widget.strings.localeName) {
       case 'es':
-        return 'Explica el ritual o proyecto i te orienta con el mejor momentum lunar.';
+        return 'Encuentra el mejor timing lunar';
       case 'ca':
-        return 'Descriu el ritual o projecte i rebràs el millor moment lunar.';
+        return 'Troba el millor moment lunar';
       default:
-        return 'Describe your plan and get the best lunar timing.';
+        return 'Find the best lunar timing';
     }
   }
 
