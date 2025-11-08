@@ -375,7 +375,7 @@ class _LearnCategoryCard extends StatelessWidget {
             ),
           ],
         ),
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,7 +385,7 @@ class _LearnCategoryCard extends StatelessWidget {
               color: TarotTheme.brightBlue,
               size: 24,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             Text(
               category.title,
               style: const TextStyle(
