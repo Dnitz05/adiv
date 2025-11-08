@@ -18,8 +18,8 @@ class TarotTheme {
   static const Color starGlow = Color(0xFFE8E5F5); // High contrast text
 
   // Educational blue palette - friendly and approachable
-  static const Color skyBlueLight = Color(0xFFF0F7FF); // Ultra soft sky blue background
-  static const Color skyBlueSoft = Color(0xFFE3F2FD); // Soft blue alternative
+  static const Color skyBlueLight = Color(0xFFFAFCFF); // Very light sky background
+  static const Color skyBlueSoft = Color(0xFFF5FAFF); // Soft light blue alternative
   static const Color oceanBlue = Color(0xFFB3D9F2); // Medium ocean blue
   static const Color deepNavy = Color(0xFF1E3A5F); // Deep navy for primary text
   static const Color slateBlue = Color(0xFF475569); // Slate blue for secondary text
@@ -81,7 +81,7 @@ class TarotTheme {
       ),
 
       // Scaffold
-      scaffoldBackgroundColor: deepNight,
+      scaffoldBackgroundColor: Colors.white,
 
       // AppBar - mystical and elegant
       appBarTheme: AppBarTheme(
