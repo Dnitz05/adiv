@@ -53,6 +53,7 @@ Service layer: `journal-service.ts`
   - `c52ee21d` - feat: redesign card-back with minimalist esoteric line art
   - `71e3290f` - feat: luxury celestial card-back with ornate gold foil design
   - `9d240df3` - feat: use real tarot card images in Daily Draw
+  - `420e2143` - feat: change credits icon from sun to stars in header
 - **Data:** 2025-11-07/08
 - **STATUS:** LIVE ON DEVICE ✅
 
@@ -61,6 +62,7 @@ Service layer: `journal-service.ts`
    - Menú hamburger a l'esquerra (leading)
    - Logo lunar circular + data centrada (title)
    - Crèdits amb badge GO PRO a la dreta (actions)
+   - Icona crèdits: ⭐ Stars (més representatiu que sol)
    - Altura reduïda: 76px → 48px
 
 2. **Nou Widget:**
