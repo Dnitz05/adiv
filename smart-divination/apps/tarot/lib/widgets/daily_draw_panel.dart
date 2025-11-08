@@ -62,16 +62,26 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.white,
-        border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
-          width: 1,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            TarotTheme.skyBlueLight,
+            TarotTheme.skyBlueSoft,
+          ],
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 12,
+            color: TarotTheme.skyBlueShadow,
+            blurRadius: 16,
             offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: TarotTheme.brightBlue10,
+            blurRadius: 32,
+            offset: const Offset(0, 8),
+            spreadRadius: 0,
           ),
         ],
       ),
@@ -82,21 +92,21 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      TarotTheme.cosmicBlue,
-                      TarotTheme.cosmicAccent,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Icon(
-                  Icons.wb_sunny,
                   color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: TarotTheme.brightBlue20,
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(10),
+                child: const Icon(
+                  Icons.wb_sunny,
+                  color: TarotTheme.brightBlue,
                   size: 20,
                 ),
               ),
@@ -108,15 +118,17 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     Text(
                       _getDailyDrawTitle(),
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: TarotTheme.midnightBlue,
+                        color: TarotTheme.deepNavy,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: 0.3,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       _getDailyDrawSubtitle(),
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.black.withValues(alpha: 0.6),
+                        color: TarotTheme.softBlueGrey,
+                        height: 1.4,
                       ),
                     ),
                   ],
@@ -130,7 +142,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
             child: widget.isLoading
                 ? Center(
                     child: CircularProgressIndicator(
-                      color: TarotTheme.cosmicAccent,
+                      color: TarotTheme.brightBlue,
                       strokeWidth: 2,
                     ),
                   )
@@ -165,7 +177,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
             FilledButton.icon(
               onPressed: widget.onInterpret,
               style: FilledButton.styleFrom(
-                backgroundColor: TarotTheme.cosmicBlue,
+                backgroundColor: TarotTheme.brightBlue,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -356,10 +368,6 @@ class _FlippableCardState extends State<_FlippableCard>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(0),
           color: Colors.white,
-          border: Border.all(
-            color: TarotTheme.cosmicAccent.withValues(alpha: 0.5),
-            width: 2,
-          ),
           boxShadow: [
             // Main shadow for depth
             BoxShadow(
