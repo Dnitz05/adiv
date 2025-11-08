@@ -46,12 +46,13 @@ Service layer: `journal-service.ts`
    - Commit: `699b1dfd` - fix: resolve TypeScript build errors in journal API endpoints
    - Pushat a origin/master ✅
 
-### ✅ Flutter App - Header Redesign, Floating Behavior & Luxury Card-Back
+### ✅ Flutter App - Header Redesign, Floating Behavior & Real Card Images
 - **Commits:**
   - `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
   - `396b07aa` - feat: add floating header with hide-on-scroll behavior
   - `c52ee21d` - feat: redesign card-back with minimalist esoteric line art
   - `71e3290f` - feat: luxury celestial card-back with ornate gold foil design
+  - `9d240df3` - feat: use real tarot card images in Daily Draw
 - **Data:** 2025-11-07/08
 - **STATUS:** LIVE ON DEVICE ✅
 
@@ -85,7 +86,20 @@ Service layer: `journal-service.ts`
 5. **Assets:**
    - Nou logo: `assets/branding/logo.png`
 
-6. **Card-Back Luxury Redesign (Hiperrealista):**
+6. **Real Tarot Card Images (Daily Draw):**
+   - ✨ Imatge real del revers: `card-back.png` (disseny blau celestial)
+     * Seed of Life al centre
+     * Llunes crescents dalt i baix
+     * Camp d'estrelles daurat
+     * Estil professional tarot deck
+   - ✨ Imatges reals de cartes: 81 JPGs professionals
+     * Major Arcana: 00-TheFool.jpg fins 21-TheWorld.jpg
+     * Minor Arcana: totes les cartes de Wands, Cups, Swords, Pentacles
+   - Canvi tècnic: SvgPicture.asset → Image.asset
+   - CardImageMapper ja configurat per JPG paths
+   - Visual upgrade: artwork professional en lloc de placeholders
+
+7. **Card-Back SVG Designs (Historical):**
    - ✨ Gradients celestials profunds (radial purple/indigo)
    - ✨ Efecte gold foil amb gradient de 5 stops
    - ✨ Marc triple ornamental amb filigrana als cantons
