@@ -3279,6 +3279,33 @@ class _HomeState extends State<_Home> {
             },
           ),
           const SizedBox(height: 24),
+          // Chat Banner
+          ChatBanner(
+            strings: localisation,
+            onTap: () {
+              final userId = _userId;
+              if (userId == null || userId.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      _qaText(
+                        localisation,
+                        en: 'Please log in to use chat.',
+                        es: 'Por favor inicia sesión para usar el chat.',
+                        ca: 'Si us plau inicia sessió per utilitzar el xat.',
+                      ),
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              } else {
+                setState(() {
+                  _selectedBottomNavIndex = 1;
+                });
+              }
+            },
+          ),
+          const SizedBox(height: 24),
           // Learn Panel
           LearnPanel(
             strings: localisation,
