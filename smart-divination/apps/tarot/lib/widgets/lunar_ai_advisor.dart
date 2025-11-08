@@ -389,17 +389,6 @@ class _LunarAiAdvisorState extends State<LunarAiAdvisor> {
     }
   }
 
-  String _localisedPromptHelper() {
-    switch (widget.strings.localeName) {
-      case 'es':
-        return 'Comparte lo que quieres iniciar, cuidar o cerrar y obtén el enfoque lunar recomendado.';
-      case 'ca':
-        return 'Explica què vols iniciar, cuidar o tancar i rep l’enfocament lunar recomanat.';
-      default:
-        return 'Share what you want to launch, nurture or close and get the recommended lunar focus.';
-    }
-  }
-
   String _localisedIntentionPlaceholder() {
     switch (widget.strings.localeName) {
       case 'es':

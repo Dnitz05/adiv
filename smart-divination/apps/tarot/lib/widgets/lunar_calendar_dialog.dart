@@ -4,7 +4,6 @@ import 'package:common/l10n/common_strings.dart';
 
 import '../theme/tarot_theme.dart';
 import '../state/lunar_cycle_controller.dart';
-import '../models/lunar_day.dart';
 import '../models/lunar_advice.dart';
 import '../models/lunar_reminder.dart';
 import '../api/lunar_api.dart';

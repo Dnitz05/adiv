@@ -39,19 +39,11 @@ class UnifiedLunarWidget extends StatefulWidget {
 class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _currentTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        setState(() {
-          _currentTabIndex = _tabController.index;
-        });
-      }
-    });
   }
 
   @override
