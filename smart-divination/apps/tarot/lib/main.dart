@@ -1949,7 +1949,7 @@ class _HomeState extends State<_Home> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 24, color: TarotTheme.cosmicAccent),
+            Icon(icon, size: 24, color: Color(0xFF44385c).withValues(alpha: 0.6)),
             const SizedBox(height: 2),
             Text(
               label,
@@ -4003,12 +4003,12 @@ class _CreditsBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.stars, color: TarotTheme.cosmicAccent, size: 20),
+          Icon(Icons.diamond, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 20),
           const SizedBox(width: 6),
           Text(
             '${credits.remaining}',
-            style: const TextStyle(
-              color: TarotTheme.cosmicAccent,
+            style: TextStyle(
+              color: Color(0xFF44385c).withValues(alpha: 0.6),
               fontSize: 16,
               fontWeight: FontWeight.w700,
             ),
@@ -4033,7 +4033,7 @@ class _HeaderMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: TarotTheme.cosmicAccent),
+      leading: Icon(icon, color: Color(0xFF44385c).withValues(alpha: 0.6)),
       title: Text(
         label,
         style: const TextStyle(
