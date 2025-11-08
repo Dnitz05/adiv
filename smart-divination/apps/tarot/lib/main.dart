@@ -3513,9 +3513,9 @@ class _HomeState extends State<_Home> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFFF5F3F9), // Light lavender mist (top)
-                  Color(0xFFF9F8FB), // Soft moonlight (middle)
-                  Color(0xFFF3EFF8), // Gentle purple-white (bottom)
+                  Color(0xFFFAF9FC), // Very light lavender (top)
+                  Color(0xFFFDFCFE), // Almost white with hint of purple (middle)
+                  Color(0xFFFAF8FC), // Soft lavender-white (bottom)
                 ],
                 stops: [0.0, 0.5, 1.0],
               ),
