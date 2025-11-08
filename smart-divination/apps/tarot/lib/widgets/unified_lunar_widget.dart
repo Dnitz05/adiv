@@ -107,12 +107,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
               const SizedBox(height: 16),
               _buildAskTheMoonCard(context),
               const SizedBox(height: 16),
-              _buildTabBar(),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 300,
-                child: _buildTabContent(day),
-              ),
+              _buildTabsContainer(day),
             ],
           ),
         );
@@ -230,6 +225,40 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       userId: widget.userId,
       locale: widget.strings.localeName,
       onShareAdvice: (message) => _openAdviceInChat(context, message),
+    );
+  }
+
+  // ✅ Contenidor que agrupa tabs i contingut visualment
+  Widget _buildTabsContainer(LunarDayModel day) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: TarotTheme.brightBlue20,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: TarotTheme.brightBlue10,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildTabBar(),
+          const SizedBox(height: 16),
+          SizedBox(
+            height: 300,
+            child: _buildTabContent(day),
+          ),
+        ],
+      ),
     );
   }
 
