@@ -150,21 +150,21 @@ class LearnPanel extends StatelessWidget {
         title: _getCardsTitle(strings),
         description: _getCardsDescription(strings),
         onTap: onNavigateToCards,
-        colors: const [Color(0xFFFB7BA2), Color(0xFFFCE043)],
+        colors: const [TarotTheme.cosmicPurple, TarotTheme.cosmicAccent],
       ),
       _LearnCategoryData(
         icon: Icons.auto_awesome,
         title: _getAstrologyTitle(strings),
         description: _getAstrologyDescription(strings),
         onTap: onNavigateToAstrology,
-        colors: const [Color(0xFF4FACFE), Color(0xFF00F2FE)],
+        colors: const [TarotTheme.twilightPurple, TarotTheme.cosmicBlue],
       ),
       _LearnCategoryData(
         icon: Icons.grid_view,
         title: _getSpreadsTitle(strings),
         description: _getSpreadsDescription(strings),
         onTap: onNavigateToSpreads,
-        colors: const [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
+        colors: const [TarotTheme.cosmicAccent, TarotTheme.subtleGold],
         tags: [
           _resolveLink(strings, 'basic'),
           _resolveLink(strings, 'advanced'),
@@ -175,14 +175,14 @@ class LearnPanel extends StatelessWidget {
         title: _getKnowledgeTitle(strings),
         description: _getKnowledgeDescription(strings),
         onTap: onNavigateToKnowledge,
-        colors: const [Color(0xFF833AB4), Color(0xFFFF5F6D)],
+        colors: const [TarotTheme.cosmicPurple, TarotTheme.twilightPurple],
       ),
       _LearnCategoryData(
         icon: Icons.brightness_3,
         title: _getMoonTitle(strings),
         description: _getMoonDescription(strings),
         onTap: onNavigateToMoonPowers,
-        colors: const [Color(0xFF00C6FB), Color(0xFF005BEA)],
+        colors: const [TarotTheme.cosmicBlue, TarotTheme.cosmicAccent],
         tags: [
           _resolveLink(strings, 'rituals'),
         ],
@@ -192,7 +192,7 @@ class LearnPanel extends StatelessWidget {
         title: _getKabbalahTitle(strings),
         description: _getKabbalahDescription(strings),
         onTap: onNavigateToKabbalah,
-        colors: const [Color(0xFFFBD986), Color(0xFFF7797D)],
+        colors: const [TarotTheme.subtleGold, TarotTheme.cosmicPurple],
       ),
     ];
   }
