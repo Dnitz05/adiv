@@ -3288,7 +3288,7 @@ class _HomeState extends State<_Home> {
             onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
             onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 8),
           if (_error != null) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -3394,13 +3394,13 @@ class _HomeState extends State<_Home> {
                 top: 0,
                 child: Container(
                   width: itemWidth,
-                  height: 3,
+                  height: 4,
                   alignment: Alignment.center,
                   child: Container(
-                    width: itemWidth * 0.6,
-                    height: 3,
+                    width: itemWidth * 0.8,
+                    height: 4,
                     decoration: BoxDecoration(
-                      color: TarotTheme.cosmicAccent,
+                      color: Color(0xFF44385c),
                       borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(2),
                       ),
