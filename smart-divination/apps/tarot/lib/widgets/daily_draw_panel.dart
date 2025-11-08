@@ -2,6 +2,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:common/l10n/common_strings.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 import '../models/tarot_card.dart';
 import '../theme/tarot_theme.dart';
@@ -26,6 +28,31 @@ class DailyDrawPanel extends StatefulWidget {
 
 class _DailyDrawPanelState extends State<DailyDrawPanel> {
   final Set<int> _flippedCards = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFlippedCards();
+  }
+
+  Future<void> _loadFlippedCards() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final key = 'daily_draw_flipped_$today';
+    final savedCards = prefs.getStringList(key);
+    if (savedCards != null) {
+      setState(() {
+        _flippedCards.addAll(savedCards.map((s) => int.parse(s)));
+      });
+    }
+  }
+
+  Future<void> _saveFlippedCards() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final key = 'daily_draw_flipped_$today';
+    await prefs.setStringList(key, _flippedCards.map((i) => i.toString()).toList());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +95,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                   ),
                 ),
                 child: Icon(
-                  Icons.auto_awesome,
+                  Icons.wb_sunny,
                   color: Colors.white,
                   size: 20,
                 ),
@@ -125,6 +152,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                                     _flippedCards.add(i);
                                   }
                                 });
+                                _saveFlippedCards();
                               },
                             ),
                           ),
@@ -277,10 +305,26 @@ class _FlippableCardState extends State<_FlippableCard>
           width: 2,
         ),
         boxShadow: [
+          // Main shadow for depth
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withValues(alpha: 0.25),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+            spreadRadius: 0,
+          ),
+          // Secondary shadow for volume
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
             blurRadius: 8,
             offset: const Offset(0, 4),
+            spreadRadius: -2,
+          ),
+          // Ambient shadow
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 12),
+            spreadRadius: -8,
           ),
         ],
       ),
@@ -317,10 +361,26 @@ class _FlippableCardState extends State<_FlippableCard>
             width: 2,
           ),
           boxShadow: [
+            // Main shadow for depth
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
+              color: Colors.black.withValues(alpha: 0.25),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+              spreadRadius: 0,
+            ),
+            // Secondary shadow for volume
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.15),
               blurRadius: 8,
               offset: const Offset(0, 4),
+              spreadRadius: -2,
+            ),
+            // Ambient shadow
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 24,
+              offset: const Offset(0, 12),
+              spreadRadius: -8,
             ),
           ],
         ),
