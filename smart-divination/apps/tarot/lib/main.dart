@@ -3560,8 +3560,8 @@ class _HomeState extends State<_Home> {
                     children: [
                       Image.asset(
                         'assets/branding/logo.png',
-                        width: 32,
-                        height: 32,
+                        width: 38,
+                        height: 38,
                       ),
                       const SizedBox(width: 3),
                       Column(
@@ -3583,7 +3583,7 @@ class _HomeState extends State<_Home> {
                             style: TextStyle(
                               color: Color(0xFF44385C),
                               fontSize: 11,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w800,
                               height: 1.0,
                               letterSpacing: 0.8,
                             ),
