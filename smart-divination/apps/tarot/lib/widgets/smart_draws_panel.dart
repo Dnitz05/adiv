@@ -68,7 +68,7 @@ class SmartDrawsPanel extends StatelessWidget {
                   ),
                 ),
                 child: const Icon(
-                  Icons.auto_awesome,
+                  Icons.style,
                   color: Colors.white,
                   size: 20,
                 ),
