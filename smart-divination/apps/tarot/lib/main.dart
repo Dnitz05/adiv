@@ -3500,10 +3500,44 @@ class _HomeState extends State<_Home> {
       ),
       body: Stack(
         children: [
-          // Plain light background
+          // Celestial gradient background
           Container(
             decoration: BoxDecoration(
-              color: Colors.purple[50],
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFFE8E5F5), // Starlight lavender (top)
+                  Color(0xFFF0EFF7), // Moonlight (middle)
+                  Color(0xFFE8E0F0), // Soft purple-white (bottom)
+                ],
+                stops: [0.0, 0.5, 1.0],
+              ),
+            ),
+          ),
+          // Subtle radial glow overlay
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.topRight,
+                radius: 1.2,
+                colors: [
+                  TarotTheme.cosmicAccent.withValues(alpha: 0.08),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment.bottomLeft,
+                radius: 1.0,
+                colors: [
+                  TarotTheme.cosmicBlue.withValues(alpha: 0.06),
+                  Colors.transparent,
+                ],
+              ),
             ),
           ),
           // NestedScrollView with floating header
@@ -3526,16 +3560,17 @@ class _HomeState extends State<_Home> {
                     children: [
                       Image.asset(
                         'assets/branding/logo.png',
-                        width: 24,
-                        height: 24,
+                        width: 32,
+                        height: 32,
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        _formatTodayDate(localisation.localeName),
-                        style: const TextStyle(
-                          color: TarotTheme.cosmicAccent,
-                          fontSize: 16,
+                      const SizedBox(width: 6),
+                      const Text(
+                        'Luna Tarot',
+                        style: TextStyle(
+                          color: Color(0xFF44385C),
+                          fontSize: 15,
                           fontWeight: FontWeight.w700,
+                          letterSpacing: -0.2,
                         ),
                       ),
                     ],
