@@ -3410,14 +3410,14 @@ class _HomeState extends State<_Home> {
               ),
               Container(
                 decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Colors.grey.withValues(alpha: 0.15),
-              width: 1,
-            ),
-          ),
-        ),
-        child: BottomNavigationBar(
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.grey.withValues(alpha: 0.05),
+                      width: 1,
+                    ),
+                  ),
+                ),
+                child: BottomNavigationBar(
           currentIndex: _selectedBottomNavIndex,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: TarotTheme.cosmicAccent,
@@ -3570,7 +3570,7 @@ class _HomeState extends State<_Home> {
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1),
                     child: Container(
-                      color: Colors.grey.withValues(alpha: 0.15),
+                      color: Colors.grey.withValues(alpha: 0.05),
                       height: 1,
                     ),
                   ),
@@ -3968,7 +3968,7 @@ class _CreditsBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.wb_sunny, color: TarotTheme.cosmicAccent, size: 20),
+          Icon(Icons.stars, color: TarotTheme.cosmicAccent, size: 20),
           const SizedBox(width: 6),
           Text(
             '${credits.remaining}',
@@ -4035,7 +4035,7 @@ class _CreditsWithProBadge extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.wb_sunny, color: TarotTheme.cosmicAccent, size: 20),
+              Icon(Icons.stars, color: TarotTheme.cosmicAccent, size: 20),
               const SizedBox(width: 6),
               Text(
                 '${credits.remaining}',
