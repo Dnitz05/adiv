@@ -17,38 +17,44 @@ class ChatBanner extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              TarotTheme.brightBlue.withOpacity(0.1),
-              TarotTheme.lunarLavenderLight.withOpacity(0.3),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: TarotTheme.brightBlue.withOpacity(0.3),
+            color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
             width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: TarotTheme.brightBlue.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    TarotTheme.cosmicBlue,
+                    TarotTheme.cosmicAccent,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.chat_bubble_outline,
-                color: TarotTheme.brightBlue,
-                size: 24,
+                color: Colors.white,
+                size: 20,
               ),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
