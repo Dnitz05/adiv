@@ -47,7 +47,7 @@ class SmartDrawsPanel extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -97,12 +97,12 @@ class SmartDrawsPanel extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
 
           // Smart Selection Hero Card
           _buildSmartSelectionHero(context, locale),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 14),
 
           // "Or choose by theme" text
           Text(
@@ -113,16 +113,16 @@ class SmartDrawsPanel extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 10),
 
           // Themed categories grid (2x3)
           GridView.count(
             crossAxisCount: 3,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
-            childAspectRatio: 1.0,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            childAspectRatio: 1.5,
             children: [
               _buildThemeCategory(
                 icon: Icons.favorite,
@@ -192,14 +192,14 @@ class SmartDrawsPanel extends StatelessWidget {
               ),
             ],
           ),
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
@@ -207,15 +207,15 @@ class SmartDrawsPanel extends StatelessWidget {
                     child: const Icon(
                       Icons.psychology,
                       color: Colors.white,
-                      size: 28,
+                      size: 24,
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       _getSmartSelectionTitle(locale),
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
                         height: 1.2,
@@ -253,20 +253,20 @@ class SmartDrawsPanel extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Text(
                 _getSmartSelectionDescription(locale),
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: Colors.white.withValues(alpha: 0.95),
-                  height: 1.4,
+                  height: 1.3,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
+                  horizontal: 14,
+                  vertical: 8,
                 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -278,15 +278,15 @@ class SmartDrawsPanel extends StatelessWidget {
                     Text(
                       _getSmartSelectionCTA(locale),
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: TarotTheme.cosmicBlue,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 6),
                     Icon(
                       Icons.arrow_forward,
-                      size: 18,
+                      size: 16,
                       color: TarotTheme.cosmicBlue,
                     ),
                   ],
@@ -325,13 +325,13 @@ class SmartDrawsPanel extends StatelessWidget {
               Icon(
                 icon,
                 color: color,
-                size: 28,
+                size: 24,
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 4),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: FontWeight.w600,
                   color: color,
                 ),
