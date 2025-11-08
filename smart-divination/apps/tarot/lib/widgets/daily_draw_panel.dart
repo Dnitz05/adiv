@@ -342,7 +342,7 @@ class _FlippableCardState extends State<_FlippableCard>
       child: ClipRRect(
         borderRadius: BorderRadius.circular(0),
         child: Image.asset(
-          'assets/cards/card-back.png',
+          'assets/cards/back2.png',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => Container(
             color: TarotTheme.cosmicBlue,
