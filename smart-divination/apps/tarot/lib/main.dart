@@ -3412,7 +3412,7 @@ class _HomeState extends State<_Home> {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: Colors.grey.withValues(alpha: 0.05),
+                      color: Color(0xFFEEEEEE),
                       width: 1,
                     ),
                   ),
