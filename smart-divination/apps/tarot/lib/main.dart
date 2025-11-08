@@ -24,6 +24,7 @@ import 'widgets/daily_draw_panel.dart';
 import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
 import 'widgets/chat_banner.dart';
+import 'widgets/archive_banner.dart';
 import 'screens/chat_screen.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
@@ -3319,6 +3320,20 @@ class _HomeState extends State<_Home> {
             onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
             onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
           ),
+          const SizedBox(height: 24),
+          // Archive Banner
+          ArchiveBanner(
+            strings: localisation,
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ArchiveScreen(
+                    userId: _userId ?? '',
+                  ),
+                ),
+              );
+            },
+          ),
           if (_error != null) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -4052,6 +4067,20 @@ class _HomeState extends State<_Home> {
           onNavigateToAstrology: () => _showLearnComingSoon(localisation),
           onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
           onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
+        ),
+        const SizedBox(height: 24),
+        // Archive Banner
+        ArchiveBanner(
+          strings: localisation,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ArchiveScreen(
+                  userId: _userId ?? '',
+                ),
+              ),
+            );
+          },
         ),
         if (_error != null) ...[
           Padding(
