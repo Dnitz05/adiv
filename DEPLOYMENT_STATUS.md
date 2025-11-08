@@ -55,6 +55,7 @@ Service layer: `journal-service.ts`
   - `9d240df3` - feat: use real tarot card images in Daily Draw
   - `420e2143` - feat: change credits icon from sun to stars in header
   - `a82dd234` - feat: harmonize Learn panel colors with app theme
+  - `7d32bbf1` - feat: replace flat background with celestial gradient
 - **Data:** 2025-11-07/08
 - **STATUS:** LIVE ON DEVICE ✅
 
@@ -119,8 +120,16 @@ Service layer: `journal-service.ts`
    - Inspirat en: Rider-Waite, Golden Thread, Apollo Tarot luxury decks
    - SVG: 307 línies (efecte multicapa professional)
 
+8. **Celestial Gradient Background:**
+   - ✨ Sistema de 3 capes de gradients per fons viu i etèric
+   - Gradient lineal vertical: Lavanda estel·lar (#E8E5F5) → Llum de lluna (#F0EFF7) → Porpra-blanc suau (#E8E0F0)
+   - Radial glow superior dret: cosmicAccent (porpra lluminós) amb opacity 0.08
+   - Radial glow inferior esquerre: cosmicBlue amb opacity 0.06
+   - Harmonitzat amb paleta celestial de l'app (TarotTheme)
+   - Millora visual: de fons pla purple[50] a ambient atmosfèric multicapa
+
 - **Flutter Analyze:** ✅ (només warnings menors)
-- **APK Build:** ✅ (68.4MB, 49.5s build time)
+- **APK Build:** ✅ (68.6MB, 131.7s build time)
 - **Installation:** ✅ Deployed to device RCWSWS9LJRFADQSC
 - **STATUS:** LIVE ON DEVICE ✅
 
