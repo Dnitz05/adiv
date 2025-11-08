@@ -3564,14 +3564,31 @@ class _HomeState extends State<_Home> {
                         height: 32,
                       ),
                       const SizedBox(width: 3),
-                      const Text(
-                        'Luna Tarot',
-                        style: TextStyle(
-                          color: Color(0xFF44385C),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.8,
-                        ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Luna',
+                            style: TextStyle(
+                              color: Color(0xFF44385C),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              height: 1.0,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          Text(
+                            'Tarot',
+                            style: TextStyle(
+                              color: Color(0xFF44385C),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              height: 1.0,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
