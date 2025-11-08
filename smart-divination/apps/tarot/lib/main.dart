@@ -3420,8 +3420,8 @@ class _HomeState extends State<_Home> {
                 child: BottomNavigationBar(
           currentIndex: _selectedBottomNavIndex,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: TarotTheme.cosmicAccent,
-          unselectedItemColor: TarotTheme.cosmicAccent90,
+          selectedItemColor: const Color(0xFF44385c),
+          unselectedItemColor: const Color(0xFF44385c).withValues(alpha: 0.6),
           selectedFontSize: 13,
           unselectedFontSize: 12,
           backgroundColor: Colors.white,
@@ -3563,20 +3563,20 @@ class _HomeState extends State<_Home> {
                         width: 32,
                         height: 32,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 4),
                       const Text(
                         'Luna Tarot',
                         style: TextStyle(
                           color: Color(0xFF44385C),
                           fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.2,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -0.8,
                         ),
                       ),
                     ],
                   ),
                   leading: IconButton(
-                    icon: const Icon(Icons.menu, color: TarotTheme.cosmicAccent, size: 22),
+                    icon: Icon(Icons.menu, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
                     tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
                     onPressed: () => _openHeaderMenu(localisation),
                   ),
@@ -4070,12 +4070,12 @@ class _CreditsWithProBadge extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.stars, color: TarotTheme.cosmicAccent, size: 20),
+              Icon(Icons.diamond, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 20),
               const SizedBox(width: 6),
               Text(
                 '${credits.remaining}',
-                style: const TextStyle(
-                  color: TarotTheme.cosmicAccent,
+                style: TextStyle(
+                  color: Color(0xFF44385c).withValues(alpha: 0.6),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),
