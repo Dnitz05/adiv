@@ -286,8 +286,8 @@ class _FlippableCardState extends State<_FlippableCard>
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(0),
-        child: SvgPicture.asset(
-          'assets/cards/card-back.svg',
+        child: Image.asset(
+          'assets/cards/card-back.png',
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) => Container(
             color: TarotTheme.cosmicBlue,
@@ -327,7 +327,7 @@ class _FlippableCardState extends State<_FlippableCard>
         child: widget.card.imageUrl != null
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(0),
-                child: SvgPicture.asset(
+                child: Image.asset(
                   widget.card.imageUrl!,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
