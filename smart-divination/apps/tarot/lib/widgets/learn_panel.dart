@@ -335,6 +335,7 @@ class _LearnCategoryCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: category.onTap,
       child: Container(
+        height: 115,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white.withValues(alpha: 0.08),
@@ -360,6 +361,8 @@ class _LearnCategoryCard extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 4),
             Text(
