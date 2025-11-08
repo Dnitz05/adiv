@@ -3111,6 +3111,9 @@ class _HomeState extends State<_Home> {
 
     if (_initialising) {
       bodyContent = const Center(child: CircularProgressIndicator());
+    } else if (_selectedBottomNavIndex == 0) {
+      // Today screen - always show home content with Daily Draw
+      bodyContent = _buildTodayScreen(localisation, topSpacing);
     } else if (_selectedBottomNavIndex == 1 && _userId != null && _userId!.isNotEmpty) {
       // Chat screen (shown inside main scaffold, no app bar)
       bodyContent = ChatScreen(
@@ -3534,45 +3537,9 @@ class _HomeState extends State<_Home> {
       ),
       body: Stack(
         children: [
-          // Celestial gradient background
+          // Simple flat white background
           Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFFFEFEFF), // Nearly pure white with tiny blue hint (top)
-                  Color(0xFFFFFFFF), // Pure white (middle)
-                  Color(0xFFFEFDFF), // Nearly white with tiny lavender (bottom)
-                ],
-                stops: [0.0, 0.5, 1.0],
-              ),
-            ),
-          ),
-          // Subtle radial glow overlay
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment.topRight,
-                radius: 1.2,
-                colors: [
-                  TarotTheme.cosmicAccent.withValues(alpha: 0.08),
-                  Colors.transparent,
-                ],
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: RadialGradient(
-                center: Alignment.bottomLeft,
-                radius: 1.0,
-                colors: [
-                  TarotTheme.cosmicBlue.withValues(alpha: 0.06),
-                  Colors.transparent,
-                ],
-              ),
-            ),
+            color: Colors.white, // Pure white
           ),
           // NestedScrollView with floating header
           NestedScrollView(
@@ -3656,7 +3623,7 @@ class _HomeState extends State<_Home> {
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1),
                     child: Container(
-                      color: Colors.grey.withValues(alpha: 0.05),
+                      color: Colors.grey.withValues(alpha: 0.2),
                       height: 1,
                     ),
                   ),
@@ -3932,6 +3899,172 @@ class _HomeState extends State<_Home> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTodayScreen(CommonStrings localisation, double topSpacing) {
+    return ListView(
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        top: topSpacing,
+        bottom: 16,
+      ),
+      children: [
+        // Daily Draw Panel - always shown on Today screen
+        if (_dailyCards != null && _dailyCards!.isNotEmpty)
+          DailyDrawPanel(
+            cards: _dailyCards!,
+            strings: localisation,
+            isLoading: _loadingDailyDraw,
+            onInterpret: () {
+              final response = _dailyDrawResponse;
+              if (response == null || response.sessionId == null || response.sessionId!.isEmpty) {
+                debugPrint('No session ID available for daily draw interpretation');
+                return;
+              }
+
+              // Navigate to daily interpretation screen
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DailyInterpretationScreen(
+                    cards: _dailyCards!,
+                    draw: response,
+                    sessionId: response.sessionId!,
+                  ),
+                ),
+              );
+            },
+          )
+        else if (_loadingDailyDraw)
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2.5),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    localisation.lunarPanelLoading,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        if ((_dailyCards != null && _dailyCards!.isNotEmpty) || _loadingDailyDraw)
+          const SizedBox(height: 24),
+        // Unified Lunar Wisdom Center
+        UnifiedLunarWidget(
+          controller: _lunarController,
+          strings: localisation,
+          userId: _userId,
+          onSelectSpread: (spreadId) {
+            final spread = TarotSpreads.getById(spreadId);
+            if (spread != null) {
+              setState(() {
+                _selectedSpread = spread;
+                _selectedBottomNavIndex = 2;
+              });
+            }
+          },
+          onRefresh: () => _lunarController.refresh(force: true),
+        ),
+        const SizedBox(height: 24),
+        // Smart Draws Panel
+        SmartDrawsPanel(
+          strings: localisation,
+          onSmartSelection: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const SmartSelectionScreen(),
+              ),
+            );
+          },
+          onLove: () {
+            debugPrint('Love category tapped');
+          },
+          onCareer: () {
+            debugPrint('Career category tapped');
+          },
+          onFinances: () {
+            debugPrint('Finances category tapped');
+          },
+          onPersonalGrowth: () {
+            debugPrint('Personal Growth category tapped');
+          },
+          onDecisions: () {
+            debugPrint('Decisions category tapped');
+          },
+          onGeneral: () {
+            debugPrint('General category tapped');
+          },
+        ),
+        const SizedBox(height: 24),
+        // Chat Banner
+        ChatBanner(
+          strings: localisation,
+          onTap: () {
+            final userId = _userId;
+            if (userId == null || userId.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    _qaText(
+                      localisation,
+                      en: 'Please log in to use chat.',
+                      es: 'Por favor inicia sesión para usar el chat.',
+                      ca: 'Si us plau inicia sessió per utilitzar el xat.',
+                    ),
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            } else {
+              setState(() {
+                _selectedBottomNavIndex = 1;
+              });
+            }
+          },
+        ),
+        const SizedBox(height: 24),
+        // Learn Panel
+        LearnPanel(
+          strings: localisation,
+          onNavigateToCards: () => _showLearnComingSoon(localisation),
+          onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
+          onNavigateToSpreads: () => _showLearnComingSoon(localisation),
+          onNavigateToAstrology: () => _showLearnComingSoon(localisation),
+          onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
+          onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
+        ),
+        if (_error != null) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              _error!,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.error),
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+      ],
     );
   }
 

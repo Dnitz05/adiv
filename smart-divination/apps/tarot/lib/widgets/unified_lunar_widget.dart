@@ -10,11 +10,10 @@ import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
 import 'lunar_ai_advisor.dart';
 import 'lunar_tabs/today_tab.dart';
-import 'lunar_tabs/calendar_tab.dart';
+import 'lunar_tabs/calendar_only_tab.dart';
+import 'lunar_tabs/phases_tab.dart';
 import 'lunar_tabs/rituals_tab.dart';
 import 'lunar_tabs/spreads_tab.dart';
-import 'lunar_tabs/guidance_tab.dart';
-import 'lunar_tabs/history_tab.dart';
 
 class UnifiedLunarWidget extends StatefulWidget {
   const UnifiedLunarWidget({
@@ -43,7 +42,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -254,7 +253,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           _buildTabBar(),
           const SizedBox(height: 16),
           SizedBox(
-            height: 300,
+            height: 350,
             child: _buildTabContent(day),
           ),
         ],
@@ -266,10 +265,9 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
     final tabs = [
       _buildTab(_localisedTab('today'), Icons.today),
       _buildTab(_localisedTab('calendar'), Icons.calendar_month),
+      _buildTab(_localisedTab('phases'), Icons.brightness_3),
       _buildTab(_localisedTab('rituals'), Icons.auto_awesome),
       _buildTab(_localisedTab('spreads'), Icons.style),
-      _buildTab(_localisedTab('guidance'), Icons.psychology),
-      _buildTab(_localisedTab('history'), Icons.history),
     ];
 
     // ✅ TabBar integrat sense decoració redundant
@@ -334,8 +332,12 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           day: day,
           strings: widget.strings,
         ),
-        CalendarTab(
+        CalendarOnlyTab(
           controller: widget.controller,
+          strings: widget.strings,
+        ),
+        PhasesTab(
+          day: day,
           strings: widget.strings,
         ),
         RitualsTab(
@@ -347,14 +349,6 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           day: day,
           strings: widget.strings,
           onSelectSpread: widget.onSelectSpread,
-        ),
-        GuidanceTab(
-          day: day,
-          strings: widget.strings,
-        ),
-        HistoryTab(
-          strings: widget.strings,
-          userId: widget.userId,
         ),
       ],
     );
@@ -521,10 +515,9 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
     final translations = {
       'today': {'en': 'Today', 'es': 'Hoy', 'ca': 'Avui'},
       'calendar': {'en': 'Calendar', 'es': 'Calendario', 'ca': 'Calendari'},
+      'phases': {'en': 'Phases', 'es': 'Fases', 'ca': 'Fases'},
       'rituals': {'en': 'Rituals', 'es': 'Rituales', 'ca': 'Rituals'},
       'spreads': {'en': 'Spreads', 'es': 'Tiradas', 'ca': 'Tirades'},
-      'guidance': {'en': 'Guidance', 'es': 'Guía', 'ca': 'Guia'},
-      'history': {'en': 'History', 'es': 'Historial', 'ca': 'Historial'},
     };
     return translations[key]?[locale] ?? translations[key]?['en'] ?? key;
   }

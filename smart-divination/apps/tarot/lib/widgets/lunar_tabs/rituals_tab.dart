@@ -23,94 +23,185 @@ class RitualsTab extends StatefulWidget {
 }
 
 class _RitualsTabState extends State<RitualsTab> {
-  String _selectedFilter = 'all'; // all, phase, category
-
   @override
   Widget build(BuildContext context) {
-    final rituals = _selectedFilter == 'phase'
-        ? LunarRitualRepository.getRitualsForPhase(widget.day.phaseId)
-        : LunarRitualRepository.allRituals;
+    // Show only rituals for current phase
+    final allRitualsForPhase = LunarRitualRepository.getRitualsForPhase(widget.day.phaseId);
+    final displayedRituals = allRitualsForPhase.take(6).toList(); // Max 6 rituals (2 rows x 3 cols)
+    final hasMore = allRitualsForPhase.length > 6;
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildHeader(),
-          const SizedBox(height: 16),
-          _buildFilters(),
-          const SizedBox(height: 16),
-          ...rituals.map((ritual) => _buildRitualCard(ritual, context)),
+          Text(
+            widget.day.phaseName,
+            style: const TextStyle(
+              color: TarotTheme.deepNavy,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          _buildRitualsGrid(displayedRituals),
+          if (hasMore) ...[
+            const SizedBox(height: 12),
+            _buildViewAllButton(allRitualsForPhase),
+          ],
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return LunarCardHelpers.buildCardWithHeader(
+  Widget _buildRitualsGrid(List<LunarRitual> rituals) {
+    if (rituals.isEmpty) {
+      return LunarCardHelpers.buildWhiteCard(
+        context: context,
+        padding: const EdgeInsets.all(24),
+        child: Text(
+          _localisedLabel('no_rituals'),
+          style: LunarCardHelpers.cardBodyStyle,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.85,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: rituals.length,
+      itemBuilder: (context, index) => _buildCompactRitualCard(rituals[index]),
+    );
+  }
+
+  Widget _buildCompactRitualCard(LunarRitual ritual) {
+    final locale = widget.strings.localeName;
+    return LunarCardHelpers.buildWhiteCard(
       context: context,
-      icon: Icons.auto_awesome,
-      title: _localisedLabel('lunar_rituals'),
-      subtitle: _localisedLabel('rituals_subtitle'),
-      content: const SizedBox.shrink(),
-    );
-  }
-
-  Widget _buildFilters() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildFilterChip(
-            'all',
-            _localisedLabel('all_rituals'),
-            Icons.list,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildFilterChip(
-            'phase',
-            _localisedLabel('for_this_phase'),
-            Icons.brightness_3,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFilterChip(String value, String label, IconData icon) {
-    final isSelected = _selectedFilter == value;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedFilter = value),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: isSelected
-              ? TarotTheme.brightBlue
-              : Colors.white,
-          border: Border.all(
-            color: isSelected ? TarotTheme.brightBlue : TarotTheme.brightBlue20,
-            width: isSelected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? Colors.white : TarotTheme.deepNavy,
-              size: 16,
+      padding: EdgeInsets.zero,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _showRitualDetails(ritual, context),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ritual.iconEmoji,
+                      style: const TextStyle(fontSize: 28),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      ritual.getName(locale),
+                      style: const TextStyle(
+                        color: TarotTheme.deepNavy,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.access_time, size: 10, color: TarotTheme.softBlueGrey),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${ritual.durationMinutes}m',
+                      style: const TextStyle(
+                        color: TarotTheme.softBlueGrey,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : TarotTheme.deepNavy,
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildViewAllButton(List<LunarRitual> allRituals) {
+    return FilledButton.icon(
+      onPressed: () => _showAllRitualsDialog(allRituals),
+      style: FilledButton.styleFrom(
+        backgroundColor: TarotTheme.brightBlue,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      icon: const Icon(Icons.grid_view, size: 18),
+      label: Text(
+        _localisedLabel('view_all_rituals'),
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  void _showAllRitualsDialog(List<LunarRitual> allRituals) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 600),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${widget.day.phaseName} - ${_localisedLabel('all_rituals')}',
+                    style: const TextStyle(
+                      color: TarotTheme.deepNavy,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: TarotTheme.deepNavy),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: allRituals.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildRitualCard(allRituals[index], context),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -263,13 +354,9 @@ class _RitualsTabState extends State<RitualsTab> {
     final locale = widget.strings.localeName;
     final labels = {
       'lunar_rituals': {'en': 'Lunar Rituals', 'es': 'Rituales Lunares', 'ca': 'Rituals Lunars'},
-      'rituals_subtitle': {
-        'en': 'Sacred practices for each moon phase',
-        'es': 'Prácticas sagradas para cada fase lunar',
-        'ca': 'Pràctiques sagrades per cada fase lunar'
-      },
-      'all_rituals': {'en': 'All Rituals', 'es': 'Todos', 'ca': 'Tots'},
-      'for_this_phase': {'en': 'For This Phase', 'es': 'Para Esta Fase', 'ca': 'Per Aquesta Fase'},
+      'all_rituals': {'en': 'All Rituals', 'es': 'Todos los Rituales', 'ca': 'Tots els Rituals'},
+      'view_all_rituals': {'en': 'View All Rituals', 'es': 'Ver Todos', 'ca': 'Veure Tots'},
+      'no_rituals': {'en': 'No rituals for this phase', 'es': 'No hay rituales para esta fase', 'ca': 'No hi ha rituals per aquesta fase'},
     };
     return labels[key]?[locale] ?? labels[key]?['en'] ?? key;
   }

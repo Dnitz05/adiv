@@ -24,111 +24,186 @@ class SpreadsTab extends StatefulWidget {
 }
 
 class _SpreadsTabState extends State<SpreadsTab> {
-  String _selectedFilter = 'phase'; // 'phase' or 'all'
-
   @override
   Widget build(BuildContext context) {
-    final spreads = _selectedFilter == 'phase'
-        ? LunarSpreadRepository.getSpreadsForPhase(widget.day.phaseId)
-        : LunarSpreadRepository.getAllSpreads();
+    // Show only spreads for current phase
+    final allSpreadsForPhase = LunarSpreadRepository.getSpreadsForPhase(widget.day.phaseId);
+    final displayedSpreads = allSpreadsForPhase.take(6).toList(); // Max 6 spreads (2 rows x 3 cols)
+    final hasMore = allSpreadsForPhase.length > 6;
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildHeader(),
-          const SizedBox(height: 16),
-          _buildFilters(),
-          const SizedBox(height: 16),
-          if (spreads.isEmpty)
-            _buildNoSpreads()
-          else
-            ...spreads.map((spread) => _buildSpreadCard(spread, context)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return LunarCardHelpers.buildCardWithHeader(
-      context: context,
-      icon: Icons.style,
-      title: _localisedLabel('header_title'),
-      subtitle: _localisedLabel('header_subtitle'),
-      content: const SizedBox.shrink(),
-    );
-  }
-
-  Widget _buildFilters() {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildFilterChip(
-            'phase',
-            _localisedLabel('filter_phase'),
-            _selectedFilter == 'phase',
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildFilterChip(
-            'all',
-            _localisedLabel('filter_all'),
-            _selectedFilter == 'all',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFilterChip(String value, String label, bool selected) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedFilter = value;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        decoration: BoxDecoration(
-          color: selected ? TarotTheme.brightBlue : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: selected ? TarotTheme.brightBlue : TarotTheme.brightBlue20,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: selected ? Colors.white : TarotTheme.deepNavy,
-            fontSize: 14,
-            fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNoSpreads() {
-    return LunarCardHelpers.buildWhiteCard(
-      context: context,
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        children: [
-          const Icon(
-            Icons.info_outline,
-            color: TarotTheme.softBlueGrey,
-            size: 48,
-          ),
-          const SizedBox(height: 12),
           Text(
-            _localisedLabel('no_spreads'),
-            style: LunarCardHelpers.cardBodyStyle,
+            widget.day.phaseName,
+            style: const TextStyle(
+              color: TarotTheme.deepNavy,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 12),
+          _buildSpreadsGrid(displayedSpreads),
+          if (hasMore) ...[
+            const SizedBox(height: 12),
+            _buildViewAllButton(allSpreadsForPhase),
+          ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildSpreadsGrid(List<LunarSpread> spreads) {
+    if (spreads.isEmpty) {
+      return LunarCardHelpers.buildWhiteCard(
+        context: context,
+        padding: const EdgeInsets.all(24),
+        child: Text(
+          _localisedLabel('no_spreads'),
+          style: LunarCardHelpers.cardBodyStyle,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.85,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: spreads.length,
+      itemBuilder: (context, index) => _buildCompactSpreadCard(spreads[index]),
+    );
+  }
+
+  Widget _buildCompactSpreadCard(LunarSpread spread) {
+    final locale = widget.strings.localeName;
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
+      padding: EdgeInsets.zero,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _showSpreadDetails(spread, context),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      spread.iconEmoji,
+                      style: const TextStyle(fontSize: 28),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      spread.getName(locale),
+                      style: const TextStyle(
+                        color: TarotTheme.deepNavy,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.layers, size: 10, color: TarotTheme.softBlueGrey),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${spread.numberOfCards} ${_localisedLabel('cards')}',
+                      style: const TextStyle(
+                        color: TarotTheme.softBlueGrey,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildViewAllButton(List<LunarSpread> allSpreads) {
+    return FilledButton.icon(
+      onPressed: () => _showAllSpreadsDialog(allSpreads),
+      style: FilledButton.styleFrom(
+        backgroundColor: TarotTheme.brightBlue,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      icon: const Icon(Icons.grid_view, size: 18),
+      label: Text(
+        _localisedLabel('view_all_spreads'),
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  void _showAllSpreadsDialog(List<LunarSpread> allSpreads) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 600),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${widget.day.phaseName} - ${_localisedLabel('all_spreads')}',
+                    style: const TextStyle(
+                      color: TarotTheme.deepNavy,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: TarotTheme.deepNavy),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: allSpreads.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _buildSpreadCard(allSpreads[index], context),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -218,27 +293,13 @@ class _SpreadsTabState extends State<SpreadsTab> {
   String _localisedLabel(String key) {
     final locale = widget.strings.localeName;
     final labels = {
-      'header_title': {
-        'en': 'Tarot Spreads',
-        'es': 'Tiradas de Tarot',
-        'ca': 'Tirades de Tarot'
-      },
-      'header_subtitle': {
-        'en': 'Authentic lunar spreads from established traditions',
-        'es': 'Tiradas lunares auténticas de tradiciones establecidas',
-        'ca': 'Tirades lunars autèntiques de tradicions establertes'
-      },
-      'filter_phase': {
-        'en': 'For This Phase',
-        'es': 'Para Esta Fase',
-        'ca': 'Per Aquesta Fase'
-      },
-      'filter_all': {'en': 'All Spreads', 'es': 'Todas', 'ca': 'Totes'},
       'cards': {'en': 'cards', 'es': 'cartas', 'ca': 'cartes'},
+      'all_spreads': {'en': 'All Spreads', 'es': 'Todas las Tiradas', 'ca': 'Totes les Tirades'},
+      'view_all_spreads': {'en': 'View All Spreads', 'es': 'Ver Todas', 'ca': 'Veure Totes'},
       'no_spreads': {
-        'en': 'No spreads available for this moon phase. Try "All Spreads".',
-        'es': 'No hay tiradas disponibles para esta fase lunar. Prueba "Todas".',
-        'ca': 'No hi ha tirades disponibles per aquesta fase lunar. Prova "Totes".'
+        'en': 'No spreads for this phase',
+        'es': 'No hay tiradas para esta fase',
+        'ca': 'No hi ha tirades per aquesta fase'
       },
     };
     return labels[key]?[locale] ?? labels[key]?['en'] ?? key;
