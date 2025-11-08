@@ -3421,9 +3421,16 @@ class _HomeState extends State<_Home> {
           currentIndex: _selectedBottomNavIndex,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: const Color(0xFF44385c),
-          unselectedItemColor: const Color(0xFF44385c).withValues(alpha: 0.6),
+          unselectedItemColor: const Color(0xFF44385c).withValues(alpha: 0.5),
           selectedFontSize: 13,
           unselectedFontSize: 12,
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.2,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w400,
+          ),
           backgroundColor: Colors.white,
           elevation: 0,
         onTap: (index) {
