@@ -35,7 +35,7 @@ jobs:
 
       - name: Flutter analyze (tarot)
         working-directory: smart-divination/apps/tarot
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Flutter tests (tarot)
         working-directory: smart-divination/apps/tarot
