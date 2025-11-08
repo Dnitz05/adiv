@@ -3165,7 +3165,7 @@ class _HomeState extends State<_Home> {
           left: 8,
           right: 8,
           top: topSpacing,
-          bottom: bottomSafeInset, // Minimal spacing, safe area only
+          bottom: 16, // Balanced spacing below Learn panel
         ),
         children: [
           // Daily Draw Panel - always show loading state or error
