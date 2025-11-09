@@ -60,27 +60,17 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
 
     return Container(
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.skyBlueLight,
-            TarotTheme.skyBlueSoft,
-          ],
+        border: Border.all(
+          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.skyBlueShadow,
-            blurRadius: 16,
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 12,
             offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: TarotTheme.brightBlue10,
-            blurRadius: 32,
-            offset: const Offset(0, 8),
-            spreadRadius: 0,
           ),
         ],
       ),
@@ -91,21 +81,21 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           Row(
             children: [
               Container(
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: TarotTheme.brightBlue20,
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                  gradient: const LinearGradient(
+                    colors: [
+                      TarotTheme.cosmicBlue,
+                      TarotTheme.cosmicAccent,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
-                padding: const EdgeInsets.all(10),
                 child: const Icon(
                   Icons.wb_sunny,
-                  color: TarotTheme.brightBlue,
+                  color: Colors.white,
                   size: 20,
                 ),
               ),
