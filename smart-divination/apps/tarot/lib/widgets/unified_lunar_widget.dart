@@ -425,82 +425,81 @@ class _LunarMainContentState extends State<_LunarMainContent>
         Container(
           padding: const EdgeInsets.all(2),
           child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabAlignment: TabAlignment.start,
-              indicatorSize: TabBarIndicatorSize.label,
-              dividerColor: Colors.transparent,
-              indicator: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [TarotTheme.brightBlue, TarotTheme.cosmicAccent],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: TarotTheme.brightBlue.withValues(alpha: 0.4),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+            controller: _tabController,
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            indicatorSize: TabBarIndicatorSize.label,
+            dividerColor: Colors.transparent,
+            indicator: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [TarotTheme.brightBlue, TarotTheme.cosmicAccent],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              labelColor: Colors.white,
-              unselectedLabelColor: TarotTheme.softBlueGrey,
-              labelStyle: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
-              tabs: [
-                _buildTab(getLunarTabLabel('today', widget.strings.localeName), Icons.today),
-                _buildTab(getLunarTabLabel('calendar', widget.strings.localeName), Icons.calendar_month),
-                _buildTab(getLunarTabLabel('phases', widget.strings.localeName), Icons.brightness_3),
-                _buildTab(getLunarTabLabel('rituals', widget.strings.localeName), Icons.auto_awesome),
-                _buildTab(getLunarTabLabel('spreads', widget.strings.localeName), Icons.style),
-              ],
-            ),
-          ),
-          const SizedBox(height: 4),
-          // TabBarView content - optimized compact constraints
-          ConstrainedBox(
-            constraints: const BoxConstraints(
-              minHeight: 200,
-              maxHeight: 280,
-            ),
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                TodayTab(
-                  day: widget.day,
-                  strings: widget.strings,
-                ),
-                CalendarOnlyTab(
-                  controller: widget.controller,
-                  strings: widget.strings,
-                ),
-                PhasesTab(
-                  day: widget.day,
-                  strings: widget.strings,
-                ),
-                RitualsTab(
-                  day: widget.day,
-                  strings: widget.strings,
-                  userId: widget.userId,
-                ),
-                SpreadsTab(
-                  day: widget.day,
-                  strings: widget.strings,
-                  onSelectSpread: widget.onSelectSpread,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: TarotTheme.brightBlue.withValues(alpha: 0.4),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
+            labelColor: Colors.white,
+            unselectedLabelColor: TarotTheme.softBlueGrey,
+            labelStyle: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: [
+              _buildTab(getLunarTabLabel('today', widget.strings.localeName), Icons.today),
+              _buildTab(getLunarTabLabel('calendar', widget.strings.localeName), Icons.calendar_month),
+              _buildTab(getLunarTabLabel('phases', widget.strings.localeName), Icons.brightness_3),
+              _buildTab(getLunarTabLabel('rituals', widget.strings.localeName), Icons.auto_awesome),
+              _buildTab(getLunarTabLabel('spreads', widget.strings.localeName), Icons.style),
+            ],
           ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 4),
+        // TabBarView content - optimized compact constraints
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 200,
+            maxHeight: 280,
+          ),
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              TodayTab(
+                day: widget.day,
+                strings: widget.strings,
+              ),
+              CalendarOnlyTab(
+                controller: widget.controller,
+                strings: widget.strings,
+              ),
+              PhasesTab(
+                day: widget.day,
+                strings: widget.strings,
+              ),
+              RitualsTab(
+                day: widget.day,
+                strings: widget.strings,
+                userId: widget.userId,
+              ),
+              SpreadsTab(
+                day: widget.day,
+                strings: widget.strings,
+                onSelectSpread: widget.onSelectSpread,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
