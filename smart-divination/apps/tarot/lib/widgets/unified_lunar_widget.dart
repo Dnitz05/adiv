@@ -268,9 +268,12 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
             ),
           ),
           const SizedBox(height: 6),
-          // TabBarView content
-          SizedBox(
-            height: 240,
+          // TabBarView content - flexible height constraints
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: 240,
+              maxHeight: 350,
+            ),
             child: TabBarView(
               controller: _tabController,
               children: [
