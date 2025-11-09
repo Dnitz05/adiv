@@ -23,6 +23,7 @@ class SpreadsScreen extends StatefulWidget {
     required this.onSelectSpread,
     required this.onStartTheme,
     required this.onOpenGallery,
+    this.initialTheme,
   });
 
   final CommonStrings strings;
@@ -32,6 +33,7 @@ class SpreadsScreen extends StatefulWidget {
   final ValueChanged<TarotSpread> onSelectSpread;
   final StartThemeCallback onStartTheme;
   final VoidCallback onOpenGallery;
+  final String? initialTheme;
 
   @override
   State<SpreadsScreen> createState() => _SpreadsScreenState();
@@ -44,8 +46,26 @@ class _SpreadsScreenState extends State<SpreadsScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Carregar tema inicial si està especificat
+    int initialPage = 0;
+    if (widget.initialTheme != null) {
+      final themeIndex = spreadThemes.indexWhere(
+        (t) => t.id == widget.initialTheme,
+      );
+      if (themeIndex != -1) {
+        initialPage = themeIndex;
+        _activeTheme = spreadThemes[themeIndex];
+      } else {
+        _activeTheme = spreadThemes.first;
+      }
+    } else {
+      _activeTheme = spreadThemes.first;
+    }
+
     _pageController = PageController(
       viewportFraction: 0.86,
+      initialPage: initialPage,
     );
   }
 
@@ -525,6 +545,27 @@ class SpreadThemeOption {
 
 final List<SpreadThemeOption> spreadThemes = [
   SpreadThemeOption(
+    id: 'decisions',
+    icon: Icons.balance,
+    titleBuilder: (locale) => _resolve(locale,
+        en: 'Decisions & Choices',
+        es: 'Decisiones y Elecciones',
+        ca: 'Decisions i Tries'),
+    descriptionBuilder: (locale) => _resolve(locale,
+        en: 'Clarify options, weigh outcomes and choose your path wisely.',
+        es: 'Aclara opciones, sopesa resultados y elige tu camino sabiamente.',
+        ca: 'Aclareix opcions, pesa resultats i tria el teu camí sàviament.'),
+    recommendedSpreadIds: [
+      'two_card',
+      'five_card_cross',
+      'horseshoe',
+    ],
+    questionBuilder: (locale) => _resolve(locale,
+        en: 'What factors should I consider before making this choice?',
+        es: '¿Qué factores debo considerar antes de tomar esta decisión?',
+        ca: 'Quins factors haig de considerar abans de prendre aquesta decisió?'),
+  ),
+  SpreadThemeOption(
     id: 'ai_auto',
     icon: Icons.auto_awesome,
     titleBuilder: (locale) => _resolve(locale,
@@ -534,7 +575,7 @@ final List<SpreadThemeOption> spreadThemes = [
     descriptionBuilder: (locale) => _resolve(locale,
         en: 'Tell the universe you are ready and receive the spread you most need.',
         es: 'Dile al universo que estás listo y recibe la tirada que más necesitas.',
-        ca: 'Digues a l’univers que estàs preparat i rep la tirada que més necessites.'),
+        ca: 'Digues a l\'univers que estàs preparat i rep la tirada que més necessites.'),
     recommendedSpreadIds: [
       'celtic_cross',
       'three_card',

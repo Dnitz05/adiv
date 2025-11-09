@@ -730,6 +730,78 @@ abstract class CommonStrings {
   /// **'Settings'**
   String get settings;
 
+  /// No description provided for @smartDrawsChooseByTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Or choose by theme:'**
+  String get smartDrawsChooseByTheme;
+
+  /// No description provided for @smartDrawsSelectionCTA.
+  ///
+  /// In en, this message translates to:
+  /// **'Try it now'**
+  String get smartDrawsSelectionCTA;
+
+  /// No description provided for @smartDrawsSelectionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your situation and AI recommends the best spread'**
+  String get smartDrawsSelectionDescription;
+
+  /// No description provided for @smartDrawsSelectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Selection'**
+  String get smartDrawsSelectionTitle;
+
+  /// No description provided for @smartDrawsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the perfect spread for you'**
+  String get smartDrawsSubtitle;
+
+  /// No description provided for @smartDrawsThemeCareer.
+  ///
+  /// In en, this message translates to:
+  /// **'Career'**
+  String get smartDrawsThemeCareer;
+
+  /// No description provided for @smartDrawsThemeDecisions.
+  ///
+  /// In en, this message translates to:
+  /// **'Decisions'**
+  String get smartDrawsThemeDecisions;
+
+  /// No description provided for @smartDrawsThemeGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get smartDrawsThemeGeneral;
+
+  /// No description provided for @smartDrawsThemeLove.
+  ///
+  /// In en, this message translates to:
+  /// **'Love'**
+  String get smartDrawsThemeLove;
+
+  /// No description provided for @smartDrawsThemeMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Money'**
+  String get smartDrawsThemeMoney;
+
+  /// No description provided for @smartDrawsThemePersonal.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal'**
+  String get smartDrawsThemePersonal;
+
+  /// No description provided for @smartDrawsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Draws'**
+  String get smartDrawsTitle;
+
   /// No description provided for @spreadLabel.
   ///
   /// In en, this message translates to:

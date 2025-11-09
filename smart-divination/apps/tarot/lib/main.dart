@@ -3818,22 +3818,172 @@ class _HomeState extends State<_Home> {
             );
           },
           onLove: () {
-            debugPrint('Love category tapped');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsScreen(
+                  strings: localisation,
+                  selectedSpread: _selectedSpread,
+                  generalPrompt: '',
+                  generalLabel: 'Love',
+                  initialTheme: 'love',
+                  onSelectSpread: (spread) => setState(() => _selectedSpread = spread),
+                  onStartTheme: ({
+                    required theme,
+                    required spread,
+                    String? question,
+                    String? displayLabel,
+                  }) {
+                    _startThemeConsultation(
+                      theme: theme,
+                      spread: spread,
+                      question: question,
+                      displayLabel: displayLabel,
+                    );
+                  },
+                  onOpenGallery: _showSpreadGallery,
+                ),
+              ),
+            );
           },
           onCareer: () {
-            debugPrint('Career category tapped');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsScreen(
+                  strings: localisation,
+                  selectedSpread: _selectedSpread,
+                  generalPrompt: '',
+                  generalLabel: 'Career',
+                  initialTheme: 'career',
+                  onSelectSpread: (spread) => setState(() => _selectedSpread = spread),
+                  onStartTheme: ({
+                    required theme,
+                    required spread,
+                    String? question,
+                    String? displayLabel,
+                  }) {
+                    _startThemeConsultation(
+                      theme: theme,
+                      spread: spread,
+                      question: question,
+                      displayLabel: displayLabel,
+                    );
+                  },
+                  onOpenGallery: _showSpreadGallery,
+                ),
+              ),
+            );
           },
           onFinances: () {
-            debugPrint('Finances category tapped');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsScreen(
+                  strings: localisation,
+                  selectedSpread: _selectedSpread,
+                  generalPrompt: '',
+                  generalLabel: 'Money',
+                  initialTheme: 'money',
+                  onSelectSpread: (spread) => setState(() => _selectedSpread = spread),
+                  onStartTheme: ({
+                    required theme,
+                    required spread,
+                    String? question,
+                    String? displayLabel,
+                  }) {
+                    _startThemeConsultation(
+                      theme: theme,
+                      spread: spread,
+                      question: question,
+                      displayLabel: displayLabel,
+                    );
+                  },
+                  onOpenGallery: _showSpreadGallery,
+                ),
+              ),
+            );
           },
           onPersonalGrowth: () {
-            debugPrint('Personal Growth category tapped');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsScreen(
+                  strings: localisation,
+                  selectedSpread: _selectedSpread,
+                  generalPrompt: '',
+                  generalLabel: 'Personal Growth',
+                  initialTheme: 'wellbeing',
+                  onSelectSpread: (spread) => setState(() => _selectedSpread = spread),
+                  onStartTheme: ({
+                    required theme,
+                    required spread,
+                    String? question,
+                    String? displayLabel,
+                  }) {
+                    _startThemeConsultation(
+                      theme: theme,
+                      spread: spread,
+                      question: question,
+                      displayLabel: displayLabel,
+                    );
+                  },
+                  onOpenGallery: _showSpreadGallery,
+                ),
+              ),
+            );
           },
           onDecisions: () {
-            debugPrint('Decisions category tapped');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsScreen(
+                  strings: localisation,
+                  selectedSpread: _selectedSpread,
+                  generalPrompt: '',
+                  generalLabel: 'Decisions',
+                  initialTheme: 'decisions',
+                  onSelectSpread: (spread) => setState(() => _selectedSpread = spread),
+                  onStartTheme: ({
+                    required theme,
+                    required spread,
+                    String? question,
+                    String? displayLabel,
+                  }) {
+                    _startThemeConsultation(
+                      theme: theme,
+                      spread: spread,
+                      question: question,
+                      displayLabel: displayLabel,
+                    );
+                  },
+                  onOpenGallery: _showSpreadGallery,
+                ),
+              ),
+            );
           },
           onGeneral: () {
-            debugPrint('General category tapped');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsScreen(
+                  strings: localisation,
+                  selectedSpread: _selectedSpread,
+                  generalPrompt: '',
+                  generalLabel: 'General',
+                  initialTheme: 'ai_auto',
+                  onSelectSpread: (spread) => setState(() => _selectedSpread = spread),
+                  onStartTheme: ({
+                    required theme,
+                    required spread,
+                    String? question,
+                    String? displayLabel,
+                  }) {
+                    _startThemeConsultation(
+                      theme: theme,
+                      spread: spread,
+                      question: question,
+                      displayLabel: displayLabel,
+                    );
+                  },
+                  onOpenGallery: _showSpreadGallery,
+                ),
+              ),
+            );
           },
         ),
         const SizedBox(height: 24),

@@ -29,7 +29,6 @@ class SmartDrawsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final locale = strings.localeName;
 
     return Container(
       decoration: BoxDecoration(
@@ -79,7 +78,7 @@ class SmartDrawsPanel extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _getTitle(locale),
+                      strings.smartDrawsTitle,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: TarotTheme.midnightBlue,
                         fontWeight: FontWeight.w700,
@@ -87,7 +86,7 @@ class SmartDrawsPanel extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      _getSubtitle(locale),
+                      strings.smartDrawsSubtitle,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: Colors.black.withValues(alpha: 0.6),
                       ),
@@ -100,13 +99,13 @@ class SmartDrawsPanel extends StatelessWidget {
           const SizedBox(height: 10),
 
           // Smart Selection Hero Card
-          _buildSmartSelectionHero(context, locale),
+          _buildSmartSelectionHero(context),
 
           const SizedBox(height: 8),
 
           // "Or choose by theme" text
           Text(
-            _getChooseByThemeText(locale),
+            strings.smartDrawsChooseByTheme,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodySmall?.copyWith(
               color: Colors.black.withValues(alpha: 0.6),
@@ -114,59 +113,93 @@ class SmartDrawsPanel extends StatelessWidget {
           ),
           const SizedBox(height: 6),
 
-          // Themed categories grid (2x3)
-          GridView.count(
-            crossAxisCount: 3,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            childAspectRatio: 1.5,
-            children: [
-              _buildThemeCategory(
-                icon: Icons.favorite,
-                label: _getLoveLabel(locale),
-                color: Colors.pink[300]!,
-                onTap: onLove,
-              ),
-              _buildThemeCategory(
-                icon: Icons.work,
-                label: _getCareerLabel(locale),
-                color: Colors.amber[700]!,
-                onTap: onCareer,
-              ),
-              _buildThemeCategory(
-                icon: Icons.account_balance,
-                label: _getFinancesLabel(locale),
-                color: Colors.green[400]!,
-                onTap: onFinances,
-              ),
-              _buildThemeCategory(
-                icon: Icons.self_improvement,
-                label: _getPersonalGrowthLabel(locale),
-                color: Colors.purple[400]!,
-                onTap: onPersonalGrowth,
-              ),
-              _buildThemeCategory(
-                icon: Icons.balance,
-                label: _getDecisionsLabel(locale),
-                color: Colors.teal[400]!,
-                onTap: onDecisions,
-              ),
-              _buildThemeCategory(
-                icon: Icons.blur_on,
-                label: _getGeneralLabel(locale),
-                color: TarotTheme.cosmicBlue,
-                onTap: onGeneral,
-              ),
-            ],
+          // Themed categories grid - Responsive
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+
+              // Càlcul dinàmic segons amplada disponible
+              final int crossAxisCount;
+              final double aspectRatio;
+              final double fontSize;
+
+              if (width > 600) {
+                // Tablets: 4 columnes
+                crossAxisCount = 4;
+                aspectRatio = 2.0;
+                fontSize = 12.0;
+              } else if (width > 400) {
+                // Mòbils normals: 3 columnes
+                crossAxisCount = 3;
+                aspectRatio = 1.5;
+                fontSize = 11.0;
+              } else {
+                // Mòbils petits: 2 columnes
+                crossAxisCount = 2;
+                aspectRatio = 1.8;
+                fontSize = 12.0;
+              }
+
+              return GridView.count(
+                crossAxisCount: crossAxisCount,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: aspectRatio,
+                children: [
+                  _buildThemeCategory(
+                    icon: Icons.favorite,
+                    label: strings.smartDrawsThemeLove,
+                    color: TarotTheme.cosmicRose,
+                    fontSize: fontSize,
+                    onTap: onLove,
+                  ),
+                  _buildThemeCategory(
+                    icon: Icons.work,
+                    label: strings.smartDrawsThemeCareer,
+                    color: TarotTheme.cosmicAmber,
+                    fontSize: fontSize,
+                    onTap: onCareer,
+                  ),
+                  _buildThemeCategory(
+                    icon: Icons.account_balance,
+                    label: strings.smartDrawsThemeMoney,
+                    color: TarotTheme.cosmicEmerald,
+                    fontSize: fontSize,
+                    onTap: onFinances,
+                  ),
+                  _buildThemeCategory(
+                    icon: Icons.self_improvement,
+                    label: strings.smartDrawsThemePersonal,
+                    color: TarotTheme.cosmicOrchid,
+                    fontSize: fontSize,
+                    onTap: onPersonalGrowth,
+                  ),
+                  _buildThemeCategory(
+                    icon: Icons.balance,
+                    label: strings.smartDrawsThemeDecisions,
+                    color: TarotTheme.cosmicTeal,
+                    fontSize: fontSize,
+                    onTap: onDecisions,
+                  ),
+                  _buildThemeCategory(
+                    icon: Icons.blur_on,
+                    label: strings.smartDrawsThemeGeneral,
+                    color: TarotTheme.cosmicBlue,
+                    fontSize: fontSize,
+                    onTap: onGeneral,
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSmartSelectionHero(BuildContext context, String locale) {
+  Widget _buildSmartSelectionHero(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -212,7 +245,7 @@ class SmartDrawsPanel extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      _getSmartSelectionTitle(locale),
+                      strings.smartDrawsSelectionTitle,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
@@ -254,7 +287,7 @@ class SmartDrawsPanel extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                _getSmartSelectionDescription(locale),
+                strings.smartDrawsSelectionDescription,
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.white.withValues(alpha: 0.95),
@@ -275,7 +308,7 @@ class SmartDrawsPanel extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      _getSmartSelectionCTA(locale),
+                      strings.smartDrawsSelectionCTA,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -303,6 +336,7 @@ class SmartDrawsPanel extends StatelessWidget {
     required String label,
     required Color color,
     required VoidCallback onTap,
+    double fontSize = 11.0,
   }) {
     return Material(
       color: Colors.transparent,
@@ -330,7 +364,7 @@ class SmartDrawsPanel extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.w600,
                   color: color,
                 ),
@@ -343,138 +377,5 @@ class SmartDrawsPanel extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  // Localized strings
-  String _getTitle(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Tirades Intel·ligents';
-      case 'es':
-        return 'Tiradas Inteligentes';
-      default:
-        return 'Smart Draws';
-    }
-  }
-
-  String _getSubtitle(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Trobar la tirada perfecta per tu';
-      case 'es':
-        return 'Encuentra la tirada perfecta para ti';
-      default:
-        return 'Find the perfect spread for you';
-    }
-  }
-
-  String _getSmartSelectionTitle(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Selecció Intel·ligent';
-      case 'es':
-        return 'Selección Inteligente';
-      default:
-        return 'Smart Selection';
-    }
-  }
-
-  String _getSmartSelectionDescription(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Descriu la teva situació i l\'AI et recomana la millor tirada';
-      case 'es':
-        return 'Describe tu situación y la IA te recomienda la mejor tirada';
-      default:
-        return 'Describe your situation and AI recommends the best spread';
-    }
-  }
-
-  String _getSmartSelectionCTA(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Prova-ho ara';
-      case 'es':
-        return 'Pruébalo ahora';
-      default:
-        return 'Try it now';
-    }
-  }
-
-  String _getChooseByThemeText(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'O tria per temàtica:';
-      case 'es':
-        return 'O elige por temática:';
-      default:
-        return 'Or choose by theme:';
-    }
-  }
-
-  String _getLoveLabel(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Amor';
-      case 'es':
-        return 'Amor';
-      default:
-        return 'Love';
-    }
-  }
-
-  String _getCareerLabel(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Carrera';
-      case 'es':
-        return 'Carrera';
-      default:
-        return 'Career';
-    }
-  }
-
-  String _getFinancesLabel(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Diners';
-      case 'es':
-        return 'Dinero';
-      default:
-        return 'Money';
-    }
-  }
-
-  String _getPersonalGrowthLabel(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Personal';
-      case 'es':
-        return 'Personal';
-      default:
-        return 'Personal';
-    }
-  }
-
-  String _getDecisionsLabel(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'Decisions';
-      case 'es':
-        return 'Decisiones';
-      default:
-        return 'Decisions';
-    }
-  }
-
-  String _getGeneralLabel(String locale) {
-    switch (locale) {
-      case 'ca':
-        return 'General';
-      case 'es':
-        return 'General';
-      default:
-        return 'General';
-    }
   }
 }

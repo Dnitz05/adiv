@@ -376,6 +376,43 @@ class CommonStringsCa extends CommonStrings {
   String get settings => 'Configuració';
 
   @override
+  String get smartDrawsChooseByTheme => 'O tria per temàtica:';
+
+  @override
+  String get smartDrawsSelectionCTA => 'Prova-ho ara';
+
+  @override
+  String get smartDrawsSelectionDescription =>
+      'Descriu la teva situació i l\'AI et recomana la millor tirada';
+
+  @override
+  String get smartDrawsSelectionTitle => 'Selecció Intel·ligent';
+
+  @override
+  String get smartDrawsSubtitle => 'Troba la tirada perfecta per a tu';
+
+  @override
+  String get smartDrawsThemeCareer => 'Carrera';
+
+  @override
+  String get smartDrawsThemeDecisions => 'Decisions';
+
+  @override
+  String get smartDrawsThemeGeneral => 'General';
+
+  @override
+  String get smartDrawsThemeLove => 'Amor';
+
+  @override
+  String get smartDrawsThemeMoney => 'Diners';
+
+  @override
+  String get smartDrawsThemePersonal => 'Personal';
+
+  @override
+  String get smartDrawsTitle => 'Tirades Intel·ligents';
+
+  @override
   String spreadLabel(Object spread) {
     return 'Tirada: $spread';
   }

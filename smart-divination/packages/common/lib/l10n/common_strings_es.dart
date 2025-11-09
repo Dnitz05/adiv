@@ -375,6 +375,43 @@ class CommonStringsEs extends CommonStrings {
   String get settings => 'Configuración';
 
   @override
+  String get smartDrawsChooseByTheme => 'O elige por temática:';
+
+  @override
+  String get smartDrawsSelectionCTA => 'Pruébalo ahora';
+
+  @override
+  String get smartDrawsSelectionDescription =>
+      'Describe tu situación y la IA te recomienda la mejor tirada';
+
+  @override
+  String get smartDrawsSelectionTitle => 'Selección Inteligente';
+
+  @override
+  String get smartDrawsSubtitle => 'Encuentra la tirada perfecta para ti';
+
+  @override
+  String get smartDrawsThemeCareer => 'Carrera';
+
+  @override
+  String get smartDrawsThemeDecisions => 'Decisiones';
+
+  @override
+  String get smartDrawsThemeGeneral => 'General';
+
+  @override
+  String get smartDrawsThemeLove => 'Amor';
+
+  @override
+  String get smartDrawsThemeMoney => 'Dinero';
+
+  @override
+  String get smartDrawsThemePersonal => 'Personal';
+
+  @override
+  String get smartDrawsTitle => 'Tiradas Inteligentes';
+
+  @override
   String spreadLabel(Object spread) {
     return 'Tirada: $spread';
   }

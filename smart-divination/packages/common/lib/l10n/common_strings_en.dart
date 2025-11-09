@@ -376,6 +376,43 @@ class CommonStringsEn extends CommonStrings {
   String get settings => 'Settings';
 
   @override
+  String get smartDrawsChooseByTheme => 'Or choose by theme:';
+
+  @override
+  String get smartDrawsSelectionCTA => 'Try it now';
+
+  @override
+  String get smartDrawsSelectionDescription =>
+      'Describe your situation and AI recommends the best spread';
+
+  @override
+  String get smartDrawsSelectionTitle => 'Smart Selection';
+
+  @override
+  String get smartDrawsSubtitle => 'Find the perfect spread for you';
+
+  @override
+  String get smartDrawsThemeCareer => 'Career';
+
+  @override
+  String get smartDrawsThemeDecisions => 'Decisions';
+
+  @override
+  String get smartDrawsThemeGeneral => 'General';
+
+  @override
+  String get smartDrawsThemeLove => 'Love';
+
+  @override
+  String get smartDrawsThemeMoney => 'Money';
+
+  @override
+  String get smartDrawsThemePersonal => 'Personal';
+
+  @override
+  String get smartDrawsTitle => 'Smart Draws';
+
+  @override
   String spreadLabel(Object spread) {
     return 'Spread: $spread';
   }
