@@ -101,7 +101,7 @@ class SmartDrawsPanel extends StatelessWidget {
           // Smart Selection Hero Card
           _buildSmartSelectionHero(context),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
 
           // "Or choose by theme" text
           Text(
@@ -111,7 +111,7 @@ class SmartDrawsPanel extends StatelessWidget {
               color: Colors.black.withValues(alpha: 0.6),
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 12),
 
           // Themed categories grid - Responsive
           LayoutBuilder(
