@@ -26,8 +26,10 @@ import 'widgets/learn_panel.dart';
 import 'widgets/chat_banner.dart';
 import 'widgets/archive_banner.dart';
 import 'screens/chat_screen.dart';
+import 'widgets/ask_moon_banner.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
+import 'screens/lunar_advisor_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
 import 'widgets/archive_screen.dart';
@@ -4001,6 +4003,22 @@ class _HomeState extends State<_Home> {
           onRefresh: () => _lunarController.refresh(force: true),
         ),
         const SizedBox(height: 24),
+        const SizedBox(height: 16),
+        // Ask the Moon Banner
+        AskMoonBanner(
+          strings: localisation,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => LunarAdvisorScreen(
+                  strings: localisation,
+                  userId: _userId,
+                ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
         // Smart Draws Panel
         SmartDrawsPanel(
           strings: localisation,
