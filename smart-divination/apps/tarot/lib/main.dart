@@ -3354,55 +3354,22 @@ class _HomeState extends State<_Home> {
                 SliverAppBar(
                   backgroundColor: Colors.white,
                   elevation: 0,
-                  centerTitle: true,
+                  centerTitle: false,
                   automaticallyImplyLeading: false,
                   floating: true,
                   snap: true,
                   pinned: false,
                   forceElevated: innerBoxIsScrolled,
                   toolbarHeight: 48,
-                  title: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/branding/logo.png',
-                        width: 38,
-                        height: 38,
-                      ),
-                      const SizedBox(width: 3),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Luna',
-                            style: TextStyle(
-                              color: Color(0xFF44385C),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              height: 1.0,
-                              letterSpacing: -0.5,
-                            ),
-                          ),
-                          Text(
-                            'Tarot',
-                            style: TextStyle(
-                              color: Color(0xFF44385C),
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              height: 1.0,
-                              letterSpacing: 0.8,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  title: const SizedBox.shrink(),
                   leading: IconButton(
-                    icon: Icon(Icons.menu, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
-                    tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
-                    onPressed: () => _openHeaderMenu(localisation),
+                    icon: Icon(Icons.home, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
+                    tooltip: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
+                    onPressed: () {
+                      setState(() {
+                        _selectedBottomNavIndex = 0;
+                      });
+                    },
                   ),
                   actions: [
                     ValueListenableBuilder<DailyCredits>(
@@ -3415,7 +3382,7 @@ class _HomeState extends State<_Home> {
                           ca: 'Credits',
                         );
                         return Padding(
-                          padding: const EdgeInsets.only(right: 4),
+                          padding: const EdgeInsets.only(right: 12),
                           child: _CreditsWithProBadge(
                             credits: credits,
                             label: creditLabel,
@@ -3424,6 +3391,11 @@ class _HomeState extends State<_Home> {
                           ),
                         );
                       },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.menu, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
+                      tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
+                      onPressed: () => _openHeaderMenu(localisation),
                     ),
                   ],
                   bottom: PreferredSize(

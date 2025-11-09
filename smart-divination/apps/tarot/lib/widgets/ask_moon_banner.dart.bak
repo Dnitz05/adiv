@@ -22,7 +22,7 @@ class AskMoonBanner extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
+            color: TarotTheme.lunarLavenderLight.withValues(alpha: 0.4),
             width: 1,
           ),
           boxShadow: [
@@ -41,8 +41,8 @@ class AskMoonBanner extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    TarotTheme.cosmicBlue,
-                    TarotTheme.cosmicAccent,
+                    TarotTheme.lunarLavenderLight,
+                    TarotTheme.lunarLavenderSoft,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -86,7 +86,7 @@ class AskMoonBanner extends StatelessWidget {
             const SizedBox(width: 8),
             Icon(
               Icons.arrow_forward_ios,
-              color: TarotTheme.brightBlue,
+              color: TarotTheme.lunarLavenderLight,
               size: 18,
             ),
           ],

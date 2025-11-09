@@ -1,0 +1,18 @@
+flutter_native_splash:
+  # La imatge splash de fons.png
+  image: ../../../docs/store-assets/fons.png
+
+  # Color de fons (transparent per mostrar la imatge completa)
+  color: "#FFFFFF"
+
+  # Configuració per Android
+  android: true
+  android_gravity: fill
+
+  # Configuració per iOS (opcional, per si vols activar-ho més endavant)
+  ios: false
+
+  # Mantenir la splash screen mentre l'app carrega
+  android_12:
+    image: ../../../docs/store-assets/fons.png
+    color: "#FFFFFF"

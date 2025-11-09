@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:common/l10n/common_strings.dart';
 import '../theme/tarot_theme.dart';
 
-class AskMoonBanner extends StatelessWidget {
+class ArchiveBanner extends StatelessWidget {
   final VoidCallback onTap;
   final CommonStrings strings;
 
-  const AskMoonBanner({
+  const ArchiveBanner({
     super.key,
     required this.onTap,
     required this.strings,
@@ -41,15 +41,15 @@ class AskMoonBanner extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    TarotTheme.cosmicBlue,
-                    TarotTheme.cosmicAccent,
+                    TarotTheme.cosmicPurple,
+                    TarotTheme.twilightPurple,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
               ),
               child: const Icon(
-                Icons.nightlight_round,
+                Icons.history,
                 color: Colors.white,
                 size: 20,
               ),
@@ -86,7 +86,7 @@ class AskMoonBanner extends StatelessWidget {
             const SizedBox(width: 8),
             Icon(
               Icons.arrow_forward_ios,
-              color: TarotTheme.brightBlue,
+              color: TarotTheme.cosmicPurple.withValues(alpha: 0.7),
               size: 18,
             ),
           ],
@@ -98,22 +98,22 @@ class AskMoonBanner extends StatelessWidget {
   String _getTitle() {
     switch (strings.localeName) {
       case 'es':
-        return 'Consulta la Luna';
+        return 'Historial de Lecturas';
       case 'ca':
-        return 'Pregunta a la Lluna';
+        return 'Historial de Lectures';
       default:
-        return 'Ask the Moon';
+        return 'Reading Archive';
     }
   }
 
   String _getDescription() {
     switch (strings.localeName) {
       case 'es':
-        return 'Obtén orientación lunar personalizada para tus intenciones y proyectos';
+        return 'Revisa tus lecturas y diarios pasados';
       case 'ca':
-        return 'Obt\u00e9n orientació lunar personalitzada per a les teves intencions i projectes';
+        return 'Revisa les teves lectures i diaris anteriors';
       default:
-        return 'Get personalized lunar guidance for your intentions and projects';
+        return 'Review your past readings and journal entries';
     }
   }
 }
