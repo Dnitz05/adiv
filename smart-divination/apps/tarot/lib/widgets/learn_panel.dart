@@ -31,30 +31,21 @@ class LearnPanel extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.skyBlueLight,
-            TarotTheme.skyBlueSoft,
-          ],
+        color: Colors.white,
+        border: Border.all(
+          color: TarotTheme.brightBlue.withValues(alpha: 0.15),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.skyBlueShadow,
-            blurRadius: 16,
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
             offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: TarotTheme.brightBlue10,
-            blurRadius: 32,
-            offset: const Offset(0, 8),
             spreadRadius: 0,
           ),
         ],
       ),
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,25 +53,25 @@ class LearnPanel extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: TarotTheme.brightBlue20,
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+                  gradient: LinearGradient(
+                    colors: [
+                      TarotTheme.brightBlue,
+                      TarotTheme.cosmicBlue,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                 ),
-                padding: const EdgeInsets.all(10),
                 child: const Icon(
                   Icons.auto_stories,
-                  color: TarotTheme.brightBlue,
+                  color: Colors.white,
                   size: 20,
                 ),
               ),
-              const SizedBox(width: 14),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -361,14 +352,21 @@ class _LearnCategoryCard extends StatelessWidget {
         height: 115,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              TarotTheme.skyBlueLight,
+              TarotTheme.skyBlueSoft,
+            ],
+          ),
           border: Border.all(
-            color: TarotTheme.brightBlue20,
+            color: TarotTheme.brightBlue.withValues(alpha: 0.25),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: TarotTheme.brightBlue10,
+              color: TarotTheme.skyBlueShadow,
               blurRadius: 8,
               offset: const Offset(0, 2),
               spreadRadius: 0,
