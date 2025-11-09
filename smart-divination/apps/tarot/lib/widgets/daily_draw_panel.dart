@@ -161,6 +161,31 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     ],
                   ),
           ),
+          if (!allFlipped && !widget.isLoading) ...[
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              onPressed: _revealAllCards,
+              style: FilledButton.styleFrom(
+                backgroundColor: TarotTheme.cosmicPurple,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              icon: const Icon(Icons.visibility, size: 20),
+              label: Text(
+                _getRevealButtonText(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          ],
           if (allFlipped && !widget.isLoading) ...[
             const SizedBox(height: 16),
             FilledButton.icon(
@@ -189,6 +214,15 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
         ],
       ),
     );
+  }
+
+  void _revealAllCards() {
+    setState(() {
+      for (int i = 0; i < widget.cards.length; i++) {
+        _flippedCards.add(i);
+      }
+    });
+    _saveFlippedCards();
   }
 
   String _getDailyDrawTitle() {
@@ -223,6 +257,17 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
         return 'Interpretation';
     }
   }
+  String _getRevealButtonText() {
+    switch (widget.strings.localeName) {
+      case 'ca':
+        return 'Revelar Cartes';
+      case 'es':
+        return 'Revelar Cartas';
+      default:
+        return 'Reveal Cards';
+    }
+  }
+
 }
 
 class _FlippableCard extends StatefulWidget {
