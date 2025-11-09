@@ -31,7 +31,198 @@ class UnifiedLunarWidget extends StatefulWidget {
   State<UnifiedLunarWidget> createState() => _UnifiedLunarWidgetState();
 }
 
-class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
+class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: widget.controller,
+      builder: (context, _) => _LunarContent(
+        day: widget.controller.selectedDay,
+        status: widget.controller.status,
+        errorMessage: widget.controller.errorMessage,
+        strings: widget.strings,
+        controller: widget.controller,
+        userId: widget.userId,
+        onSelectSpread: widget.onSelectSpread,
+        onRefresh: widget.onRefresh,
+      ),
+    );
+  }
+}
+
+/// Separated content widget for optimized rebuilds
+class _LunarContent extends StatelessWidget {
+  const _LunarContent({
+    required this.day,
+    required this.status,
+    required this.errorMessage,
+    required this.strings,
+    required this.controller,
+    this.userId,
+    this.onSelectSpread,
+    this.onRefresh,
+  });
+
+  final LunarDayModel? day;
+  final LunarPanelStatus status;
+  final String? errorMessage;
+  final CommonStrings strings;
+  final LunarCycleController controller;
+  final String? userId;
+  final void Function(String spreadId)? onSelectSpread;
+  final VoidCallback? onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    // Loading state
+    if (status == LunarPanelStatus.loading && day == null) {
+      return _buildLoadingState();
+    }
+
+    // Error state
+    if (status == LunarPanelStatus.error && day == null) {
+      return _buildErrorState();
+    }
+
+    // Fallback loading if day is still null
+    if (day == null) {
+      return _buildLoadingState();
+    }
+
+    // Main content
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            TarotTheme.lunarLavenderLight,
+            TarotTheme.lunarLavenderSoft,
+          ],
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: TarotTheme.lunarMysticShadow,
+            blurRadius: 16,
+            offset: Offset(0, 4),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: TarotTheme.lunarMysticShadow,
+            blurRadius: 32,
+            offset: Offset(0, 8),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(12),
+      child: _LunarMainContent(
+        day: day!,
+        strings: strings,
+        controller: controller,
+        userId: userId,
+        onSelectSpread: onSelectSpread,
+      ),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return Container(
+      decoration: _panelDecoration(),
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          const SizedBox(
+            height: 36,
+            width: 36,
+            child: CircularProgressIndicator(strokeWidth: 2.5),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              strings.lunarPanelLoading,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState() {
+    return Container(
+      decoration: _panelDecoration(),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const Icon(Icons.error_outline, color: Colors.redAccent, size: 40),
+          const SizedBox(height: 12),
+          Text(
+            errorMessage ?? strings.lunarPanelError,
+            style: const TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          if (onRefresh != null) ...[
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: onRefresh,
+              icon: const Icon(Icons.refresh),
+              label: Text(strings.lunarPanelRetry),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  BoxDecoration _panelDecoration() {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      gradient: const LinearGradient(
+        colors: [
+          TarotTheme.lunarLavenderLight,
+          TarotTheme.lunarLavenderSoft,
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      boxShadow: const [
+        BoxShadow(
+          color: TarotTheme.lunarMysticShadow,
+          blurRadius: 16,
+          offset: Offset(0, 4),
+          spreadRadius: 0,
+        ),
+      ],
+    );
+  }
+}
+
+/// Main content widget with TabController for lunar phases
+class _LunarMainContent extends StatefulWidget {
+  const _LunarMainContent({
+    required this.day,
+    required this.strings,
+    required this.controller,
+    this.userId,
+    this.onSelectSpread,
+  });
+
+  final LunarDayModel day;
+  final CommonStrings strings;
+  final LunarCycleController controller;
+  final String? userId;
+  final void Function(String spreadId)? onSelectSpread;
+
+  @override
+  State<_LunarMainContent> createState() => _LunarMainContentState();
+}
+
+class _LunarMainContentState extends State<_LunarMainContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -49,65 +240,18 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: widget.controller,
-      builder: (context, _) {
-        final day = widget.controller.selectedDay;
-        final status = widget.controller.status;
-
-        if (status == LunarPanelStatus.loading && day == null) {
-          return _buildLoadingState();
-        }
-
-        if (status == LunarPanelStatus.error && day == null) {
-          return _buildErrorState(widget.controller.errorMessage);
-        }
-
-        if (day == null) {
-          return _buildLoadingState();
-        }
-
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                TarotTheme.lunarLavenderLight,
-                TarotTheme.lunarLavenderSoft,
-              ],
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: TarotTheme.lunarMysticShadow,
-                blurRadius: 16,
-                offset: Offset(0, 4),
-                spreadRadius: 0,
-              ),
-              BoxShadow(
-                color: TarotTheme.lunarMysticShadow,
-                blurRadius: 32,
-                offset: Offset(0, 8),
-                spreadRadius: 0,
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildCompactHeader(day),
-              const SizedBox(height: 10),
-              _buildUnifiedTabsContainer(day),
-            ],
-          ),
-        );
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildCompactHeader(),
+        const SizedBox(height: 10),
+        _buildUnifiedTabsContainer(),
+      ],
     );
   }
 
-  Widget _buildCompactHeader(LunarDayModel day) {
+  Widget _buildCompactHeader() {
     return Row(
       children: [
         Container(
@@ -124,7 +268,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           ),
           padding: const EdgeInsets.all(12),
           child: Text(
-            day.phaseEmoji,
+            widget.day.phaseEmoji,
             style: const TextStyle(fontSize: 24),
           ),
         ),
@@ -134,7 +278,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                day.phaseName,
+                widget.day.phaseName,
                 style: const TextStyle(
                   color: TarotTheme.deepNavy,
                   fontSize: 18,
@@ -146,12 +290,12 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
               Row(
                 children: [
                   Text(
-                    day.zodiac.symbol,
+                    widget.day.zodiac.symbol,
                     style: const TextStyle(fontSize: 16),
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    day.zodiac.name,
+                    widget.day.zodiac.name,
                     style: const TextStyle(
                       color: TarotTheme.softBlueGrey,
                       fontSize: 14,
@@ -162,11 +306,11 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: TarotTheme.getElementColor(day.zodiac.element),
+                      color: TarotTheme.getElementColor(widget.day.zodiac.element),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      day.zodiac.element,
+                      widget.day.zodiac.element,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 11,
@@ -193,7 +337,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
             ],
           ),
           child: Text(
-            '${day.illumination.toStringAsFixed(0)}%',
+            '${widget.day.illumination.toStringAsFixed(0)}%',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 14,
@@ -205,8 +349,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
     );
   }
 
-  // ✅ Contenidor unificat amb TabBar i TabBarView en un sol container blanc
-  Widget _buildUnifiedTabsContainer(LunarDayModel day) {
+  Widget _buildUnifiedTabsContainer() {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -234,8 +377,8 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
               indicatorSize: TabBarIndicatorSize.label,
               dividerColor: Colors.transparent,
               indicator: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: const [TarotTheme.brightBlue, TarotTheme.cosmicAccent],
+                gradient: const LinearGradient(
+                  colors: [TarotTheme.brightBlue, TarotTheme.cosmicAccent],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -278,7 +421,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
               controller: _tabController,
               children: [
                 TodayTab(
-                  day: day,
+                  day: widget.day,
                   strings: widget.strings,
                 ),
                 CalendarOnlyTab(
@@ -286,16 +429,16 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
                   strings: widget.strings,
                 ),
                 PhasesTab(
-                  day: day,
+                  day: widget.day,
                   strings: widget.strings,
                 ),
                 RitualsTab(
-                  day: day,
+                  day: widget.day,
                   strings: widget.strings,
                   userId: widget.userId,
                 ),
                 SpreadsTab(
-                  day: day,
+                  day: widget.day,
                   strings: widget.strings,
                   onSelectSpread: widget.onSelectSpread,
                 ),
@@ -322,79 +465,4 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
       ),
     );
   }
-
-  Widget _buildLoadingState() {
-    return Container(
-      decoration: _panelDecoration(),
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          const SizedBox(
-            height: 36,
-            width: 36,
-            child: CircularProgressIndicator(strokeWidth: 2.5),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Text(
-              widget.strings.lunarPanelLoading,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(String? message) {
-    return Container(
-      decoration: _panelDecoration(),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          const Icon(Icons.error_outline, color: Colors.redAccent, size: 40),
-          const SizedBox(height: 12),
-          Text(
-            message ?? widget.strings.lunarPanelError,
-            style: const TextStyle(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-          if (widget.onRefresh != null) ...[
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: widget.onRefresh,
-              icon: const Icon(Icons.refresh),
-              label: Text(widget.strings.lunarPanelRetry),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  BoxDecoration _panelDecoration() {
-    return BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      gradient: const LinearGradient(
-        colors: [
-          TarotTheme.lunarLavenderLight,
-          TarotTheme.lunarLavenderSoft,
-        ],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-      boxShadow: const [
-        BoxShadow(
-          color: TarotTheme.lunarMysticShadow,
-          blurRadius: 16,
-          offset: Offset(0, 4),
-          spreadRadius: 0,
-        ),
-      ],
-    );
-  }
-
 }
