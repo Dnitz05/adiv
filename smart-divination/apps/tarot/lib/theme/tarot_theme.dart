@@ -377,7 +377,7 @@ class TarotTheme {
         midnightBlue.withValues(alpha: 0.4),
         cosmicPurple.withValues(alpha: 0.2),
       ],
-      stops: [0.0, 0.3, 0.7, 1.0],
+      stops: const [0.0, 0.3, 0.7, 1.0],
     );
   }
 
@@ -402,7 +402,7 @@ class TarotTheme {
         Colors.transparent,
         cosmicAccent.withValues(alpha: 0.02),
       ],
-      stops: [0.0, 0.5, 1.0],
+      stops: const [0.0, 0.5, 1.0],
     );
   }
 
