@@ -4,6 +4,7 @@ import 'package:common/l10n/common_strings.dart';
 import '../models/lunar_day.dart';
 import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
+import '../l10n/lunar/lunar_translations.dart';
 import 'lunar_tabs/today_tab.dart';
 import 'lunar_tabs/calendar_only_tab.dart';
 import 'lunar_tabs/phases_tab.dart';
@@ -258,11 +259,11 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
                 fontWeight: FontWeight.w600,
               ),
               tabs: [
-                _buildTab(_localisedTab('today'), Icons.today),
-                _buildTab(_localisedTab('calendar'), Icons.calendar_month),
-                _buildTab(_localisedTab('phases'), Icons.brightness_3),
-                _buildTab(_localisedTab('rituals'), Icons.auto_awesome),
-                _buildTab(_localisedTab('spreads'), Icons.style),
+                _buildTab(getLunarTabLabel('today', widget.strings.localeName), Icons.today),
+                _buildTab(getLunarTabLabel('calendar', widget.strings.localeName), Icons.calendar_month),
+                _buildTab(getLunarTabLabel('phases', widget.strings.localeName), Icons.brightness_3),
+                _buildTab(getLunarTabLabel('rituals', widget.strings.localeName), Icons.auto_awesome),
+                _buildTab(getLunarTabLabel('spreads', widget.strings.localeName), Icons.style),
               ],
             ),
           ),
@@ -393,66 +394,6 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
     );
   }
 
-  String _formatDate(String isoDate) {
-    try {
-      final date = DateTime.parse(isoDate);
-      final months = _getMonthNames();
-      return '${months[date.month - 1]} ${date.day}, ${date.year}';
-    } catch (_) {
-      return isoDate;
-    }
-  }
-
-  List<String> _getMonthNames() {
-    switch (widget.strings.localeName) {
-      case 'ca':
-        return [
-          'Gener',
-          'Febrer',
-          'Març',
-          'Abril',
-          'Maig',
-          'Juny',
-          'Juliol',
-          'Agost',
-          'Setembre',
-          'Octubre',
-          'Novembre',
-          'Desembre'
-        ];
-      case 'es':
-        return [
-          'Enero',
-          'Febrero',
-          'Marzo',
-          'Abril',
-          'Mayo',
-          'Junio',
-          'Julio',
-          'Agosto',
-          'Septiembre',
-          'Octubre',
-          'Noviembre',
-          'Diciembre'
-        ];
-      default:
-        return [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December'
-        ];
-    }
-  }
-
   Color _getElementColor(String element) {
     switch (element.toLowerCase()) {
       case 'fire':
@@ -475,15 +416,4 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
     }
   }
 
-  String _localisedTab(String key) {
-    final locale = widget.strings.localeName;
-    final translations = {
-      'today': {'en': 'Today', 'es': 'Hoy', 'ca': 'Avui'},
-      'calendar': {'en': 'Calendar', 'es': 'Calendario', 'ca': 'Calendari'},
-      'phases': {'en': 'Phases', 'es': 'Fases', 'ca': 'Fases'},
-      'rituals': {'en': 'Rituals', 'es': 'Rituales', 'ca': 'Rituals'},
-      'spreads': {'en': 'Spreads', 'es': 'Tiradas', 'ca': 'Tirades'},
-    };
-    return translations[key]?[locale] ?? translations[key]?['en'] ?? key;
-  }
 }
