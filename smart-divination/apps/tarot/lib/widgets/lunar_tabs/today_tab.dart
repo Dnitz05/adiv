@@ -19,15 +19,14 @@ class TodayTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildPhaseGuide(context),
-          const SizedBox(height: 16),
-          _buildPowerHours(context),
-        ],
-      ),
+    // NO SCROLL - fixed height optimized layout
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildPhaseGuide(context),
+        const SizedBox(height: 12),
+        _buildPowerHours(context),
+      ],
     );
   }
 
@@ -35,102 +34,111 @@ class TodayTab extends StatelessWidget {
     final locale = strings.localeName;
     final activities = getPhaseActivities(day.phaseId, locale);
 
-    return LunarCardHelpers.buildCardWithHeader(
-      context: context,
-      icon: Icons.auto_awesome,
-      title: getLunarLabel('phase_guide', locale),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Phase Description
-          Text(
-            getPhaseDescription(day.phaseId, locale),
-            style: LunarCardHelpers.cardBodyStyle,
-          ),
-          const SizedBox(height: 12),
-
-          // Keywords
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: getPhaseKeywords(day.phaseId, locale).map((keyword) {
-              return LunarCardHelpers.buildBadge(
-                text: keyword,
-                backgroundColor: TarotTheme.brightBlue20,
-                textColor: TarotTheme.brightBlue,
-              );
-            }).toList(),
-          ),
-
-          LunarCardHelpers.buildCardDivider(),
-
-          // Optimal Activities - Compact format
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(Icons.check_circle, color: Color(0xFF2ECC71), size: 16),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getLunarLabel('optimal', locale),
-                      style: const TextStyle(
-                        color: Color(0xFF2ECC71),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      activities['favored']!.join(' • '),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.9),
-                            height: 1.4,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          gradient: LinearGradient(
+            colors: [
+              TarotTheme.cosmicBlue.withValues(alpha: 0.15),
+              TarotTheme.cosmicPurple.withValues(alpha: 0.15),
             ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          border: Border.all(
+            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
+            width: 1,
+          ),
+        ),
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Compact Header
+            Row(
+              children: [
+                Icon(Icons.auto_awesome, color: TarotTheme.cosmicAccent, size: 18),
+                const SizedBox(width: 8),
+                Text(
+                  getLunarLabel('phase_guide', locale),
+                  style: const TextStyle(
+                    color: TarotTheme.deepNavy,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
 
-          if (activities['avoid']!.isNotEmpty) ...[
-            const SizedBox(height: 12),
+            // Phase Description - compact
+            Text(
+              getPhaseDescription(day.phaseId, locale),
+              style: const TextStyle(
+                color: TarotTheme.deepNavy,
+                fontSize: 12,
+                height: 1.35,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 8),
+
+            // Keywords - compact, max 4
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: getPhaseKeywords(day.phaseId, locale).take(4).map((keyword) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: TarotTheme.brightBlue20,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    keyword,
+                    style: const TextStyle(
+                      color: TarotTheme.brightBlue,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+
+            const Spacer(),
+
+            // Compact divider
+            Container(
+              height: 1,
+              color: TarotTheme.cosmicAccent.withValues(alpha: 0.15),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+            ),
+
+            // Optimal Activities - ultra compact
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.warning_amber_rounded,
-                    color: Colors.orangeAccent, size: 16),
-                const SizedBox(width: 8),
+                const Icon(Icons.check_circle, color: Color(0xFF2ECC71), size: 14),
+                const SizedBox(width: 6),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        getLunarLabel('avoid', locale),
-                        style: const TextStyle(
-                          color: Colors.orangeAccent,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        activities['avoid']!.join(' • '),
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.white.withValues(alpha: 0.7),
-                              height: 1.4,
-                            ),
-                      ),
-                    ],
+                  child: Text(
+                    activities['favored']!.take(3).join(' • '),
+                    style: const TextStyle(
+                      color: TarotTheme.deepNavy,
+                      fontSize: 11,
+                      height: 1.3,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
             ),
           ],
-        ],
+        ),
       ),
     );
   }
@@ -144,72 +152,52 @@ class TodayTab extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            TarotTheme.cosmicBlue.withValues(alpha: 0.2),
-            TarotTheme.cosmicPurple.withValues(alpha: 0.2),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        borderRadius: BorderRadius.circular(14),
+        color: TarotTheme.brightBlue.withValues(alpha: 0.08),
         border: Border.all(
-          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
+          color: TarotTheme.brightBlue.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                    colors: [TarotTheme.cosmicBlue, TarotTheme.cosmicAccent],
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: TarotTheme.brightBlue,
+            ),
+            child: const Icon(Icons.schedule, color: Colors.white, size: 14),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getLunarLabel('power_hours', locale),
+                  style: const TextStyle(
+                    color: TarotTheme.deepNavy,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                child: const Icon(Icons.schedule, color: Colors.white, size: 18),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                getLunarLabel('power_hours', locale),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            getLunarLabel('power_hours_subtitle', locale),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white70,
-                ),
-          ),
-          const SizedBox(height: 12),
-          ...day.sessions.take(3).map((session) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.access_time, color: Colors.white70, size: 16),
-                  const SizedBox(width: 8),
-                  Text(
-                    _formatSessionTime(session.createdAt, locale),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+                const SizedBox(height: 4),
+                Text(
+                  day.sessions.take(2).map((s) => _formatSessionTime(s.createdAt, locale)).join(' • '),
+                  style: const TextStyle(
+                    color: TarotTheme.softBlueGrey,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
-            );
-          }),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
