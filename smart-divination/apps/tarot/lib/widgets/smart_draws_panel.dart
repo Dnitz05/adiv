@@ -126,17 +126,17 @@ class SmartDrawsPanel extends StatelessWidget {
               if (width > 600) {
                 // Tablets: 4 columnes
                 crossAxisCount = 4;
-                aspectRatio = 2.0;
+                aspectRatio = 2.5;
                 fontSize = 12.0;
               } else if (width > 400) {
                 // Mòbils normals: 3 columnes
                 crossAxisCount = 3;
-                aspectRatio = 1.5;
+                aspectRatio = 2.2;
                 fontSize = 11.0;
               } else {
                 // Mòbils petits: 2 columnes
                 crossAxisCount = 2;
-                aspectRatio = 1.8;
+                aspectRatio = 2.5;
                 fontSize = 12.0;
               }
 
@@ -144,6 +144,7 @@ class SmartDrawsPanel extends StatelessWidget {
                 crossAxisCount: crossAxisCount,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 childAspectRatio: aspectRatio,
