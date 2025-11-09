@@ -17,6 +17,19 @@ class TarotTheme {
   static const Color cosmicBlue = Color(0xFF6d82cd); // Quote accent / CTA
   static const Color starGlow = Color(0xFFE8E5F5); // High contrast text
 
+  // Theme category colors - cosmic palette
+  static const Color cosmicRose = Color(0xFFF48FB1); // Love theme
+  static const Color cosmicAmber = Color(0xFFFFA726); // Career theme
+  static const Color cosmicEmerald = Color(0xFF66BB6A); // Money theme
+  static const Color cosmicOrchid = Color(0xFFAB47BC); // Personal growth theme
+  static const Color cosmicTeal = Color(0xFF26A69A); // Decisions theme
+
+  // Zodiac element colors - vibrant and distinctive
+  static const Color elementFire = Color(0xFFFF6B35); // Fire element (orange-red)
+  static const Color elementEarth = Color(0xFF2ECC71); // Earth element (green)
+  static const Color elementAir = Color(0xFF54C5F8); // Air element (light blue)
+  static const Color elementWater = Color(0xFF4A90E2); // Water element (blue)
+
   // Educational blue palette - friendly and approachable
   static const Color skyBlueLight = Color(0xFFFAFCFF); // Very light sky background
   static const Color skyBlueSoft = Color(0xFFF5FAFF); // Soft light blue alternative
@@ -421,4 +434,28 @@ class TarotTheme {
   static Color get surfaceColor => midnightBlue;
   static Color get textColor => moonlight;
   static Color get subtleTextColor => stardust;
+
+  /// Get zodiac element color by element name
+  /// Supports multiple language variants (en, es, ca)
+  static Color getElementColor(String element) {
+    switch (element.toLowerCase()) {
+      case 'fire':
+      case 'foc':
+      case 'fuego':
+        return elementFire;
+      case 'earth':
+      case 'terra':
+      case 'tierra':
+        return elementEarth;
+      case 'air':
+      case 'aire':
+        return elementAir;
+      case 'water':
+      case 'aigua':
+      case 'agua':
+        return elementWater;
+      default:
+        return brightBlue; // Fallback color
+    }
+  }
 }

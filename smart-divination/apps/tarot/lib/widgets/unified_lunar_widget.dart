@@ -162,7 +162,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: _getElementColor(day.zodiac.element),
+                      color: TarotTheme.getElementColor(day.zodiac.element),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -392,28 +392,6 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
         ),
       ],
     );
-  }
-
-  Color _getElementColor(String element) {
-    switch (element.toLowerCase()) {
-      case 'fire':
-      case 'foc':
-      case 'fuego':
-        return const Color(0xFFFF6B35);
-      case 'earth':
-      case 'terra':
-      case 'tierra':
-        return const Color(0xFF2ECC71);
-      case 'air':
-      case 'aire':
-        return const Color(0xFF54C5F8);
-      case 'water':
-      case 'aigua':
-      case 'agua':
-        return const Color(0xFF4A90E2);
-      default:
-        return TarotTheme.brightBlue;
-    }
   }
 
 }
