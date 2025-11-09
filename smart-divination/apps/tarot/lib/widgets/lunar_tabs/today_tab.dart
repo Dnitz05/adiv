@@ -168,7 +168,7 @@ class TodayTab extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [TarotTheme.cosmicBlue, TarotTheme.cosmicAccent],
                   ),
                 ),
@@ -200,7 +200,7 @@ class TodayTab extends StatelessWidget {
                   const Icon(Icons.access_time, color: Colors.white70, size: 16),
                   const SizedBox(width: 8),
                   Text(
-                    _formatSessionTime(session.createdAt),
+                    _formatSessionTime(session.createdAt, locale),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -215,11 +215,18 @@ class TodayTab extends StatelessWidget {
     );
   }
 
-  String _formatSessionTime(DateTime createdAt) {
+  String _formatSessionTime(DateTime createdAt, String locale) {
     final hour = createdAt.hour;
     final minute = createdAt.minute.toString().padLeft(2, '0');
-    final period = hour >= 12 ? 'PM' : 'AM';
-    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
-    return '$displayHour:$minute $period';
+
+    // Use 12h format for English, 24h for Spanish/Catalan
+    if (locale == 'en') {
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+      return '$displayHour:$minute $period';
+    } else {
+      // 24h format for es/ca
+      return '$hour:$minute';
+    }
   }
 }
