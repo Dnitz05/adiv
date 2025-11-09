@@ -23,14 +23,30 @@ class CardResult {
   final bool upright;
   final int position;
 
-  factory CardResult.fromJson(Map<String, dynamic> json) => CardResult(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        suit: json['suit'] as String,
-        number: json['number'] == null ? null : (json['number'] as num).toInt(),
-        upright: json['upright'] as bool,
-        position: (json['position'] as num).toInt(),
-      );
+  factory CardResult.fromJson(Map<String, dynamic> json) {
+    // Handle both "upright" (legacy) and "isReversed" (new) formats
+    bool upright;
+    if (json.containsKey('upright')) {
+      upright = json['upright'] as bool;
+    } else if (json.containsKey('isReversed')) {
+      upright = !(json['isReversed'] as bool);  // invert isReversed to get upright
+    } else {
+      upright = true;  // default to upright if neither field exists
+    }
+
+    // Handle both String and int IDs
+    final dynamic idValue = json['id'];
+    final String id = idValue is String ? idValue : idValue.toString();
+
+    return CardResult(
+      id: id,
+      name: json['name'] as String,
+      suit: json['suit'] as String,
+      number: json['number'] == null ? null : (json['number'] as num).toInt(),
+      upright: upright,
+      position: (json['position'] as num).toInt(),
+    );
+  }
 }
 
 class CardsDrawResponse {
@@ -54,19 +70,42 @@ class CardsDrawResponse {
   final String? signature;
   final String? sessionId;
 
-  factory CardsDrawResponse.fromJson(Map<String, dynamic> json) =>
-      CardsDrawResponse(
-        result: (json['result'] as List<dynamic>)
-            .map((e) => CardResult.fromJson(e as Map<String, dynamic>))
-            .toList(),
-        seed: json['seed'] as String,
-        method: json['method'] as String,
-        timestamp: json['timestamp'] as String,
-        locale: json['locale'] as String? ?? 'en',
-        spread: (json['spread'] as String?) ?? 'custom',
-        signature: json['signature'] as String?,
-        sessionId: json['sessionId'] as String?,
-      );
+  factory CardsDrawResponse.fromJson(Map<String, dynamic> json) {
+    // Handle new production backend format (with data wrapper)
+    final hasDataWrapper = json.containsKey('data') && json['data'] is Map;
+
+    List<dynamic> cardsJson;
+    String spread;
+    String timestamp;
+
+    if (hasDataWrapper) {
+      // New format: { "data": { "data": [...], "spread": "..." }, "seed": "...", ... }
+      final data = json['data'] as Map<String, dynamic>;
+      cardsJson = data['data'] as List<dynamic>;
+      spread = data['spread'] as String? ?? 'custom';
+      // Timestamp is in meta.timestamp
+      final meta = json['meta'] as Map<String, dynamic>?;
+      timestamp = meta?['timestamp'] as String? ?? DateTime.now().toIso8601String();
+    } else {
+      // Legacy format: { "result": [...], "spread": "...", "timestamp": "...", ... }
+      cardsJson = json['result'] as List<dynamic>;
+      spread = json['spread'] as String? ?? 'custom';
+      timestamp = json['timestamp'] as String? ?? DateTime.now().toIso8601String();
+    }
+
+    return CardsDrawResponse(
+      result: cardsJson
+          .map((e) => CardResult.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      seed: json['seed'] as String,
+      method: json['method'] as String,
+      timestamp: timestamp,
+      locale: json['locale'] as String? ?? 'en',
+      spread: spread,
+      signature: json['signature'] as String?,
+      sessionId: json['sessionId'] as String?,
+    );
+  }
 }
 
 Future<T> _retryWithBackoff<T>(
@@ -115,6 +154,7 @@ Future<CardsDrawResponse> drawCards({
     );
 
     final body = jsonEncode(<String, dynamic>{
+      'technique': 'tarot',
       'count': count,
       'allow_reversed': allowReversed,
       if (seed != null && seed.isNotEmpty) 'seed': seed,
