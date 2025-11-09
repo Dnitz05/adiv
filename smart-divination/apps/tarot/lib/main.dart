@@ -3363,7 +3363,13 @@ class _HomeState extends State<_Home> {
                   toolbarHeight: 48,
                   title: const SizedBox.shrink(),
                   leading: IconButton(
-                    icon: Icon(Icons.home, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
+                    icon: Icon(
+                      Icons.home,
+                      color: _selectedBottomNavIndex == 0
+                          ? TarotTheme.cosmicBlue
+                          : Color(0xFF44385c).withValues(alpha: 0.6),
+                      size: 26,
+                    ),
                     tooltip: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
                     onPressed: () {
                       setState(() {
