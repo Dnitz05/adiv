@@ -70,7 +70,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
@@ -78,17 +78,17 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
                 TarotTheme.lunarLavenderSoft,
               ],
             ),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: TarotTheme.lunarMysticShadow,
                 blurRadius: 16,
-                offset: const Offset(0, 4),
+                offset: Offset(0, 4),
                 spreadRadius: 0,
               ),
               BoxShadow(
                 color: TarotTheme.lunarMysticShadow,
                 blurRadius: 32,
-                offset: const Offset(0, 8),
+                offset: Offset(0, 8),
                 spreadRadius: 0,
               ),
             ],
@@ -114,11 +114,11 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: TarotTheme.brightBlue20,
                 blurRadius: 8,
-                offset: const Offset(0, 2),
+                offset: Offset(0, 2),
               ),
             ],
           ),
@@ -184,11 +184,11 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
           decoration: BoxDecoration(
             color: TarotTheme.brightBlue,
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: TarotTheme.brightBlue20,
                 blurRadius: 6,
-                offset: const Offset(0, 2),
+                offset: Offset(0, 2),
               ),
             ],
           ),
@@ -235,7 +235,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
               dividerColor: Colors.transparent,
               indicator: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [TarotTheme.brightBlue, TarotTheme.cosmicAccent],
+                  colors: const [TarotTheme.brightBlue, TarotTheme.cosmicAccent],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -378,7 +378,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
   BoxDecoration _panelDecoration() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(20),
-      gradient: LinearGradient(
+      gradient: const LinearGradient(
         colors: [
           TarotTheme.lunarLavenderLight,
           TarotTheme.lunarLavenderSoft,
@@ -386,11 +386,11 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget>
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       ),
-      boxShadow: [
+      boxShadow: const [
         BoxShadow(
           color: TarotTheme.lunarMysticShadow,
           blurRadius: 16,
-          offset: const Offset(0, 4),
+          offset: Offset(0, 4),
           spreadRadius: 0,
         ),
       ],
