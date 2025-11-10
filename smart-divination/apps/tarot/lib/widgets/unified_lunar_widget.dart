@@ -20,6 +20,7 @@ class UnifiedLunarWidget extends StatefulWidget {
     this.userId,
     this.onSelectSpread,
     this.onRefresh,
+    this.onAskMoon,
   });
 
   final LunarCycleController controller;
@@ -27,6 +28,7 @@ class UnifiedLunarWidget extends StatefulWidget {
   final String? userId;
   final void Function(String spreadId)? onSelectSpread;
   final VoidCallback? onRefresh;
+  final VoidCallback? onAskMoon;
 
   @override
   State<UnifiedLunarWidget> createState() => _UnifiedLunarWidgetState();
@@ -46,6 +48,7 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget> {
         userId: widget.userId,
         onSelectSpread: widget.onSelectSpread,
         onRefresh: widget.onRefresh,
+        onAskMoon: widget.onAskMoon,
       ),
     );
   }
@@ -62,6 +65,7 @@ class _LunarContent extends StatelessWidget {
     this.userId,
     this.onSelectSpread,
     this.onRefresh,
+    this.onAskMoon,
   });
 
   final LunarDayModel? day;
@@ -72,6 +76,7 @@ class _LunarContent extends StatelessWidget {
   final String? userId;
   final void Function(String spreadId)? onSelectSpread;
   final VoidCallback? onRefresh;
+  final VoidCallback? onAskMoon;
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +102,7 @@ class _LunarContent extends StatelessWidget {
       controller: controller,
       userId: userId,
       onSelectSpread: onSelectSpread,
+      onAskMoon: onAskMoon,
     );
   }
 
@@ -183,6 +189,7 @@ class _LunarMainContent extends StatefulWidget {
     required this.controller,
     this.userId,
     this.onSelectSpread,
+    this.onAskMoon,
   });
 
   final LunarDayModel day;
@@ -190,6 +197,7 @@ class _LunarMainContent extends StatefulWidget {
   final LunarCycleController controller;
   final String? userId;
   final void Function(String spreadId)? onSelectSpread;
+  final VoidCallback? onAskMoon;
 
   @override
   State<_LunarMainContent> createState() => _LunarMainContentState();
@@ -244,6 +252,10 @@ class _LunarMainContentState extends State<_LunarMainContent>
           _buildCompactUnifiedHeader(),
           const SizedBox(height: 8),
           _buildUnifiedTabsContainer(),
+          if (widget.onAskMoon != null) ...[
+            const SizedBox(height: 12),
+            _buildAskMoonFooter(),
+          ],
         ],
       ),
     );
@@ -540,5 +552,113 @@ class _LunarMainContentState extends State<_LunarMainContent>
         ),
       ),
     );
+  }
+
+  Widget _buildAskMoonFooter() {
+    final locale = widget.strings.localeName;
+    final title = _getAskMoonTitle(locale);
+    final description = _getAskMoonDescription(locale);
+
+    return GestureDetector(
+      onTap: widget.onAskMoon,
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              TarotTheme.cosmicBlue.withValues(alpha: 0.08),
+              TarotTheme.cosmicAccent.withValues(alpha: 0.12),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    TarotTheme.cosmicBlue,
+                    TarotTheme.cosmicAccent,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: const Icon(
+                Icons.nightlight_round,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: TarotTheme.deepNavy,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      color: TarotTheme.softBlueGrey.withValues(alpha: 0.9),
+                      fontSize: 13,
+                      height: 1.3,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: TarotTheme.brightBlue,
+              size: 18,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getAskMoonTitle(String locale) {
+    switch (locale) {
+      case 'es':
+        return 'Consulta la Luna';
+      case 'ca':
+        return 'Pregunta a la Lluna';
+      default:
+        return 'Ask the Moon';
+    }
+  }
+
+  String _getAskMoonDescription(String locale) {
+    switch (locale) {
+      case 'es':
+        return 'Obtén orientación lunar personalizada para tus intenciones y proyectos';
+      case 'ca':
+        return 'Obtén orientació lunar personalitzada per a les teves intencions i projectes';
+      default:
+        return 'Get personalized lunar guidance for your intentions and projects';
+    }
   }
 }

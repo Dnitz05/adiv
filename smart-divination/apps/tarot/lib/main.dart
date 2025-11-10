@@ -26,7 +26,6 @@ import 'widgets/learn_panel.dart';
 import 'widgets/chat_banner.dart';
 import 'widgets/archive_banner.dart';
 import 'screens/chat_screen.dart';
-import 'widgets/ask_moon_banner.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
 import 'screens/lunar_advisor_screen.dart';
@@ -3787,12 +3786,7 @@ class _HomeState extends State<_Home> {
             }
           },
           onRefresh: () => _lunarController.refresh(force: true),
-        ),
-        const SizedBox(height: 24),
-        // Ask the Moon Banner
-        AskMoonBanner(
-          strings: localisation,
-          onTap: () {
+          onAskMoon: () {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => LunarAdvisorScreen(
