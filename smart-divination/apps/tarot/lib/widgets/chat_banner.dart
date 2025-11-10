@@ -49,7 +49,7 @@ class ChatBanner extends StatelessWidget {
                 ),
               ),
               child: const Icon(
-                Icons.chat_bubble_outline,
+                Icons.chat_bubble,
                 color: Colors.white,
                 size: 20,
               ),

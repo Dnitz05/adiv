@@ -123,18 +123,18 @@ class SmartDrawsPanel extends StatelessWidget {
               final double aspectRatio;
               final double fontSize;
 
-              if (width > 600) {
+              if (width > 550) {
                 // Tablets: 4 columnes
                 crossAxisCount = 4;
                 aspectRatio = 2.5;
                 fontSize = 12.0;
-              } else if (width > 400) {
+              } else if (width > 300) {
                 // Mòbils normals: 3 columnes
                 crossAxisCount = 3;
-                aspectRatio = 2.2;
+                aspectRatio = 1.9;
                 fontSize = 11.0;
               } else {
-                // Mòbils petits: 2 columnes
+                // Mòbils molt petits: 2 columnes
                 crossAxisCount = 2;
                 aspectRatio = 2.5;
                 fontSize = 12.0;

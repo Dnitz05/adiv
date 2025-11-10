@@ -58,8 +58,8 @@ class LearnPanel extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
                     colors: [
-                      TarotTheme.brightBlue,
                       TarotTheme.cosmicBlue,
+                      TarotTheme.cosmicAccent,
                     ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,

@@ -77,7 +77,7 @@ class PhasesTab extends StatelessWidget {
           width: 1,
         ),
       ),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

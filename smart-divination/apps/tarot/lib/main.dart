@@ -3362,20 +3362,39 @@ class _HomeState extends State<_Home> {
                   forceElevated: innerBoxIsScrolled,
                   toolbarHeight: 48,
                   title: const SizedBox.shrink(),
-                  leading: IconButton(
-                    icon: Icon(
-                      Icons.home,
-                      color: _selectedBottomNavIndex == 0
-                          ? TarotTheme.cosmicBlue
-                          : Color(0xFF44385c).withValues(alpha: 0.6),
-                      size: 26,
-                    ),
-                    tooltip: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
-                    onPressed: () {
+                  leading: GestureDetector(
+                    onTap: () {
                       setState(() {
                         _selectedBottomNavIndex = 0;
                       });
                     },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.home,
+                            color: _selectedBottomNavIndex == 0
+                                ? const Color(0xFF44385c)
+                                : const Color(0xFF44385c).withValues(alpha: 0.5),
+                            size: 26,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'HOME',
+                            style: TextStyle(
+                              color: _selectedBottomNavIndex == 0
+                                  ? const Color(0xFF44385c)
+                                  : const Color(0xFF44385c).withValues(alpha: 0.5),
+                              fontSize: _selectedBottomNavIndex == 0 ? 13 : 12,
+                              fontWeight: _selectedBottomNavIndex == 0 ? FontWeight.w700 : FontWeight.w400,
+                              letterSpacing: _selectedBottomNavIndex == 0 ? 0.2 : 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   actions: [
                     ValueListenableBuilder<DailyCredits>(

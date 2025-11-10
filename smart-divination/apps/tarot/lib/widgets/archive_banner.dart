@@ -41,15 +41,15 @@ class ArchiveBanner extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    TarotTheme.cosmicPurple,
-                    TarotTheme.twilightPurple,
+                    TarotTheme.cosmicBlue,
+                    TarotTheme.cosmicAccent,
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
               ),
               child: const Icon(
-                Icons.history,
+                Icons.calendar_month,
                 color: Colors.white,
                 size: 20,
               ),
@@ -86,7 +86,7 @@ class ArchiveBanner extends StatelessWidget {
             const SizedBox(width: 8),
             Icon(
               Icons.arrow_forward_ios,
-              color: TarotTheme.cosmicPurple.withValues(alpha: 0.7),
+              color: TarotTheme.brightBlue,
               size: 18,
             ),
           ],
@@ -98,11 +98,11 @@ class ArchiveBanner extends StatelessWidget {
   String _getTitle() {
     switch (strings.localeName) {
       case 'es':
-        return 'Historial de Lecturas';
+        return 'Calendario';
       case 'ca':
-        return 'Historial de Lectures';
+        return 'Calendari';
       default:
-        return 'Reading Archive';
+        return 'Calendar';
     }
   }
 

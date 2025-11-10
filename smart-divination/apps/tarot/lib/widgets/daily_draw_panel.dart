@@ -94,7 +94,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                   ),
                 ),
                 child: const Icon(
-                  Icons.wb_sunny,
+                  Icons.sunny,
                   color: Colors.white,
                   size: 20,
                 ),

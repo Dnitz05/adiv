@@ -634,12 +634,17 @@ async function loadSessionsForDate(
     return [];
   }
 
+  // Skip database operations for anonymous users (prefixed with "anon_")
+  if (userId.startsWith('anon_')) {
+    return [];
+  }
+
   const start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const end = new Date(start);
   end.setUTCDate(end.getUTCDate() + 1);
 
   const client = getSupabaseServiceClient();
-  const { data, error } = await client
+  const { data, error} = await client
     .from('sessions')
     .select(
       'id,user_id,technique,locale,created_at,question,summary,interpretation,results,metadata'
@@ -671,6 +676,11 @@ async function loadSessionsMap(
 ): Promise<Map<string, LunarSessionSummary[]>> {
   const map = new Map<string, LunarSessionSummary[]>();
   if (!hasServiceCredentials()) {
+    return map;
+  }
+
+  // Skip database operations for anonymous users (prefixed with "anon_")
+  if (userId.startsWith('anon_')) {
     return map;
   }
 

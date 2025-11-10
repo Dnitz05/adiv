@@ -292,10 +292,31 @@ export async function ensureUserRecord(user: User): Promise<void> {
 }
 
 /**
+ * Helper to check if an ID is a fallback/anonymous ID (has a prefix that makes it invalid UUID)
+ */
+function isFallbackId(id: string): boolean {
+  // Check for anonymous user prefix
+  if (id.startsWith('anon_')) return true;
+
+  // Check for technique prefixes (tarot_, iching_, runes_, etc)
+  if (id.includes('_') && id.split('_').length === 2) {
+    const [prefix] = id.split('_');
+    if (['tarot', 'iching', 'runes'].includes(prefix)) return true;
+  }
+
+  return false;
+}
+
+/**
  * Ensure a user exists in the database (upsert with minimal data)
  * Used when we only have a userId but need to create sessions
  */
 export async function ensureUser(userId: string): Promise<void> {
+  // Skip database operations for fallback/anonymous users
+  if (isFallbackId(userId)) {
+    return;
+  }
+
   try {
     const client = getSupabaseServiceClient();
 
@@ -421,6 +442,11 @@ export async function getUserSessions(
     return [];
   }
 
+  // Skip database operations for fallback/anonymous users
+  if (isFallbackId(userId)) {
+    return [];
+  }
+
   let query = client.from('session_history_expanded').select('*').eq('user_id', userId);
   if (opts.technique) query = query.eq('technique', opts.technique);
 
@@ -492,6 +518,20 @@ export async function createSessionArtifact(params: {
   version?: number;
   metadata?: Record<string, any>;
 }): Promise<SupabaseArtifact> {
+  // Skip database operations for fallback sessions (prefixed session IDs)
+  if (isFallbackId(params.sessionId)) {
+    // Return a mock artifact for fallback sessions
+    return {
+      id: `${params.sessionId}-artifact-${Date.now()}`,
+      type: params.type,
+      source: params.source ?? 'system',
+      createdAt: new Date().toISOString(),
+      version: params.version ?? 1,
+      payload: params.payload,
+      metadata: params.metadata,
+    };
+  }
+
   const client = getSupabaseServiceClient();
   const { data, error } = await client
     .from('session_artifacts')
@@ -526,6 +566,19 @@ export async function createSessionMessage(params: {
   content: string;
   metadata?: Record<string, any>;
 }): Promise<SupabaseMessage> {
+  // Skip database operations for fallback sessions (prefixed session IDs)
+  if (isFallbackId(params.sessionId)) {
+    // Return a mock message for fallback sessions
+    return {
+      id: `${params.sessionId}-message-${Date.now()}`,
+      sender: params.sender,
+      sequence: 0,
+      createdAt: new Date().toISOString(),
+      content: params.content,
+      metadata: params.metadata,
+    };
+  }
+
   const client = getSupabaseServiceClient();
   const { data, error } = await client
     .from('session_messages')

@@ -30,27 +30,28 @@ class _CalendarOnlyTabState extends State<CalendarOnlyTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildMonthNavigation(),
-        const SizedBox(height: 8),
-        _buildCalendarGrid(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildMonthNavigation(),
+          const SizedBox(height: 16),
+          _buildCalendarGrid(),
+        ],
+      ),
     );
   }
 
   Widget _buildMonthNavigation() {
     final monthNames = _getMonthNames();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+    return LunarCardHelpers.buildWhiteCard(
+      context: context,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-            icon: const Icon(Icons.chevron_left, color: TarotTheme.deepNavy, size: 20),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            icon: const Icon(Icons.chevron_left, color: TarotTheme.deepNavy),
             onPressed: () {
               setState(() {
                 _currentMonth = DateTime(_currentMonth.year, _currentMonth.month - 1);
@@ -59,17 +60,10 @@ class _CalendarOnlyTabState extends State<CalendarOnlyTab> {
           ),
           Text(
             '${monthNames[_currentMonth.month - 1]} ${_currentMonth.year}',
-            style: const TextStyle(
-              color: TarotTheme.deepNavy,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.2,
-            ),
+            style: LunarCardHelpers.cardTitleStyle.copyWith(fontSize: 18),
           ),
           IconButton(
-            icon: const Icon(Icons.chevron_right, color: TarotTheme.deepNavy, size: 20),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            icon: const Icon(Icons.chevron_right, color: TarotTheme.deepNavy),
             onPressed: () {
               setState(() {
                 _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + 1);
@@ -94,9 +88,7 @@ class _CalendarOnlyTabState extends State<CalendarOnlyTab> {
         child: Center(
           child: Text(
             name,
-            style: const TextStyle(
-              color: TarotTheme.softBlueGrey,
-              fontSize: 11,
+            style: LunarCardHelpers.cardSmallStyle.copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -124,7 +116,7 @@ class _CalendarOnlyTabState extends State<CalendarOnlyTab> {
           child: AspectRatio(
             aspectRatio: 1,
             child: Container(
-              margin: const EdgeInsets.all(1),
+              margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: isToday
                     ? TarotTheme.brightBlue10
@@ -142,11 +134,11 @@ class _CalendarOnlyTabState extends State<CalendarOnlyTab> {
                       day.toString(),
                       style: TextStyle(
                         color: TarotTheme.deepNavy,
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 1),
+                    const SizedBox(height: 2),
                     Text(
                       _getMoonPhaseEmoji(date),
                       style: const TextStyle(fontSize: 10),
@@ -175,7 +167,7 @@ class _CalendarOnlyTabState extends State<CalendarOnlyTab> {
 
     return LunarCardHelpers.buildWhiteCard(
       context: context,
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(12),
       child: Column(children: rows),
     );
   }

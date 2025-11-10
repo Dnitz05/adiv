@@ -11,7 +11,7 @@ const String _localDevelopmentApiBase = 'http://localhost:3001';
 const bool _useLocalApi =
     bool.fromEnvironment('USE_LOCAL_API', defaultValue: false);
 const String _productionApiBase =
-    'https://smart-divination-production.vercel.app';
+    'https://backend-6xrbmakjv-dnitzs-projects.vercel.app';
 
 String? _runtimeApiBaseOverride;
 
