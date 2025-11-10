@@ -5,6 +5,7 @@ import '../models/lunar_day.dart';
 import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
 import '../l10n/lunar/lunar_translations.dart';
+import 'lunar_card_helpers.dart';
 import 'lunar_tabs/today_tab.dart';
 import 'lunar_tabs/calendar_only_tab.dart';
 import 'lunar_tabs/phases_tab.dart';
@@ -215,14 +216,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.white,
-            TarotTheme.brightBlue.withValues(alpha: 0.02),
-          ],
-        ),
+        color: Colors.white,
         border: Border.all(
           color: TarotTheme.brightBlue.withValues(alpha: 0.2),
           width: 1.5,
@@ -247,7 +241,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildCompactHeader(),
+          _buildCompactUnifiedHeader(),
           const SizedBox(height: 8),
           _buildUnifiedTabsContainer(),
         ],
@@ -255,161 +249,190 @@ class _LunarMainContentState extends State<_LunarMainContent>
     );
   }
 
-  Widget _buildCompactHeader() {
-    // Format date (e.g., "9 Nov")
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    final formattedDate = '${widget.day.date.day} ${months[widget.day.date.month - 1]}';
-    final lunarDay = 'Day ${widget.day.age.round()}';
+  Widget _buildCompactUnifiedHeader() {
+    final lunarInfo = LunarInfoHelper(widget.day, widget.strings.localeName);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Main row with emoji, phase, zodiac, illumination
-        Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: TarotTheme.brightBlue.withValues(alpha: 0.25),
-                    blurRadius: 12,
-                    offset: const Offset(0, 2),
-                    spreadRadius: 2,
-                  ),
-                  BoxShadow(
-                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 4),
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(12),
-              child: Text(
-                widget.day.phaseEmoji,
-                style: const TextStyle(fontSize: 24),
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.day.phaseName,
-                    style: const TextStyle(
-                      color: TarotTheme.deepNavy,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        widget.day.zodiac.symbol,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        widget.day.zodiac.name,
-                        style: const TextStyle(
-                          color: TarotTheme.softBlueGrey,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: TarotTheme.getElementColor(widget.day.zodiac.element),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          widget.day.zodiac.element,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: TarotTheme.brightBlue,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: const [
-                  BoxShadow(
-                    color: TarotTheme.brightBlue20,
-                    blurRadius: 6,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Text(
-                '${widget.day.illumination.toStringAsFixed(0)}%',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            TarotTheme.brightBlue.withValues(alpha: 0.03),
+            TarotTheme.brightBlue.withValues(alpha: 0.08),
           ],
         ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: TarotTheme.brightBlue.withValues(alpha: 0.15),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildRow1PhaseAndIllumination(lunarInfo),
+          const SizedBox(height: 6),
+          _buildRow2AstroProperties(lunarInfo),
+          const SizedBox(height: 6),
+          _buildRow3Timeline(lunarInfo),
+        ],
+      ),
+    );
+  }
 
-        // Date + Lunar Day row (compact)
-        const SizedBox(height: 8),
+  Widget _buildRow1PhaseAndIllumination(LunarInfoHelper lunarInfo) {
+    return Row(
+      children: [
+        // Moon emoji with glow
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: TarotTheme.brightBlue.withValues(alpha: 0.06),
-            border: Border.all(
-              color: TarotTheme.brightBlue.withValues(alpha: 0.15),
-              width: 1,
-            ),
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: TarotTheme.brightBlue.withValues(alpha: 0.2),
+                blurRadius: 16,
+                spreadRadius: 2,
+              ),
+            ],
           ),
-          child: Row(
+          child: Text(
+            widget.day.phaseEmoji,
+            style: const TextStyle(fontSize: 28),
+          ),
+        ),
+        const SizedBox(width: 10),
+        // Phase name + trend
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.calendar_today, size: 14, color: TarotTheme.brightBlue),
-              const SizedBox(width: 6),
               Text(
-                formattedDate,
+                widget.day.phaseName,
                 style: const TextStyle(
                   color: TarotTheme.deepNavy,
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(width: 16),
-              Container(
-                width: 1,
-                height: 14,
-                color: TarotTheme.brightBlue.withValues(alpha: 0.2),
-              ),
-              const SizedBox(width: 16),
-              Icon(Icons.brightness_3, size: 14, color: TarotTheme.cosmicAccent),
-              const SizedBox(width: 6),
               Text(
-                lunarDay,
-                style: const TextStyle(
-                  color: TarotTheme.deepNavy,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
+                lunarInfo.trend,
+                style: TextStyle(
+                  color: TarotTheme.softBlueGrey.withValues(alpha: 0.8),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
+          ),
+        ),
+        // Illumination badge
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: TarotTheme.brightBlue,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: TarotTheme.brightBlue.withValues(alpha: 0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Text(
+            '${widget.day.illumination.toStringAsFixed(0)}%',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRow2AstroProperties(LunarInfoHelper lunarInfo) {
+    final elementLabel = getElementLabel(widget.day.zodiac.element.toLowerCase(), widget.strings.localeName);
+    
+    return Row(
+      children: [
+        Text(
+          widget.day.zodiac.symbol,
+          style: const TextStyle(fontSize: 14),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          widget.day.zodiac.name,
+          style: const TextStyle(
+            color: TarotTheme.deepNavy,
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          '·',
+          style: TextStyle(
+            color: TarotTheme.softBlueGrey.withValues(alpha: 0.6),
+            fontSize: 11,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          '$elementLabel · ${lunarInfo.polarity} · ${lunarInfo.quality} · ${lunarInfo.ruler}',
+          style: TextStyle(
+            color: TarotTheme.softBlueGrey.withValues(alpha: 0.9),
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRow3Timeline(LunarInfoHelper lunarInfo) {
+    final formattedDate = formatShortDate(widget.day.date, widget.strings.localeName);
+    final dayLabel = getLunarHeaderLabel('day', widget.strings.localeName);
+    final inLabel = getLunarHeaderLabel('in', widget.strings.localeName);
+    final dLabel = getLunarHeaderLabel('d', widget.strings.localeName);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Date
+        _buildTimelineItem(
+          Icons.calendar_today,
+          formattedDate,
+        ),
+        // Lunar day
+        _buildTimelineItem(
+          Icons.brightness_3,
+          '$dayLabel ${widget.day.age.round()}',
+        ),
+        // Next phase
+        _buildTimelineItem(
+          Icons.arrow_forward,
+          '${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext}$dLabel',
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTimelineItem(IconData icon, String text) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 11, color: TarotTheme.brightBlue.withValues(alpha: 0.7)),
+        const SizedBox(width: 4),
+        Text(
+          text,
+          style: TextStyle(
+            color: TarotTheme.softBlueGrey.withValues(alpha: 0.9),
+            fontSize: 10,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ],
