@@ -1,4 +1,4 @@
-# Supabase Production Runbook
+﻿# Supabase Production Runbook
 
 Step-by-step guide for preparing and configuring the Supabase production environment without touching the live project until credentials are confirmed.
 
@@ -25,31 +25,31 @@ If the commands are missing, install them before proceeding.
 
 ## 2. Collect Required Values (no API calls)
 
-**Status**: [X] Complete ✅ (2025-10-05)
+**Status**: [X] Complete âœ… (2025-10-05)
 
 All values collected and securely stored:
 
 | Key                         | Status | Notes                                               |
 |-----------------------------|--------|-----------------------------------------------------|
-| `SUPABASE_PROJECT_NAME`     | ✅     | `smart-tarot` |
-| `SUPABASE_PROJECT_REF`      | ✅     | `vanrixxzaawybszeuivb` |
-| `SUPABASE_DB_PASSWORD`      | ✅     | Stored in GitHub Secrets |
-| `SUPABASE_URL`              | ✅     | `https://vanrixxzaawybszeuivb.supabase.co` |
-| `SUPABASE_ANON_KEY`         | ✅     | Configured in .env.production + GitHub Secrets |
-| `SUPABASE_SERVICE_ROLE_KEY` | ✅     | Configured in .env.production + GitHub Secrets |
-| `SUPABASE_DB_URL`           | ✅     | Available from dashboard |
+| `SUPABASE_PROJECT_NAME`     | âœ…     | `smart-tarot` |
+| `SUPABASE_PROJECT_REF`      | âœ…     | `vanrixxzaawybszeuivb` |
+| `SUPABASE_DB_PASSWORD`      | âœ…     | Stored in GitHub Secrets |
+| `SUPABASE_URL`              | âœ…     | `https://vanrixxzaawybszeuivb.supabase.co` |
+| `SUPABASE_ANON_KEY`         | âœ…     | Configured in .env.production + GitHub Secrets |
+| `SUPABASE_SERVICE_ROLE_KEY` | âœ…     | Configured in .env.production + GitHub Secrets |
+| `SUPABASE_DB_URL`           | âœ…     | Available from dashboard |
 
-✅ All secrets stored in GitHub Secrets and .env.production (not in source control)
+âœ… All secrets stored in GitHub Secrets and .env.production (not in source control)
 
 ---
 
 ## 3. Prepare Environment Files (local only)
 
-**Status**: [X] Complete ✅ (2025-10-05)
+**Status**: [X] Complete âœ… (2025-10-05)
 
-✅ `.env.production` exists at `C:\tarot\smart-divination\backend\.env.production`
-✅ All real Supabase values configured (no placeholders)
-✅ File is git-ignored (in `.gitignore`)
+âœ… `.env.production` exists at `C:\tarot\smart-divination\backend\.env.production`
+âœ… All real Supabase values configured (no placeholders)
+âœ… File is git-ignored (in `.gitignore`)
 
 **Configured values**:
 - SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co
@@ -88,14 +88,14 @@ Update the environment variables once actual secrets are available; do not store
 
 ## 5. Production Workflow
 
-**Status**: ⚠️ READY TO LINK & PUSH (backend verified, migrations pending)
+**Status**: âš ï¸ READY TO LINK & PUSH (backend verified, migrations pending)
 
-**Backend Status**: ✅ Deployed and verified (2025-10-05)
-- Production URL: https://backend-dnitzs-projects.vercel.app
+**Backend Status**: âœ… Deployed and verified (2025-10-05)
+- Production URL: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - Supabase connection healthy (418ms response time)
 - All environment variables configured
 
-**Migrations Status**: ⚠️ Not yet applied (database empty)
+**Migrations Status**: âš ï¸ Not yet applied (database empty)
 
 The Supabase production project is provisioned and backend is verified. Execute the following steps:
 
@@ -147,23 +147,23 @@ Store the dump securely (e.g., encrypted S3 bucket or vault).
 
 ## 6. Verification Checklist (post-setup)
 
-**Backend Connectivity**: ✅ Verified (2025-10-05)
-- [X] Backend deployed and reachable ✅
-- [X] Supabase connection healthy (418ms response time) ✅
-- [X] Environment variables configured ✅
-- [X] `/api/health` returns Supabase "healthy" status ✅
+**Backend Connectivity**: âœ… Verified (2025-10-05)
+- [X] Backend deployed and reachable âœ…
+- [X] Supabase connection healthy (418ms response time) âœ…
+- [X] Environment variables configured âœ…
+- [X] `/api/health` returns Supabase "healthy" status âœ…
 
-**Database Migrations**: ⚠️ Pending
+**Database Migrations**: âš ï¸ Pending
 - [ ] `supabase db push` succeeded without errors
 - [ ] Supabase Dashboard -> Database -> Tables lists `users`, `sessions`, `session_artifacts`, `session_messages`
 - [ ] RLS policies respected (open `Table editor` -> Policies)
 - [ ] Service-role connection tested locally (`scripts/supabase/apply.sh` only when necessary)
 - [ ] Backend regenerated types committed (`lib/types/generated/supabase.ts`)
 
-**Verification Script**: ✅ Available
+**Verification Script**: âœ… Available
 ```powershell
 cd C:\tarot\scripts
-.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
+.\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 Document results in the team runbook or ticket, including timestamps and operator name.
@@ -183,20 +183,20 @@ Document results in the team runbook or ticket, including timestamps and operato
 
 ## 8. Next Actions
 
-**Current Status**: ✅ Backend Deployed | ⚠️ Migrations Pending
+**Current Status**: âœ… Backend Deployed | âš ï¸ Migrations Pending
 
-- [X] Supabase project provisioned ✅ (vanrixxzaawybszeuivb)
-- [X] Secrets issued and configured ✅
-- [X] .env.production configured ✅
-- [X] GitHub Secrets configured ✅
-- [X] Backend deployed to Vercel ✅ (https://backend-dnitzs-projects.vercel.app)
-- [X] Backend connectivity verified ✅ (Supabase healthy)
-- [ ] Link local repo: `supabase link --project-ref vanrixxzaawybszeuivb` ❌ **BLOCKER**
-- [ ] Push migrations: `supabase db push --linked` ❌ **BLOCKER**
-- [ ] Verify tables in Supabase Dashboard ❌
+- [X] Supabase project provisioned âœ… (vanrixxzaawybszeuivb)
+- [X] Secrets issued and configured âœ…
+- [X] .env.production configured âœ…
+- [X] GitHub Secrets configured âœ…
+- [X] Backend deployed to Vercel âœ… (https://backend-gv4a2ueuy-dnitzs-projects.vercel.app)
+- [X] Backend connectivity verified âœ… (Supabase healthy)
+- [ ] Link local repo: `supabase link --project-ref vanrixxzaawybszeuivb` âŒ **BLOCKER**
+- [ ] Push migrations: `supabase db push --linked` âŒ **BLOCKER**
+- [ ] Verify tables in Supabase Dashboard âŒ
 
 **Immediate Action**: Execute Section 5 (Production Workflow) to apply migrations
 
-**Backend Verification**: Run `.\scripts\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app`
+**Backend Verification**: Run `.\scripts\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app`
 
 

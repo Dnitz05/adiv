@@ -1,4 +1,4 @@
-# Journal/Archive Feature - Deployment Runbook
+﻿# Journal/Archive Feature - Deployment Runbook
 
 ## Overview
 
@@ -52,7 +52,7 @@ C:/tarot/supabase_cli/supabase.exe db push --linked
 **Expected Output:**
 ```
 Applying migration 20251107161635_journal_user_activities.sql...
-✓ Migration applied successfully
+âœ“ Migration applied successfully
 ```
 
 ### 1.3 Verify Migration Applied
@@ -96,7 +96,7 @@ SELECT * FROM user_activities WHERE session_id = '<session-id-from-above>';
 DELETE FROM sessions WHERE id = '<session-id-from-above>';
 ```
 
-**⏱️ Estimated Time:** 10 minutes
+**â±ï¸ Estimated Time:** 10 minutes
 
 ---
 
@@ -140,23 +140,23 @@ git push origin main
 
 **Expected Output:**
 ```
-✓ Deployment ready [production]
-🔗 https://smart-divination.vercel.app
+âœ“ Deployment ready [production]
+ðŸ”— https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 ### 2.4 Verify API Endpoints
 
 ```bash
 # Test timeline endpoint
-curl -X GET 'https://smart-divination.vercel.app/api/journal/timeline?limit=10&userId=<test-user>&locale=en' \
+curl -X GET 'https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/timeline?limit=10&userId=<test-user>&locale=en' \
   -H 'Authorization: Bearer <token>'
 
 # Test stats endpoint
-curl -X GET 'https://smart-divination.vercel.app/api/journal/stats?userId=<test-user>&locale=en' \
+curl -X GET 'https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/stats?userId=<test-user>&locale=en' \
   -H 'Authorization: Bearer <token>'
 
 # Test day summary endpoint
-curl -X GET 'https://smart-divination.vercel.app/api/journal/day/2025-11-07?userId=<test-user>&locale=en' \
+curl -X GET 'https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/day/2025-11-07?userId=<test-user>&locale=en' \
   -H 'Authorization: Bearer <token>'
 ```
 
@@ -165,7 +165,7 @@ curl -X GET 'https://smart-divination.vercel.app/api/journal/day/2025-11-07?user
 - Correct data structure (entries array, hasMore boolean, etc.)
 - No 500 errors
 
-**⏱️ Estimated Time:** 10 minutes
+**â±ï¸ Estimated Time:** 10 minutes
 
 ---
 
@@ -204,16 +204,16 @@ cd smart-divination/apps/tarot
 
 # Set environment variables
 export JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2"
-export API_BASE_URL="https://smart-divination.vercel.app"
+export API_BASE_URL="https://backend-gv4a2ueuy-dnitzs-projects.vercel.app"
 
 # Build release APK
 JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
-  --dart-define=API_BASE_URL=https://smart-divination.vercel.app
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 **Expected Output:**
 ```
-✓ Built build/app/outputs/flutter-apk/app-release.apk (XX.X MB)
+âœ“ Built build/app/outputs/flutter-apk/app-release.apk (XX.X MB)
 ```
 
 ### 3.4 Build Release IPA (iOS - if applicable)
@@ -223,7 +223,7 @@ cd smart-divination/apps/tarot
 
 # Build iOS release
 flutter build ios --release \
-  --dart-define=API_BASE_URL=https://smart-divination.vercel.app
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 ### 3.5 Upload to Play Store / App Store
@@ -250,7 +250,7 @@ flutter build ios --release \
 3. Fill release notes with same content as above
 4. Submit for review
 
-**⏱️ Estimated Time:** 15 minutes (build) + 24-48 hours (store review)
+**â±ï¸ Estimated Time:** 15 minutes (build) + 24-48 hours (store review)
 
 ---
 
@@ -274,9 +274,9 @@ node scripts/backfill_user_activities.mjs
 **Expected Output:**
 ```
 Backfilling sessions to user_activities...
-✓ Processed 1523 sessions
-✓ Created 1523 activities
-✓ Skipped 47 invalid sessions
+âœ“ Processed 1523 sessions
+âœ“ Created 1523 activities
+âœ“ Skipped 47 invalid sessions
 ```
 
 ### 4.2 Verify Backfill
@@ -288,7 +288,7 @@ SELECT
   (SELECT COUNT(*) FROM user_activities) AS total_activities;
 ```
 
-**⏱️ Estimated Time:** 5-10 minutes
+**â±ï¸ Estimated Time:** 5-10 minutes
 
 ---
 
@@ -335,7 +335,7 @@ LIMIT 20;
 6. Pull to refresh, verify data reloads
 7. Scroll through 50+ entries, verify smooth scrolling
 
-**⏱️ Estimated Time:** 10 minutes
+**â±ï¸ Estimated Time:** 10 minutes
 
 ---
 
@@ -363,7 +363,7 @@ DROP TYPE IF EXISTS journal_activity_status CASCADE;
 DROP TYPE IF EXISTS journal_activity_type CASCADE;
 ```
 
-**⚠️ WARNING:** Rolling back migration will delete all user_activities data. Only do this in emergency.
+**âš ï¸ WARNING:** Rolling back migration will delete all user_activities data. Only do this in emergency.
 
 ### If Flutter App Issues Detected
 
@@ -377,7 +377,7 @@ DROP TYPE IF EXISTS journal_activity_type CASCADE;
    ```
 3. Submit hotfix for expedited review
 
-**⏱️ Rollback Time:** 10-15 minutes
+**â±ï¸ Rollback Time:** 10-15 minutes
 
 ---
 

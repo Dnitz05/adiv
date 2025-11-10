@@ -1,4 +1,4 @@
-# Project Status (November 2025)
+﻿# Project Status (November 2025)
 
 Last Updated: 2025-11-05
 
@@ -32,10 +32,10 @@ Completed work (total ~45 minutes once secrets were available):
   - **Flutter Services**: Repository pattern implementation (`lunar_cycle_repository.dart`) with HTTP client (`lunar_api.dart`) for backend communication.
   - **State Management**: Riverpod-based controller (`lunar_cycle_controller.dart`) for reactive lunar data updates.
   - **UI Component**: New `lunar_home_panel.dart` widget displaying current moon phase, zodiac, and personalized guidance on home screen.
-  - **Recommended Spreads**: Phase-specific tarot spread recommendations (e.g., New Moon → Celtic Cross, Full Moon → Horseshoe, etc.).
+  - **Recommended Spreads**: Phase-specific tarot spread recommendations (e.g., New Moon â†’ Celtic Cross, Full Moon â†’ Horseshoe, etc.).
 
 ### CI/CD Infrastructure Updates
-- **Flutter Version Upgrade**: Updated GitHub Actions workflows from Flutter 3.24.0 → 3.35.3 to resolve `intl` package version conflicts.
+- **Flutter Version Upgrade**: Updated GitHub Actions workflows from Flutter 3.24.0 â†’ 3.35.3 to resolve `intl` package version conflicts.
   - Fixed `flutter-tarot-ci.yml` workflow
   - Fixed `flutter-release.yml` workflow (Android & iOS jobs)
   - Resolves dependency conflict where `flutter_localizations` now requires `intl ^0.20.2` instead of `^0.19.0`
@@ -54,15 +54,15 @@ Completed work (total ~45 minutes once secrets were available):
 ## Recent Progress (2025-10-18)
 
 ### UX & AI polish
-- Added the AI question formatter endpoint (`POST /api/questions/format`) and updated the Flutter client so even “Consulta General” passes through DeepSeek before hitting the backend.
+- Added the AI question formatter endpoint (`POST /api/questions/format`) and updated the Flutter client so even â€œConsulta Generalâ€ passes through DeepSeek before hitting the backend.
 - When the user leaves the prompt empty, the app now nudges them with a localized tip and still performs the draw using a contextual general question.
 - Backend draw endpoint now reuses the canonical spread catalog, preventing `INVALID_SPREAD` errors when the recommender picks spreads like `two_card` or `five_card_cross`.
-- Spread reasoning text was rewritten to be more empathetic and didactic in CA/ES/EN without the old “Key factors detected…” boilerplate.
+- Spread reasoning text was rewritten to be more empathetic and didactic in CA/ES/EN without the old â€œKey factors detectedâ€¦â€ boilerplate.
 
 ## Recent Progress (2025-10-13)
 
 ### Infrastructure & Deployment
-- Backend production URL: https://backend-jnmkq4odo-dnitzs-projects.vercel.app (health check OK)
+- Backend production URL: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app (health check OK; older aliases such as smart-divination.vercel.app are retired)
 - Supabase project vanrixxzaawybszeuivb.supabase.co linked and migrated
 - Tables: users, sessions, session_artifacts, session_messages (created via migrations)
 - GitHub secrets: 13/13 configured (Android signing, Vercel IDs, Supabase, DeepSeek, Random.org)
@@ -85,13 +85,13 @@ Completed work (total ~45 minutes once secrets were available):
 - Supabase session utilities covered by integration tests
 
 ### Android Signing
-- ✅ CI/CD secrets cover keystore, passwords, and alias
-- ✅ `build.gradle.kts` configured with signing (fails fast if config missing)
-- ✅ Keystore generated: `upload-keystore.jks` (password: SmartTarot2025!, alias: upload)
-- ✅ `android/key.properties` configured with signing credentials
-- ✅ Release APK generated and tested: 55MB (`app-release.apk`)
-- ✅ Release AAB generated: 45.7MB (`app-release.aab`)
-- ✅ App successfully installed and runs on physical Android device
+- âœ… CI/CD secrets cover keystore, passwords, and alias
+- âœ… `build.gradle.kts` configured with signing (fails fast if config missing)
+- âœ… Keystore generated: `upload-keystore.jks` (password: SmartTarot2025!, alias: upload)
+- âœ… `android/key.properties` configured with signing credentials
+- âœ… Release APK generated and tested: 55MB (`app-release.apk`)
+- âœ… Release AAB generated: 45.7MB (`app-release.aab`)
+- âœ… App successfully installed and runs on physical Android device
 - Helper scripts available: `scripts/android/setup_local_signing.ps1` and `scripts/android/decode_keystore.ps1`
 
 ## Next Actions

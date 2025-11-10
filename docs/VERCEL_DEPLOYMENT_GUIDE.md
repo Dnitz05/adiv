@@ -1,12 +1,12 @@
-# Vercel Deployment Guide
+﻿# Vercel Deployment Guide
 
 This guide walks you through deploying the Smart Divination backend to Vercel production.
 
 ## Prerequisites
 
-- [X] Vercel account created: https://vercel.com ✅
-- [X] `.env.production` filled with all credentials ✅ (2025-10-05)
-- [X] Vercel CLI installed: `npm install -g vercel` ✅ (v46.0.1)
+- [X] Vercel account created: https://vercel.com âœ…
+- [X] `.env.production` filled with all credentials âœ… (2025-10-05)
+- [X] Vercel CLI installed: `npm install -g vercel` âœ… (v46.0.1)
 
 ## Step 1: Install Vercel CLI
 
@@ -29,7 +29,7 @@ This will open a browser to authenticate. Choose your preferred method (GitHub, 
 
 ## Step 3: Link Project to Vercel
 
-**Status**: [X] Complete ✅ (2025-10-02)
+**Status**: [X] Complete âœ… (2025-10-02)
 
 ```bash
 cd C:\tarot\smart-divination\backend
@@ -37,15 +37,15 @@ vercel link
 ```
 
 **Completed**:
-- ✅ Project linked: `backend`
-- ✅ Project ID: `prj_1W7dSxmVE6qwzuX4xaqr9EkoCbAC`
-- ✅ Org ID: `team_4XuuNZAQVCaHrPaESHalLBde`
-- ✅ `.vercel/project.json` created with org/project IDs
-- ✅ GitHub Secrets configured: VERCEL_ORG_ID, VERCEL_PROJECT_ID
+- âœ… Project linked: `backend`
+- âœ… Project ID: `prj_1W7dSxmVE6qwzuX4xaqr9EkoCbAC`
+- âœ… Org ID: `team_4XuuNZAQVCaHrPaESHalLBde`
+- âœ… `.vercel/project.json` created with org/project IDs
+- âœ… GitHub Secrets configured: VERCEL_ORG_ID, VERCEL_PROJECT_ID
 
 ## Step 4: Configure Environment Variables in Vercel
 
-**Status**: [X] COMPLETE ✅ (2025-10-05)
+**Status**: [X] COMPLETE âœ… (2025-10-05)
 
 **Current Status**: All environment variables configured in Vercel production and preview
 
@@ -119,13 +119,13 @@ Vercel should auto-detect Next.js. Verify settings in Dashboard:
 
 ## Step 6: Deploy to Production
 
-**Status**: [X] DEPLOYED ✅ (2025-10-05)
+**Status**: [X] DEPLOYED âœ… (2025-10-05)
 
 **Current Status**:
-- ✅ Backend deployed to production
-- ✅ Environment variables configured
-- ✅ Production URL: `https://backend-dnitzs-projects.vercel.app`
-- ✅ All health checks passing (5/5 tests)
+- âœ… Backend deployed to production
+- âœ… Environment variables configured
+- âœ… Production URL: `https://backend-gv4a2ueuy-dnitzs-projects.vercel.app`
+- âœ… All health checks passing (5/5 tests)
 
 **Deployment completed**:
 
@@ -138,13 +138,13 @@ This will:
 1. Build your application
 2. Upload to Vercel
 3. Deploy to production URL
-4. Output the production URL (e.g., `https://smart-divination.vercel.app`)
+4. Output the production URL (e.g., `https://backend-gv4a2ueuy-dnitzs-projects.vercel.app`)
 
 **Expected output**:
 ```
 Vercel CLI 46.x.x
 (search)  Inspect: https://vercel.com/...
-[done]  Production: https://smart-divination.vercel.app [1m]
+[done]  Production: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app [1m]
 ```
 
 ### Subsequent Deployments
@@ -158,23 +158,23 @@ Or push to your main branch if you've configured Git integration (see Step 8).
 
 ## Step 7: Verify Deployment
 
-**Status**: [X] VERIFIED ✅ (2025-10-05)
+**Status**: [X] VERIFIED âœ… (2025-10-05)
 
 Use the automated verification script:
 
 ```powershell
 cd C:\tarot\scripts
-.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
+.\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 **Test results** (2025-10-05):
 ```
 === Test Summary ===
-  [PASS] Health Check           ← Supabase healthy (418ms response)
-  [PASS] Metrics Endpoint        ← 403 protected (expected)
-  [PASS] Auth Check              ← 401 unauthorized (expected)
-  [PASS] Feature Flags           ← 503 I Ching disabled (expected)
-  [PASS] Response Time           ← 93ms (< 3s)
+  [PASS] Health Check           â† Supabase healthy (418ms response)
+  [PASS] Metrics Endpoint        â† 403 protected (expected)
+  [PASS] Auth Check              â† 401 unauthorized (expected)
+  [PASS] Feature Flags           â† 503 I Ching disabled (expected)
+  [PASS] Response Time           â† 93ms (< 3s)
 
 Results: 5 passed, 0 warnings, 0 failed
 ```
@@ -183,7 +183,7 @@ Results: 5 passed, 0 warnings, 0 failed
 
 #### Health Check
 ```bash
-curl https://backend-dnitzs-projects.vercel.app/api/health
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/health
 ```
 
 **Response** (200 OK):
@@ -211,7 +211,7 @@ curl https://backend-dnitzs-projects.vercel.app/api/health
 
 #### Metrics Endpoint (Protected)
 ```bash
-curl https://backend-dnitzs-projects.vercel.app/api/metrics
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/metrics
 ```
 
 **Response** (403 Forbidden - expected, endpoint protected):
@@ -226,7 +226,7 @@ curl https://backend-dnitzs-projects.vercel.app/api/metrics
 
 #### Draw Endpoint (Auth Required)
 ```bash
-curl -X POST https://backend-dnitzs-projects.vercel.app/api/draw/cards \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/cards \
   -H "Content-Type: application/json" \
   -d '{"spread": "three_card", "question": "Test"}'
 ```
@@ -374,20 +374,20 @@ vercel rollback [deployment-url]
 ## Next Steps
 
 **Current Progress**:
-1. [X] Vercel CLI installed ✅ (2025-10-02)
-2. [X] Project linked ✅ (2025-10-02)
-3. [X] .env.production configured locally ✅ (2025-10-05)
-4. [X] Add environment variables to Vercel Dashboard ✅ (2025-10-05)
-5. [X] Deploy backend: `vercel --prod` ✅ (2025-10-05)
-6. [X] Verify endpoints: /api/health, /api/metrics ✅ (2025-10-05)
-7. [ ] Create VERCEL_TOKEN for GitHub Actions auto-deploy ⚠️ (optional)
-8. [ ] Configure Git integration for auto-deploy on push ⚠️ (optional)
-9. [ ] Update Flutter app with production URL ⚠️
-10. [ ] QA manual testing ⚠️
+1. [X] Vercel CLI installed âœ… (2025-10-02)
+2. [X] Project linked âœ… (2025-10-02)
+3. [X] .env.production configured locally âœ… (2025-10-05)
+4. [X] Add environment variables to Vercel Dashboard âœ… (2025-10-05)
+5. [X] Deploy backend: `vercel --prod` âœ… (2025-10-05)
+6. [X] Verify endpoints: /api/health, /api/metrics âœ… (2025-10-05)
+7. [ ] Create VERCEL_TOKEN for GitHub Actions auto-deploy âš ï¸ (optional)
+8. [ ] Configure Git integration for auto-deploy on push âš ï¸ (optional)
+9. [ ] Update Flutter app with production URL âš ï¸
+10. [ ] QA manual testing âš ï¸
 
-**Production URL**: https://backend-dnitzs-projects.vercel.app
+**Production URL**: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 
-**Verification**: Run `.\scripts\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app`
+**Verification**: Run `.\scripts\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app`
 
 ## References
 

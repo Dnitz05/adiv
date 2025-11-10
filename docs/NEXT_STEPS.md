@@ -1,15 +1,15 @@
-# Pròxims passos - Smart Tarot Android Launch
+﻿# PrÃ²xims passos - Smart Tarot Android Launch
 
-Guia pas a pas per completar el llançament a Google Play Internal Testing.
+Guia pas a pas per completar el llanÃ§ament a Google Play Internal Testing.
 
 **Data:** 2025-10-13
-**Estat backend:** ✅ Healthy (Supabase respondent en 1.4s)
-**Secrets:** ✅ Rotats i segurs (2025-10-06)
-**Assets:** ⚠️ Icon completat, screenshots i feature graphic pendents
+**Estat backend:** âœ… Healthy (Supabase respondent en 1.4s)
+**Secrets:** âœ… Rotats i segurs (2025-10-06)
+**Assets:** âš ï¸ Icon completat, screenshots i feature graphic pendents
 
 ---
 
-## 🚀 Fase 1: Assets visuals (1-2 dies)
+## ðŸš€ Fase 1: Assets visuals (1-2 dies)
 
 ### Prioritat Alta - Screenshots
 
@@ -25,39 +25,39 @@ Guia pas a pas per completar el llançament a Google Play Internal Testing.
    emulator -avd Pixel_6_API_34 &
    ```
 
-2. **Executar app amb backend de producció**
+2. **Executar app amb backend de producciÃ³**
    ```bash
    cd C:/tarot/smart-divination/apps/tarot
 
    # Obtenir SUPABASE_ANON_KEY des de GitHub Secrets o Vercel dashboard
    flutter run \
-     --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app \
+     --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
      --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co \
      --dart-define=SUPABASE_ANON_KEY=<YOUR_ANON_KEY>
    ```
 
-3. **Capturar screenshots** (mínim 2, recomanat 4-8)
-   - Screenshot 1: Autenticació/onboarding
+3. **Capturar screenshots** (mÃ­nim 2, recomanat 4-8)
+   - Screenshot 1: AutenticaciÃ³/onboarding
    - Screenshot 2: Three-card spread amb cartes
-   - Screenshot 3: Interpretació IA
+   - Screenshot 3: InterpretaciÃ³ IA
    - Screenshot 4: Historial de sessions
 
-   Mètode ADB (recomanat):
+   MÃ¨tode ADB (recomanat):
    ```bash
    adb shell screencap -p /sdcard/screenshot.png
    adb pull /sdcard/screenshot.png C:/tarot/docs/store-assets/screenshots/android/01_authentication.png
    adb shell rm /sdcard/screenshot.png
    ```
 
-   📖 Veure guia completa: `docs/SCREENSHOTS_GUIDE.md`
+   ðŸ“– Veure guia completa: `docs/SCREENSHOTS_GUIDE.md`
 
 4. **Verificar screenshots**
    ```bash
    ls -lh C:/tarot/docs/store-assets/screenshots/android/
    ```
-   - Resolució mínima: 1080x1920
+   - ResoluciÃ³ mÃ­nima: 1080x1920
    - Format: PNG o JPEG
-   - Pes màxim: 8MB per imatge
+   - Pes mÃ xim: 8MB per imatge
 
 ### Prioritat Alta - Feature Graphic
 
@@ -67,11 +67,11 @@ Guia pas a pas per completar el llançament a Google Play Internal Testing.
    - Eines recomanades:
      - Canva (plantilles per app banners)
      - Figma (disseny professional)
-     - GIMP/Photoshop (avançat)
+     - GIMP/Photoshop (avanÃ§at)
 
 2. **Contingut del banner**
    - Logo/icona de l'app
-   - Títol: "Smart Tarot"
+   - TÃ­tol: "Smart Tarot"
    - Tagline: "AI Tarot Readings" o similar
    - Colors de marca (#8C52FF i complements)
    - Fons atractiu (tarot cards, mystic theme)
@@ -96,7 +96,7 @@ Guia pas a pas per completar el llançament a Google Play Internal Testing.
 
 ---
 
-## 📝 Fase 2: Metadata i documents legals (1 dia)
+## ðŸ“ Fase 2: Metadata i documents legals (1 dia)
 
 ### Prioritat Alta - Finalitzar Play Store Copy
 
@@ -109,21 +109,21 @@ Guia pas a pas per completar el llançament a Google Play Internal Testing.
    ```
 
 2. **Completar per cada idioma (EN/ES/CA)**
-   - Títol definitiu (màx 30 caràcters)
-   - Descripció curta (màx 80 caràcters)
-   - Descripció llarga (màx 4000 caràcters)
-     * Què fa l'app
+   - TÃ­tol definitiu (mÃ x 30 carÃ cters)
+   - DescripciÃ³ curta (mÃ x 80 carÃ cters)
+   - DescripciÃ³ llarga (mÃ x 4000 carÃ cters)
+     * QuÃ¨ fa l'app
      * Funcionalitats clau
      * Beneficis per l'usuari
      * Call to action
 
-3. **Revisió legal/màrqueting** (opcional però recomanat)
+3. **RevisiÃ³ legal/mÃ rqueting** (opcional perÃ² recomanat)
 
 ### Prioritat Mitjana - Hostejar documents legals
 
 **Temps estimat:** 1 hora
 
-**Opció A: GitHub Pages (recomanat, gratuït)**
+**OpciÃ³ A: GitHub Pages (recomanat, gratuÃ¯t)**
 ```bash
 cd C:/tarot
 mkdir -p docs/legal
@@ -138,22 +138,22 @@ cp docs/store-metadata/terms_template.md docs/legal/terms-of-service.md
 # https://YOUR_USERNAME.github.io/REPO_NAME/legal/terms-of-service.html
 ```
 
-**Opció B: Vercel (alternatiu)**
+**OpciÃ³ B: Vercel (alternatiu)**
 ```bash
 cd C:/tarot/docs/legal
 vercel deploy --prod
 ```
 
-**Opció C: Web corporativa** (si existeix)
+**OpciÃ³ C: Web corporativa** (si existeix)
 
 **Important:**
 1. Completar plantilles amb dades reals (contacte, empresa, etc.)
-2. Revisió legal GDPR (si possible)
+2. RevisiÃ³ legal GDPR (si possible)
 3. Afegir URLs al Play Console i a l'app
 
 ---
 
-## 🏗️ Fase 3: Build i preparació final (2-4 hores)
+## ðŸ—ï¸ Fase 3: Build i preparaciÃ³ final (2-4 hores)
 
 ### Prioritat Alta - Build release APK/AAB
 
@@ -170,13 +170,13 @@ vercel deploy --prod
    ```bash
    cd C:/tarot/smart-divination/apps/tarot
 
-   # Per Internal Testing (APK és més ràpid)
+   # Per Internal Testing (APK Ã©s mÃ©s rÃ pid)
    flutter build apk --release \
-     --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app
+     --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 
    # Per Production (AAB requerit)
    flutter build appbundle --release \
-     --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app
+     --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
    ```
 
 3. **Verificar signatura**
@@ -197,57 +197,57 @@ vercel deploy --prod
 
 **Temps estimat:** 1-2 hores
 
-Instal·lar APK release en dispositiu físic i verificar:
+InstalÂ·lar APK release en dispositiu fÃ­sic i verificar:
 
-1. **Funcionalitat bàsica**
-   - ✅ Signup/Login amb Supabase
-   - ✅ Draw de tarot (single card, 3-card, Celtic Cross)
-   - ✅ Interpretació IA (DeepSeek)
-   - ✅ Historial de sessions
-   - ✅ Logout
+1. **Funcionalitat bÃ sica**
+   - âœ… Signup/Login amb Supabase
+   - âœ… Draw de tarot (single card, 3-card, Celtic Cross)
+   - âœ… InterpretaciÃ³ IA (DeepSeek)
+   - âœ… Historial de sessions
+   - âœ… Logout
 
-2. **Integració backend**
-   - ✅ API calls responen correctament
-   - ✅ Sessions es guarden a Supabase
-   - ✅ No hi ha errors 401/403/500
+2. **IntegraciÃ³ backend**
+   - âœ… API calls responen correctament
+   - âœ… Sessions es guarden a Supabase
+   - âœ… No hi ha errors 401/403/500
 
 3. **UX i visual**
-   - ✅ Icona es mostra correctament
-   - ✅ App label: "Smart Tarot"
-   - ✅ No crashes en fluxos principals
-   - ✅ Localització EN/ES/CA funciona
+   - âœ… Icona es mostra correctament
+   - âœ… App label: "Smart Tarot"
+   - âœ… No crashes en fluxos principals
+   - âœ… LocalitzaciÃ³ EN/ES/CA funciona
 
 4. **Performance**
-   - ✅ Temps de càrrega acceptable (<3s)
-   - ✅ No lag en scrolls/animacions
-   - ✅ Memòria dins de límits
+   - âœ… Temps de cÃ rrega acceptable (<3s)
+   - âœ… No lag en scrolls/animacions
+   - âœ… MemÃ²ria dins de lÃ­mits
 
 **Checklist complet:** `docs/STATUS.md` > Manual QA Checklist
 
 ---
 
-## 🎮 Fase 4: Google Play Console (1 dia)
+## ðŸŽ® Fase 4: Google Play Console (1 dia)
 
 ### Prioritat Alta - Configurar compte i app
 
-**Temps estimat:** 2-3 hores (inclou espera de verificació)
+**Temps estimat:** 2-3 hores (inclou espera de verificaciÃ³)
 
 1. **Crear Google Play Developer account**
    - URL: https://play.google.com/console/signup
-   - Cost: $25 USD (pagament únic)
-   - Temps verificació: 24-48 hores
+   - Cost: $25 USD (pagament Ãºnic)
+   - Temps verificaciÃ³: 24-48 hores
 
 2. **Crear nova app**
    - Nom: Smart Tarot
-   - Idioma per defecte: English (UK) o Català
+   - Idioma per defecte: English (UK) o CatalÃ 
    - App o joc: App
-   - Gratuïta o de pagament: Gratuïta
+   - GratuÃ¯ta o de pagament: GratuÃ¯ta
 
-3. **Completar informació bàsica**
+3. **Completar informaciÃ³ bÃ sica**
    - Categoria: Lifestyle o Entertainment
    - Email de contacte: support@smartdivination.com
-   - Privacitat: enllaç a privacy policy hostatjada
-   - Classificació de contingut: completar qüestionari
+   - Privacitat: enllaÃ§ a privacy policy hostatjada
+   - ClassificaciÃ³ de contingut: completar qÃ¼estionari
 
 ### Prioritat Alta - Pujar APK/AAB a Internal Testing
 
@@ -263,14 +263,14 @@ Instal·lar APK release en dispositiu físic i verificar:
    - Afegir release notes (EN/ES/CA)
 
 3. **Configurar testers**
-   - Afegir email list (màx 100 per Internal Testing)
+   - Afegir email list (mÃ x 100 per Internal Testing)
    - O crear Google Group
    - Enviar link de testing als testers
 
 4. **Publish release**
    - Revisar pre-launch report (pot trigar 1-2 hores)
-   - Corregir issues crítics si n'hi ha
-   - Confirmar publicació
+   - Corregir issues crÃ­tics si n'hi ha
+   - Confirmar publicaciÃ³
 
 ### Prioritat Mitjana - Completar Store Listing
 
@@ -279,20 +279,20 @@ Instal·lar APK release en dispositiu físic i verificar:
 1. **Pujar assets**
    - Icona: 512x512 (des de docs/store-assets/icon.png, resize si cal)
    - Feature graphic: 1024x500
-   - Screenshots: mínim 2, màxim 8 (1080x1920+)
+   - Screenshots: mÃ­nim 2, mÃ xim 8 (1080x1920+)
 
 2. **Afegir descripcions**
-   - Títol, descripció curta, descripció llarga
+   - TÃ­tol, descripciÃ³ curta, descripciÃ³ llarga
    - Localitzar per EN/ES/CA
 
-3. **Configurar preferències**
+3. **Configurar preferÃ¨ncies**
    - Privacy policy URL
    - Categoria i tags
-   - Classificació de contingut
+   - ClassificaciÃ³ de contingut
 
 ---
 
-## 📊 Fase 5: Post-llançament (ongoing)
+## ðŸ“Š Fase 5: Post-llanÃ§ament (ongoing)
 
 ### Prioritat Baixa - Monitoring i feedback
 
@@ -301,7 +301,7 @@ Instal·lar APK release en dispositiu físic i verificar:
 1. **Configurar observabilitat**
    - Connectar Datadog o Grafana
    - Configurar alerts per errors 5xx
-   - Dashboard de mètriques en temps real
+   - Dashboard de mÃ¨triques en temps real
 
 2. **Revisar feedback de testers**
    - Play Console > Ratings and reviews
@@ -315,13 +315,13 @@ Instal·lar APK release en dispositiu físic i verificar:
 
 ---
 
-## ✅ Checklist de pre-llançament
+## âœ… Checklist de pre-llanÃ§ament
 
 Abans de publicar a Internal Testing, verifica:
 
 ### Assets
 - [x] Icona 1024x1024 creada i mipmaps generats
-- [ ] Screenshots capturats (mínim 2)
+- [ ] Screenshots capturats (mÃ­nim 2)
 - [ ] Feature graphic 1024x500 creat
 - [x] App label "Smart Tarot" configurat
 
@@ -329,7 +329,7 @@ Abans de publicar a Internal Testing, verifica:
 - [x] Play Store copy drafted (EN/ES/CA)
 - [x] Privacy policy template ready
 - [x] Terms of service template ready
-- [ ] Documents legals hostatjats públicament
+- [ ] Documents legals hostatjats pÃºblicament
 
 ### Build
 - [ ] Release APK/AAB generat i signat
@@ -337,7 +337,7 @@ Abans de publicar a Internal Testing, verifica:
 - [ ] QA manual completat sense blockers
 
 ### Backend
-- [x] Backend de producció healthy
+- [x] Backend de producciÃ³ healthy
 - [x] Supabase respondent correctament
 - [x] Secrets rotats i segurs
 - [x] DeepSeek API funcional
@@ -351,9 +351,9 @@ Abans de publicar a Internal Testing, verifica:
 
 ---
 
-## 🆘 Ajuda i recursos
+## ðŸ†˜ Ajuda i recursos
 
-### Documentació del projecte
+### DocumentaciÃ³ del projecte
 - **Checklist complet:** `ANDROID_LAUNCH_CHECKLIST.md`
 - **Estat actual:** `docs/STATUS.md`
 - **Blockers:** `CRITICAL_BLOCKERS_PLAN.md`
@@ -367,13 +367,13 @@ Abans de publicar a Internal Testing, verifica:
 - [Play Store guidelines](https://play.google.com/console/about/guides/)
 
 ### Contacte i suport
-- Backend health: `curl https://backend-4sircya71-dnitzs-projects.vercel.app/api/health`
+- Backend health: `curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/health`
 - Supabase dashboard: https://supabase.com/dashboard/project/vanrixxzaawybszeuivb
 - Vercel dashboard: https://vercel.com/dnitzs-projects/backend
 
 ---
 
-## 📅 Timeline estimat
+## ðŸ“… Timeline estimat
 
 | Fase | Temps estimat | Prioritat |
 |------|---------------|-----------|
@@ -387,5 +387,5 @@ Abans de publicar a Internal Testing, verifica:
 
 ---
 
-**Última actualització:** 2025-10-13
-**Pròxima revisió:** Després de capturar screenshots
+**Ãšltima actualitzaciÃ³:** 2025-10-13
+**PrÃ²xima revisiÃ³:** DesprÃ©s de capturar screenshots

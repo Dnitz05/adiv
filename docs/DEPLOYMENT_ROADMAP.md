@@ -1,4 +1,4 @@
-# Deployment Roadmap - Smart Divination Tarot
+﻿# Deployment Roadmap - Smart Divination Tarot
 
 This document provides a comprehensive roadmap for deploying the Smart Divination tarot app to production.
 
@@ -141,18 +141,18 @@ This roadmap covers the 5 critical tasks required for production launch.
 - [ ] Health check endpoint returning 200
 - [ ] API endpoints functional
 
-**Expected URL**: `https://smart-divination-backend.vercel.app`
+**Expected URL**: `https://backend-gv4a2ueuy-dnitzs-projects.vercel.app`
 
 **Verification Commands**:
 ```bash
 # Health check
-curl https://smart-divination-backend.vercel.app/api/health
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/health
 
 # Metrics
-curl https://smart-divination-backend.vercel.app/api/metrics
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/metrics
 
 # Unauthenticated draw (should return 401)
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/cards
 ```
 
 ---

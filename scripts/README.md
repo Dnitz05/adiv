@@ -1,4 +1,4 @@
-# Deployment Helper Scripts
+﻿# Deployment Helper Scripts
 
 This directory contains PowerShell scripts to assist with the deployment process.
 
@@ -25,13 +25,13 @@ Encodes the Android keystore file to base64 for GitHub Actions.
 
 ### 2. `verify-deployment.ps1`
 
-**Status**: ✅ Production verified (2025-10-05)
+**Status**: âœ… Production verified (2025-10-05)
 
 Tests a deployed backend to verify all endpoints are working correctly.
 
 **Usage**:
 ```powershell
-.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
+.\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 **What it tests**:
@@ -48,7 +48,7 @@ Tests a deployed backend to verify all endpoints are working correctly.
 **Production Test Results** (2025-10-05):
 ```
 === Vercel Deployment Verification ===
-Backend URL: https://backend-dnitzs-projects.vercel.app
+Backend URL: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 
 [1/5] Testing /api/health...
   [ok] Health check passed
@@ -68,11 +68,11 @@ Backend URL: https://backend-dnitzs-projects.vercel.app
   [ok] Response time: 93ms (< 3s)
 
 === Test Summary ===
-  [PASS] Health Check           ← Supabase healthy (418ms response)
-  [PASS] Metrics Endpoint        ← Protected as expected
-  [PASS] Auth Check              ← Authentication required
-  [PASS] Feature Flags           ← I Ching disabled (503)
-  [PASS] Response Time           ← 93ms (excellent)
+  [PASS] Health Check           â† Supabase healthy (418ms response)
+  [PASS] Metrics Endpoint        â† Protected as expected
+  [PASS] Auth Check              â† Authentication required
+  [PASS] Feature Flags           â† I Ching disabled (503)
+  [PASS] Response Time           â† 93ms (excellent)
 
 Results: 5 passed, 0 warnings, 0 failed
 
@@ -221,15 +221,15 @@ cd C:\tarot\scripts
 
 ### After Deployment
 
-**Status**: ✅ Backend Deployed (2025-10-05)
+**Status**: âœ… Backend Deployed (2025-10-05)
 
 1. **Verify deployment**:
 ```powershell
 cd C:\tarot\scripts
-.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app
+.\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
-**Result**: All 5 tests passing ✅
+**Result**: All 5 tests passing âœ…
 - Health Check: Supabase healthy (418ms)
 - Metrics: Protected (403 expected)
 - Auth: Required (401 expected)
@@ -323,11 +323,11 @@ If a test fails but you believe the deployment is correct:
 
 ## Production Deployment Summary
 
-**Backend**: ✅ Deployed and verified (2025-10-05)
-- **URL**: https://backend-dnitzs-projects.vercel.app
+**Backend**: âœ… Deployed and verified (2025-10-05)
+- **URL**: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - **Status**: All health checks passing (5/5 tests)
 - **Supabase**: Connected and healthy (418ms response time)
-- **Verification**: `.\verify-deployment.ps1 https://backend-dnitzs-projects.vercel.app`
+- **Verification**: `.\verify-deployment.ps1 https://backend-gv4a2ueuy-dnitzs-projects.vercel.app`
 
 **Next Steps**:
 1. Apply Supabase migrations to production database

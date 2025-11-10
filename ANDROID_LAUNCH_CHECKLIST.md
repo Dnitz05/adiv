@@ -1,4 +1,4 @@
-# Android launch checklist - Smart Tarot
+﻿# Android launch checklist - Smart Tarot
 
 Structured list of tasks to complete before publishing the Smart Tarot Android app to Google Play.
 
@@ -23,7 +23,7 @@ Status: complete
 
 ### 1.3 Backend and database production deployment
 Status: complete (2025-10-05)
-- Backend: https://backend-4sircya71-dnitzs-projects.vercel.app
+- Backend: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - Supabase project: vanrixxzaawybszeuivb.supabase.co
 - Migrations applied: initial schema + session history schema
 - Tables online: users, sessions, session_artifacts, session_messages
@@ -31,7 +31,7 @@ Status: complete (2025-10-05)
 - Health check: Supabase healthy (~1 s), endpoints verified
 
 ### 1.4 Android release signing setup
-Status: ✅ Complete (2025-10-16)
+Status: âœ… Complete (2025-10-16)
 - GitHub Secrets: ANDROID_KEYSTORE_BASE64 / PASSWORD / ALIAS / KEY_PASSWORD configured
 - `build.gradle.kts` configured with signing (fails fast if config missing)
 - Helper scripts: `scripts/android/setup_local_signing.ps1`, `scripts/android/decode_keystore.ps1`
@@ -44,7 +44,7 @@ Status: ✅ Complete (2025-10-16)
 
 Build command for release:
 ```
-flutter build appbundle --release   --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app   --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co   --dart-define=SUPABASE_ANON_KEY=<anon-key>
+flutter build appbundle --release   --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app   --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co   --dart-define=SUPABASE_ANON_KEY=<anon-key>
 ```
 
 ### 1.5 Lint and polish
@@ -57,13 +57,13 @@ Status: clean
 ## Phase 2: assets and store content (high priority)
 
 ### 2.1 App icon and splash screen
-Status: ✅ Icon complete, splash pending
-- ✅ Custom 1024x1024 launcher icon integrated (`smart-divination/apps/tarot/assets/app_icon/icon.png`) via `flutter_launcher_icons`
-- ✅ Adaptive background color set to `#8C52FF`; all mipmaps regenerated
-- ✅ Master artwork stored at `docs/store-assets/icon.png` (export 512x512 for Play Console branding)
-- ✅ `AndroidManifest.xml` label updated to "Smart Tarot"
-- ⏳ Produce 1920x1080 splash artwork
-- ⏳ Configure flutter_native_splash or custom launch screen assets
+Status: âœ… Icon complete, splash pending
+- âœ… Custom 1024x1024 launcher icon integrated (`smart-divination/apps/tarot/assets/app_icon/icon.png`) via `flutter_launcher_icons`
+- âœ… Adaptive background color set to `#8C52FF`; all mipmaps regenerated
+- âœ… Master artwork stored at `docs/store-assets/icon.png` (export 512x512 for Play Console branding)
+- âœ… `AndroidManifest.xml` label updated to "Smart Tarot"
+- â³ Produce 1920x1080 splash artwork
+- â³ Configure flutter_native_splash or custom launch screen assets
 
 ### 2.2 Screenshots
 Status: not started

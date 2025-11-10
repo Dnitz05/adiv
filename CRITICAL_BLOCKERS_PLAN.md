@@ -1,4 +1,4 @@
-# Critical blockers plan - Android launch
+﻿# Critical blockers plan - Android launch
 
 Updated: 2025-10-05 (after deploying backend and Supabase)
 
@@ -21,11 +21,11 @@ Status: complete
 - Tables verified in dashboard
 - Supabase secrets stored in GitHub Actions and Vercel
 - Backend health reporting Supabase healthy (~1 s)
-- ✅ Security: Supabase keys rotated on 2025-10-06 (incident closed)
+- âœ… Security: Supabase keys rotated on 2025-10-06 (incident closed)
 
 ## Task 4: Deploy backend to Vercel production
 Status: complete
-- Production URL: https://backend-4sircya71-dnitzs-projects.vercel.app
+- Production URL: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - Environment variables configured via CLI
 - Health checks: /api/health 200, /api/draw/cards 401 unauthenticated
 - Scripts: `scripts/vercel/setup_env_vars.ps1` and `scripts/verify-deployment.ps1`
@@ -47,10 +47,10 @@ Status: CI/CD ready, local build pending
 ---
 
 ## Outstanding items before Play Store submission
-1. ~~Rotate exposed secrets (Supabase, DeepSeek, Random.org).~~ ✅ **COMPLETED 2025-10-06**
+1. ~~Rotate exposed secrets (Supabase, DeepSeek, Random.org).~~ âœ… **COMPLETED 2025-10-06**
 2. Configure local signing and produce the signed AAB.
-3. ~~Create app icon~~ ✅ **COMPLETED 2025-10-13** | ⚠️ Remaining: screenshots (2-8), feature graphic (1024x500)
-4. ~~Draft privacy policy and terms~~ ✅ **TEMPLATES READY** | ⚠️ Need hosting and final review
+3. ~~Create app icon~~ âœ… **COMPLETED 2025-10-13** | âš ï¸ Remaining: screenshots (2-8), feature graphic (1024x500)
+4. ~~Draft privacy policy and terms~~ âœ… **TEMPLATES READY** | âš ï¸ Need hosting and final review
 5. Complete manual QA using production backend.
 6. Configure Google Play Console (developer account + Internal Testing track).
 7. Fix AndroidManifest.xml label to "Smart Tarot".

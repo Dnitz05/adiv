@@ -1,4 +1,4 @@
-# Screenshots guide - Smart Tarot Android
+﻿# Screenshots guide - Smart Tarot Android
 
 Quick guide to capture Play Store screenshots for the internal testing release.
 
@@ -36,8 +36,9 @@ emulator -avd Pixel_6_API_34 &
 ```bash
 cd C:/tarot/smart-divination/apps/tarot
 
-flutter run --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co --dart-define=SUPABASE_ANON_KEY=$env:SUPABASE_ANON_KEY
+flutter run --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co --dart-define=SUPABASE_ANON_KEY=$env:SUPABASE_ANON_KEY
 ```
+> Nota: l'antic alias `smart-divination.vercel.app` està retirat i respon 404; utilitza sempre `backend-gv4a2ueuy-dnitzs-projects.vercel.app`.
 
 **Note**: Replace `$env:SUPABASE_ANON_KEY` with the actual anon key from GitHub Secrets or Vercel dashboard.
 
@@ -119,12 +120,12 @@ Repeat for each screenshot, naming them sequentially:
 
 After capturing screenshots:
 
-1. ✅ Verify resolution (minimum 1080x1920, higher is better)
-2. ✅ Check file size (under 8MB per image)
-3. ✅ Rename with descriptive names
-4. ✅ Verify no sensitive data visible (test accounts only)
-5. ✅ Review for visual quality (no blur, good contrast)
-6. ✅ Update `ANDROID_LAUNCH_CHECKLIST.md` status to complete
+1. âœ… Verify resolution (minimum 1080x1920, higher is better)
+2. âœ… Check file size (under 8MB per image)
+3. âœ… Rename with descriptive names
+4. âœ… Verify no sensitive data visible (test accounts only)
+5. âœ… Review for visual quality (no blur, good contrast)
+6. âœ… Update `ANDROID_LAUNCH_CHECKLIST.md` status to complete
 
 ---
 
@@ -143,7 +144,7 @@ Expected output: 2-8 PNG/JPEG files, each 1080x1920 or higher.
 
 **Issue**: App crashes on startup
 - **Fix**: Verify `API_BASE_URL` and `SUPABASE_*` environment variables are correct
-- **Check**: Backend health endpoint: `curl https://backend-4sircya71-dnitzs-projects.vercel.app/api/health`
+- **Check**: Backend health endpoint: `curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/health`
 
 **Issue**: Can't authenticate
 - **Fix**: Create test account in Supabase dashboard first

@@ -1,15 +1,15 @@
-# 🚀 FASE 1: MVP BETA ANDROID - GUIA D'EXECUCIÓ
+﻿# ðŸš€ FASE 1: MVP BETA ANDROID - GUIA D'EXECUCIÃ“
 
-**Objectiu**: App Android funcional amb backend en producció en **1 setmana**
+**Objectiu**: App Android funcional amb backend en producciÃ³ en **1 setmana**
 **Output**: Beta publicada a Google Play Internal Testing amb 10+ testers
 
 ---
 
-## ✅ TASCA 1: Restablir Workspace Melos
+## âœ… TASCA 1: Restablir Workspace Melos
 
 ### Prerequisits
-- Dart SDK instal·lat
-- Flutter 3.24+ instal·lat
+- Dart SDK instalÂ·lat
+- Flutter 3.24+ instalÂ·lat
 - Git configurat
 
 ### Passes
@@ -18,11 +18,11 @@
 # 1. Activar Melos globalment
 dart pub global activate melos
 
-# 2. Afegir Dart al PATH (si no està)
+# 2. Afegir Dart al PATH (si no estÃ )
 # Windows: Afegir al PATH del sistema:
 # C:\Users\<USERNAME>\AppData\Local\Pub\Cache\bin
 
-# 3. Verificar instal·lació
+# 3. Verificar instalÂ·laciÃ³
 melos --version
 # Esperat: Melos 6.x.x (o superior)
 
@@ -42,27 +42,27 @@ melos list
 # - common
 # - (altres apps si existeixen)
 
-# 6. Executar análisis
+# 6. Executar anÃ¡lisis
 melos run analyze:all
-# Esperat: No errors crítics
+# Esperat: No errors crÃ­tics
 
 # 7. Executar tests
 melos run test:all
 # Esperat: Tests passing (o skip si no hi ha tests)
 ```
 
-### Resolució de problemes comuns
+### ResoluciÃ³ de problemes comuns
 
 **Error: `melos: command not found`**
 ```powershell
 # Windows
 $env:Path += ";$env:LOCALAPPDATA\Pub\Cache\bin"
-# O afegir permanent via System Properties → Environment Variables
+# O afegir permanent via System Properties â†’ Environment Variables
 ```
 
 **Error: `pubspec.yaml not found`**
 ```powershell
-# Verificar que estàs a smart-divination/
+# Verificar que estÃ s a smart-divination/
 cd C:\tarot\smart-divination
 pwd  # Hauria de mostrar: C:\tarot\smart-divination
 ```
@@ -74,7 +74,7 @@ melos clean
 melos bootstrap --force
 ```
 
-### ✅ Verificació
+### âœ… VerificaciÃ³
 ```powershell
 # Tots aquests haurien de funcionar sense errors:
 melos list          # Mostra packages
@@ -85,11 +85,11 @@ melos run analyze:all   # Analyze passa
 
 ---
 
-## ✅ TASCA 2: Crear Projecte Supabase de Producció
+## âœ… TASCA 2: Crear Projecte Supabase de ProducciÃ³
 
 ### Prerequisits
-- Compte a https://supabase.com (gratuït)
-- Supabase CLI instal·lat (opcional però recomanat)
+- Compte a https://supabase.com (gratuÃ¯t)
+- Supabase CLI instalÂ·lat (opcional perÃ² recomanat)
 
 ### Passes
 
@@ -97,7 +97,7 @@ melos run analyze:all   # Analyze passa
 
 1. Anar a https://supabase.com/dashboard
 2. Click **"New Project"**
-3. Configuració:
+3. ConfiguraciÃ³:
    - **Organization**: Seleccionar o crear nova
    - **Name**: `smart-divination-prod`
    - **Database Password**: Generar fort i **COPIAR A LLOC SEGUR**
@@ -107,17 +107,17 @@ melos run analyze:all   # Analyze passa
    - **Region**: `Europe West (eu-west-1)` Frankfurt
    - **Pricing Plan**: Free (suficient per beta)
 4. Click **"Create new project"**
-5. ⏳ **ESPERAR 2-3 minuts** mentre es crea
+5. â³ **ESPERAR 2-3 minuts** mentre es crea
 
 #### 2.2 Copiar Credencials
 
-1. Dashboard → **Settings** → **API**
+1. Dashboard â†’ **Settings** â†’ **API**
 2. **COPIAR a fitxer de notes segur (1Password, Bitwarden, etc.)**:
 
 ```ini
 # SUPABASE PRODUCTION CREDENTIALS
 # Data: 2025-10-03
-# IMPORTANT: NO COMPARTIR PÚBLICAMENT
+# IMPORTANT: NO COMPARTIR PÃšBLICAMENT
 
 Project URL: https://xxxxxxxxx.supabase.co
 Project ID: xxxxxxxxx
@@ -128,13 +128,13 @@ service_role key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 Database Password: Kx9$mQ2&pL5@wR8#vN3!tB7^yH4
 ```
 
-⚠️ **MOLT IMPORTANT**:
-- `anon key` → Pot anar al client (app Flutter)
-- `service_role key` → NI MAI al client, només backend!
+âš ï¸ **MOLT IMPORTANT**:
+- `anon key` â†’ Pot anar al client (app Flutter)
+- `service_role key` â†’ NI MAI al client, nomÃ©s backend!
 
 #### 2.3 Aplicar Migracions
 
-**Opció A: Via Supabase CLI (recomanat)**
+**OpciÃ³ A: Via Supabase CLI (recomanat)**
 ```powershell
 cd C:\tarot
 
@@ -150,9 +150,9 @@ supabase db diff
 # Esperat: "No schema differences detected"
 ```
 
-**Opció B: Via SQL Editor (si CLI no funciona)**
+**OpciÃ³ B: Via SQL Editor (si CLI no funciona)**
 ```sql
--- 1. Dashboard → SQL Editor
+-- 1. Dashboard â†’ SQL Editor
 -- 2. Copiar TOTS els continguts de:
 --    C:\tarot\supabase\migrations\20250101000001_initial_schema.sql
 -- 3. Enganxar i executar
@@ -163,18 +163,18 @@ supabase db diff
 #### 2.4 Seed Data (Opcional per testing)
 
 ```sql
--- Dashboard → SQL Editor
+-- Dashboard â†’ SQL Editor
 -- Copiar i executar:
 -- C:\tarot\supabase\seeds\dev_seed.sql
 
--- Això crea:
+-- AixÃ² crea:
 -- - 1 usuari demo
 -- - Algunes sessions d'exemple
 ```
 
-### ✅ Verificació
+### âœ… VerificaciÃ³
 ```sql
--- SQL Editor → Executar:
+-- SQL Editor â†’ Executar:
 SELECT table_name FROM information_schema.tables
 WHERE table_schema = 'public';
 
@@ -191,21 +191,21 @@ WHERE table_schema = 'public';
 
 ---
 
-## ✅ TASCA 3: Obtenir Clau DeepSeek
+## âœ… TASCA 3: Obtenir Clau DeepSeek
 
 ### Prerequisits
-- Email vàlid
-- Targeta de crèdit (només per verificació, free tier disponible)
+- Email vÃ lid
+- Targeta de crÃ¨dit (nomÃ©s per verificaciÃ³, free tier disponible)
 
 ### Passes
 
 1. Anar a https://platform.deepseek.com/
 2. **Sign Up** amb Google/GitHub o email
 3. Verificar email si cal
-4. Dashboard → **API Keys**
+4. Dashboard â†’ **API Keys**
 5. Click **"Create API Key"**
 6. Name: `Smart Divination Production`
-7. **📋 COPIAR IMMEDIATAMENT** (només es mostra un cop!)
+7. **ðŸ“‹ COPIAR IMMEDIATAMENT** (nomÃ©s es mostra un cop!)
    ```
    sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
    ```
@@ -213,10 +213,10 @@ WHERE table_schema = 'public';
 
 ### Cost Estimat
 - Model: DeepSeek Chat
-- Preu: ~$0.001 per interpretació (1000 tokens)
-- Beta (100 users × 5 sessions/dia): ~$5/mes
+- Preu: ~$0.001 per interpretaciÃ³ (1000 tokens)
+- Beta (100 users Ã— 5 sessions/dia): ~$5/mes
 
-### ✅ Verificació
+### âœ… VerificaciÃ³
 ```bash
 # Test API key
 curl https://api.deepseek.com/v1/chat/completions \
@@ -234,7 +234,7 @@ curl https://api.deepseek.com/v1/chat/completions \
 
 ---
 
-## ✅ TASCA 4: Actualitzar .env.production
+## âœ… TASCA 4: Actualitzar .env.production
 
 ### Passes
 
@@ -260,7 +260,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3...
 DEEPSEEK_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # Random.org (OPTIONAL - signed randomness)
-# Deixar buit per ara, usarà crypto.randomInt() per defecte
+# Deixar buit per ara, usarÃ  crypto.randomInt() per defecte
 RANDOM_ORG_KEY=
 
 # Feature Flags (REQUIRED)
@@ -275,13 +275,13 @@ METRICS_DEBUG=false
 NODE_ENV=production
 ```
 
-### ⚠️ Checklist de seguretat
-- [ ] `.env.production` està a `.gitignore`
+### âš ï¸ Checklist de seguretat
+- [ ] `.env.production` estÃ  a `.gitignore`
 - [ ] NO has fet commit del fitxer
-- [ ] Còpia de seguretat guardada fora del repo
-- [ ] Service role key NO està al codi Flutter
+- [ ] CÃ²pia de seguretat guardada fora del repo
+- [ ] Service role key NO estÃ  al codi Flutter
 
-### ✅ Verificació Local
+### âœ… VerificaciÃ³ Local
 
 ```powershell
 cd C:\tarot\smart-divination\backend
@@ -301,23 +301,23 @@ curl http://localhost:3001/api/metrics
 
 # Testejar draw (hauria de requerir auth)
 curl -X POST http://localhost:3001/api/draw/cards
-# Esperat: 401 Unauthorized o error de validació (correcte!)
+# Esperat: 401 Unauthorized o error de validaciÃ³ (correcte!)
 ```
 
 **Si hi ha errors**:
 - Verificar que no hi ha espais extra a les URLs
-- Verificar que les claus són completes (molt llargues)
+- Verificar que les claus sÃ³n completes (molt llargues)
 - Revisar logs del servidor per detalls
 
 **Temps estimat**: 10-15 minuts
 
 ---
 
-## ✅ TASCA 5: Desplegar Backend a Vercel
+## âœ… TASCA 5: Desplegar Backend a Vercel
 
 ### Prerequisits
-- Compte Vercel (gratuït)
-- Vercel CLI instal·lat
+- Compte Vercel (gratuÃ¯t)
+- Vercel CLI instalÂ·lat
 - Backend funcionant localment (Tasca 4 OK)
 
 ### Passes
@@ -340,12 +340,12 @@ vercel link
 # ? What's your project's name? smart-divination-backend
 # ? In which directory is your code located? ./
 
-# Això crea: .vercel/project.json
+# AixÃ² crea: .vercel/project.json
 ```
 
 #### 5.2 Configurar Environment Variables
 
-**Opció A: Via CLI (més ràpid)**
+**OpciÃ³ A: Via CLI (mÃ©s rÃ pid)**
 ```powershell
 # Copiar cada variable a Vercel
 vercel env add SUPABASE_URL production
@@ -373,31 +373,31 @@ vercel env add NODE_ENV production
 # Escriure: production
 ```
 
-**Opció B: Via Dashboard (més visual)**
+**OpciÃ³ B: Via Dashboard (mÃ©s visual)**
 1. https://vercel.com/dashboard
 2. Seleccionar projecte `smart-divination-backend`
-3. Settings → Environment Variables
+3. Settings â†’ Environment Variables
 4. Afegir les 8 variables anteriors
-5. Assegurar "Production" està marcat
+5. Assegurar "Production" estÃ  marcat
 
 #### 5.3 Deploy
 
 ```powershell
-# Deploy a producció
+# Deploy a producciÃ³
 vercel --prod
 
 # Output:
-# 🔍  Inspect: https://vercel.com/...
-# ✅  Production: https://smart-divination-backend-xxxxx.vercel.app
+# ðŸ”  Inspect: https://vercel.com/...
+# âœ…  Production: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 
 # ANOTAR AQUESTA URL!
 ```
 
-### ✅ Verificació
+### âœ… VerificaciÃ³
 
 ```powershell
 # Substituir amb la teva URL
-$URL = "https://smart-divination-backend-xxxxx.vercel.app"
+$URL = "https://backend-gv4a2ueuy-dnitzs-projects.vercel.app"
 
 # Test 1: Health
 curl "$URL/api/health"
@@ -405,13 +405,13 @@ curl "$URL/api/health"
 
 # Test 2: Metrics
 curl "$URL/api/metrics"
-# Esperat: JSON amb mètriques
+# Esperat: JSON amb mÃ¨triques
 
 # Test 3: Draw (sense auth)
 curl -X POST "$URL/api/draw/cards"
-# Esperat: 401 o error validació
+# Esperat: 401 o error validaciÃ³
 
-# Test 4: Script verificació
+# Test 4: Script verificaciÃ³
 cd C:\tarot\scripts
 .\verify-deployment.ps1 $URL
 ```
@@ -419,24 +419,24 @@ cd C:\tarot\scripts
 ### Troubleshooting
 
 **Error: Build failed**
-- Revisar logs a Vercel Dashboard → Deployments
+- Revisar logs a Vercel Dashboard â†’ Deployments
 - Verificar `npm run build` funciona localment
-- Verificar `package.json` té `"build": "next build"`
+- Verificar `package.json` tÃ© `"build": "next build"`
 
 **Error: 500 en production**
 - Revisar Function Logs a Vercel Dashboard
 - Verificar environment variables configurades
-- Verificar Supabase URL és correcte
+- Verificar Supabase URL Ã©s correcte
 
 **Temps estimat**: 45-60 minuts
 
 ---
 
-## ✅ TASCA 6: Build APK Android
+## âœ… TASCA 6: Build APK Android
 
 ### Prerequisits
 - Flutter 3.24+
-- Android SDK instal·lat
+- Android SDK instalÂ·lat
 - Keystore generat (ja existeix: `apps/tarot/android/app/upload-keystore.jks`)
 - Backend desplegat (Tasca 5 OK)
 
@@ -446,7 +446,7 @@ cd C:\tarot\scripts
 cd C:\tarot\smart-divination\apps\tarot
 
 # Definir variables
-$API_URL = "https://smart-divination-backend-xxxxx.vercel.app"
+$API_URL = "https://backend-gv4a2ueuy-dnitzs-projects.vercel.app"
 $SUPABASE_URL = "https://xxxxxxxxx.supabase.co"
 $SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
@@ -457,13 +457,13 @@ flutter build apk --release `
   --dart-define=SUPABASE_ANON_KEY=$SUPABASE_ANON
 
 # Output:
-# ✓ Built build\app\outputs\apk\release\app-release.apk (XX.X MB)
+# âœ“ Built build\app\outputs\apk\release\app-release.apk (XX.X MB)
 ```
 
 ### Verificar APK
 
 ```powershell
-# Localització
+# LocalitzaciÃ³
 dir build\app\outputs\apk\release\app-release.apk
 
 # Mida esperada: 45-50 MB
@@ -473,39 +473,39 @@ jarsigner -verify -verbose -certs build\app\outputs\apk\release\app-release.apk
 # Esperat: "jar verified"
 ```
 
-### Instal·lar en Dispositiu
+### InstalÂ·lar en Dispositiu
 
-**Opció A: Android físic via USB**
+**OpciÃ³ A: Android fÃ­sic via USB**
 ```powershell
-# Habilitar USB Debugging al mòbil
-# Settings → Developer Options → USB Debugging
+# Habilitar USB Debugging al mÃ²bil
+# Settings â†’ Developer Options â†’ USB Debugging
 
 # Connectar USB i verificar
 adb devices
 # Esperat: List of devices attached
 
-# Instal·lar
+# InstalÂ·lar
 adb install -r build\app\outputs\apk\release\app-release.apk
 # Esperat: Success
 ```
 
-**Opció B: Emulador**
+**OpciÃ³ B: Emulador**
 ```powershell
 # Arrencar emulador des d'Android Studio
 # O via CLI:
 emulator -list-avds
 emulator -avd <AVD_NAME>
 
-# Instal·lar
+# InstalÂ·lar
 adb install -r build\app\outputs\apk\release\app-release.apk
 ```
 
-**Opció C: Compartir APK**
+**OpciÃ³ C: Compartir APK**
 - Pujar `app-release.apk` a Google Drive
 - Compartir link amb testers
-- Descarregar i instal·lar (cal habilitar "Unknown Sources")
+- Descarregar i instalÂ·lar (cal habilitar "Unknown Sources")
 
-### ✅ Smoke Tests (15 tests crítics)
+### âœ… Smoke Tests (15 tests crÃ­tics)
 
 ```markdown
 [ ] 1. App obre sense crash
@@ -514,17 +514,17 @@ adb install -r build\app\outputs\apk\release\app-release.apk
 [ ] 4. Crear nou compte
     Email: test.prod@example.com
     Password: Test1234!
-[ ] 5. Rebre confirmació signup
+[ ] 5. Rebre confirmaciÃ³ signup
 [ ] 6. Sign in amb compte creat
 [ ] 7. Dashboard es carrega
 [ ] 8. Eligibility card es mostra
-[ ] 9. Draw form és visible
+[ ] 9. Draw form Ã©s visible
 [ ] 10. Fer draw de tarot (sense question)
 [ ] 11. Resultat es mostra (cartes)
-[ ] 12. Demanar interpretació
+[ ] 12. Demanar interpretaciÃ³
 [ ] 13. Loading indicator apareix
-[ ] 14. Interpretació AI es mostra
-[ ] 15. Historial conté el draw
+[ ] 14. InterpretaciÃ³ AI es mostra
+[ ] 15. Historial contÃ© el draw
 ```
 
 **Si algun falla**: Documentar error, captura de pantalla, logs
@@ -552,12 +552,12 @@ flutter build apk --release ...
 
 ---
 
-## ✅ TASCA 7: Publicar a Google Play Internal Testing
+## âœ… TASCA 7: Publicar a Google Play Internal Testing
 
 ### Prerequisits
 - Compte Google Play Developer ($25, one-time)
 - AAB compilat
-- Materials mínims (screenshots, icon, descripcions)
+- Materials mÃ­nims (screenshots, icon, descripcions)
 
 ### 7.1 Crear Compte Developer
 
@@ -565,11 +565,11 @@ flutter build apk --release ...
 2. Sign in amb Google
 3. Pagar $25 USD
 4. Completar perfil developer
-5. ⏳ Esperar aprovació (normalment instant, pot trigar 48h)
+5. â³ Esperar aprovaciÃ³ (normalment instant, pot trigar 48h)
 
-### 7.2 Preparar Materials Mínims
+### 7.2 Preparar Materials MÃ­nims
 
-#### Screenshots (mínim 2)
+#### Screenshots (mÃ­nim 2)
 ```powershell
 # Capturar des de l'app:
 # 1. Sign in screen
@@ -579,12 +579,12 @@ flutter build apk --release ...
 # Requisits:
 # - Mida: 16:9 (ex: 1080x1920)
 # - Format: PNG o JPG
-# - Mínim: 2 screenshots
+# - MÃ­nim: 2 screenshots
 ```
 
 #### App Icon (512x512)
 ```powershell
-# Localització actual:
+# LocalitzaciÃ³ actual:
 C:\tarot\smart-divination\apps\tarot\android\app\src\main\res\mipmap-xxxhdpi\ic_launcher.png
 
 # Cal redimensionar a 512x512 si cal
@@ -593,7 +593,7 @@ C:\tarot\smart-divination\apps\tarot\android\app\src\main\res\mipmap-xxxhdpi\ic_
 
 #### Descripcions
 
-**Curta** (màx 80 chars):
+**Curta** (mÃ x 80 chars):
 ```
 Tarot readings with AI-powered interpretations
 ```
@@ -605,11 +605,11 @@ Smart Tarot: Your Digital Spiritual Guide
 Discover the power of tarot with personalized AI interpretations.
 
 FEATURES:
-✨ Traditional tarot spreads
-🤖 AI-generated interpretations
-📚 Session history
-🔒 Secure authentication
-🌍 Multilingual (English, Spanish, Catalan)
+âœ¨ Traditional tarot spreads
+ðŸ¤– AI-generated interpretations
+ðŸ“š Session history
+ðŸ”’ Secure authentication
+ðŸŒ Multilingual (English, Spanish, Catalan)
 
 PRIVACY:
 Your data is encrypted and private. Only you can access your readings.
@@ -622,7 +622,7 @@ NOTE: This app is in beta. Contact us at support@smartdivination.app
 # Crear fitxer simple:
 # C:\tarot\docs\privacy_policy.html
 
-# Contingut mínim:
+# Contingut mÃ­nim:
 - Dades recollides: email, session history
 - Com s'usen: account, history
 - Amb qui es comparteixen: Supabase, DeepSeek
@@ -640,7 +640,7 @@ cd C:\tarot\smart-divination\apps\tarot
 
 # Build Android App Bundle
 flutter build appbundle --release `
-  --dart-define=API_BASE_URL=https://smart-divination-backend-xxxxx.vercel.app `
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app `
   --dart-define=SUPABASE_URL=https://xxxxxxxxx.supabase.co `
   --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
@@ -650,7 +650,7 @@ flutter build appbundle --release `
 
 ### 7.4 Crear App a Play Console
 
-1. Play Console → **Create app**
+1. Play Console â†’ **Create app**
    - Name: `Smart Tarot`
    - Default language: English
    - Type: App
@@ -667,7 +667,7 @@ flutter build appbundle --release `
    - Privacy policy: https://...
 
 3. **Content Rating**
-   - Qüestionari: No violence, no sexual, etc.
+   - QÃ¼estionari: No violence, no sexual, etc.
    - Result: PEGI 3 / Everyone
 
 4. **Target Audience**
@@ -680,7 +680,7 @@ flutter build appbundle --release `
 
 ### 7.5 Create Internal Testing Release
 
-1. Dashboard → **Testing** → **Internal testing**
+1. Dashboard â†’ **Testing** â†’ **Internal testing**
 2. **Create new release**
 3. Upload `app-release.aab`
 4. Release name: `Beta 1.0.0 (1)`
@@ -691,14 +691,14 @@ flutter build appbundle --release `
    - AI interpretations
    - Session history
    ```
-6. **Save** → **Review** → **Start rollout**
-7. ⏳ Esperar 1-2h (revisió automàtica)
+6. **Save** â†’ **Review** â†’ **Start rollout**
+7. â³ Esperar 1-2h (revisiÃ³ automÃ tica)
 
 ### 7.6 Afegir Testers
 
-1. **Internal testing** → **Testers**
+1. **Internal testing** â†’ **Testers**
 2. Create email list
-3. Add emails (màx 100):
+3. Add emails (mÃ x 100):
    ```
    tu@example.com
    tester1@example.com
@@ -707,13 +707,13 @@ flutter build appbundle --release `
 4. Copy testing link
 5. Enviar als testers via email
 
-### ✅ Verificació Final
+### âœ… VerificaciÃ³ Final
 
 ```markdown
 [ ] App apareix a Play Console
 [ ] Status: Internal testing
 [ ] Testers rebut link
-[ ] Al menys 1 tester ha instal·lat
+[ ] Al menys 1 tester ha instalÂ·lat
 [ ] No crashes reportats
 ```
 
@@ -721,7 +721,7 @@ flutter build appbundle --release `
 
 ---
 
-## 📊 RESUM FASE 1
+## ðŸ“Š RESUM FASE 1
 
 ### Temps Total
 - Tasca 1: 15-30 min (Melos)
@@ -735,12 +735,12 @@ flutter build appbundle --release `
 **TOTAL: 8-11 hores** (2-3 dies a temps parcial)
 
 ### Deliverables
-- ✅ Workspace Melos funcional
-- ✅ Backend en producció (Vercel)
-- ✅ Base de dades operacional (Supabase)
-- ✅ APK Android signat i testat
-- ✅ App a Google Play Internal Testing
-- ✅ 10+ testers invitats
+- âœ… Workspace Melos funcional
+- âœ… Backend en producciÃ³ (Vercel)
+- âœ… Base de dades operacional (Supabase)
+- âœ… APK Android signat i testat
+- âœ… App a Google Play Internal Testing
+- âœ… 10+ testers invitats
 
 ### Properes Passes (FASE 2)
 - iOS signing i TestFlight
@@ -751,13 +751,13 @@ flutter build appbundle --release `
 
 ---
 
-## 🆘 Suport
+## ðŸ†˜ Suport
 
 Si trobes problemes:
 1. Revisar logs (Vercel, Supabase Dashboard)
 2. Verificar credencials sense typos
-3. Consultar documentació oficial
+3. Consultar documentaciÃ³ oficial
 4. Contactar equip de desenvolupament
 
 **Data document**: 2025-10-03
-**Versió**: 1.0 (FASE 1)
+**VersiÃ³**: 1.0 (FASE 1)

@@ -10,7 +10,7 @@ Smart Divination remains under active development, but the current snapshot ja d
 - **Nou**: Endpoint de recomanació de spreads `POST /api/spread/recommend` utilitza IA (DeepSeek) per seleccionar la tirada més adequada amb **raonaments càlids i extensos** (2-4 frases) que expliquen el PER QUÈ i el COM llegir la tirada, amb to místic però pràctic.
 - Rutes d'historial i perfil (`GET /api/sessions/:userId`, `GET /api/users/:userId/profile`, `GET /api/users/:userId/can-start-session`) retornen dades reals amb Supabase; quan falten claus, fan degradació controlada a respostes buides.
 - Mètriques (`GET /api/metrics`) i proves Jest cobreixen draw, interpretació, sessions i usuaris. Encara manca proveir dashboards o alarmes operacionals.
-- **Desplegat a Vercel** en producció amb alias `smart-divination.vercel.app`.
+- **Desplegat a Vercel** en producció amb alias `backend-gv4a2ueuy-dnitzs-projects.vercel.app`.
 
 ## Flutter Workspace
 - **Nou**: `apps/tarot` ha rebut millores significatives d'UI:

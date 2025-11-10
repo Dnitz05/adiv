@@ -1,4 +1,4 @@
-# Secrets Management Guide
+﻿# Secrets Management Guide
 
 This document details all secrets required for CI/CD pipelines, deployment, and production operation of the Smart Divination platform.
 
@@ -170,7 +170,7 @@ flutter build apk \
 
 ```bash
 flutter build appbundle --release \
-  --dart-define=API_BASE_URL=https://smart-divination.vercel.app \
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
   --dart-define=SUPABASE_URL=$SUPABASE_URL \
   --dart-define=SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
 ```

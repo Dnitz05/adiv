@@ -3377,16 +3377,16 @@ class _HomeState extends State<_Home> {
                             color: _selectedBottomNavIndex == 0
                                 ? const Color(0xFF44385c)
                                 : const Color(0xFF44385c).withValues(alpha: 0.5),
-                            size: 26,
+                            size: 20,
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: 4),
                           Text(
                             'HOME',
                             style: TextStyle(
                               color: _selectedBottomNavIndex == 0
                                   ? const Color(0xFF44385c)
                                   : const Color(0xFF44385c).withValues(alpha: 0.5),
-                              fontSize: _selectedBottomNavIndex == 0 ? 13 : 12,
+                              fontSize: _selectedBottomNavIndex == 0 ? 11 : 10,
                               fontWeight: _selectedBottomNavIndex == 0 ? FontWeight.w700 : FontWeight.w400,
                               letterSpacing: _selectedBottomNavIndex == 0 ? 0.2 : 0,
                             ),

@@ -1,4 +1,4 @@
-# Blockers cleared - Smart Tarot
+﻿# Blockers cleared - Smart Tarot
 
 Date: 2025-10-05
 Status: all launch-critical blockers resolved
@@ -10,7 +10,7 @@ Status: all launch-critical blockers resolved
 ### Backend deployed to Vercel
 - Previous state: 404 NOT_FOUND
 - Current state: production deployment verified
-- URL: https://backend-4sircya71-dnitzs-projects.vercel.app
+- URL: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - Endpoints confirmed: `/api/health` (200), `/api/draw/cards` (401 unauthenticated), `/api/metrics` (403 protected)
 - Environment variables set: SUPABASE_URL/ANON_KEY/SERVICE_ROLE_KEY, DEEPSEEK_API_KEY, RANDOM_ORG_KEY, ENABLE_ICHING=false, ENABLE_RUNES=false, NODE_ENV=production, METRICS_PROVIDER=console, METRICS_DEBUG=false
 

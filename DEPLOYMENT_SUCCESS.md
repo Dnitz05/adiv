@@ -1,4 +1,4 @@
-# Deployment success - Smart Tarot production
+ï»¿# Deployment success - Smart Tarot production
 
 Date: 2025-10-05
 Duration: 45 minutes total
@@ -9,7 +9,7 @@ Status: all systems operational (manual checks complete)
 ## Deployed services
 
 ### Backend API
-- URL: https://backend-4sircya71-dnitzs-projects.vercel.app
+- URL: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - Status: live
 - Health: Supabase healthy (~1 s), Random.org degraded (fallback available)
 - Endpoints verified: `/api/health` (200), `/api/draw/cards` (401 unauthenticated), `/api/metrics` (403 protected)
@@ -81,14 +81,14 @@ Status: all systems operational (manual checks complete)
 ---
 
 ## Scripts created
-1. `scripts/vercel/setup_env_vars.ps1` – loads Vercel env vars from local environment
-2. `scripts/android/setup_local_signing.ps1` – documents manual signing setup from GitHub secrets
-3. `scripts/android/decode_keystore.ps1` – verifies keystore presence locally
+1. `scripts/vercel/setup_env_vars.ps1` â€“ loads Vercel env vars from local environment
+2. `scripts/android/setup_local_signing.ps1` â€“ documents manual signing setup from GitHub secrets
+3. `scripts/android/decode_keystore.ps1` â€“ verifies keystore presence locally
 
 ---
 
 ## Production URLs
-- Backend API: https://backend-4sircya71-dnitzs-projects.vercel.app
+- Backend API: https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - Supabase dashboard: https://supabase.com/dashboard/project/vanrixxzaawybszeuivb
 - Vercel dashboard: https://vercel.com/dnitzs-projects/backend
 

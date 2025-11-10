@@ -1,16 +1,16 @@
-# 📊 INFORME FINAL - JOURNAL/ARCHIVE SYSTEM
+﻿# ðŸ“Š INFORME FINAL - JOURNAL/ARCHIVE SYSTEM
 ## Smart Divination Platform
 
 **Data:** 2025-11-07
-**Estat:** ✅ **IMPLEMENTACIÓ COMPLETA I AL REPOSITORI REMOT**
+**Estat:** âœ… **IMPLEMENTACIÃ“ COMPLETA I AL REPOSITORI REMOT**
 
 ---
 
 ## 1. ESTAT DEL REPOSITORI
 
-✅ **Branch sincronitzat amb origin/master**
-✅ **Tots els commits Journal pushejats correctament**
-✅ **Working tree net (només canvis locals no relacionats)**
+âœ… **Branch sincronitzat amb origin/master**
+âœ… **Tots els commits Journal pushejats correctament**
+âœ… **Working tree net (nomÃ©s canvis locals no relacionats)**
 
 ### Commits recents:
 ```
@@ -19,25 +19,25 @@ b436fb6b feat: update launcher icon with latest icon2.png
 374f60a6 feat: improve header and footer layout with visual separation
 36992847 feat: simplify home header to show only date
 42f9fe18 fix: add bright colors to Personal and Decisions buttons
-963e7373 feat: implement journal/archive system with Supabase ETL ⭐
+963e7373 feat: implement journal/archive system with Supabase ETL â­
 96cc4b93 feat: add loading indicator and improved logging for daily draw
 7e19c093 fix: reduce lunar widget height to show other panels
 ```
 
-**Commit principal Journal:** `963e7373` + millores posteriors en commits subsegüents
+**Commit principal Journal:** `963e7373` + millores posteriors en commits subsegÃ¼ents
 
 ---
 
 ## 2. COMPONENTS IMPLEMENTATS
 
-### 📦 DATABASE (Supabase/PostgreSQL)
+### ðŸ“¦ DATABASE (Supabase/PostgreSQL)
 
-**Migració:** `20251107161635_journal_user_activities.sql` (209 línies)
+**MigraciÃ³:** `20251107161635_journal_user_activities.sql` (209 lÃ­nies)
 
 - **Taula:** `user_activities` (12 columnes)
   - Core: `id`, `user_id`, `activity_type`, `activity_status`, `activity_date`
   - Content: `title`, `summary`, `payload`, `metadata`
-  - Relations: `session_id` (FK → sessions)
+  - Relations: `session_id` (FK â†’ sessions)
   - Lunar: `lunar_phase_id`, `lunar_zodiac_name`
   - Soft delete: `deleted_at`
 
@@ -46,7 +46,7 @@ b436fb6b feat: update launcher icon with latest icon2.png
   - `journal_activity_status` (3 valors): completed, partial, archived
 
 - **ETL Trigger:**
-  - Funció: `sync_session_to_activities()`
+  - FunciÃ³: `sync_session_to_activities()`
   - Trigger: `trg_sync_session_to_activities`
   - Auto-popula `user_activities` des de `sessions` en INSERT/UPDATE
 
@@ -56,87 +56,87 @@ b436fb6b feat: update launcher icon with latest icon2.png
 
 ---
 
-### 🔌 BACKEND API (Next.js)
+### ðŸ”Œ BACKEND API (Next.js)
 
-**Service Layer:** `journal-service.ts` (408 línies)
+**Service Layer:** `journal-service.ts` (408 lÃ­nies)
 
 **3 Endpoints REST:**
 
 1. **GET /api/journal/timeline**
-   - Paginació cursor-based
+   - PaginaciÃ³ cursor-based
    - Filtres: types, phase, period, search
    - Response: `{ entries[], hasMore, nextCursor }`
 
 2. **GET /api/journal/stats**
    - Agregacions per tipus i fase lunar
-   - Períodes: today, week, month, all
+   - PerÃ­odes: today, week, month, all
    - Response: `{ totalActivities, totalsByType, totalsByPhase }`
 
 3. **GET /api/journal/day/[date]**
-   - Resum per dia específic (YYYY-MM-DD)
+   - Resum per dia especÃ­fic (YYYY-MM-DD)
    - Response: `{ date, entries[], totalActivities, totalsByType }`
 
 ---
 
-### 📱 FLUTTER MOBILE APP
+### ðŸ“± FLUTTER MOBILE APP
 
-#### Models (243 línies total)
+#### Models (243 lÃ­nies total)
 
-- **journal_entry.dart** (202 línies)
+- **journal_entry.dart** (202 lÃ­nies)
   - `JournalEntry` - Model principal
-  - `JournalTimelineResponse` - Wrapper paginació
-  - `JournalStats` - Estadístiques
+  - `JournalTimelineResponse` - Wrapper paginaciÃ³
+  - `JournalStats` - EstadÃ­stiques
   - `JournalDaySummary` - Resum diari
   - `JournalActivityType` (11 enums)
   - `JournalActivityStatus` (3 enums)
 
-- **journal_filters.dart** (41 línies)
-  - `JournalFilters` - Configuració filtres
+- **journal_filters.dart** (41 lÃ­nies)
+  - `JournalFilters` - ConfiguraciÃ³ filtres
   - `JournalFilterPeriod` (4 enums)
 
-#### State Management (98 línies)
+#### State Management (98 lÃ­nies)
 
 - **JournalController** (`ChangeNotifier`)
   - State: entries, filters, loading, hasMore, cursor
   - Methods: loadInitial(), loadMore(), updateFilters(), refresh()
 
-#### API Client (110 línies)
+#### API Client (110 lÃ­nies)
 
 - **JournalApiClient**
   - HTTP client per tots els endpoints
   - Error handling amb status codes
-  - Suport filtres i paginació
+  - Suport filtres i paginaciÃ³
 
-#### UI Widgets (869 línies total)
+#### UI Widgets (869 lÃ­nies total)
 
-1. **ArchiveScreen** (211 línies)
+1. **ArchiveScreen** (211 lÃ­nies)
    - StatefulWidget amb Provider
    - Layout: RefreshIndicator + CustomScrollView
    - 3 slivers: Stats, Calendar, Timeline/Empty
    - Features: pull-to-refresh, filters, empty states
 
-2. **journal_entry_card.dart** (149 línies)
+2. **journal_entry_card.dart** (149 lÃ­nies)
    - Card individual per cada entry
    - Icon + color per tipus d'activitat
    - Title, summary, timestamp, type chip
    - 11 colors i icons diferents
 
-3. **journal_timeline_view.dart** (55 línies)
+3. **journal_timeline_view.dart** (55 lÃ­nies)
    - SliverList amb infinite scroll
    - Loading indicator al final
-   - Auto-load més entries
+   - Auto-load mÃ©s entries
 
-4. **journal_calendar_view.dart** (137 línies)
+4. **journal_calendar_view.dart** (137 lÃ­nies)
    - TableCalendar integration
    - Event markers per dies amb activitats
    - Day selection + summary display
 
-5. **journal_stats_card.dart** (113 línies)
+5. **journal_stats_card.dart** (113 lÃ­nies)
    - Insights dashboard
    - Total + top 3 activity types
    - Refresh button
 
-6. **journal_filter_panel.dart** (204 línies)
+6. **journal_filter_panel.dart** (204 lÃ­nies)
    - Bottom sheet modal
    - Search, type filters, phase dropdown, period chips
    - Multi-select activity types
@@ -145,18 +145,18 @@ b436fb6b feat: update launcher icon with latest icon2.png
 
 ## 3. TESTING
 
-### Tests Implementats (357 línies)
+### Tests Implementats (357 lÃ­nies)
 
-**✅ 8/8 tests passing (100%)**
+**âœ… 8/8 tests passing (100%)**
 
-#### Unit Tests (120 línies)
+#### Unit Tests (120 lÃ­nies)
 
 **journal_controller_test.dart** - 3 tests
 1. `loadInitial loads first page and loadMore appends results`
 2. `updateFilters reloads entries when user is initialized`
 3. `loadMore before initialization does nothing`
 
-#### Widget Tests (237 línies)
+#### Widget Tests (237 lÃ­nies)
 
 **archive_screen_test.dart** - 5 tests
 1. `shows empty state when userId is empty`
@@ -165,11 +165,11 @@ b436fb6b feat: update launcher icon with latest icon2.png
 4. `opens filter panel when filter button pressed`
 5. `pull-to-refresh triggers refresh`
 
-**Pattern:** Usa `FakeJournalApiClient` amb queued responses per tests determinístics
+**Pattern:** Usa `FakeJournalApiClient` amb queued responses per tests determinÃ­stics
 
 ---
 
-## 4. DOCUMENTACIÓ
+## 4. DOCUMENTACIÃ“
 
 **6 Documents (30KB total):**
 
@@ -179,67 +179,67 @@ b436fb6b feat: update launcher icon with latest icon2.png
    - Monitoring checklist
 
 2. **JOURNAL_QA_CHECKLIST.md** (7KB)
-   - 70+ items verificació
+   - 70+ items verificaciÃ³
    - Tests backend, frontend, edge cases
    - Performance criteria
 
 3. **JOURNAL_IMPLEMENTATION_REPORT.md** (18KB)
-   - Decisions tècniques
+   - Decisions tÃ¨cniques
    - Files modificats/creats
    - Known issues & limitations
 
 4. **journal_archive_execution_plan.md** (10KB)
-   - Pla d'execució original
-   - Fases implementació
+   - Pla d'execuciÃ³ original
+   - Fases implementaciÃ³
 
 5. **journal_archive_deploy_runbook.md** (3KB)
-   - Runbook concís deployment
+   - Runbook concÃ­s deployment
 
 6. **journal_archive_qa_checklist.md** (3KB)
-   - Checklist QA concís
+   - Checklist QA concÃ­s
 
 ---
 
-## 5. ESTADÍSTIQUES
+## 5. ESTADÃSTIQUES
 
-### Línies de Codi
+### LÃ­nies de Codi
 
-| Component | Línies |
+| Component | LÃ­nies |
 |-----------|--------|
 | Database (SQL) | 209 |
 | Backend (TypeScript) | 408 |
 | Flutter Models | 243 |
 | Flutter State/API | 208 |
 | Flutter UI Widgets | 869 |
-| **Total Producció** | **1,937** |
+| **Total ProducciÃ³** | **1,937** |
 | Tests | 357 |
-| Documentació | ~8,000 |
+| DocumentaciÃ³ | ~8,000 |
 | **TOTAL** | **~10,294** |
 
 ### Fitxers
 
 - **21 fitxers** relacionats amb Journal/Archive al repositori
 - **13 commits** que toquen funcionalitat Journal
-- **6 documents** de documentació
+- **6 documents** de documentaciÃ³
 
 ---
 
 ## 6. FUNCIONALITATS IMPLEMENTADES
 
-### Core Features ✅
+### Core Features âœ…
 
 - [x] Timeline amb infinite scroll
-- [x] Paginació cursor-based (evita offset issues)
+- [x] PaginaciÃ³ cursor-based (evita offset issues)
 - [x] Filtres per tipus d'activitat (11 tipus)
 - [x] Filtres per fase lunar (8 fases)
-- [x] Filtres per període temporal (today/week/month/all)
+- [x] Filtres per perÃ­ode temporal (today/week/month/all)
 - [x] Cerca per text (title + summary)
 - [x] Calendari amb marcadors d'events
 - [x] Resum diari al seleccionar data
-- [x] Estadístiques agregades (total + by type + by phase)
+- [x] EstadÃ­stiques agregades (total + by type + by phase)
 - [x] Pull-to-refresh per actualitzar dades
 
-### UX Features ✅
+### UX Features âœ…
 
 - [x] Empty states (no user / no entries)
 - [x] Loading states (skeleton screens)
@@ -248,125 +248,125 @@ b436fb6b feat: update launcher icon with latest icon2.png
 - [x] Type-specific icons i colors (11 variants)
 - [x] Timestamps en timezone local
 
-### Backend Features ✅
+### Backend Features âœ…
 
-- [x] ETL automàtic: sessions → activities
-- [x] RLS security policies (isolació per user)
+- [x] ETL automÃ tic: sessions â†’ activities
+- [x] RLS security policies (isolaciÃ³ per user)
 - [x] Soft deletes (deleted_at)
-- [x] Índexs optimitzats per queries
-- [x] TypeScript types generats automàticament
+- [x] Ãndexs optimitzats per queries
+- [x] TypeScript types generats automÃ ticament
 - [x] Suport multiidioma (ca/en via locale param)
 
 ---
 
-## 7. ARQUITECTURA TÈCNICA
+## 7. ARQUITECTURA TÃˆCNICA
 
 ### Database Layer
 
 ```
 PostgreSQL (Supabase)
-├── user_activities table
-│   ├── RLS policies (4)
-│   ├── Indexes (2)
-│   └── Foreign keys → sessions, auth.users
-├── ENUMs (2)
-└── Trigger: sync_session_to_activities
-    └── Auto-popula activities des de sessions
+â”œâ”€â”€ user_activities table
+â”‚   â”œâ”€â”€ RLS policies (4)
+â”‚   â”œâ”€â”€ Indexes (2)
+â”‚   â””â”€â”€ Foreign keys â†’ sessions, auth.users
+â”œâ”€â”€ ENUMs (2)
+â””â”€â”€ Trigger: sync_session_to_activities
+    â””â”€â”€ Auto-popula activities des de sessions
 ```
 
 ### Backend API
 
 ```
 Next.js API Routes
-├── /api/journal/timeline
-├── /api/journal/stats
-└── /api/journal/day/[date]
-    └── journal-service.ts (shared logic)
+â”œâ”€â”€ /api/journal/timeline
+â”œâ”€â”€ /api/journal/stats
+â””â”€â”€ /api/journal/day/[date]
+    â””â”€â”€ journal-service.ts (shared logic)
 ```
 
 ### Flutter App
 
 ```
 ArchiveScreen (StatefulWidget)
-├── Provider (JournalController)
-├── RefreshIndicator
-└── CustomScrollView
-    ├── SliverToBoxAdapter (Stats)
-    ├── SliverToBoxAdapter (Calendar)
-    └── JournalTimelineView (SliverList)
-        └── JournalEntryCard (per entry)
+â”œâ”€â”€ Provider (JournalController)
+â”œâ”€â”€ RefreshIndicator
+â””â”€â”€ CustomScrollView
+    â”œâ”€â”€ SliverToBoxAdapter (Stats)
+    â”œâ”€â”€ SliverToBoxAdapter (Calendar)
+    â””â”€â”€ JournalTimelineView (SliverList)
+        â””â”€â”€ JournalEntryCard (per entry)
 ```
 
 ### State Management
 
 ```
 JournalController (ChangeNotifier)
-├── loadInitial(userId, locale)
-├── loadMore() → infinite scroll
-├── updateFilters(filters) → reload
-└── refresh() → pull-to-refresh
+â”œâ”€â”€ loadInitial(userId, locale)
+â”œâ”€â”€ loadMore() â†’ infinite scroll
+â”œâ”€â”€ updateFilters(filters) â†’ reload
+â””â”€â”€ refresh() â†’ pull-to-refresh
 ```
 
 ---
 
-## 8. DECISIONS TÈCNIQUES
+## 8. DECISIONS TÃˆCNIQUES
 
-### ✅ Decisions Preses
+### âœ… Decisions Preses
 
 1. **ETL Trigger vs Batch Job**
-   - ✅ Trigger: Real-time sync, architecture més simple
-   - ❌ Batch: Més fàcil testar però retard en sincronització
+   - âœ… Trigger: Real-time sync, architecture mÃ©s simple
+   - âŒ Batch: MÃ©s fÃ cil testar perÃ² retard en sincronitzaciÃ³
 
 2. **ChangeNotifier vs Riverpod/Bloc**
-   - ✅ ChangeNotifier: Consistència amb codebase existent
-   - ❌ Riverpod: Més modern però requereix refactor
+   - âœ… ChangeNotifier: ConsistÃ¨ncia amb codebase existent
+   - âŒ Riverpod: MÃ©s modern perÃ² requereix refactor
 
 3. **Infinite Scroll vs Full Pagination**
-   - ✅ Infinite: Millor UX mobile, estàndard per timelines
-   - ❌ Pagination: Útil per search results però no timelines
+   - âœ… Infinite: Millor UX mobile, estÃ ndard per timelines
+   - âŒ Pagination: Ãštil per search results perÃ² no timelines
 
 4. **Cursor-based vs Offset Pagination**
-   - ✅ Cursor: Evita duplicats, performance constant
-   - ❌ Offset: Simple però problemes amb inserts concurrents
+   - âœ… Cursor: Evita duplicats, performance constant
+   - âŒ Offset: Simple perÃ² problemes amb inserts concurrents
 
 5. **Soft Delete vs Hard Delete**
-   - ✅ Soft (deleted_at): Permet recovery, undo, auditing
-   - ❌ Hard: Irreversible, complica GDPR compliance
+   - âœ… Soft (deleted_at): Permet recovery, undo, auditing
+   - âŒ Hard: Irreversible, complica GDPR compliance
 
 ---
 
 ## 9. KNOWN ISSUES & LIMITATIONS
 
-### 🟡 Limitacions Actuals
+### ðŸŸ¡ Limitacions Actuals
 
 1. **No Real-Time Updates**
    - Cal pull-to-refresh per veure entries noves d'altres dispositius
    - Future: Supabase Realtime subscriptions
 
 2. **Search Simple**
-   - Només text matching en title/summary
+   - NomÃ©s text matching en title/summary
    - Future: Full-text search amb PostgreSQL tsvector
 
 3. **Backfill Script Incomplet**
-   - Script actual és dry-run only
+   - Script actual Ã©s dry-run only
    - Cal implementar backfill real per historical sessions
 
 4. **No Export Functionality**
    - No es pot exportar journal a PDF/CSV
    - Future: Export feature
 
-### ✅ Issues Resolts Durant Implementació
+### âœ… Issues Resolts Durant ImplementaciÃ³
 
-1. ~~Const constructor errors~~ → Fixed: Made apiClient non-const
-2. ~~LunarPhaseModel undefined~~ → Fixed: Removed invalid method
-3. ~~Widget test failures~~ → Fixed: Added FakeJournalApiClient injection
-4. ~~BOM character in SQL~~ → Fixed: Removed UTF-8 BOM
+1. ~~Const constructor errors~~ â†’ Fixed: Made apiClient non-const
+2. ~~LunarPhaseModel undefined~~ â†’ Fixed: Removed invalid method
+3. ~~Widget test failures~~ â†’ Fixed: Added FakeJournalApiClient injection
+4. ~~BOM character in SQL~~ â†’ Fixed: Removed UTF-8 BOM
 
 ---
 
-## 10. PRÒXIMS PASSOS (DEPLOYMENT)
+## 10. PRÃ’XIMS PASSOS (DEPLOYMENT)
 
-### 📋 Seguir: `docs/JOURNAL_DEPLOYMENT_RUNBOOK.md`
+### ðŸ“‹ Seguir: `docs/JOURNAL_DEPLOYMENT_RUNBOOK.md`
 
 ### Ordre Recomanat:
 
@@ -384,7 +384,7 @@ cd smart-divination/backend
 npm run type-check
 npm run build
 npx vercel --prod
-# Verificar: curl https://smart-divination.vercel.app/api/journal/timeline?limit=10
+# Verificar: curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/timeline?limit=10
 ```
 
 **Fase 3: Flutter Build (15 min)**
@@ -393,11 +393,11 @@ cd smart-divination/apps/tarot
 flutter test  # Verificar tots passing
 flutter analyze  # 0 errors
 JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
-  --dart-define=API_BASE_URL=https://smart-divination.vercel.app
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 **Fase 4: QA Manual (segons checklist)**
-- Crear tarot reading → verificar apareix a Archive
+- Crear tarot reading â†’ verificar apareix a Archive
 - Testar filtres, calendar, stats
 - Scroll through 50+ entries
 - Pull-to-refresh
@@ -415,9 +415,9 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 ### Post-Deployment (30 dies)
 
 #### Adoption
-- [ ] 40%+ usuaris visiten Archive ≥1 vegada
+- [ ] 40%+ usuaris visiten Archive â‰¥1 vegada
 - [ ] 15%+ usuaris visiten Archive setmanalment
-- [ ] Avg 2+ filter interactions per sessió
+- [ ] Avg 2+ filter interactions per sessiÃ³
 
 #### Performance
 - [ ] Archive load time < 2s (p95)
@@ -426,7 +426,7 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 - [ ] Zero data integrity issues
 
 #### Engagement
-- [ ] Avg 30s+ temps a Archive per sessió
+- [ ] Avg 30s+ temps a Archive per sessiÃ³
 - [ ] 20%+ usen pull-to-refresh
 - [ ] 30%+ usen calendar day selection
 - [ ] Rating > 4.0/5.0 en reviews
@@ -441,9 +441,9 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 
 ---
 
-## 12. VERIFICACIÓ FINAL
+## 12. VERIFICACIÃ“ FINAL
 
-### ✅ Checklist Completitud
+### âœ… Checklist Completitud
 
 - [x] **Codi**
   - [x] Tots els fitxers committejats
@@ -455,11 +455,11 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
   - [x] flutter analyze: 0 errors
   - [x] Manual testing: functional
 
-- [x] **Documentació**
+- [x] **DocumentaciÃ³**
   - [x] Deployment runbook complet
   - [x] QA checklist exhaustiu
   - [x] Implementation report detallat
-  - [x] Decisions tècniques documentades
+  - [x] Decisions tÃ¨cniques documentades
 
 - [x] **Database**
   - [x] Migration SQL validada
@@ -480,19 +480,19 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 
 ---
 
-## 🎯 CONCLUSIÓ FINAL
+## ðŸŽ¯ CONCLUSIÃ“ FINAL
 
-### ESTAT: ✅ **LLEST PER DESPLEGAR**
+### ESTAT: âœ… **LLEST PER DESPLEGAR**
 
 **Confidence Level:** ALTA (95%)
 
 **Raons:**
-- ✅ Implementació completa (100% scope)
-- ✅ Tests passing (8/8)
-- ✅ Zero errors de compilació
-- ✅ Documentació exhaustiva
-- ✅ Rollback plan documentat
-- ✅ Architecture reviewed & validated
+- âœ… ImplementaciÃ³ completa (100% scope)
+- âœ… Tests passing (8/8)
+- âœ… Zero errors de compilaciÃ³
+- âœ… DocumentaciÃ³ exhaustiva
+- âœ… Rollback plan documentat
+- âœ… Architecture reviewed & validated
 
 **Risc Estimat:** BAIX
 - Database migration testada
@@ -500,8 +500,8 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 - Flutter widgets testats (unit + widget)
 - Rollback procedure clara
 
-**Recomanació:** Procedir amb staged rollout
-1. Deploy a producció
+**RecomanaciÃ³:** Procedir amb staged rollout
+1. Deploy a producciÃ³
 2. Beta testing (10% usuaris)
 3. Monitor 48h
 4. Full public release
@@ -514,7 +514,7 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 
 ---
 
-## ANNEX: ENLLAÇOS RÀPIDS
+## ANNEX: ENLLAÃ‡OS RÃ€PIDS
 
 - **GitHub Repo:** https://github.com/Dnitz05/adiv
 - **Commit Principal:** `963e7373`
@@ -525,3 +525,4 @@ JAVA_HOME="/c/tarot/temp/jdk/jdk-17.0.2" flutter build apk --release \
 ---
 
 **END OF REPORT**
+

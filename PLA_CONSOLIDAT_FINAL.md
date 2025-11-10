@@ -1,4 +1,4 @@
-# PLA CONSOLIDAT FINAL - SMART DIVINATION TAROT
+﻿# PLA CONSOLIDAT FINAL - SMART DIVINATION TAROT
 
 **Versio**: 2.0 (Ajustada amb feedback programador)
 **Data**: 2025-10-03
@@ -336,12 +336,12 @@ vercel env add NODE_ENV production
 vercel --prod
 
 # ANOTAR URL:
-# https://smart-divination-backend-xxxxx.vercel.app
+# https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 ```
 
 #### Verificar
 ```bash
-$URL = "https://smart-divination-backend-xxxxx.vercel.app"
+$URL = "https://backend-gv4a2ueuy-dnitzs-projects.vercel.app"
 curl "$URL/api/health"
 curl "$URL/api/metrics"
 ```
@@ -357,7 +357,7 @@ curl "$URL/api/metrics"
 ```bash
 cd C:\tarot\smart-divination\apps\tarot
 
-$API_URL = "https://smart-divination-backend-xxxxx.vercel.app"
+$API_URL = "https://backend-gv4a2ueuy-dnitzs-projects.vercel.app"
 $SUPABASE_URL = "https://xxxxxx.supabase.co"
 $SUPABASE_ANON = "eyJhbGci..."
 
@@ -596,7 +596,7 @@ git push
 cd C:\tarot\smart-divination\apps\tarot
 
 flutter build appbundle --release `
-  --dart-define=API_BASE_URL=https://smart-divination-backend-xxxxx.vercel.app `
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app `
   --dart-define=SUPABASE_URL=https://xxxxxx.supabase.co `
   --dart-define=SUPABASE_ANON_KEY=eyJhbGci...
 
@@ -686,7 +686,7 @@ Seguir: `docs/IOS_SIGNING_GUIDE.md`
 ```bash
 cd C:\tarot\smart-divination\apps\tarot
 flutter build ipa --release \
-  --dart-define=API_BASE_URL=https://smart-divination-backend-xxxxx.vercel.app \
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
   --dart-define=SUPABASE_URL=https://xxxxxx.supabase.co \
   --dart-define=SUPABASE_ANON_KEY=eyJhbGci...
 # Utilitzar l'IPA localment via Xcode o Diawi per QA interna

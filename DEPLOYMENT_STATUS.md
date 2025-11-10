@@ -1,52 +1,52 @@
-# Journal/Archive Deployment Status
+﻿# Journal/Archive Deployment Status
 
 **Data:** 2025-11-07 23:10
-**Execució:** Deployment completat
+**ExecuciÃ³:** Deployment completat
 
 ---
 
 ## Estat Components
 
-### ✅ Database (Supabase)
+### âœ… Database (Supabase)
 - Migration aplicada: `20251107161635_journal_user_activities.sql`
 - Taula `user_activities` creada
 - ETL trigger `sync_session_to_activities` actiu
 - RLS policies aplicades
-- **STATUS:** LIVE ✅
+- **STATUS:** LIVE âœ…
 
-### ✅ TypeScript Types
-- Schema types regenerats amb últim schema
-- Fitxer: `backend/lib/types/generated/supabase.ts` (692 línies)
-- **STATUS:** UPDATED ✅
+### âœ… TypeScript Types
+- Schema types regenerats amb Ãºltim schema
+- Fitxer: `backend/lib/types/generated/supabase.ts` (692 lÃ­nies)
+- **STATUS:** UPDATED âœ…
 
-### ✅ Backend API (Vercel)
-- **URL Producció:** https://backend-dnitzs-projects.vercel.app
+### âœ… Backend API (Vercel)
+- **URL ProducciÃ³:** https://backend-gv4a2ueuy-dnitzs-projects.vercel.app
 - **Deployment:** backend-564homt86-dnitzs-projects.vercel.app
 - **Build Time:** 30s
-- **Status:** Ready ✅
+- **Status:** Ready âœ…
 
 #### Endpoints Verificats:
-1. ✅ `/api/journal/timeline` → 401 (auth working)
-2. ✅ `/api/journal/stats` → 401 (auth working)
-3. ✅ `/api/journal/day/[date]` → 401 (auth working)
+1. âœ… `/api/journal/timeline` â†’ 401 (auth working)
+2. âœ… `/api/journal/stats` â†’ 401 (auth working)
+3. âœ… `/api/journal/day/[date]` â†’ 401 (auth working)
 
 Service layer: `journal-service.ts`
 
-### ✅ Fixes Aplicats
+### âœ… Fixes Aplicats
 1. **TypeScript Type Errors:**
-   - ✅ Corregit casting de `Json` a `Record<string, unknown>` en `journal-service.ts`
-   - ✅ Corregits imports paths als 3 endpoints (nombre incorrecte de `../`)
-   - ✅ Corregit type assertion per `phase` parameter en timeline
+   - âœ… Corregit casting de `Json` a `Record<string, unknown>` en `journal-service.ts`
+   - âœ… Corregits imports paths als 3 endpoints (nombre incorrecte de `../`)
+   - âœ… Corregit type assertion per `phase` parameter en timeline
 
 2. **Build Success:**
-   - ✅ Compilació TypeScript exitosa
-   - ✅ Tots els endpoints apareixen al Next.js build output
+   - âœ… CompilaciÃ³ TypeScript exitosa
+   - âœ… Tots els endpoints apareixen al Next.js build output
 
 3. **Commit:**
    - Commit: `699b1dfd` - fix: resolve TypeScript build errors in journal API endpoints
-   - Pushat a origin/master ✅
+   - Pushat a origin/master âœ…
 
-### ✅ Flutter App - Header Redesign, Floating Behavior & Real Card Images
+### âœ… Flutter App - Header Redesign, Floating Behavior & Real Card Images
 - **Commits:**
   - `b3907702` - feat: redesign app header with logo, credits badge and GO PRO CTA
   - `396b07aa` - feat: add floating header with hide-on-scroll behavior
@@ -57,114 +57,114 @@ Service layer: `journal-service.ts`
   - `a82dd234` - feat: harmonize Learn panel colors with app theme
   - `7d32bbf1` - feat: replace flat background with celestial gradient
 - **Data:** 2025-11-07/08
-- **STATUS:** LIVE ON DEVICE ✅
+- **STATUS:** LIVE ON DEVICE âœ…
 
 #### Canvis Implementats:
 1. **Layout Header:**
-   - Menú hamburger a l'esquerra (leading)
+   - MenÃº hamburger a l'esquerra (leading)
    - Logo lunar circular + data centrada (title)
-   - Crèdits amb badge GO PRO a la dreta (actions)
-   - Icona crèdits: ⭐ Stars (més representatiu que sol)
-   - Altura reduïda: 76px → 48px
+   - CrÃ¨dits amb badge GO PRO a la dreta (actions)
+   - Icona crÃ¨dits: â­ Stars (mÃ©s representatiu que sol)
+   - Altura reduÃ¯da: 76px â†’ 48px
 
 2. **Nou Widget:**
-   - `_CreditsWithProBadge`: Badge dorat amb gradient 🟡→🟠
-   - Icona sol + nombre de crèdits
-   - Botó GO PRO amb ombra
+   - `_CreditsWithProBadge`: Badge dorat amb gradient ðŸŸ¡â†’ðŸŸ 
+   - Icona sol + nombre de crÃ¨dits
+   - BotÃ³ GO PRO amb ombra
 
 3. **Modal GO PRO:**
    - Header amb gradient daurat
-   - 4 beneficis clau (crèdits il·limitats, spreads, IA prioritària, sense ads)
-   - Info box amb crèdits gratuïts
-   - CTAs: "Potser Més Tard" / "Millorar Ara"
-   - Multilingüe (EN/ES/CA)
+   - 4 beneficis clau (crÃ¨dits ilÂ·limitats, spreads, IA prioritÃ ria, sense ads)
+   - Info box amb crÃ¨dits gratuÃ¯ts
+   - CTAs: "Potser MÃ©s Tard" / "Millorar Ara"
+   - MultilingÃ¼e (EN/ES/CA)
 
 4. **Floating Header (Hide-on-Scroll):**
-   - ✨ Header desapareix quan fas scroll avall
-   - ✨ Header apareix quan fas scroll amunt
+   - âœ¨ Header desapareix quan fas scroll avall
+   - âœ¨ Header apareix quan fas scroll amunt
    - Implementat amb `NestedScrollView` + `SliverAppBar`
    - Properties: `floating: true`, `snap: true`, `pinned: false`
-   - Patró UX modern (similar a Instagram, Twitter, Google Maps)
+   - PatrÃ³ UX modern (similar a Instagram, Twitter, Google Maps)
    - Maximitza espai per contingut sense perdre accessibilitat
 
 5. **Assets:**
    - Nou logo: `assets/branding/logo.png`
 
 6. **Real Tarot Card Images (Daily Draw):**
-   - ✨ Imatge real del revers: `card-back.png` (disseny blau celestial)
+   - âœ¨ Imatge real del revers: `card-back.png` (disseny blau celestial)
      * Seed of Life al centre
      * Llunes crescents dalt i baix
      * Camp d'estrelles daurat
      * Estil professional tarot deck
-   - ✨ Imatges reals de cartes: 81 JPGs professionals
+   - âœ¨ Imatges reals de cartes: 81 JPGs professionals
      * Major Arcana: 00-TheFool.jpg fins 21-TheWorld.jpg
      * Minor Arcana: totes les cartes de Wands, Cups, Swords, Pentacles
-   - Canvi tècnic: SvgPicture.asset → Image.asset
+   - Canvi tÃ¨cnic: SvgPicture.asset â†’ Image.asset
    - CardImageMapper ja configurat per JPG paths
    - Visual upgrade: artwork professional en lloc de placeholders
 
 7. **Card-Back SVG Designs (Historical):**
-   - ✨ Gradients celestials profunds (radial purple/indigo)
-   - ✨ Efecte gold foil amb gradient de 5 stops
-   - ✨ Marc triple ornamental amb filigrana als cantons
-   - ✨ Mandala central intrincada (5+ capes):
+   - âœ¨ Gradients celestials profunds (radial purple/indigo)
+   - âœ¨ Efecte gold foil amb gradient de 5 stops
+   - âœ¨ Marc triple ornamental amb filigrana als cantons
+   - âœ¨ Mandala central intrincada (5+ capes):
      * Geometria sagrada: Flower of Life
      * Estrella de 8 puntes
-     * Múltiples cercles decoratius
-   - 🌙 Lluna amb cara humana (estil clàssic celestial)
-   - ☀️ Sol amb cara humana + 16 raigs ornamentals
-   - 🌿 Ornaments florals Art Nouveau als laterals
-   - ♀️♂️ Símbols astrològics als cantons (Mercury, Venus, Mars, Jupiter)
-   - ⭐ Halo d'estrelles daurades + camp estel·lar subtil
-   - ✨ Partícules shimmer + línies d'energia mística
+     * MÃºltiples cercles decoratius
+   - ðŸŒ™ Lluna amb cara humana (estil clÃ ssic celestial)
+   - â˜€ï¸ Sol amb cara humana + 16 raigs ornamentals
+   - ðŸŒ¿ Ornaments florals Art Nouveau als laterals
+   - â™€ï¸â™‚ï¸ SÃ­mbols astrolÃ²gics als cantons (Mercury, Venus, Mars, Jupiter)
+   - â­ Halo d'estrelles daurades + camp estelÂ·lar subtil
+   - âœ¨ PartÃ­cules shimmer + lÃ­nies d'energia mÃ­stica
    - Inspirat en: Rider-Waite, Golden Thread, Apollo Tarot luxury decks
-   - SVG: 307 línies (efecte multicapa professional)
+   - SVG: 307 lÃ­nies (efecte multicapa professional)
 
 8. **Celestial Gradient Background:**
-   - ✨ Sistema de 3 capes de gradients per fons viu i etèric
-   - Gradient lineal vertical: Lavanda estel·lar (#E8E5F5) → Llum de lluna (#F0EFF7) → Porpra-blanc suau (#E8E0F0)
-   - Radial glow superior dret: cosmicAccent (porpra lluminós) amb opacity 0.08
+   - âœ¨ Sistema de 3 capes de gradients per fons viu i etÃ¨ric
+   - Gradient lineal vertical: Lavanda estelÂ·lar (#E8E5F5) â†’ Llum de lluna (#F0EFF7) â†’ Porpra-blanc suau (#E8E0F0)
+   - Radial glow superior dret: cosmicAccent (porpra lluminÃ³s) amb opacity 0.08
    - Radial glow inferior esquerre: cosmicBlue amb opacity 0.06
    - Harmonitzat amb paleta celestial de l'app (TarotTheme)
-   - Millora visual: de fons pla purple[50] a ambient atmosfèric multicapa
+   - Millora visual: de fons pla purple[50] a ambient atmosfÃ¨ric multicapa
 
-- **Flutter Analyze:** ✅ (només warnings menors)
-- **APK Build:** ✅ (68.6MB, 131.7s build time)
-- **Installation:** ✅ Deployed to device RCWSWS9LJRFADQSC
-- **STATUS:** LIVE ON DEVICE ✅
+- **Flutter Analyze:** âœ… (nomÃ©s warnings menors)
+- **APK Build:** âœ… (68.6MB, 131.7s build time)
+- **Installation:** âœ… Deployed to device RCWSWS9LJRFADQSC
+- **STATUS:** LIVE ON DEVICE âœ…
 
 ---
 
-## Verificació Endpoints
+## VerificaciÃ³ Endpoints
 
 ```bash
 # Timeline
-curl https://backend-dnitzs-projects.vercel.app/api/journal/timeline?limit=1
-# Response: 401 (auth required) ✅
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/timeline?limit=1
+# Response: 401 (auth required) âœ…
 
 # Stats
-curl https://backend-dnitzs-projects.vercel.app/api/journal/stats
-# Response: 401 (auth required) ✅
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/stats
+# Response: 401 (auth required) âœ…
 
 # Day
-curl https://backend-dnitzs-projects.vercel.app/api/journal/day/2025-11-07
-# Response: 401 (auth required) ✅
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/journal/day/2025-11-07
+# Response: 401 (auth required) âœ…
 ```
 
 ---
 
-## Pròxims Passos
+## PrÃ²xims Passos
 
-1. ✅ ~~Database migration~~
-2. ✅ ~~Backend deployment~~
-3. ✅ ~~Endpoints verification~~
-4. ⏳ Build Flutter APK amb API_BASE_URL correcte
-5. ⏳ QA testing amb l'app
-6. ⏳ Release a stores
+1. âœ… ~~Database migration~~
+2. âœ… ~~Backend deployment~~
+3. âœ… ~~Endpoints verification~~
+4. â³ Build Flutter APK amb API_BASE_URL correcte
+5. â³ QA testing amb l'app
+6. â³ Release a stores
 
 ---
 
-## Notes Tècniques
+## Notes TÃ¨cniques
 
 ### Issues Resolts:
 1. **404 errors:** Els endpoints estaven al projecte "backend" de Vercel, no "smart-divination"
@@ -172,25 +172,25 @@ curl https://backend-dnitzs-projects.vercel.app/api/journal/day/2025-11-07
 3. **Type errors:** `Json` vs `Record<string, unknown>` casting
 4. **Phase type:** String vs LunarPhase enum union
 
-### Configuració Vercel:
+### ConfiguraciÃ³ Vercel:
 - Projecte backend: `prj_1W7dSxmVE6qwzuX4xaqr9EkoCbAC`
 - Aliases:
-  - https://backend-dnitzs-projects.vercel.app (PRODUCTION)
+  - https://backend-gv4a2ueuy-dnitzs-projects.vercel.app (PRODUCTION)
   - https://backend-three-ruddy-25.vercel.app
   - https://backend-dnitz05-dnitzs-projects.vercel.app
 
 ### Build Output:
 ```
 Route (pages)
-├ ƒ /api/journal/day/[date]                0 B            79.8 kB
-├ ƒ /api/journal/stats                     0 B            79.8 kB
-├ ƒ /api/journal/timeline                  0 B            79.8 kB
+â”œ Æ’ /api/journal/day/[date]                0 B            79.8 kB
+â”œ Æ’ /api/journal/stats                     0 B            79.8 kB
+â”œ Æ’ /api/journal/timeline                  0 B            79.8 kB
 ```
 
 ---
 
-**Deployment Status:** ✅ **SUCCESS**
-**Endpoints:** ✅ **LIVE**
-**Tests:** ✅ **PASSING (8/8)**
+**Deployment Status:** âœ… **SUCCESS**
+**Endpoints:** âœ… **LIVE**
+**Tests:** âœ… **PASSING (8/8)**
 
-*Actualitzat automàticament per Claude Code*
+*Actualitzat automÃ ticament per Claude Code*

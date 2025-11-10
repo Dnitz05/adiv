@@ -1,33 +1,33 @@
-# Play Store Submission Guide - Smart Divination Tarot
+﻿# Play Store Submission Guide - Smart Divination Tarot
 
 ## Prerequisites
 
-### ✅ Complete (as of 2025-10-16)
-- ✅ **Signed AAB generated**: `app-release.aab` (45.7MB) ready for upload
-- ✅ **Signed APK generated**: `app-release.apk` (55MB) tested on physical device
-- ✅ **Android signing configured**: keystore `upload-keystore.jks` with password/alias set
-- ✅ **App icon ready**: 1024x1024 icon with adaptive mipmaps integrated
-- ✅ **AndroidManifest.xml updated**: app label set to "Smart Tarot"
-- ✅ **Physical device testing**: app successfully installs and runs on Android device
+### âœ… Complete (as of 2025-10-16)
+- âœ… **Signed AAB generated**: `app-release.aab` (45.7MB) ready for upload
+- âœ… **Signed APK generated**: `app-release.apk` (55MB) tested on physical device
+- âœ… **Android signing configured**: keystore `upload-keystore.jks` with password/alias set
+- âœ… **App icon ready**: 1024x1024 icon with adaptive mipmaps integrated
+- âœ… **AndroidManifest.xml updated**: app label set to "Smart Tarot"
+- âœ… **Physical device testing**: app successfully installs and runs on Android device
 
-### ⏳ Pending
-- ⏳ Active Google Play Console account with Release Manager access
-- ⏳ Complete metadata: short name, short/long description, category, tags (drafts in `docs/store-metadata/play_store_copy.md`)
-- ⏳ Artwork: 1024x500 feature graphic (512x512 icon ready, need feature graphic)
-- ⏳ Screenshots: minimum two 1080x1920 screenshots per device type (phone required, tablet optional)
-- ⏳ Published privacy policy with accessible URL (template in `docs/store-metadata/privacy_policy_template.md`)
-- ⏳ Published terms of service (template in `docs/store-metadata/terms_template.md`)
-- ⏳ `versionCode` and `versionName` verified in `android/app/build.gradle.kts`
+### â³ Pending
+- â³ Active Google Play Console account with Release Manager access
+- â³ Complete metadata: short name, short/long description, category, tags (drafts in `docs/store-metadata/play_store_copy.md`)
+- â³ Artwork: 1024x500 feature graphic (512x512 icon ready, need feature graphic)
+- â³ Screenshots: minimum two 1080x1920 screenshots per device type (phone required, tablet optional)
+- â³ Published privacy policy with accessible URL (template in `docs/store-metadata/privacy_policy_template.md`)
+- â³ Published terms of service (template in `docs/store-metadata/terms_template.md`)
+- â³ `versionCode` and `versionName` verified in `android/app/build.gradle.kts`
 
 ## Step-by-step
-1. **Prepare binary** ✅ COMPLETE
-   - ✅ Signed AAB available at: `smart-divination/apps/tarot/build/app/outputs/bundle/release/app-release.aab` (45.7MB)
-   - ✅ Signing verified with production keystore: `upload-keystore.jks` (alias: upload)
-   - ✅ Build command for regeneration:
+1. **Prepare binary** âœ… COMPLETE
+   - âœ… Signed AAB available at: `smart-divination/apps/tarot/build/app/outputs/bundle/release/app-release.aab` (45.7MB)
+   - âœ… Signing verified with production keystore: `upload-keystore.jks` (alias: upload)
+   - âœ… Build command for regeneration:
      ```bash
      cd smart-divination/apps/tarot
      flutter build appbundle --release \
-       --dart-define=API_BASE_URL=https://backend-4sircya71-dnitzs-projects.vercel.app \
+       --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
        --dart-define=SUPABASE_URL=https://vanrixxzaawybszeuivb.supabase.co \
        --dart-define=SUPABASE_ANON_KEY=<anon-key>
      ```

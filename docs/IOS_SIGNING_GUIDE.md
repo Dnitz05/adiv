@@ -1,4 +1,4 @@
-# iOS Signing Setup Guide
+﻿# iOS Signing Setup Guide
 
 This guide walks you through configuring iOS code signing for the Smart Divination tarot app.
 
@@ -143,7 +143,7 @@ On Windows (PowerShell):
 ```bash
 cd smart-divination/apps/tarot
 flutter build ipa --release \
-  --dart-define=API_BASE_URL=https://smart-divination.vercel.app \
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
   --dart-define=SUPABASE_URL=YOUR_SUPABASE_URL \
   --dart-define=SUPABASE_ANON_KEY=YOUR_ANON_KEY
 ```

@@ -1,4 +1,4 @@
-# QA Manual Checklist - Smart Divination Tarot
+﻿# QA Manual Checklist - Smart Divination Tarot
 
 Complete quality assurance checklist for production readiness.
 
@@ -32,7 +32,7 @@ In Supabase Dashboard -> Authentication -> Users:
 ```bash
 cd C:\tarot\smart-divination\apps\tarot
 flutter build apk --release \
-  --dart-define=API_BASE_URL=https://smart-divination-backend.vercel.app \
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
   --dart-define=SUPABASE_URL=YOUR_PRODUCTION_SUPABASE_URL \
   --dart-define=SUPABASE_ANON_KEY=YOUR_ANON_KEY
 
@@ -43,7 +43,7 @@ flutter build apk --release \
 **iOS** (when ready):
 ```bash
 flutter build ipa --release \
-  --dart-define=API_BASE_URL=https://smart-divination-backend.vercel.app \
+  --dart-define=API_BASE_URL=https://backend-gv4a2ueuy-dnitzs-projects.vercel.app \
   --dart-define=SUPABASE_URL=YOUR_PRODUCTION_SUPABASE_URL \
   --dart-define=SUPABASE_ANON_KEY=YOUR_ANON_KEY
 ```
@@ -54,7 +54,7 @@ flutter build ipa --release \
 
 **Test 1: Health Check**
 ```bash
-curl https://smart-divination-backend.vercel.app/api/health
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/health
 ```
 - [ ] Status: 200 OK
 - [ ] Response contains: `status`, `timestamp`, `uptime`, `memory`
@@ -62,7 +62,7 @@ curl https://smart-divination-backend.vercel.app/api/health
 
 **Test 2: Metrics Endpoint**
 ```bash
-curl https://smart-divination-backend.vercel.app/api/metrics
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/metrics
 ```
 - [ ] Status: 200 OK
 - [ ] Response contains: `metrics` array, `provider`, `timestamp`
@@ -71,7 +71,7 @@ curl https://smart-divination-backend.vercel.app/api/metrics
 
 **Test 3: Unauthenticated Access**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/cards \
   -H "Content-Type: application/json" \
   -d '{"spread": "three_card", "question": "Test"}'
 ```
@@ -94,7 +94,7 @@ curl -X POST https://YOUR_PROJECT.supabase.co/auth/v1/token?grant_type=password 
 
 **Test 5: Three Card Spread**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/cards \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{
@@ -110,7 +110,7 @@ curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
 
 **Test 6: Celtic Cross Spread**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/cards \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{
@@ -126,7 +126,7 @@ curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
 
 **Test 7: Single Card Draw**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/cards \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{
@@ -142,7 +142,7 @@ curl -X POST https://smart-divination-backend.vercel.app/api/draw/cards \
 
 **Test 8: Request Interpretation**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/chat/interpret \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/chat/interpret \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{
@@ -159,7 +159,7 @@ curl -X POST https://smart-divination-backend.vercel.app/api/chat/interpret \
 
 **Test 9: Interpretation Persisted**
 ```bash
-curl https://smart-divination-backend.vercel.app/api/sessions/USER_ID \
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/sessions/USER_ID \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 - [ ] Status: 200 OK
@@ -171,7 +171,7 @@ curl https://smart-divination-backend.vercel.app/api/sessions/USER_ID \
 
 **Test 10: Get User Profile**
 ```bash
-curl https://smart-divination-backend.vercel.app/api/users/USER_ID/profile \
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/users/USER_ID/profile \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 - [ ] Status: 200 OK
@@ -179,7 +179,7 @@ curl https://smart-divination-backend.vercel.app/api/users/USER_ID/profile \
 
 **Test 11: Check Session Eligibility**
 ```bash
-curl https://smart-divination-backend.vercel.app/api/users/USER_ID/can-start-session \
+curl https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/users/USER_ID/can-start-session \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 - [ ] Status: 200 OK
@@ -196,7 +196,7 @@ Perform 10+ draws rapidly:
 
 **Test 13: I Ching Disabled**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/coins \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/coins \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{"question": "Test"}'
@@ -207,7 +207,7 @@ curl -X POST https://smart-divination-backend.vercel.app/api/draw/coins \
 
 **Test 14: Runes Disabled**
 ```bash
-curl -X POST https://smart-divination-backend.vercel.app/api/draw/runes \
+curl -X POST https://backend-gv4a2ueuy-dnitzs-projects.vercel.app/api/draw/runes \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
   -d '{"count": 3}'
