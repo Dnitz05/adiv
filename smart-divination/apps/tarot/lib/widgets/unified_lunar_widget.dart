@@ -249,6 +249,8 @@ class _LunarMainContentState extends State<_LunarMainContent>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          _buildTitle(),
+          const SizedBox(height: 12),
           _buildCompactUnifiedHeader(),
           const SizedBox(height: 8),
           _buildUnifiedTabsContainer(),
@@ -259,6 +261,56 @@ class _LunarMainContentState extends State<_LunarMainContent>
         ],
       ),
     );
+  }
+
+  Widget _buildTitle() {
+    final locale = widget.strings.localeName;
+    final title = _getTitleText(locale);
+
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                TarotTheme.cosmicBlue,
+                TarotTheme.cosmicAccent,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: const Icon(
+            Icons.nightlight_round,
+            color: Colors.white,
+            size: 16,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          title,
+          style: const TextStyle(
+            color: TarotTheme.deepNavy,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 1.2,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _getTitleText(String locale) {
+    switch (locale) {
+      case 'es':
+        return 'LUNA';
+      case 'ca':
+        return 'LLUNA';
+      default:
+        return 'MOON';
+    }
   }
 
   Widget _buildCompactUnifiedHeader() {
@@ -584,18 +636,11 @@ class _LunarMainContentState extends State<_LunarMainContent>
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    TarotTheme.cosmicBlue,
-                    TarotTheme.cosmicAccent,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                color: TarotTheme.brightBlue.withValues(alpha: 0.15),
               ),
               child: const Icon(
-                Icons.nightlight_round,
-                color: Colors.white,
+                Icons.help_outline,
+                color: TarotTheme.brightBlue,
                 size: 20,
               ),
             ),
