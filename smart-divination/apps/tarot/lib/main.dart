@@ -24,13 +24,14 @@ import 'widgets/daily_draw_panel.dart';
 import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
 import 'widgets/chat_banner.dart';
-import 'widgets/archive_banner.dart';
+import 'widgets/history_banner.dart';
 import 'screens/chat_screen.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
 import 'screens/lunar_advisor_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
+import 'screens/history_screen.dart';
 import 'widgets/archive_screen.dart';
 import 'theme/tarot_theme.dart';
 import 'services/local_storage_service.dart';
@@ -4036,14 +4037,15 @@ class _HomeState extends State<_Home> {
           onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
         ),
         const SizedBox(height: 24),
-        // Archive Banner
-        ArchiveBanner(
+        // History Banner
+        HistoryBanner(
           strings: localisation,
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ArchiveScreen(
+                builder: (context) => HistoryScreen(
                   userId: _userId ?? '',
+                  locale: localisation.localeName,
                 ),
               ),
             );
