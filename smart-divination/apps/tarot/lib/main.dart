@@ -702,7 +702,7 @@ class _HomeState extends State<_Home> {
   bool _loadingDailyDraw = false;
   final CreditsService _creditsService = CreditsService();
   late final ValueNotifier<DailyCredits> _creditsNotifier;
-  int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Archive, 4=Learn
+  int _selectedBottomNavIndex = 0; // 0=Home, 1=Chat, 2=Spreads, 3=Calendar, 4=Learn
   late final Future<DailyQuote?> _dailyQuoteFuture;
 
   static const List<String> _supportedQuestionLocales = <String>[
@@ -1854,9 +1854,9 @@ class _HomeState extends State<_Home> {
         const SizedBox(width: 8),
         Expanded(
           child: _QuickActionTile(
-            icon: Icons.archive_outlined,
+            icon: Icons.calendar_today_outlined,
             title: _qaText(localisation,
-                en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+                en: 'Calendar', es: 'Calendario', ca: 'Calendari'),
             onTap: () => _handleQuickActionArchive(localisation),
           ),
         ),
@@ -3150,7 +3150,7 @@ class _HomeState extends State<_Home> {
         onOpenGallery: _showSpreadGallery,
       );
     } else if (_selectedBottomNavIndex == 3) {
-      // Archive/Journal screen
+      // Calendar/Journal screen
       final userId = _userId ?? '';
       final locale = localisation.localeName;
       bodyContent = ArchiveScreen(userId: userId, locale: locale);
@@ -3275,7 +3275,7 @@ class _HomeState extends State<_Home> {
             case 2: // Spreads
               _handleQuickActionSpreads(localisation);
               break;
-            case 3: // Archive
+            case 3: // Calendar
               _handleQuickActionArchive(localisation);
               break;
             case 4: // Learn
@@ -3302,9 +3302,9 @@ class _HomeState extends State<_Home> {
             label: _qaText(localisation, en: 'Spreads', es: 'Tiradas', ca: 'Tirades'),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.archive_outlined),
-            activeIcon: const Icon(Icons.archive),
-            label: _qaText(localisation, en: 'Archive', es: 'Archivo', ca: 'Arxiu'),
+            icon: const Icon(Icons.calendar_today_outlined),
+            activeIcon: const Icon(Icons.calendar_today),
+            label: _qaText(localisation, en: 'Calendar', es: 'Calendario', ca: 'Calendari'),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.menu_book_outlined),
