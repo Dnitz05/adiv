@@ -270,7 +270,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.all(6),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
@@ -285,7 +285,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
           child: const Icon(
             Icons.nightlight_round,
             color: Colors.white,
-            size: 16,
+            size: 20,
           ),
         ),
         const SizedBox(width: 10),
@@ -305,11 +305,11 @@ class _LunarMainContentState extends State<_LunarMainContent>
   String _getTitleText(String locale) {
     switch (locale) {
       case 'es':
-        return 'LUNA';
+        return 'Luna';
       case 'ca':
-        return 'LLUNA';
+        return 'Lluna';
       default:
-        return 'MOON';
+        return 'Moon';
     }
   }
 

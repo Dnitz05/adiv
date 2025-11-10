@@ -208,7 +208,8 @@
       "Bash(C:/tarot/calendar_view.png)",
       "Bash(HOST=0.0.0.0 PORT=3001 npm run dev:*)",
       "Bash(npx next dev:*)",
-      "WebFetch(domain:backend-6xrbmakjv-dnitzs-projects.vercel.app)"
+      "WebFetch(domain:backend-6xrbmakjv-dnitzs-projects.vercel.app)",
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter pub:*)"
     ],
     "deny": [],
     "ask": []

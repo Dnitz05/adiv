@@ -3368,30 +3368,50 @@ class _HomeState extends State<_Home> {
                       });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.home,
-                            color: _selectedBottomNavIndex == 0
-                                ? const Color(0xFF44385c)
-                                : const Color(0xFF44385c).withValues(alpha: 0.5),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            'HOME',
-                            style: TextStyle(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        decoration: _selectedBottomNavIndex == 0
+                            ? BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF44385c).withValues(alpha: 0.08),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              )
+                            : null,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.home,
                               color: _selectedBottomNavIndex == 0
                                   ? const Color(0xFF44385c)
                                   : const Color(0xFF44385c).withValues(alpha: 0.5),
-                              fontSize: _selectedBottomNavIndex == 0 ? 11 : 10,
-                              fontWeight: _selectedBottomNavIndex == 0 ? FontWeight.w700 : FontWeight.w400,
-                              letterSpacing: _selectedBottomNavIndex == 0 ? 0.2 : 0,
+                              size: 20,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 4),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Text(
+                                'HOME',
+                                style: TextStyle(
+                                  color: _selectedBottomNavIndex == 0
+                                      ? const Color(0xFF44385c)
+                                      : const Color(0xFF44385c).withValues(alpha: 0.5),
+                                  fontSize: _selectedBottomNavIndex == 0 ? 11 : 10,
+                                  fontWeight: _selectedBottomNavIndex == 0 ? FontWeight.w700 : FontWeight.w400,
+                                  letterSpacing: _selectedBottomNavIndex == 0 ? 0.2 : 0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
