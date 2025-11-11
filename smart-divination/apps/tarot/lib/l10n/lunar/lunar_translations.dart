@@ -42,6 +42,27 @@ const Map<String, Map<String, String>> lunarLabels = {
 
 /// Tab labels for lunar widget tabs in 3 locales
 const Map<String, Map<String, String>> lunarTabLabels = {
+  'guide': {
+    'en': 'Guide',
+    'es': 'Guía',
+    'ca': 'Guia'
+  },
+  'next': {
+    'en': 'Next',
+    'es': 'Próximas',
+    'ca': 'Properes'
+  },
+  'spreads': {
+    'en': 'Spreads',
+    'es': 'Tiradas',
+    'ca': 'Tirades'
+  },
+  'rituals': {
+    'en': 'Rituals',
+    'es': 'Rituales',
+    'ca': 'Rituals'
+  },
+  // Deprecated tabs (kept for backwards compatibility)
   'today': {
     'en': 'Today',
     'es': 'Hoy',
@@ -56,16 +77,6 @@ const Map<String, Map<String, String>> lunarTabLabels = {
     'en': 'Phases',
     'es': 'Fases',
     'ca': 'Fases'
-  },
-  'rituals': {
-    'en': 'Rituals',
-    'es': 'Rituales',
-    'ca': 'Rituals'
-  },
-  'spreads': {
-    'en': 'Spreads',
-    'es': 'Tiradas',
-    'ca': 'Tirades'
   },
 };
 
@@ -145,6 +156,13 @@ const Map<String, List<String>> shortMonthNames = {
   'en': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   'es': ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
   'ca': ['Gen', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Des'],
+};
+
+/// Full month names for complete date formatting
+const Map<String, List<String>> fullMonthNames = {
+  'en': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  'es': ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+  'ca': ['gener', 'febrer', 'març', 'abril', 'maig', 'juny', 'juliol', 'agost', 'setembre', 'octubre', 'novembre', 'desembre'],
 };
 
 /// Header-specific labels (compact unified header)
@@ -255,9 +273,9 @@ const Map<String, Map<String, String>> nextPhaseNames = {
     'ca': 'Nova'
   },
   'first_quarter': {
-    'en': 'First Q.',
-    'es': 'Cuarto C.',
-    'ca': 'Quart C.'
+    'en': 'First Quarter',
+    'es': 'Cuarto Creciente',
+    'ca': 'Quart Creixent'
   },
   'full_moon': {
     'en': 'Full',
@@ -265,9 +283,9 @@ const Map<String, Map<String, String>> nextPhaseNames = {
     'ca': 'Plena'
   },
   'last_quarter': {
-    'en': 'Last Q.',
-    'es': 'Cuarto M.',
-    'ca': 'Quart M.'
+    'en': 'Last Quarter',
+    'es': 'Cuarto Menguante',
+    'ca': 'Quart Minvant'
   },
 };
 
@@ -275,6 +293,12 @@ const Map<String, Map<String, String>> nextPhaseNames = {
 String formatShortDate(DateTime date, String locale) {
   final months = shortMonthNames[locale] ?? shortMonthNames['en']!;
   return '${date.day} ${months[date.month - 1]}';
+}
+
+/// Format date with full month name and year (e.g., "11 November 2025")
+String formatFullDate(DateTime date, String locale) {
+  final months = fullMonthNames[locale] ?? fullMonthNames['en']!;
+  return '${date.day} ${months[date.month - 1]} ${date.year}';
 }
 
 /// Helper function to get a header-specific label

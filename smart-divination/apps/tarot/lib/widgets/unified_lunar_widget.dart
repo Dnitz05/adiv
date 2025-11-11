@@ -361,8 +361,6 @@ class _LunarMainContentState extends State<_LunarMainContent>
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildRow1PhaseAndIllumination(lunarInfo, illumination, locale),
-              const SizedBox(height: 8),
-              _buildRow1bIlluminationExplanation(illumination, locale),
               const SizedBox(height: 10),
               _buildRow2AstroProperties(lunarInfo, locale),
               const SizedBox(height: 10),
@@ -441,24 +439,6 @@ class _LunarMainContentState extends State<_LunarMainContent>
               fontSize: 15,
               fontWeight: FontWeight.w700,
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRow1bIlluminationExplanation(double illumination, String locale) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('💡', style: TextStyle(fontSize: 14)),
-        const SizedBox(width: 6),
-        Text(
-          _getIlluminationExplanation(illumination, locale),
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.white.withValues(alpha: 0.8),
-            fontWeight: FontWeight.w500,
           ),
         ),
       ],
@@ -746,33 +726,6 @@ class _LunarMainContentState extends State<_LunarMainContent>
     if (lowerName.contains('waning') && !lowerName.contains('last')) return 'Decreasing toward darkness';
     if (lowerName.contains('last quarter')) return 'Halfway to new moon';
     return 'Current lunar phase';
-  }
-
-  String _getIlluminationExplanation(double illumination, String locale) {
-    if (locale == 'ca') {
-      if (illumination < 10) return 'La lluna està gairebé fosca';
-      if (illumination < 30) return 'Una petita part està il·luminada';
-      if (illumination < 50) return 'Menys de la meitat està il·luminada';
-      if (illumination < 70) return 'Més de la meitat està il·luminada';
-      if (illumination < 95) return 'Gairebé tota la lluna és visible';
-      return 'La lluna està completament il·luminada';
-    }
-
-    if (locale == 'es') {
-      if (illumination < 10) return 'La luna está casi oscura';
-      if (illumination < 30) return 'Una pequeña parte está iluminada';
-      if (illumination < 50) return 'Menos de la mitad está iluminada';
-      if (illumination < 70) return 'Más de la mitad está iluminada';
-      if (illumination < 95) return 'Casi toda la luna es visible';
-      return 'La luna está completamente iluminada';
-    }
-
-    if (illumination < 10) return 'The moon is almost dark';
-    if (illumination < 30) return 'A small part is illuminated';
-    if (illumination < 50) return 'Less than half is illuminated';
-    if (illumination < 70) return 'More than half is illuminated';
-    if (illumination < 95) return 'Almost the entire moon is visible';
-    return 'The moon is fully illuminated';
   }
 
   String _getSimpleElement(String element, String locale) {
