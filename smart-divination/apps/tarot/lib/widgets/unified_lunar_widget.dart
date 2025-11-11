@@ -338,8 +338,8 @@ class _LunarMainContentState extends State<_LunarMainContent>
             borderRadius: BorderRadius.circular(12),
             gradient: const LinearGradient(
               colors: [
-                Color(0xFF2C2741), // Dark gray-lilac
-                Color(0xFF3D3855), // Medium gray-lilac
+                Color(0xFF342B47), // Dark lilac
+                Color(0xFF473D5C), // Medium lilac
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -350,7 +350,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF2C2741).withValues(alpha: 0.5),
+                color: const Color(0xFF342B47).withValues(alpha: 0.5),
                 blurRadius: 16,
                 offset: const Offset(0, 6),
               ),
