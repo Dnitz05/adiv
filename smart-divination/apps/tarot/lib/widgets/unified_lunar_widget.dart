@@ -481,7 +481,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Zodiac + Element
+        // Zodiac + Element | Next phase
         Row(
           children: [
             Text(
@@ -512,22 +512,16 @@ class _LunarMainContentState extends State<_LunarMainContent>
                 fontWeight: FontWeight.w500,
               ),
             ),
-          ],
-        ),
-        const SizedBox(height: 6),
-        // Polarity · Quality · Ruler (més didàctic)
-        Text(
-          '${_getDidacticPolarity(lunarInfo.polarity, locale)} · ${_getDidacticQuality(lunarInfo.quality, locale)} · ${_getDidacticRuler(lunarInfo.ruler, locale)}',
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.8),
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 6),
-        // Next phase
-        Row(
-          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                '|',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.3),
+                  fontSize: 12,
+                ),
+              ),
+            ),
             Icon(
               Icons.arrow_forward,
               size: 11,
@@ -546,6 +540,16 @@ class _LunarMainContentState extends State<_LunarMainContent>
               ),
             ),
           ],
+        ),
+        const SizedBox(height: 6),
+        // Polarity · Quality · Ruler (més didàctic)
+        Text(
+          '${_getDidacticPolarity(lunarInfo.polarity, locale)} · ${_getDidacticQuality(lunarInfo.quality, locale)} · ${_getDidacticRuler(lunarInfo.ruler, locale)}',
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.8),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
