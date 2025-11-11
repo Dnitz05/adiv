@@ -364,7 +364,10 @@ class _LunarMainContentState extends State<_LunarMainContent>
               const SizedBox(height: 10),
               _buildRow2AstroProperties(lunarInfo, locale),
               const SizedBox(height: 14),
-              _buildCTAButton(locale),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: _buildCTAButton(locale),
+              ),
             ],
           ),
         ),
