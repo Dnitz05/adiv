@@ -956,11 +956,11 @@ class _LunarMainContentState extends State<_LunarMainContent>
           ),
         ),
         const SizedBox(height: 4),
-        // TabBarView content - optimized compact constraints
+        // TabBarView content - optimized compact constraints (reduced 10%)
         ConstrainedBox(
           constraints: const BoxConstraints(
-            minHeight: 200,
-            maxHeight: 280,
+            minHeight: 180,
+            maxHeight: 252,
           ),
           child: TabBarView(
             controller: _tabController,
