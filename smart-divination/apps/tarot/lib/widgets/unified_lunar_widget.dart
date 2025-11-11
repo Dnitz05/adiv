@@ -6,11 +6,10 @@ import '../state/lunar_cycle_controller.dart';
 import '../theme/tarot_theme.dart';
 import '../l10n/lunar/lunar_translations.dart';
 import 'lunar_card_helpers.dart';
-import 'lunar_tabs/today_tab.dart';
-import 'lunar_tabs/calendar_only_tab.dart';
-import 'lunar_tabs/phases_tab.dart';
-import 'lunar_tabs/rituals_tab.dart';
+import 'lunar_tabs/guide_tab.dart';
+import 'lunar_tabs/next_phases_tab.dart';
 import 'lunar_tabs/spreads_tab.dart';
+import 'lunar_tabs/rituals_tab.dart';
 
 class UnifiedLunarWidget extends StatefulWidget {
   const UnifiedLunarWidget({
@@ -20,7 +19,6 @@ class UnifiedLunarWidget extends StatefulWidget {
     this.userId,
     this.onSelectSpread,
     this.onRefresh,
-    this.onAskMoon,
   });
 
   final LunarCycleController controller;
@@ -28,7 +26,6 @@ class UnifiedLunarWidget extends StatefulWidget {
   final String? userId;
   final void Function(String spreadId)? onSelectSpread;
   final VoidCallback? onRefresh;
-  final VoidCallback? onAskMoon;
 
   @override
   State<UnifiedLunarWidget> createState() => _UnifiedLunarWidgetState();
@@ -48,7 +45,6 @@ class _UnifiedLunarWidgetState extends State<UnifiedLunarWidget> {
         userId: widget.userId,
         onSelectSpread: widget.onSelectSpread,
         onRefresh: widget.onRefresh,
-        onAskMoon: widget.onAskMoon,
       ),
     );
   }
@@ -65,7 +61,6 @@ class _LunarContent extends StatelessWidget {
     this.userId,
     this.onSelectSpread,
     this.onRefresh,
-    this.onAskMoon,
   });
 
   final LunarDayModel? day;
@@ -76,7 +71,6 @@ class _LunarContent extends StatelessWidget {
   final String? userId;
   final void Function(String spreadId)? onSelectSpread;
   final VoidCallback? onRefresh;
-  final VoidCallback? onAskMoon;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +96,6 @@ class _LunarContent extends StatelessWidget {
       controller: controller,
       userId: userId,
       onSelectSpread: onSelectSpread,
-      onAskMoon: onAskMoon,
     );
   }
 
@@ -166,15 +159,14 @@ class _LunarContent extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       color: Colors.white,
       border: Border.all(
-        color: TarotTheme.brightBlue.withValues(alpha: 0.15),
+        color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
         width: 1,
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withValues(alpha: 0.08),
+          color: Colors.black.withValues(alpha: 0.15),
           blurRadius: 12,
           offset: const Offset(0, 4),
-          spreadRadius: 0,
         ),
       ],
     );
@@ -189,7 +181,6 @@ class _LunarMainContent extends StatefulWidget {
     required this.controller,
     this.userId,
     this.onSelectSpread,
-    this.onAskMoon,
   });
 
   final LunarDayModel day;
@@ -197,7 +188,6 @@ class _LunarMainContent extends StatefulWidget {
   final LunarCycleController controller;
   final String? userId;
   final void Function(String spreadId)? onSelectSpread;
-  final VoidCallback? onAskMoon;
 
   @override
   State<_LunarMainContent> createState() => _LunarMainContentState();
@@ -210,7 +200,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -226,21 +216,14 @@ class _LunarMainContentState extends State<_LunarMainContent>
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
         border: Border.all(
-          color: TarotTheme.brightBlue.withValues(alpha: 0.2),
-          width: 1.5,
+          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
+          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: TarotTheme.brightBlue.withValues(alpha: 0.08),
-            blurRadius: 16,
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 12,
             offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-            spreadRadius: 0,
           ),
         ],
       ),
@@ -254,10 +237,6 @@ class _LunarMainContentState extends State<_LunarMainContent>
           _buildCompactUnifiedHeader(),
           const SizedBox(height: 8),
           _buildUnifiedTabsContainer(),
-          if (widget.onAskMoon != null) ...[
-            const SizedBox(height: 12),
-            _buildAskMoonFooter(),
-          ],
         ],
       ),
     );
@@ -266,6 +245,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
   Widget _buildTitle() {
     final locale = widget.strings.localeName;
     final title = _getTitleText(locale);
+    final subtitle = _getTodaySubtitle(locale);
 
     return Row(
       children: [
@@ -289,13 +269,29 @@ class _LunarMainContentState extends State<_LunarMainContent>
           ),
         ),
         const SizedBox(width: 10),
-        Text(
-          title,
-          style: const TextStyle(
-            color: TarotTheme.deepNavy,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  color: TarotTheme.deepNavy,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: TarotTheme.softBlueGrey.withOpacity(0.8),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -313,60 +309,94 @@ class _LunarMainContentState extends State<_LunarMainContent>
     }
   }
 
-  Widget _buildCompactUnifiedHeader() {
-    final lunarInfo = LunarInfoHelper(widget.day, widget.strings.localeName);
+  String _getTodaySubtitle(String locale) {
+    final now = DateTime.now();
+    final formattedDate = formatFullDate(now, locale);
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            TarotTheme.brightBlue.withValues(alpha: 0.03),
-            TarotTheme.brightBlue.withValues(alpha: 0.08),
-          ],
-        ),
+    switch (locale) {
+      case 'es':
+        return 'Hoy, $formattedDate';
+      case 'ca':
+        return 'Avui, $formattedDate';
+      default:
+        return 'Today, $formattedDate';
+    }
+  }
+
+  Widget _buildCompactUnifiedHeader() {
+    final locale = widget.strings.localeName;
+    final lunarInfo = LunarInfoHelper(widget.day, widget.strings.localeName);
+    final illumination = widget.day.illumination;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => _onCalendarTap(),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: TarotTheme.brightBlue.withValues(alpha: 0.15),
-          width: 1,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF2C2741), // Dark gray-lilac
+                Color(0xFF3D3855), // Medium gray-lilac
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.1),
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF2C2741).withValues(alpha: 0.5),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildRow1PhaseAndIllumination(lunarInfo, illumination, locale),
+              const SizedBox(height: 8),
+              _buildRow1bIlluminationExplanation(illumination, locale),
+              const SizedBox(height: 10),
+              _buildRow2AstroProperties(lunarInfo, locale),
+              const SizedBox(height: 10),
+              _buildRow3Timeline(lunarInfo, locale),
+              const SizedBox(height: 14),
+              _buildCTAButton(locale),
+            ],
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildRow1PhaseAndIllumination(lunarInfo),
-          const SizedBox(height: 6),
-          _buildRow2AstroProperties(lunarInfo),
-          const SizedBox(height: 6),
-          _buildRow3Timeline(lunarInfo),
-        ],
       ),
     );
   }
 
-  Widget _buildRow1PhaseAndIllumination(LunarInfoHelper lunarInfo) {
+  Widget _buildRow1PhaseAndIllumination(LunarInfoHelper lunarInfo, double illumination, String locale) {
     return Row(
       children: [
-        // Moon emoji with glow
+        // Moon emoji with subtle glow
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: TarotTheme.brightBlue.withValues(alpha: 0.2),
-                blurRadius: 16,
-                spreadRadius: 2,
+                color: Colors.white.withValues(alpha: 0.15),
+                blurRadius: 20,
+                spreadRadius: 3,
               ),
             ],
           ),
           child: Text(
             widget.day.phaseEmoji,
-            style: const TextStyle(fontSize: 28),
+            style: const TextStyle(fontSize: 32),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         // Phase name + trend
         Expanded(
           child: Column(
@@ -375,16 +405,18 @@ class _LunarMainContentState extends State<_LunarMainContent>
               Text(
                 widget.day.phaseName,
                 style: const TextStyle(
-                  color: TarotTheme.deepNavy,
-                  fontSize: 16,
+                  color: Colors.white,
+                  fontSize: 18,
                   fontWeight: FontWeight.w700,
+                  letterSpacing: 0.3,
                 ),
               ),
+              const SizedBox(height: 2),
               Text(
                 lunarInfo.trend,
                 style: TextStyle(
-                  color: TarotTheme.softBlueGrey.withValues(alpha: 0.8),
-                  fontSize: 10,
+                  color: Colors.white.withValues(alpha: 0.7),
+                  fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -393,23 +425,20 @@ class _LunarMainContentState extends State<_LunarMainContent>
         ),
         // Illumination badge
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: TarotTheme.brightBlue,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: TarotTheme.brightBlue.withValues(alpha: 0.3),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
+            color: Colors.white.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.2),
+              width: 1,
+            ),
           ),
           child: Text(
-            '${widget.day.illumination.toStringAsFixed(0)}%',
+            '${illumination.round()}% ${_getLitText(locale)}',
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 13,
+              fontSize: 15,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -418,38 +447,17 @@ class _LunarMainContentState extends State<_LunarMainContent>
     );
   }
 
-  Widget _buildRow2AstroProperties(LunarInfoHelper lunarInfo) {
-    final elementLabel = getElementLabel(widget.day.zodiac.element.toLowerCase(), widget.strings.localeName);
-    
+  Widget _buildRow1bIlluminationExplanation(double illumination, String locale) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          widget.day.zodiac.symbol,
-          style: const TextStyle(fontSize: 14),
-        ),
+        const Text('💡', style: TextStyle(fontSize: 14)),
         const SizedBox(width: 6),
         Text(
-          widget.day.zodiac.name,
-          style: const TextStyle(
-            color: TarotTheme.deepNavy,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          '·',
+          _getIlluminationExplanation(illumination, locale),
           style: TextStyle(
-            color: TarotTheme.softBlueGrey.withValues(alpha: 0.6),
-            fontSize: 11,
-          ),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          '$elementLabel · ${lunarInfo.polarity} · ${lunarInfo.quality} · ${lunarInfo.ruler}',
-          style: TextStyle(
-            color: TarotTheme.softBlueGrey.withValues(alpha: 0.9),
-            fontSize: 11,
+            fontSize: 13,
+            color: Colors.white.withValues(alpha: 0.8),
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -457,50 +465,426 @@ class _LunarMainContentState extends State<_LunarMainContent>
     );
   }
 
-  Widget _buildRow3Timeline(LunarInfoHelper lunarInfo) {
-    final formattedDate = formatShortDate(widget.day.date, widget.strings.localeName);
-    final dayLabel = getLunarHeaderLabel('day', widget.strings.localeName);
-    final inLabel = getLunarHeaderLabel('in', widget.strings.localeName);
-    final dLabel = getLunarHeaderLabel('d', widget.strings.localeName);
+  Widget _buildRow2AstroProperties(LunarInfoHelper lunarInfo, String locale) {
+    final elementLabel = _getDidacticElement(widget.day.zodiac.element, locale);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Zodiac + Element
+        Row(
+          children: [
+            Text(
+              widget.day.zodiac.symbol,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              widget.day.zodiac.name,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              ' · ',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.5),
+                fontSize: 13,
+              ),
+            ),
+            Text(
+              elementLabel,
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.9),
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        // Polarity · Quality · Ruler (més didàctic)
+        Text(
+          '${_getDidacticPolarity(lunarInfo.polarity, locale)} · ${_getDidacticQuality(lunarInfo.quality, locale)} · ${_getDidacticRuler(lunarInfo.ruler, locale)}',
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.8),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRow3Timeline(LunarInfoHelper lunarInfo, String locale) {
+    final dayLabel = _getLunarDayLabel(locale);
+    final inLabel = _getInLabel(locale);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Date
-        _buildTimelineItem(
-          Icons.calendar_today,
-          formattedDate,
-        ),
         // Lunar day
-        _buildTimelineItem(
-          Icons.brightness_3,
-          '$dayLabel ${widget.day.age.round()}',
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.brightness_3,
+              size: 13,
+              color: Colors.white.withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              '$dayLabel ${widget.day.age.round()}',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.9),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
         // Next phase
-        _buildTimelineItem(
-          Icons.arrow_forward,
-          '${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext}$dLabel',
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.arrow_forward,
+              size: 13,
+              color: Colors.white.withValues(alpha: 0.7),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              '${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext} ${_getDaysLabel(lunarInfo.daysToNext, locale)}',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.9),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildTimelineItem(IconData icon, String text) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 11, color: TarotTheme.brightBlue.withValues(alpha: 0.7)),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: TextStyle(
-            color: TarotTheme.softBlueGrey.withValues(alpha: 0.9),
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
+  Widget _buildCTAButton(String locale) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.calendar_today, size: 16, color: Color(0xFF2C2741)),
+          const SizedBox(width: 8),
+          Text(
+            _getCalendarButtonText(locale),
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF2C2741),
+            ),
           ),
-        ),
-      ],
+          const SizedBox(width: 6),
+          const Icon(Icons.arrow_forward, size: 16, color: Color(0xFF2C2741)),
+        ],
+      ),
     );
+  }
+
+  // Helper methods for didactic translations
+
+  String _getLitText(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'il·lum.';
+      case 'es':
+        return 'ilum.';
+      default:
+        return 'lit';
+    }
+  }
+
+  String _getDidacticElement(String element, String locale) {
+    final lower = element.toLowerCase();
+    switch (locale) {
+      case 'ca':
+        if (lower == 'fire') return 'Element foc';
+        if (lower == 'earth') return 'Element terra';
+        if (lower == 'air') return 'Element aire';
+        if (lower == 'water') return 'Element aigua';
+        return 'Element $element';
+      case 'es':
+        if (lower == 'fire') return 'Elemento fuego';
+        if (lower == 'earth') return 'Elemento tierra';
+        if (lower == 'air') return 'Elemento aire';
+        if (lower == 'water') return 'Elemento agua';
+        return 'Elemento $element';
+      default:
+        if (lower == 'fire') return 'Fire element';
+        if (lower == 'earth') return 'Earth element';
+        if (lower == 'air') return 'Air element';
+        if (lower == 'water') return 'Water element';
+        return '$element element';
+    }
+  }
+
+  String _getDidacticPolarity(String polarity, String locale) {
+    final lower = polarity.toLowerCase();
+    switch (locale) {
+      case 'ca':
+        if (lower.contains('masc')) return 'Masculí';
+        if (lower.contains('fem')) return 'Femení';
+        return polarity;
+      case 'es':
+        if (lower.contains('masc')) return 'Masculino';
+        if (lower.contains('fem')) return 'Femenino';
+        return polarity;
+      default:
+        if (lower.contains('masc')) return 'Masculine';
+        if (lower.contains('fem')) return 'Feminine';
+        return polarity;
+    }
+  }
+
+  String _getDidacticQuality(String quality, String locale) {
+    final lower = quality.toLowerCase();
+    switch (locale) {
+      case 'ca':
+        if (lower.contains('card')) return 'Qualitat cardinal';
+        if (lower.contains('fix')) return 'Qualitat fixa';
+        if (lower.contains('mut')) return 'Qualitat mutable';
+        return quality;
+      case 'es':
+        if (lower.contains('card')) return 'Cualidad cardinal';
+        if (lower.contains('fij') || lower.contains('fix')) return 'Cualidad fija';
+        if (lower.contains('mut')) return 'Cualidad mutable';
+        return quality;
+      default:
+        if (lower.contains('card')) return 'Cardinal quality';
+        if (lower.contains('fix')) return 'Fixed quality';
+        if (lower.contains('mut')) return 'Mutable quality';
+        return quality;
+    }
+  }
+
+  String _getDidacticRuler(String ruler, String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'Regit per $ruler';
+      case 'es':
+        return 'Regido por $ruler';
+      default:
+        return 'Ruled by $ruler';
+    }
+  }
+
+  String _getLunarDayLabel(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'Dia lunar';
+      case 'es':
+        return 'Día lunar';
+      default:
+        return 'Lunar day';
+    }
+  }
+
+  String _getInLabel(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'en';
+      case 'es':
+        return 'en';
+      default:
+        return 'in';
+    }
+  }
+
+  String _getDaysLabel(int days, String locale) {
+    switch (locale) {
+      case 'ca':
+        return days == 1 ? 'dia' : 'dies';
+      case 'es':
+        return days == 1 ? 'día' : 'días';
+      default:
+        return days == 1 ? 'day' : 'days';
+    }
+  }
+
+  String _getPhaseSubtitle(String phaseName, String locale) {
+    final lowerName = phaseName.toLowerCase();
+
+    if (locale == 'ca') {
+      if (lowerName.contains('nova')) return 'Començament del cicle lunar';
+      if (lowerName.contains('creixent') && !lowerName.contains('quart')) return 'Creixent cap a la plenitud';
+      if (lowerName.contains('quart creixent') || lowerName.contains('primer quart')) return 'A mig camí cap a la lluna plena';
+      if (lowerName.contains('plena')) return 'Màxima il·luminació';
+      if (lowerName.contains('minvant') && !lowerName.contains('quart')) return 'Disminuint cap a la foscor';
+      if (lowerName.contains('quart minvant') || lowerName.contains('últim quart')) return 'A mig camí cap a la lluna nova';
+      return 'Fase lunar actual';
+    }
+
+    if (locale == 'es') {
+      if (lowerName.contains('nueva')) return 'Comienzo del ciclo lunar';
+      if (lowerName.contains('creciente') && !lowerName.contains('cuarto')) return 'Creciendo hacia la plenitud';
+      if (lowerName.contains('cuarto creciente') || lowerName.contains('primer cuarto')) return 'A mitad de camino hacia la luna llena';
+      if (lowerName.contains('llena')) return 'Máxima iluminación';
+      if (lowerName.contains('menguante') && !lowerName.contains('cuarto')) return 'Disminuyendo hacia la oscuridad';
+      if (lowerName.contains('cuarto menguante') || lowerName.contains('último cuarto')) return 'A mitad de camino hacia la luna nueva';
+      return 'Fase lunar actual';
+    }
+
+    if (lowerName.contains('new')) return 'Beginning of lunar cycle';
+    if (lowerName.contains('waxing') && !lowerName.contains('first')) return 'Growing toward fullness';
+    if (lowerName.contains('first quarter')) return 'Halfway to full moon';
+    if (lowerName.contains('full')) return 'Maximum illumination';
+    if (lowerName.contains('waning') && !lowerName.contains('last')) return 'Decreasing toward darkness';
+    if (lowerName.contains('last quarter')) return 'Halfway to new moon';
+    return 'Current lunar phase';
+  }
+
+  String _getIlluminationExplanation(double illumination, String locale) {
+    if (locale == 'ca') {
+      if (illumination < 10) return 'La lluna està gairebé fosca';
+      if (illumination < 30) return 'Una petita part està il·luminada';
+      if (illumination < 50) return 'Menys de la meitat està il·luminada';
+      if (illumination < 70) return 'Més de la meitat està il·luminada';
+      if (illumination < 95) return 'Gairebé tota la lluna és visible';
+      return 'La lluna està completament il·luminada';
+    }
+
+    if (locale == 'es') {
+      if (illumination < 10) return 'La luna está casi oscura';
+      if (illumination < 30) return 'Una pequeña parte está iluminada';
+      if (illumination < 50) return 'Menos de la mitad está iluminada';
+      if (illumination < 70) return 'Más de la mitad está iluminada';
+      if (illumination < 95) return 'Casi toda la luna es visible';
+      return 'La luna está completamente iluminada';
+    }
+
+    if (illumination < 10) return 'The moon is almost dark';
+    if (illumination < 30) return 'A small part is illuminated';
+    if (illumination < 50) return 'Less than half is illuminated';
+    if (illumination < 70) return 'More than half is illuminated';
+    if (illumination < 95) return 'Almost the entire moon is visible';
+    return 'The moon is fully illuminated';
+  }
+
+  String _getSimpleElement(String element, String locale) {
+    final lowerElement = element.toLowerCase();
+
+    if (locale == 'ca') {
+      if (lowerElement.contains('fire') || lowerElement.contains('foc')) return 'Foc';
+      if (lowerElement.contains('earth') || lowerElement.contains('terra')) return 'Terra';
+      if (lowerElement.contains('air') || lowerElement.contains('aire')) return 'Aire';
+      if (lowerElement.contains('water') || lowerElement.contains('aigua')) return 'Aigua';
+      return element;
+    }
+
+    if (locale == 'es') {
+      if (lowerElement.contains('fire') || lowerElement.contains('fuego')) return 'Fuego';
+      if (lowerElement.contains('earth') || lowerElement.contains('tierra')) return 'Tierra';
+      if (lowerElement.contains('air') || lowerElement.contains('aire')) return 'Aire';
+      if (lowerElement.contains('water') || lowerElement.contains('agua')) return 'Agua';
+      return element;
+    }
+
+    if (lowerElement.contains('foc') || lowerElement.contains('fuego')) return 'Fire';
+    if (lowerElement.contains('terra') || lowerElement.contains('tierra')) return 'Earth';
+    if (lowerElement.contains('aire')) return 'Air';
+    if (lowerElement.contains('aigua') || lowerElement.contains('agua')) return 'Water';
+    return element;
+  }
+
+  String _getIlluminatedText(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'il·luminada';
+      case 'es':
+        return 'iluminada';
+      default:
+        return 'illuminated';
+    }
+  }
+
+  String _getElementLabel(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'Element';
+      case 'es':
+        return 'Elemento';
+      default:
+        return 'Element';
+    }
+  }
+
+  String _getPhaseEnergy(String phaseName, String locale) {
+    final lowerName = phaseName.toLowerCase();
+
+    if (locale == 'ca') {
+      if (lowerName.contains('nova')) return '⚡ Moment per començar i plantar llavors';
+      if (lowerName.contains('creixent') && !lowerName.contains('quart')) return '⚡ Moment per créixer i expandir projectes';
+      if (lowerName.contains('quart creixent') || lowerName.contains('primer quart')) return '⚡ Moment per superar obstacles i actuar';
+      if (lowerName.contains('plena')) return '⚡ Moment de culminació i celebració';
+      if (lowerName.contains('gibosa minvant')) return '⚡ Moment per compartir i transmetre';
+      if (lowerName.contains('quart minvant') || lowerName.contains('últim quart')) return '⚡ Moment per deixar anar i alliberar';
+      if (lowerName.contains('minvant')) return '⚡ Moment per descansar i reflexionar';
+      return '⚡ Energia lunar activa';
+    }
+
+    if (locale == 'es') {
+      if (lowerName.contains('nueva')) return '⚡ Momento para empezar y plantar semillas';
+      if (lowerName.contains('creciente') && !lowerName.contains('cuarto')) return '⚡ Momento para crecer y expandir proyectos';
+      if (lowerName.contains('cuarto creciente') || lowerName.contains('primer cuarto')) return '⚡ Momento para superar obstáculos y actuar';
+      if (lowerName.contains('llena')) return '⚡ Momento de culminación y celebración';
+      if (lowerName.contains('gibosa menguante')) return '⚡ Momento para compartir y transmitir';
+      if (lowerName.contains('cuarto menguante') || lowerName.contains('último cuarto')) return '⚡ Momento para soltar y liberar';
+      if (lowerName.contains('menguante')) return '⚡ Momento para descansar y reflexionar';
+      return '⚡ Energía lunar activa';
+    }
+
+    if (lowerName.contains('new')) return '⚡ Time to begin and plant seeds';
+    if (lowerName.contains('waxing') && !lowerName.contains('first')) return '⚡ Time to grow and expand projects';
+    if (lowerName.contains('first quarter')) return '⚡ Time to overcome obstacles and act';
+    if (lowerName.contains('full')) return '⚡ Time of culmination and celebration';
+    if (lowerName.contains('waning gibbous')) return '⚡ Time to share and transmit';
+    if (lowerName.contains('last quarter')) return '⚡ Time to release and let go';
+    if (lowerName.contains('waning')) return '⚡ Time to rest and reflect';
+    return '⚡ Active lunar energy';
+  }
+
+  String _getNextMajorPhase(LunarInfoHelper lunarInfo, String locale) {
+    final nextPhase = lunarInfo.nextPhase;
+    final daysToNext = lunarInfo.daysToNext;
+
+    if (locale == 'ca') {
+      return '🔜 $nextPhase en $daysToNext dies';
+    } else if (locale == 'es') {
+      return '🔜 $nextPhase en $daysToNext días';
+    } else {
+      return '🔜 $nextPhase in $daysToNext days';
+    }
+  }
+
+  String _getCalendarButtonText(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'Veure Calendari';
+      case 'es':
+        return 'Ver Calendario';
+      default:
+        return 'View Calendar';
+    }
+  }
+
+  void _onCalendarTap() {
+    // Canviar al tab "Next Phases" (index 1)
+    _tabController.animateTo(1);
   }
 
   Widget _buildUnifiedTabsContainer() {
@@ -543,11 +927,10 @@ class _LunarMainContentState extends State<_LunarMainContent>
               fontWeight: FontWeight.w600,
             ),
             tabs: [
-              _buildTab(getLunarTabLabel('today', widget.strings.localeName), Icons.today),
-              _buildTab(getLunarTabLabel('calendar', widget.strings.localeName), Icons.calendar_month),
-              _buildTab(getLunarTabLabel('phases', widget.strings.localeName), Icons.brightness_3),
-              _buildTab(getLunarTabLabel('rituals', widget.strings.localeName), Icons.auto_awesome),
+              _buildTab(getLunarTabLabel('guide', widget.strings.localeName), Icons.auto_awesome),
+              _buildTab(getLunarTabLabel('next', widget.strings.localeName), Icons.arrow_forward),
               _buildTab(getLunarTabLabel('spreads', widget.strings.localeName), Icons.style),
+              _buildTab(getLunarTabLabel('rituals', widget.strings.localeName), Icons.wb_twilight),
             ],
           ),
         ),
@@ -561,27 +944,21 @@ class _LunarMainContentState extends State<_LunarMainContent>
           child: TabBarView(
             controller: _tabController,
             children: [
-              TodayTab(
+              GuideTab(
                 day: widget.day,
                 strings: widget.strings,
               ),
-              CalendarOnlyTab(
-                controller: widget.controller,
+              NextPhasesTab(
+                day: widget.day,
                 strings: widget.strings,
               ),
-              PhasesTab(
+              SpreadsTab(
                 day: widget.day,
                 strings: widget.strings,
               ),
               RitualsTab(
                 day: widget.day,
                 strings: widget.strings,
-                userId: widget.userId,
-              ),
-              SpreadsTab(
-                day: widget.day,
-                strings: widget.strings,
-                onSelectSpread: widget.onSelectSpread,
               ),
             ],
           ),
@@ -604,106 +981,5 @@ class _LunarMainContentState extends State<_LunarMainContent>
         ),
       ),
     );
-  }
-
-  Widget _buildAskMoonFooter() {
-    final locale = widget.strings.localeName;
-    final title = _getAskMoonTitle(locale);
-    final description = _getAskMoonDescription(locale);
-
-    return GestureDetector(
-      onTap: widget.onAskMoon,
-      child: Container(
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              TarotTheme.cosmicBlue.withValues(alpha: 0.08),
-              TarotTheme.cosmicAccent.withValues(alpha: 0.12),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: TarotTheme.cosmicAccent.withValues(alpha: 0.25),
-            width: 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: TarotTheme.brightBlue.withValues(alpha: 0.15),
-              ),
-              child: const Icon(
-                Icons.help_outline,
-                color: TarotTheme.brightBlue,
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: TarotTheme.deepNavy,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    description,
-                    style: TextStyle(
-                      color: TarotTheme.softBlueGrey.withValues(alpha: 0.9),
-                      fontSize: 13,
-                      height: 1.3,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 8),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: TarotTheme.brightBlue,
-              size: 18,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  String _getAskMoonTitle(String locale) {
-    switch (locale) {
-      case 'es':
-        return 'Consulta la Luna';
-      case 'ca':
-        return 'Pregunta a la Lluna';
-      default:
-        return 'Ask the Moon';
-    }
-  }
-
-  String _getAskMoonDescription(String locale) {
-    switch (locale) {
-      case 'es':
-        return 'Obtén orientación lunar personalizada para tus intenciones y proyectos';
-      case 'ca':
-        return 'Obtén orientació lunar personalitzada per a les teves intencions i projectes';
-      default:
-        return 'Get personalized lunar guidance for your intentions and projects';
-    }
   }
 }

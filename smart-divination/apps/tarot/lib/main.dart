@@ -25,6 +25,7 @@ import 'widgets/smart_draws_panel.dart';
 import 'widgets/learn_panel.dart';
 import 'widgets/chat_banner.dart';
 import 'widgets/history_banner.dart';
+import 'widgets/ask_moon_banner.dart';
 import 'screens/chat_screen.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
@@ -3372,43 +3373,16 @@ class _HomeState extends State<_Home> {
                       padding: const EdgeInsets.only(left: 12),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                        decoration: _selectedBottomNavIndex == 0
-                            ? BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0xFF44385c).withValues(alpha: 0.08),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
-                                    spreadRadius: 1,
-                                  ),
-                                ],
-                              )
-                            : null,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.home,
-                              color: _selectedBottomNavIndex == 0
-                                  ? const Color(0xFF44385c)
-                                  : const Color(0xFF44385c).withValues(alpha: 0.5),
-                              size: 20,
-                            ),
-                            const SizedBox(width: 4),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child: Text(
-                                'HOME',
-                                style: TextStyle(
-                                  color: _selectedBottomNavIndex == 0
-                                      ? const Color(0xFF44385c)
-                                      : const Color(0xFF44385c).withValues(alpha: 0.5),
-                                  fontSize: _selectedBottomNavIndex == 0 ? 11 : 10,
-                                  fontWeight: _selectedBottomNavIndex == 0 ? FontWeight.w700 : FontWeight.w400,
-                                  letterSpacing: _selectedBottomNavIndex == 0 ? 0.2 : 0,
-                                ),
+                            Opacity(
+                              opacity: _selectedBottomNavIndex == 0 ? 1.0 : 0.5,
+                              child: Image.asset(
+                                'assets/branding/logo.png',
+                                height: 20,
+                                fit: BoxFit.contain,
                               ),
                             ),
                           ],
@@ -3433,6 +3407,20 @@ class _HomeState extends State<_Home> {
                             label: creditLabel,
                             onCreditsTap: () => _showCreditsInfoDialog(credits, localisation),
                             onProTap: () => _showGoProModal(localisation),
+                          ),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.history, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
+                      tooltip: _qaText(localisation, en: 'History', es: 'Historial', ca: 'Historial'),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => HistoryScreen(
+                              userId: _userId ?? '',
+                              locale: localisation.localeName,
+                            ),
                           ),
                         );
                       },
@@ -3807,7 +3795,12 @@ class _HomeState extends State<_Home> {
             }
           },
           onRefresh: () => _lunarController.refresh(force: true),
-          onAskMoon: () {
+        ),
+        const SizedBox(height: 16),
+        // Ask the Moon Banner
+        AskMoonBanner(
+          strings: localisation,
+          onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => LunarAdvisorScreen(
