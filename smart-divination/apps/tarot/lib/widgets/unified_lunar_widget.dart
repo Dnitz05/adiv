@@ -363,8 +363,6 @@ class _LunarMainContentState extends State<_LunarMainContent>
               _buildRow1PhaseAndIllumination(lunarInfo, illumination, locale),
               const SizedBox(height: 10),
               _buildRow2AstroProperties(lunarInfo, locale),
-              const SizedBox(height: 10),
-              _buildRow3Timeline(lunarInfo, locale),
               const SizedBox(height: 14),
               _buildCTAButton(locale),
             ],
@@ -395,7 +393,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
           ),
         ),
         const SizedBox(width: 12),
-        // Phase name + trend
+        // Phase name + trend + lunar day
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -417,6 +415,25 @@ class _LunarMainContentState extends State<_LunarMainContent>
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
+              ),
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  Icon(
+                    Icons.brightness_3,
+                    size: 11,
+                    color: Colors.white.withValues(alpha: 0.6),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${_getLunarDayLabel(locale)} ${widget.day.age.round()}',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.75),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -447,6 +464,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
 
   Widget _buildRow2AstroProperties(LunarInfoHelper lunarInfo, String locale) {
     final elementLabel = _getDidacticElement(widget.day.zodiac.element, locale);
+    final inLabel = _getInLabel(locale);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -493,6 +511,29 @@ class _LunarMainContentState extends State<_LunarMainContent>
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
+        ),
+        const SizedBox(height: 6),
+        // Next phase
+        Row(
+          children: [
+            Icon(
+              Icons.arrow_forward,
+              size: 11,
+              color: Colors.white.withValues(alpha: 0.6),
+            ),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                '${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext} ${_getDaysLabel(lunarInfo.daysToNext, locale)}',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.75),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
       ],
     );
