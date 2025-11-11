@@ -375,10 +375,20 @@ class _LunarMainContentState extends State<_LunarMainContent>
   Widget _buildRow1PhaseAndIllumination(LunarInfoHelper lunarInfo, double illumination, String locale) {
     return Row(
       children: [
-        // Moon emoji with subtle glow
+        // Moon emoji with night sky background
         Container(
+          width: 70,
+          height: 70,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
+            gradient: const RadialGradient(
+              colors: [
+                Color(0xFF1A1A3E), // Deep night blue at center
+                Color(0xFF0D0D1F), // Almost black at edges
+              ],
+              center: Alignment.center,
+              radius: 0.8,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.white.withValues(alpha: 0.15),
@@ -387,9 +397,11 @@ class _LunarMainContentState extends State<_LunarMainContent>
               ),
             ],
           ),
-          child: Text(
-            widget.day.phaseEmoji,
-            style: const TextStyle(fontSize: 32),
+          child: Center(
+            child: Text(
+              widget.day.phaseEmoji,
+              style: const TextStyle(fontSize: 32),
+            ),
           ),
         ),
         const SizedBox(width: 12),

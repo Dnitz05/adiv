@@ -209,7 +209,13 @@
       "Bash(HOST=0.0.0.0 PORT=3001 npm run dev:*)",
       "Bash(npx next dev:*)",
       "WebFetch(domain:backend-6xrbmakjv-dnitzs-projects.vercel.app)",
-      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter pub:*)"
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter pub:*)",
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter install:*)",
+      "Bash(cp:*)",
+      "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter pub run:*)",
+      "Bash(C:/tarot/lunar_hero_widget_test.png)",
+      "Bash(C:/tarot/lunar_hero_inside_app.png)",
+      "Bash(C:/tarot/lunar_widget_new_horizontal.png)"
     ],
     "deny": [],
     "ask": []

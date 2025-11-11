@@ -3362,75 +3362,62 @@ class _HomeState extends State<_Home> {
                   pinned: false,
                   forceElevated: innerBoxIsScrolled,
                   toolbarHeight: 48,
-                  title: const SizedBox.shrink(),
-                  leading: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedBottomNavIndex = 0;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Opacity(
-                              opacity: _selectedBottomNavIndex == 0 ? 1.0 : 0.5,
-                              child: Image.asset(
-                                'assets/branding/logo.png',
-                                height: 20,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ],
-                        ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 1. Icona Home (punt fix a l'esquerra)
+                      IconButton(
+                        padding: const EdgeInsets.only(left: 0, right: 8),
+                        icon: Icon(Icons.home, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 24),
+                        tooltip: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
+                        onPressed: () {
+                          setState(() {
+                            _selectedBottomNavIndex = 0;
+                          });
+                        },
                       ),
-                    ),
+                        // 2. Credits + Go Pro
+                        ValueListenableBuilder<DailyCredits>(
+                          valueListenable: _creditsNotifier,
+                          builder: (context, credits, _) {
+                            final creditLabel = _qaText(
+                              localisation,
+                              en: 'Credits',
+                              es: 'Creditos',
+                              ca: 'Credits',
+                            );
+                            return _CreditsWithProBadge(
+                              credits: credits,
+                              label: creditLabel,
+                              onCreditsTap: () => _showCreditsInfoDialog(credits, localisation),
+                              onProTap: () => _showGoProModal(localisation),
+                            );
+                          },
+                        ),
+                        // 3. Historial
+                        IconButton(
+                          icon: Icon(Icons.history, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
+                          tooltip: _qaText(localisation, en: 'History', es: 'Historial', ca: 'Historial'),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => HistoryScreen(
+                                  userId: _userId ?? '',
+                                  locale: localisation.localeName,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        // 4. Menu (punt fix a la dreta)
+                        IconButton(
+                          padding: const EdgeInsets.only(right: 0, left: 8),
+                          icon: Icon(Icons.menu, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 24),
+                          tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
+                          onPressed: () => _openHeaderMenu(localisation),
+                        ),
+                      ],
                   ),
-                  actions: [
-                    ValueListenableBuilder<DailyCredits>(
-                      valueListenable: _creditsNotifier,
-                      builder: (context, credits, _) {
-                        final creditLabel = _qaText(
-                          localisation,
-                          en: 'Credits',
-                          es: 'Creditos',
-                          ca: 'Credits',
-                        );
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: _CreditsWithProBadge(
-                            credits: credits,
-                            label: creditLabel,
-                            onCreditsTap: () => _showCreditsInfoDialog(credits, localisation),
-                            onProTap: () => _showGoProModal(localisation),
-                          ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.history, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
-                      tooltip: _qaText(localisation, en: 'History', es: 'Historial', ca: 'Historial'),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => HistoryScreen(
-                              userId: _userId ?? '',
-                              locale: localisation.localeName,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.menu, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
-                      tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
-                      onPressed: () => _openHeaderMenu(localisation),
-                    ),
-                  ],
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1),
                     child: Container(
@@ -4246,7 +4233,7 @@ class _CreditsWithProBadge extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.diamond, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 20),
-              const SizedBox(width: 3),
+              const SizedBox(width: 2),
               Text(
                 '${credits.remaining}',
                 style: TextStyle(
@@ -4258,7 +4245,7 @@ class _CreditsWithProBadge extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 4),
         // GO PRO badge
         GestureDetector(
           onTap: onProTap,

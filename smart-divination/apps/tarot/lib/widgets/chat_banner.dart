@@ -98,22 +98,22 @@ class ChatBanner extends StatelessWidget {
   String _getTitle() {
     switch (strings.localeName) {
       case 'es':
-        return 'Charla sobre Tarot';
+        return 'Tarot Chat';
       case 'ca':
-        return 'Conversa sobre Tarot';
+        return 'Tarot Chat';
       default:
-        return 'Chat about Tarot';
+        return 'Tarot Chat';
     }
   }
 
   String _getDescription() {
     switch (strings.localeName) {
       case 'es':
-        return 'Habla de forma distendida y directa sobre tarot y haz tus consultas';
+        return 'Haz tiradas, obtén lecturas de forma distendida y continua';
       case 'ca':
-        return 'Parla de forma distesa i directa sobre tarot i fes les teves consultes';
+        return 'Fes tirades, obté lectures de forma distesa i contínua';
       default:
-        return 'Have relaxed and direct conversations about tarot and ask your questions';
+        return 'Get readings and spreads in a relaxed, continuous way';
     }
   }
 }

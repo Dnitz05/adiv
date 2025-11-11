@@ -33,7 +33,7 @@ class LearnPanel extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
         border: Border.all(
-          color: TarotTheme.brightBlue.withValues(alpha: 0.15),
+          color: TarotTheme.cosmicAccent.withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [

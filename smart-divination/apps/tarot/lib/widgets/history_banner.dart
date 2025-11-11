@@ -41,7 +41,7 @@ class HistoryBanner extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
-                    TarotTheme.cosmicPurple,
+                    TarotTheme.cosmicBlue,
                     TarotTheme.cosmicAccent,
                   ],
                   begin: Alignment.topLeft,

@@ -98,7 +98,7 @@ class AskMoonBanner extends StatelessWidget {
   String _getTitle() {
     switch (strings.localeName) {
       case 'es':
-        return 'Consulta la Luna';
+        return 'Pregunta a la Luna';
       case 'ca':
         return 'Pregunta a la Lluna';
       default:
@@ -109,11 +109,11 @@ class AskMoonBanner extends StatelessWidget {
   String _getDescription() {
     switch (strings.localeName) {
       case 'es':
-        return 'Obtén orientación lunar personalizada para tus intenciones y proyectos';
+        return 'Recibe orientación lunar personalizada para tu situación actual';
       case 'ca':
-        return 'Obt\u00e9n orientació lunar personalitzada per a les teves intencions i projectes';
+        return 'Rep orientació lunar personalitzada per a la teva situació actual';
       default:
-        return 'Get personalized lunar guidance for your intentions and projects';
+        return 'Get personalized lunar guidance for your current situation';
     }
   }
 }

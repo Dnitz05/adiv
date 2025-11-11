@@ -74,13 +74,15 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            children: [
-              Container(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -123,92 +125,169 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                   ],
                 ),
               ),
-            ],
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            height: 200,
-            child: widget.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: TarotTheme.brightBlue,
-                      strokeWidth: 2,
-                    ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          const SizedBox(height: 12),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       for (int i = 0; i < widget.cards.length; i++)
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: _FlippableCard(
-                              card: widget.cards[i],
-                              isFlipped: _flippedCards.contains(i),
-                              onTap: () {
-                                setState(() {
-                                  if (_flippedCards.contains(i)) {
-                                    _flippedCards.remove(i);
-                                  } else {
-                                    _flippedCards.add(i);
-                                  }
-                                });
-                                _saveFlippedCards();
-                              },
+                            padding: EdgeInsets.only(
+                              left: i == 0 ? 0 : 2,
+                              right: i == widget.cards.length - 1 ? 0 : 2,
                             ),
-                          ),
+                            child: widget.isLoading
+                                ? const SizedBox.shrink()
+                                : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    AspectRatio(
+                                      aspectRatio: 2 / 3,
+                                      child: _FlippableCard(
+                                        card: widget.cards[i],
+                                        isFlipped: _flippedCards.contains(i),
+                                        onTap: () {
+                                          setState(() {
+                                            if (_flippedCards.contains(i)) {
+                                              _flippedCards.remove(i);
+                                            } else {
+                                              _flippedCards.add(i);
+                                            }
+                                          });
+                                          _saveFlippedCards();
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    AnimatedSwitcher(
+                                      duration: const Duration(milliseconds: 300),
+                                      child: Text(
+                                        _flippedCards.contains(i)
+                                            ? widget.cards[i].name
+                                            : _getPositionLabel(i),
+                                        key: ValueKey(_flippedCards.contains(i)),
+                                        style: theme.textTheme.bodySmall?.copyWith(
+                                          fontSize: 11,
+                                          color: TarotTheme.softBlueGrey,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                         ),
                     ],
                   ),
+                  if (widget.isLoading)
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(40),
+                        child: CircularProgressIndicator(
+                          color: TarotTheme.brightBlue,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
           if (!allFlipped && !widget.isLoading) ...[
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed: _revealAllCards,
-              style: FilledButton.styleFrom(
-                backgroundColor: TarotTheme.cosmicPurple,
-                foregroundColor: Colors.white,
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: InkWell(
+                onTap: _revealAllCards,
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 14,
                 ),
-                shape: RoundedRectangleBorder(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      TarotTheme.cosmicBlue,
+                      TarotTheme.cosmicAccent,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(14),
                 ),
-              ),
-              icon: const Icon(Icons.visibility, size: 20),
-              label: Text(
-                _getRevealButtonText(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.visibility, size: 20, color: Colors.white),
+                    const SizedBox(width: 8),
+                    Text(
+                      _getRevealButtonText(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+            ),
           ],
           if (allFlipped && !widget.isLoading) ...[
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed: widget.onInterpret,
-              style: FilledButton.styleFrom(
-                backgroundColor: TarotTheme.brightBlue,
-                foregroundColor: Colors.white,
+            const SizedBox(height: 4),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: InkWell(
+                onTap: widget.onInterpret,
+                borderRadius: BorderRadius.circular(14),
+                child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 14,
                 ),
-                shape: RoundedRectangleBorder(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      TarotTheme.brightBlue,
+                      TarotTheme.cosmicAccent,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
                   borderRadius: BorderRadius.circular(14),
                 ),
-              ),
-              icon: const Icon(Icons.psychology, size: 20),
-              label: Text(
-                _getInterpretButtonText(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.psychology, size: 20, color: Colors.white),
+                    const SizedBox(width: 8),
+                    Text(
+                      _getInterpretButtonText(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+            ),
             ),
           ],
         ],
@@ -266,6 +345,17 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
       default:
         return 'Reveal Cards';
     }
+  }
+
+  String _getPositionLabel(int index) {
+    final positions = {
+      'en': ['Past', 'Present', 'Future'],
+      'es': ['Pasado', 'Presente', 'Futuro'],
+      'ca': ['Passat', 'Present', 'Futur'],
+    };
+    final locale = widget.strings.localeName;
+    final labels = positions[locale] ?? positions['en']!;
+    return index < labels.length ? labels[index] : '';
   }
 
 }
@@ -346,10 +436,6 @@ class _FlippableCardState extends State<_FlippableCard>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.3),
-          width: 2,
-        ),
         boxShadow: [
           // Main shadow for depth
           BoxShadow(
@@ -378,7 +464,7 @@ class _FlippableCardState extends State<_FlippableCard>
         borderRadius: BorderRadius.circular(0),
         child: Image.asset(
           'assets/cards/tarot_back_card.png',
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
           errorBuilder: (context, error, stackTrace) => Container(
             color: TarotTheme.cosmicBlue,
             child: Center(
@@ -401,7 +487,6 @@ class _FlippableCardState extends State<_FlippableCard>
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(0),
-          color: Colors.white,
           boxShadow: [
             // Main shadow for depth
             BoxShadow(
@@ -431,7 +516,7 @@ class _FlippableCardState extends State<_FlippableCard>
                 borderRadius: BorderRadius.circular(0),
                 child: Image.asset(
                   widget.card.imageUrl!,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) =>
                       _buildCardPlaceholder(),
                 ),
