@@ -603,35 +603,33 @@ class _LunarMainContentState extends State<_LunarMainContent>
   }
 
   Widget _buildCTAButton(String locale) {
-    return InkWell(
+    return GestureDetector(
       onTap: () => _onCalendarTap(),
-      borderRadius: BorderRadius.circular(14),
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 14,
+          horizontal: 14,
+          vertical: 8,
         ),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color(0xFF342B47), // Dark lilac (matching widget background)
-              Color(0xFF473D5C), // Medium lilac
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(14),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               _getCalendarButtonText(locale),
               style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 15,
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: TarotTheme.cosmicBlue,
               ),
+            ),
+            const SizedBox(width: 6),
+            const Icon(
+              Icons.arrow_forward,
+              size: 16,
+              color: TarotTheme.cosmicBlue,
             ),
           ],
         ),
