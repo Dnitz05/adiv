@@ -603,28 +603,22 @@ class _LunarMainContentState extends State<_LunarMainContent>
   }
 
   Widget _buildCTAButton(String locale) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.calendar_today, size: 16, color: Color(0xFF2C2741)),
-          const SizedBox(width: 8),
-          Text(
-            _getCalendarButtonText(locale),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF2C2741),
-            ),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.9),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          _getCalendarButtonText(locale),
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF2C2741),
           ),
-          const SizedBox(width: 6),
-          const Icon(Icons.arrow_forward, size: 16, color: Color(0xFF2C2741)),
-        ],
+        ),
       ),
     );
   }
@@ -880,11 +874,11 @@ class _LunarMainContentState extends State<_LunarMainContent>
   String _getCalendarButtonText(String locale) {
     switch (locale) {
       case 'ca':
-        return 'Veure Calendari';
+        return 'Calendari';
       case 'es':
-        return 'Ver Calendario';
+        return 'Calendario';
       default:
-        return 'View Calendar';
+        return 'Calendar';
     }
   }
 
