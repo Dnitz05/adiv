@@ -46,7 +46,7 @@ class SmartDrawsPanel extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -84,7 +84,7 @@ class SmartDrawsPanel extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 4),
                     Text(
                       strings.smartDrawsSubtitle,
                       style: theme.textTheme.bodySmall?.copyWith(

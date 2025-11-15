@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../models/tarot_card.dart';
 import '../theme/tarot_theme.dart';
+import '../l10n/lunar/lunar_translations.dart';
 
 class DailyDrawPanel extends StatefulWidget {
   const DailyDrawPanel({
@@ -74,13 +75,11 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
+          Row(
               children: [
                 Container(
                 padding: const EdgeInsets.all(8),
@@ -126,7 +125,6 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                 ),
               ),
               ],
-            ),
           ),
           const SizedBox(height: 12),
           LayoutBuilder(
@@ -208,9 +206,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           ),
           if (!allFlipped && !widget.isLoading) ...[
             const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: InkWell(
+            InkWell(
                 onTap: _revealAllCards,
                 borderRadius: BorderRadius.circular(14),
                 child: Container(
@@ -246,13 +242,10 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                 ),
               ),
             ),
-            ),
           ],
           if (allFlipped && !widget.isLoading) ...[
             const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: InkWell(
+            InkWell(
                 onTap: widget.onInterpret,
                 borderRadius: BorderRadius.circular(14),
                 child: Container(
@@ -288,7 +281,6 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                 ),
               ),
             ),
-            ),
           ],
         ],
       ),
@@ -316,13 +308,16 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
   }
 
   String _getDailyDrawSubtitle() {
+    final now = DateTime.now();
+    final formattedDate = formatFullDate(now, widget.strings.localeName);
+
     switch (widget.strings.localeName) {
       case 'ca':
-        return 'Toca les cartes per revelar-les';
+        return 'Avui, $formattedDate';
       case 'es':
-        return 'Toca las cartas para revelarlas';
+        return 'Hoy, $formattedDate';
       default:
-        return 'Tap cards to reveal them';
+        return 'Today, $formattedDate';
     }
   }
 

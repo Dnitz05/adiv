@@ -3227,7 +3227,7 @@ class _HomeState extends State<_Home> {
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
-                      color: Color(0xFFEEEEEE),
+                      color: Colors.white.withValues(alpha: 0.1),
                       width: 1,
                     ),
                   ),
@@ -3235,8 +3235,8 @@ class _HomeState extends State<_Home> {
                 child: BottomNavigationBar(
           currentIndex: _selectedBottomNavIndex,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: const Color(0xFF44385c),
-          unselectedItemColor: const Color(0xFF44385c).withValues(alpha: 0.5),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white.withValues(alpha: 0.6),
           selectedFontSize: 13,
           unselectedFontSize: 12,
           selectedLabelStyle: const TextStyle(
@@ -3246,7 +3246,7 @@ class _HomeState extends State<_Home> {
           unselectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w400,
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: TarotTheme.deepLilacBlue,
           elevation: 0,
         onTap: (index) {
           setState(() {
@@ -3330,7 +3330,7 @@ class _HomeState extends State<_Home> {
                     width: itemWidth * 0.8,
                     height: 3,
                     decoration: BoxDecoration(
-                      color: Color(0xFF44385c),
+                      color: Colors.white,
                       borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(2),
                       ),
@@ -3344,16 +3344,29 @@ class _HomeState extends State<_Home> {
       ),
       body: Stack(
         children: [
-          // Simple flat white background
+          // Subtle wavy lilac-blue background
           Container(
-            color: Colors.white, // Pure white
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  TarotTheme.subtleWave1,
+                  TarotTheme.veryLightLilacBlue,
+                  TarotTheme.subtleWave2,
+                  TarotTheme.veryLightLilacBlue,
+                  TarotTheme.subtleWave1,
+                ],
+                stops: const [0.0, 0.25, 0.5, 0.75, 1.0],
+              ),
+            ),
           ),
           // NestedScrollView with floating header
           NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: TarotTheme.deepLilacBlue,
                   elevation: 0,
                   centerTitle: false,
                   automaticallyImplyLeading: false,
@@ -3368,7 +3381,7 @@ class _HomeState extends State<_Home> {
                       // 1. Icona Home (punt fix a l'esquerra)
                       IconButton(
                         padding: const EdgeInsets.only(left: 0, right: 8),
-                        icon: Icon(Icons.home, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 24),
+                        icon: Icon(Icons.home, color: Colors.white.withValues(alpha: 0.9), size: 24),
                         tooltip: _qaText(localisation, en: 'Home', es: 'Inicio', ca: 'Inici'),
                         onPressed: () {
                           setState(() {
@@ -3396,7 +3409,7 @@ class _HomeState extends State<_Home> {
                         ),
                         // 3. Historial
                         IconButton(
-                          icon: Icon(Icons.history, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 22),
+                          icon: Icon(Icons.history, color: Colors.white.withValues(alpha: 0.9), size: 22),
                           tooltip: _qaText(localisation, en: 'History', es: 'Historial', ca: 'Historial'),
                           onPressed: () {
                             Navigator.of(context).push(
@@ -3412,7 +3425,7 @@ class _HomeState extends State<_Home> {
                         // 4. Menu (punt fix a la dreta)
                         IconButton(
                           padding: const EdgeInsets.only(right: 0, left: 8),
-                          icon: Icon(Icons.menu, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 24),
+                          icon: Icon(Icons.menu, color: Colors.white.withValues(alpha: 0.9), size: 24),
                           tooltip: _qaText(localisation, en: 'Menu', es: 'Menu', ca: 'Menu'),
                           onPressed: () => _openHeaderMenu(localisation),
                         ),
@@ -3421,7 +3434,7 @@ class _HomeState extends State<_Home> {
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(1),
                     child: Container(
-                      color: Colors.grey.withValues(alpha: 0.2),
+                      color: Colors.white.withValues(alpha: 0.1),
                       height: 1,
                     ),
                   ),
@@ -3783,7 +3796,7 @@ class _HomeState extends State<_Home> {
           },
           onRefresh: () => _lunarController.refresh(force: true),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         // Ask the Moon Banner
         AskMoonBanner(
           strings: localisation,
@@ -3798,7 +3811,7 @@ class _HomeState extends State<_Home> {
             );
           },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         // Smart Draws Panel
         SmartDrawsPanel(
           strings: localisation,
@@ -4232,12 +4245,12 @@ class _CreditsWithProBadge extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.diamond, color: Color(0xFF44385c).withValues(alpha: 0.6), size: 20),
+              Icon(Icons.diamond, color: Colors.white.withValues(alpha: 0.9), size: 20),
               const SizedBox(width: 2),
               Text(
                 '${credits.remaining}',
                 style: TextStyle(
-                  color: Color(0xFF44385c).withValues(alpha: 0.6),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),

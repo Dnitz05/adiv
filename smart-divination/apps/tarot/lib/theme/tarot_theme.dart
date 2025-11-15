@@ -40,6 +40,14 @@ class TarotTheme {
   static const Color warmGold = Color(0xFFF59E0B); // Warm gold accent
   static const Color softBlueGrey = Color(0xFF64748B); // Soft blue-grey for descriptions
 
+  // Header and footer palette - deep lilac blue
+  static const Color deepLilacBlue = Color(0xFF44385c); // Deep lilac blue for header/footer background
+
+  // Background palette - very light lilac blue with subtle waves
+  static const Color veryLightLilacBlue = Color(0xFFF5F3F8); // Very light lilac blue for background
+  static const Color subtleWave1 = Color(0xFFF8F6FB); // Subtle wave color 1 (lighter)
+  static const Color subtleWave2 = Color(0xFFF0EDF5); // Subtle wave color 2 (slightly darker)
+
   // Lunar mystical palette - elegant lavender-blue tones
   static const Color lunarLavenderLight = Color(0xFFF0EBFF); // Soft lavender background
   static const Color lunarLavenderSoft = Color(0xFFE8E1FF); // Elegant lilac-blue
@@ -193,7 +201,7 @@ class TarotTheme {
           height: 1.5,
         ),
         bodySmall: TextStyle(
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: FontWeight.w400,
           color: stardust,
           letterSpacing: 0.1,

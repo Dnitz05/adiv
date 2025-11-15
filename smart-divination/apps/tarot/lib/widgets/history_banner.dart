@@ -109,11 +109,11 @@ class HistoryBanner extends StatelessWidget {
   String _getDescription() {
     switch (strings.localeName) {
       case 'es':
-        return 'Revisa tus lecturas y sesiones pasadas';
+        return 'Revisa también tus notas, spreads y demás consultas';
       case 'ca':
-        return 'Revisa les teves lectures i sessions anteriors';
+        return 'Revisa també les teves notes, spreads i la resta de consultes';
       default:
-        return 'Review your past readings and sessions';
+        return 'Review also your notes, spreads and other queries';
     }
   }
 }

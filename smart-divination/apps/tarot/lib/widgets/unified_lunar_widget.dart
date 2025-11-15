@@ -268,7 +268,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
             size: 20,
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,12 +282,12 @@ class _LunarMainContentState extends State<_LunarMainContent>
                   letterSpacing: 1.2,
                 ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 4),
               Text(
                 subtitle,
                 style: TextStyle(
                   color: TarotTheme.softBlueGrey.withOpacity(0.8),
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -310,17 +310,19 @@ class _LunarMainContentState extends State<_LunarMainContent>
   }
 
   String _getTodaySubtitle(String locale) {
-    final now = DateTime.now();
-    final formattedDate = formatFullDate(now, locale);
+    final lunarInfo = LunarInfoHelper(widget.day, locale);
+    final lunarDay = widget.day.age.round();
 
-    switch (locale) {
-      case 'es':
-        return 'Hoy, $formattedDate';
-      case 'ca':
-        return 'Avui, $formattedDate';
-      default:
-        return 'Today, $formattedDate';
-    }
+    // Day label
+    final dayLabel = locale == 'ca' ? 'Dia lunar' : (locale == 'es' ? 'Día lunar' : 'Lunar day');
+
+    // In label
+    final inLabel = locale == 'ca' ? 'en' : (locale == 'es' ? 'en' : 'in');
+
+    // Days label
+    final daysLabel = _getDaysLabel(lunarInfo.daysToNext, locale);
+
+    return '$dayLabel $lunarDay • ${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext} $daysLabel';
   }
 
   Widget _buildCompactUnifiedHeader() {
