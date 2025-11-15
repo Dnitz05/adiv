@@ -7,7 +7,6 @@ import '../theme/tarot_theme.dart';
 import '../l10n/lunar/lunar_translations.dart';
 import 'lunar_card_helpers.dart';
 import 'lunar_tabs/guide_tab.dart';
-import 'lunar_tabs/next_phases_tab.dart';
 import 'lunar_tabs/spreads_tab.dart';
 import 'lunar_tabs/rituals_tab.dart';
 
@@ -200,7 +199,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -294,6 +293,7 @@ class _LunarMainContentState extends State<_LunarMainContent>
             ],
           ),
         ),
+        _buildCTAButton(locale),
       ],
     );
   }
@@ -358,18 +358,12 @@ class _LunarMainContentState extends State<_LunarMainContent>
               ),
             ],
           ),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildRow1PhaseAndIllumination(lunarInfo, illumination, locale),
-              const SizedBox(height: 10),
-              _buildRow2AstroProperties(lunarInfo, locale),
-              const SizedBox(height: 14),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: _buildCTAButton(locale),
-              ),
+              _buildLunarTimeline(locale),
             ],
           ),
         ),
@@ -379,17 +373,30 @@ class _LunarMainContentState extends State<_LunarMainContent>
 
   Widget _buildRow1PhaseAndIllumination(LunarInfoHelper lunarInfo, double illumination, String locale) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Moon emoji with night sky background
+        _buildMoonWithOverlaidPercentage(illumination, locale),
+        const SizedBox(width: 14),
+        Expanded(
+          child: _buildStackedPhaseInfo(lunarInfo, locale),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMoonWithOverlaidPercentage(double illumination, String locale) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
         Container(
-          width: 70,
-          height: 70,
+          width: 56,
+          height: 56,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: const RadialGradient(
               colors: [
-                Color(0xFF1A1A3E), // Deep night blue at center
-                Color(0xFF0D0D1F), // Almost black at edges
+                Color(0xFF1A1A3E),
+                Color(0xFF0D0D1F),
               ],
               center: Alignment.center,
               radius: 0.8,
@@ -405,209 +412,105 @@ class _LunarMainContentState extends State<_LunarMainContent>
           child: Center(
             child: Text(
               widget.day.phaseEmoji,
-              style: const TextStyle(fontSize: 32),
+              style: const TextStyle(fontSize: 28),
             ),
           ),
         ),
-        const SizedBox(width: 12),
-        // Phase name + trend + lunar day
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.day.phaseName,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.3,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                lunarInfo.trend,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.7),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Row(
-                children: [
-                  Icon(
-                    Icons.brightness_3,
-                    size: 11,
-                    color: Colors.white.withValues(alpha: 0.6),
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${_getLunarDayLabel(locale)} ${widget.day.age.round()}',
-                    style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.75),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        // Illumination badge
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.2),
-              width: 1,
-            ),
-          ),
-          child: Text(
-            '${illumination.round()}% ${_getLitText(locale)}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-            ),
+        const SizedBox(height: 4),
+        Text(
+          '${illumination.round()}% ${_getLitText(locale)}',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildRow2AstroProperties(LunarInfoHelper lunarInfo, String locale) {
-    final elementLabel = _getDidacticElement(widget.day.zodiac.element, locale);
-    final inLabel = _getInLabel(locale);
-
+  Widget _buildStackedPhaseInfo(LunarInfoHelper lunarInfo, String locale) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Zodiac + Element | Next phase
-        Row(
-          children: [
-            Text(
-              widget.day.zodiac.symbol,
-              style: const TextStyle(fontSize: 16),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              widget.day.zodiac.name,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              ' · ',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
-                fontSize: 13,
-              ),
-            ),
-            Text(
-              elementLabel,
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.9),
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                '|',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.3),
-                  fontSize: 12,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward,
-              size: 11,
-              color: Colors.white.withValues(alpha: 0.6),
-            ),
-            const SizedBox(width: 4),
-            Flexible(
-              child: Text(
-                '${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext} ${_getDaysLabel(lunarInfo.daysToNext, locale)}',
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.75),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 6),
-        // Polarity · Quality · Ruler (més didàctic)
         Text(
-          '${_getDidacticPolarity(lunarInfo.polarity, locale)} · ${_getDidacticQuality(lunarInfo.quality, locale)} · ${_getDidacticRuler(lunarInfo.ruler, locale)}',
+          widget.day.phaseName,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.3,
+            height: 1.1,
+          ),
+        ),
+        const SizedBox(height: 1),
+        Text(
+          lunarInfo.trend,
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.8),
-            fontSize: 12,
+            color: Colors.white.withValues(alpha: 0.7),
+            fontSize: 11,
             fontWeight: FontWeight.w500,
+            height: 1.2,
+          ),
+        ),
+        const SizedBox(height: 4),
+        _buildZodiacElementLine(locale),
+        const SizedBox(height: 3),
+        _buildPropertiesLine(lunarInfo, locale),
+      ],
+    );
+  }
+
+  Widget _buildZodiacElementLine(String locale) {
+    final elementLabel = _getDidacticElement(widget.day.zodiac.element, locale);
+
+    return Row(
+      children: [
+        Text(
+          widget.day.zodiac.symbol,
+          style: const TextStyle(fontSize: 16),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          widget.day.zodiac.name,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            height: 1.2,
+          ),
+        ),
+        Text(
+          ' · ',
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.5),
+            fontSize: 12,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            elementLabel,
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.9),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              height: 1.2,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildRow3Timeline(LunarInfoHelper lunarInfo, String locale) {
-    final dayLabel = _getLunarDayLabel(locale);
-    final inLabel = _getInLabel(locale);
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Lunar day
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.brightness_3,
-              size: 13,
-              color: Colors.white.withValues(alpha: 0.7),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              '$dayLabel ${widget.day.age.round()}',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.9),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-        // Next phase
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.arrow_forward,
-              size: 13,
-              color: Colors.white.withValues(alpha: 0.7),
-            ),
-            const SizedBox(width: 6),
-            Text(
-              '${lunarInfo.nextPhase} $inLabel ${lunarInfo.daysToNext} ${_getDaysLabel(lunarInfo.daysToNext, locale)}',
-              style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.9),
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ],
+  Widget _buildPropertiesLine(LunarInfoHelper lunarInfo, String locale) {
+    return Text(
+      '${_getDidacticPolarity(lunarInfo.polarity, locale)} · ${_getDidacticQuality(lunarInfo.quality, locale)} · ${_getDidacticRuler(lunarInfo.ruler, locale)}',
+      style: TextStyle(
+        color: Colors.white.withValues(alpha: 0.8),
+        fontSize: 11,
+        fontWeight: FontWeight.w500,
+        height: 1.2,
+      ),
     );
   }
 
@@ -616,29 +519,36 @@ class _LunarMainContentState extends State<_LunarMainContent>
       onTap: () => _onCalendarTap(),
       child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 8,
+          horizontal: 10,
+          vertical: 6,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          gradient: const LinearGradient(
+            colors: [
+              TarotTheme.cosmicBlue,
+              TarotTheme.cosmicAccent,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Icon(
+              Icons.calendar_today,
+              size: 12,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 4),
             Text(
               _getCalendarButtonText(locale),
               style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-                color: TarotTheme.cosmicBlue,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
               ),
-            ),
-            const SizedBox(width: 6),
-            const Icon(
-              Icons.arrow_forward,
-              size: 16,
-              color: TarotTheme.cosmicBlue,
             ),
           ],
         ),
@@ -951,27 +861,22 @@ class _LunarMainContentState extends State<_LunarMainContent>
             ),
             tabs: [
               _buildTab(getLunarTabLabel('guide', widget.strings.localeName), Icons.auto_awesome),
-              _buildTab(getLunarTabLabel('next', widget.strings.localeName), Icons.arrow_forward),
               _buildTab(getLunarTabLabel('spreads', widget.strings.localeName), Icons.style),
               _buildTab(getLunarTabLabel('rituals', widget.strings.localeName), Icons.wb_twilight),
             ],
           ),
         ),
         const SizedBox(height: 4),
-        // TabBarView content - optimized compact constraints (reduced 10%)
+        // TabBarView content - matched to lunar phase container height
         ConstrainedBox(
           constraints: const BoxConstraints(
-            minHeight: 180,
-            maxHeight: 252,
+            minHeight: 150,
+            maxHeight: 190,
           ),
           child: TabBarView(
             controller: _tabController,
             children: [
               GuideTab(
-                day: widget.day,
-                strings: widget.strings,
-              ),
-              NextPhasesTab(
                 day: widget.day,
                 strings: widget.strings,
               ),
@@ -1004,5 +909,165 @@ class _LunarMainContentState extends State<_LunarMainContent>
         ),
       ),
     );
+  }
+
+  Widget _buildLunarTimeline(String locale) {
+    final milestones = _calculateTimelineMilestones(locale);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (int i = 0; i < milestones.length; i++)
+            _buildTimelineMilestone(
+              milestones[i],
+              isFirst: i == 0,
+              isLast: i == milestones.length - 1,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimelineMilestone(
+    Map<String, dynamic> milestone, {
+    required bool isFirst,
+    required bool isLast,
+  }) {
+    final isCurrent = milestone['isCurrent'] as bool;
+    final emoji = milestone['emoji'] as String;
+    final phaseName = milestone['phaseName'] as String;
+    final dateLabel = milestone['dateLabel'] as String;
+
+    return Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Emoji with halo
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withValues(alpha: 0.25),
+                  blurRadius: 8,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Text(
+              emoji,
+              style: const TextStyle(fontSize: 20),
+            ),
+          ),
+          const SizedBox(height: 6),
+          // Phase name
+          Text(
+            phaseName,
+            style: TextStyle(
+              color: isCurrent ? Colors.white : Colors.white.withValues(alpha: 0.7),
+              fontSize: 10,
+              fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+              letterSpacing: 0.2,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 3),
+          // Date
+          Text(
+            dateLabel,
+            style: TextStyle(
+              color: isCurrent ? Colors.white : Colors.white.withValues(alpha: 0.6),
+              fontSize: 9,
+              fontWeight: isCurrent ? FontWeight.w600 : FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Map<String, dynamic>> _calculateTimelineMilestones(String locale) {
+    final currentAge = widget.day.age;
+    final currentDate = widget.day.date;
+    final lunarCycle = 29.53;
+
+    // Phase definitions
+    final phases = [
+      {'id': 'new_moon', 'emoji': '🌑', 'age': 0.0},
+      {'id': 'first_quarter', 'emoji': '🌓', 'age': 7.4},
+      {'id': 'full_moon', 'emoji': '🌕', 'age': 14.8},
+      {'id': 'last_quarter', 'emoji': '🌗', 'age': 22.1},
+    ];
+
+    final milestones = <Map<String, dynamic>>[];
+
+    // For each of the next 4 phases
+    for (int i = 0; i < 4; i++) {
+      // Which phase in the sequence (0-3)
+      final phaseIndex = ((currentAge / 7.4).floor() + 1 + i) % 4;
+      final phase = phases[phaseIndex];
+      final phaseAge = phase['age'] as double;
+
+      // Calculate target age in cycle
+      final cycleNumber = ((currentAge / 7.4).floor() + 1 + i) ~/ 4;
+      final targetAge = phaseAge + (cycleNumber * lunarCycle);
+
+      // Days until this phase
+      final daysUntil = targetAge - currentAge;
+      final phaseDate = currentDate.add(Duration(days: daysUntil.round()));
+
+      milestones.add({
+        'phaseId': phase['id'] as String,
+        'phaseName': _getPhaseNameLocalized(phase['id'] as String, locale),
+        'emoji': phase['emoji'] as String,
+        'date': phaseDate,
+        'dateLabel': _formatDateLabel(phaseDate, locale),
+        'isCurrent': i == 0,
+      });
+    }
+
+    return milestones;
+  }
+
+  bool _isCurrentPhase(double age, int phaseIndex) {
+    final ranges = [
+      [0.0, 3.7],
+      [3.7, 11.1],
+      [11.1, 18.4],
+      [18.4, 25.8],
+    ];
+
+    if (phaseIndex < ranges.length) {
+      return age >= ranges[phaseIndex][0] && age < ranges[phaseIndex][1];
+    }
+
+    return age >= 25.8 && phaseIndex == 0;
+  }
+
+  String _getPhaseNameLocalized(String phaseId, String locale) {
+    final names = {
+      'new_moon': {'en': 'New', 'es': 'Nueva', 'ca': 'Nova'},
+      'first_quarter': {'en': 'First', 'es': 'Crec.', 'ca': 'Creix.'},
+      'full_moon': {'en': 'Full', 'es': 'Llena', 'ca': 'Plena'},
+      'last_quarter': {'en': 'Last', 'es': 'Meng.', 'ca': 'Minv.'},
+    };
+
+    return names[phaseId]?[locale] ?? names[phaseId]?['en'] ?? phaseId;
+  }
+
+  String _formatDateLabel(DateTime date, String locale) {
+    final months = {
+      'en': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      'es': ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      'ca': ['Gen', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Des'],
+    };
+
+    final monthList = months[locale] ?? months['en']!;
+    return '${monthList[date.month - 1]} ${date.day}';
   }
 }

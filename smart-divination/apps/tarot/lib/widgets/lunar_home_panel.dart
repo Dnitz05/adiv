@@ -142,7 +142,7 @@ class LunarHomePanel extends StatelessWidget {
 
   Widget _buildHeroCard(BuildContext context, LunarDayModel day) {
     final theme = Theme.of(context);
-    final illumination = NumberFormat('0').format(day.illumination);
+    final illumination = day.illumination;
     final age = NumberFormat('0.0').format(day.age);
     final isLoading = controller.status == LunarPanelStatus.loading;
 
@@ -151,68 +151,47 @@ class LunarHomePanel extends StatelessWidget {
       opacity: isLoading ? 0.8 : 1,
       child: Container(
         decoration: _panelDecoration(context),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: 0.15),
-                  ),
-                  child: Text(
-                    day.phaseEmoji,
-                    style: const TextStyle(fontSize: 32),
-                  ),
-                ),
-                const SizedBox(width: 16),
+                _buildMoonWithPercentage(day.phaseEmoji, illumination, strings.localeName),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         strings.lunarPanelTitle,
-                        style: theme.textTheme.labelMedium?.copyWith(
+                        style: theme.textTheme.labelSmall?.copyWith(
                           color: Colors.white70,
                           letterSpacing: 1.1,
+                          fontSize: 10,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        day.phaseName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.3,
+                          height: 1.1,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        day.phaseName,
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+                        '${day.zodiac.symbol} ${day.zodiac.name} · ${_localisedElement(day.zodiac.element)}',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          height: 1.2,
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 6,
-                        children: [
-                          _infoChip(
-                            context,
-                            strings.lunarPanelIllumination(illumination),
-                          ),
-                          _infoChip(
-                            context,
-                            strings.lunarPanelAge(age),
-                          ),
-                          _infoChip(
-                            context,
-                            strings.lunarPanelMoonIn(day.zodiac.name),
-                          ),
-                          _infoChip(
-                            context,
-                            strings.lunarPanelElement(
-                              _localisedElement(day.zodiac.element),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -657,6 +636,62 @@ class LunarHomePanel extends StatelessWidget {
         return 'Inicia sessió per compartir el teu consell lunar al xat.';
       default:
         return 'Sign in to share your lunar guidance in the chat.';
+    }
+  }
+
+  Widget _buildMoonWithPercentage(String emoji, double illumination, String locale) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: const RadialGradient(
+              colors: [
+                Color(0xFF1A1A3E),
+                Color(0xFF0D0D1F),
+              ],
+              center: Alignment.center,
+              radius: 0.8,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withValues(alpha: 0.15),
+                blurRadius: 20,
+                spreadRadius: 3,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              emoji,
+              style: const TextStyle(fontSize: 28),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          '${illumination.round()}% ${_getLitText(locale)}',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _getLitText(String locale) {
+    switch (locale) {
+      case 'ca':
+        return 'il·lum.';
+      case 'es':
+        return 'ilum.';
+      default:
+        return 'lit';
     }
   }
 

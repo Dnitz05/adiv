@@ -65,6 +65,66 @@ export type Database = {
           },
         ]
       }
+      daily_lunar_insights: {
+        Row: {
+          date: string
+          element: string
+          generated_at: string | null
+          generation_cost: number | null
+          generation_model: string | null
+          generation_prompt: string | null
+          id: string
+          illumination: number
+          is_special_event: boolean | null
+          lunar_age: number
+          phase_id: string
+          quality_score: number | null
+          reviewed: boolean | null
+          special_event_type: string | null
+          specific_insight: Json
+          universal_insight: Json
+          zodiac_sign: string
+        }
+        Insert: {
+          date: string
+          element: string
+          generated_at?: string | null
+          generation_cost?: number | null
+          generation_model?: string | null
+          generation_prompt?: string | null
+          id?: string
+          illumination: number
+          is_special_event?: boolean | null
+          lunar_age: number
+          phase_id: string
+          quality_score?: number | null
+          reviewed?: boolean | null
+          special_event_type?: string | null
+          specific_insight: Json
+          universal_insight: Json
+          zodiac_sign: string
+        }
+        Update: {
+          date?: string
+          element?: string
+          generated_at?: string | null
+          generation_cost?: number | null
+          generation_model?: string | null
+          generation_prompt?: string | null
+          id?: string
+          illumination?: number
+          is_special_event?: boolean | null
+          lunar_age?: number
+          phase_id?: string
+          quality_score?: number | null
+          reviewed?: boolean | null
+          special_event_type?: string | null
+          specific_insight?: Json
+          universal_insight?: Json
+          zodiac_sign?: string
+        }
+        Relationships: []
+      }
       lunar_daily_cache: {
         Row: {
           age: number
@@ -95,6 +155,60 @@ export type Database = {
           phase?: Database["public"]["Enums"]["lunar_phase"]
           updated_at?: string
           zodiac_sign?: string
+        }
+        Relationships: []
+      }
+      lunar_guide_templates: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          element: string | null
+          energy_description: Json
+          focus_areas: Json
+          headline: Json
+          id: string
+          journal_prompts: Json | null
+          phase_id: string
+          polarity_note: Json | null
+          priority: number | null
+          recommended_actions: Json
+          tagline: Json | null
+          updated_at: string | null
+          zodiac_sign: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          element?: string | null
+          energy_description: Json
+          focus_areas: Json
+          headline: Json
+          id?: string
+          journal_prompts?: Json | null
+          phase_id: string
+          polarity_note?: Json | null
+          priority?: number | null
+          recommended_actions: Json
+          tagline?: Json | null
+          updated_at?: string | null
+          zodiac_sign?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          element?: string | null
+          energy_description?: Json
+          focus_areas?: Json
+          headline?: Json
+          id?: string
+          journal_prompts?: Json | null
+          phase_id?: string
+          polarity_note?: Json | null
+          priority?: number | null
+          recommended_actions?: Json
+          tagline?: Json | null
+          updated_at?: string | null
+          zodiac_sign?: string | null
         }
         Relationships: []
       }

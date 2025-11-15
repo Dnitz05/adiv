@@ -75,7 +75,7 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -137,57 +137,53 @@ class _DailyDrawPanelState extends State<DailyDrawPanel> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (int i = 0; i < widget.cards.length; i++)
+                      for (int i = 0; i < widget.cards.length; i++) ...[
+                        if (i > 0) const SizedBox(width: 4),
                         Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: i == 0 ? 0 : 2,
-                              right: i == widget.cards.length - 1 ? 0 : 2,
-                            ),
-                            child: widget.isLoading
-                                ? const SizedBox.shrink()
-                                : Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    AspectRatio(
-                                      aspectRatio: 2 / 3,
-                                      child: _FlippableCard(
-                                        card: widget.cards[i],
-                                        isFlipped: _flippedCards.contains(i),
-                                        onTap: () {
-                                          setState(() {
-                                            if (_flippedCards.contains(i)) {
-                                              _flippedCards.remove(i);
-                                            } else {
-                                              _flippedCards.add(i);
-                                            }
-                                          });
-                                          _saveFlippedCards();
-                                        },
-                                      ),
+                          child: widget.isLoading
+                              ? const SizedBox.shrink()
+                              : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  AspectRatio(
+                                    aspectRatio: 2 / 3,
+                                    child: _FlippableCard(
+                                      card: widget.cards[i],
+                                      isFlipped: _flippedCards.contains(i),
+                                      onTap: () {
+                                        setState(() {
+                                          if (_flippedCards.contains(i)) {
+                                            _flippedCards.remove(i);
+                                          } else {
+                                            _flippedCards.add(i);
+                                          }
+                                        });
+                                        _saveFlippedCards();
+                                      },
                                     ),
-                                    const SizedBox(height: 8),
-                                    AnimatedSwitcher(
-                                      duration: const Duration(milliseconds: 300),
-                                      child: Text(
-                                        _flippedCards.contains(i)
-                                            ? widget.cards[i].name
-                                            : _getPositionLabel(i),
-                                        key: ValueKey(_flippedCards.contains(i)),
-                                        style: theme.textTheme.bodySmall?.copyWith(
-                                          fontSize: 11,
-                                          color: TarotTheme.softBlueGrey,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 300),
+                                    child: Text(
+                                      _flippedCards.contains(i)
+                                          ? widget.cards[i].name
+                                          : _getPositionLabel(i),
+                                      key: ValueKey(_flippedCards.contains(i)),
+                                      style: theme.textTheme.bodySmall?.copyWith(
+                                        fontSize: 11,
+                                        color: TarotTheme.softBlueGrey,
+                                        fontWeight: FontWeight.w500,
                                       ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                         ),
+                      ],
                     ],
                   ),
                   if (widget.isLoading)

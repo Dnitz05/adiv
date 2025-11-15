@@ -349,7 +349,6 @@ class _LearnCategoryCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: category.onTap,
       child: Container(
-        height: 115,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           gradient: LinearGradient(
@@ -375,27 +374,34 @@ class _LearnCategoryCard extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              category.icon,
-              color: TarotTheme.brightBlue,
-              size: 24,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  category.icon,
+                  color: TarotTheme.brightBlue,
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    category.title,
+                    style: const TextStyle(
+                      color: TarotTheme.deepNavy,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      letterSpacing: 0.2,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              category.title,
-              style: const TextStyle(
-                color: TarotTheme.deepNavy,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-                letterSpacing: 0.2,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             Text(
               category.description,
               style: const TextStyle(
