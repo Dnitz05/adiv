@@ -11,7 +11,7 @@ class DailyLunarInsight {
   final double illumination;
 
   // Reference to the base template used
-  final String templateId;
+  final String? templateId;
 
   // Composed multilingual content (en/es/ca)
   final Map<String, String> composedHeadline;
@@ -57,7 +57,7 @@ class DailyLunarInsight {
       element: json['element'] as String,
       lunarAge: (json['lunar_age'] as num).toDouble(),
       illumination: (json['illumination'] as num).toDouble(),
-      templateId: json['template_id'] as String,
+      templateId: json['template_id'] as String?,
       composedHeadline: Map<String, String>.from(
         json['composed_headline'] as Map,
       ),

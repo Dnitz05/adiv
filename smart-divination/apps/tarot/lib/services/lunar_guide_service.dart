@@ -85,6 +85,7 @@ class LunarGuideService {
   /// Fetch daily modular-composed insight
   Future<DailyLunarInsight?> _fetchDailyInsight(String dateString) async {
     try {
+      print('🔍 Fetching daily insight for: $dateString');
       final response = await _supabase
           .from('daily_lunar_insights')
           .select()
@@ -92,12 +93,17 @@ class LunarGuideService {
           .maybeSingle();
 
       if (response == null) {
+        print('⚠️ No daily insight found for $dateString');
         return null;
       }
 
-      return DailyLunarInsight.fromJson(response);
-    } catch (e) {
-      print('Error fetching daily insight: $e');
+      print('✅ Found daily insight data: ${response.keys}');
+      final insight = DailyLunarInsight.fromJson(response);
+      print('✅ Successfully parsed daily insight for $dateString');
+      return insight;
+    } catch (e, stackTrace) {
+      print('❌ Error fetching daily insight: $e');
+      print('Stack trace: $stackTrace');
       return null; // Graceful fallback
     }
   }

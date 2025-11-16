@@ -215,7 +215,17 @@
       "Bash(JAVA_HOME=\"/c/tarot/temp/jdk/jdk-17.0.2\" flutter pub run:*)",
       "Bash(C:/tarot/lunar_hero_widget_test.png)",
       "Bash(C:/tarot/lunar_hero_inside_app.png)",
-      "Bash(C:/tarot/lunar_widget_new_horizontal.png)"
+      "Bash(C:/tarot/lunar_widget_new_horizontal.png)",
+      "Bash(git fetch:*)",
+      "Bash(apps/backend/lib/types/generated/supabase.ts)",
+      "Bash(backend/lib/types/generated/supabase.ts)",
+      "Bash(C:/tarot/supabase_cli/supabase.exe functions deploy:*)",
+      "Bash(tee:*)",
+      "Bash(printf:*)",
+      "Bash(for:*)",
+      "Bash(do echo \"Generating insight for $date...\" curl -s -X POST \"https://vanrixxzaawybszeuivb.supabase.co/functions/v1/generate-daily-lunar-insight?date=$date\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjc5NzA0NjUsImV4cCI6MjA0MzU0NjQ2NX0.WZBRgZxdCuaB_a7udjzFQH8ufyHLxBKiUWKVazppUK8\")",
+      "Bash(/tmp/insight1.json)",
+      "Bash(/tmp/insight2.json)"
     ],
     "deny": [],
     "ask": []

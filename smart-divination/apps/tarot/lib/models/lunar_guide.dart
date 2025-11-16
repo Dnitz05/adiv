@@ -12,14 +12,14 @@ class LunarGuide {
     this.dailyInsight,
   });
 
-  /// Whether this guide has AI-generated insights available
+  /// Whether this guide has modular-composed insights available
   bool get hasAiInsight => dailyInsight != null;
 
-  /// Whether this day is a special astronomical event
-  bool get isSpecialDay => dailyInsight?.isSpecialEvent ?? false;
+  /// Whether this day has special astronomical events
+  bool get isSpecialDay => dailyInsight?.specialEventIds.isNotEmpty ?? false;
 
-  /// Get the special event type if applicable
-  String? get specialEventType => dailyInsight?.specialEventType;
+  /// Get the number of special events for this day
+  int get specialEventCount => dailyInsight?.specialEventIds.length ?? 0;
 
   @override
   String toString() {
