@@ -56,6 +56,8 @@ class LunarGuideService {
     final zodiacSign = _lunarCalculator.getZodiacSign(date);
     final element = _lunarCalculator.getElementFromZodiac(zodiacSign);
 
+    print('🌙 Looking for template: phase=$phaseId, zodiac=$zodiacSign, element=$element');
+
     // Step 1: Try to fetch modular-composed daily insight
     final dailyInsight = await _fetchDailyInsight(dateString);
 
@@ -67,8 +69,11 @@ class LunarGuideService {
     );
 
     if (template == null) {
+      print('❌ No template found for phase: $phaseId');
       throw Exception('No lunar guide template found for phase $phaseId');
     }
+
+    print('✅ Found template: ${template.id}');
 
     // Combine template + daily insight (if available)
     final guide = LunarGuide(
@@ -118,6 +123,8 @@ class LunarGuideService {
     required String element,
   }) async {
     try {
+      print('🔍 Fetching templates for phase: $phaseId');
+
       // Fetch all active templates for this phase, ordered by priority
       final response = await _supabase
           .from('lunar_guide_templates')
@@ -127,7 +134,11 @@ class LunarGuideService {
           .order('priority', ascending: false)
           .limit(10);
 
+      print('📦 Response type: ${response.runtimeType}');
+      print('📦 Response: $response');
+
       if (response == null || (response as List).isEmpty) {
+        print('❌ No templates found in response');
         return null;
       }
 

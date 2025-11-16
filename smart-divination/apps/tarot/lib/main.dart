@@ -52,7 +52,7 @@ const String _supabaseUrl = String.fromEnvironment(
 const String _supabaseAnonKey = String.fromEnvironment(
   'SUPABASE_ANON_KEY',
   defaultValue:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxMTQ5NjYsImV4cCI6MjA0MjY5MDk2Nn0.CpqfQBuNVEwMlWbYU1WEA0zFwWBo6RKpPxYi4oy3Xwc',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbnJpeHh6YWF3eWJzemV1aXZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MTczMzMsImV4cCI6MjA3MzA5MzMzM30.b1tGbkuHUEjjBnqDAqJGdsCu4h6VHjzUtRdv1CrXt5k',
 );
 const String _passwordResetRedirectUrl = String.fromEnvironment(
   'SUPABASE_PASSWORD_RESET_REDIRECT',
