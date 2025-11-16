@@ -7,7 +7,7 @@ import '../models/daily_lunar_insight.dart';
 import '../services/lunar_calculator_service.dart';
 
 /// Service for fetching and managing lunar guides
-/// Implements fallback logic: AI insight → element template → generic template
+/// Implements fallback logic: Modular composed insight → element template → generic template
 class LunarGuideService {
   final SupabaseClient _supabase;
   final LunarCalculatorService _lunarCalculator;
@@ -25,7 +25,7 @@ class LunarGuideService {
 
   /// Get lunar guide for today
   /// Implements intelligent fallback:
-  /// 1. Try to get AI-generated daily insight
+  /// 1. Try to get modular-composed daily insight (base + seasonal + weekday + events)
   /// 2. If not available, use element-specific template
   /// 3. If that fails, use generic phase template
   Future<LunarGuide> getTodaysGuide({
@@ -56,7 +56,7 @@ class LunarGuideService {
     final zodiacSign = _lunarCalculator.getZodiacSign(date);
     final element = _lunarCalculator.getElementFromZodiac(zodiacSign);
 
-    // Step 1: Try to fetch AI-generated daily insight
+    // Step 1: Try to fetch modular-composed daily insight
     final dailyInsight = await _fetchDailyInsight(dateString);
 
     // Step 2: Fetch matching template with fallback logic
@@ -82,7 +82,7 @@ class LunarGuideService {
     return guide;
   }
 
-  /// Fetch daily AI-generated insight
+  /// Fetch daily modular-composed insight
   Future<DailyLunarInsight?> _fetchDailyInsight(String dateString) async {
     try {
       final response = await _supabase

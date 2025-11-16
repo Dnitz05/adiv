@@ -8,7 +8,8 @@ import '../../services/lunar_guide_service.dart';
 import '../../services/lunar_calculator_service.dart';
 
 /// Guide Tab - Shows daily lunar guidance
-/// Combines astrologically accurate templates + AI-generated insights
+/// Combines base templates + seasonal overlays + weekday energies + special events
+/// ZERO AI cost - uses pre-written modular astrological content
 class GuideTab extends StatefulWidget {
   const GuideTab({
     super.key,
@@ -178,7 +179,11 @@ class _GuideTabState extends State<GuideTab> {
   Widget _buildGuideContent() {
     final guide = _guide!;
     final template = guide.template;
+    final dailyInsight = guide.dailyInsight;
     final locale = widget.strings.localeName;
+
+    // Use composed content if available, otherwise fallback to template
+    final hasComposedInsight = dailyInsight != null;
 
     return Container(
       decoration: BoxDecoration(
@@ -201,41 +206,62 @@ class _GuideTabState extends State<GuideTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Guide Header
-            _buildGuideHeader(template, locale),
+            // Guide Header (uses composed headline if available)
+            _buildGuideHeader(
+              template,
+              dailyInsight,
+              locale,
+            ),
             const SizedBox(height: 12),
 
-            // Today's Universal Insight (if available)
-            if (guide.hasAiInsight)
-              ...[
-                _buildUniversalInsight(guide, locale),
-                const SizedBox(height: 12),
-              ],
-
-            // Focus Areas & Energy
-            _buildFocusAndEnergy(template, locale),
+            // Today's Description (modular-composed or template energy)
+            _buildDescription(
+              template,
+              dailyInsight,
+              locale,
+              hasComposedInsight,
+            ),
             const SizedBox(height: 12),
 
-            // Specific Insight (if available)
-            if (guide.hasAiInsight)
-              ...[
-                _buildSpecificInsight(guide, locale),
-                const SizedBox(height: 12),
-              ],
+            // Focus Areas (composed or template)
+            _buildFocusAreas(
+              template,
+              dailyInsight,
+              locale,
+            ),
+            const SizedBox(height: 12),
 
-            // Recommended Actions
-            _buildRecommendedActions(template, locale),
+            // Guidance (if composed content available)
+            if (hasComposedInsight) ...[
+              _buildGuidance(dailyInsight, locale),
+              const SizedBox(height: 12),
+            ],
+
+            // Recommended Actions (composed or template)
+            _buildRecommendedActions(
+              template,
+              dailyInsight,
+              locale,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildGuideHeader(LunarGuideTemplate template, String locale) {
+  Widget _buildGuideHeader(
+    LunarGuideTemplate template,
+    DailyLunarInsight? dailyInsight,
+    String locale,
+  ) {
     final lunarData = _calculator.calculateLunarPhase(DateTime.now());
     final phaseId = template.phaseId;
     final element = template.element ?? 'fire';
     final zodiacSign = _calculator.getZodiacSign(DateTime.now());
+
+    // Use composed headline if available, otherwise template headline
+    final headline =
+        dailyInsight?.getHeadline(locale) ?? template.getHeadline(locale);
 
     return Row(
       children: [
@@ -253,7 +279,7 @@ class _GuideTabState extends State<GuideTab> {
             children: [
               // Headline
               Text(
-                template.getHeadline(locale),
+                headline,
                 style: const TextStyle(
                   color: TarotTheme.deepNavy,
                   fontSize: 16,
@@ -265,7 +291,7 @@ class _GuideTabState extends State<GuideTab> {
               ),
               const SizedBox(height: 4),
 
-              // Tagline + Zodiac + Element
+              // Zodiac + Element + Weekday (if composed)
               Row(
                 children: [
                   Text(
@@ -277,6 +303,17 @@ class _GuideTabState extends State<GuideTab> {
                     _calculator.getElementIcon(element),
                     style: const TextStyle(fontSize: 14),
                   ),
+                  if (dailyInsight != null) ...[
+                    const SizedBox(width: 4),
+                    Text(
+                      '• ${dailyInsight.weekday}',
+                      style: const TextStyle(
+                        color: TarotTheme.softBlueGrey,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
@@ -299,8 +336,15 @@ class _GuideTabState extends State<GuideTab> {
     );
   }
 
-  Widget _buildUniversalInsight(LunarGuide guide, String locale) {
-    final insight = guide.dailyInsight!.getUniversalInsight(locale);
+  Widget _buildDescription(
+    LunarGuideTemplate template,
+    DailyLunarInsight? dailyInsight,
+    String locale,
+    bool hasComposedInsight,
+  ) {
+    // Use composed description if available, otherwise template energy
+    final description = dailyInsight?.getDescription(locale) ??
+        template.getEnergyDescription(locale);
 
     return Container(
       padding: const EdgeInsets.all(12),
@@ -317,7 +361,8 @@ class _GuideTabState extends State<GuideTab> {
         children: [
           Row(
             children: [
-              const Icon(Icons.auto_awesome, color: TarotTheme.cosmicAccent, size: 16),
+              const Icon(Icons.auto_awesome,
+                  color: TarotTheme.cosmicAccent, size: 16),
               const SizedBox(width: 6),
               const Text(
                 'Today\'s Energy',
@@ -327,27 +372,30 @@ class _GuideTabState extends State<GuideTab> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(width: 6),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Text(
-                  'AI',
-                  style: TextStyle(
-                    color: TarotTheme.cosmicAccent,
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
+              if (hasComposedInsight) ...[
+                const SizedBox(width: 6),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: TarotTheme.cosmicAccent.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    'Composed',
+                    style: TextStyle(
+                      color: TarotTheme.cosmicAccent,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            insight,
+            description,
             style: const TextStyle(
               color: TarotTheme.deepNavy,
               fontSize: 12,
@@ -359,53 +407,40 @@ class _GuideTabState extends State<GuideTab> {
     );
   }
 
-  Widget _buildFocusAndEnergy(LunarGuideTemplate template, String locale) {
-    final focusAreas = template.getFocusAreas(locale);
-    final energyDescription = template.getEnergyDescription(locale);
+  Widget _buildFocusAreas(
+    LunarGuideTemplate template,
+    DailyLunarInsight? dailyInsight,
+    String locale,
+  ) {
+    // Use composed focus areas if available, otherwise template focus areas
+    final focusAreas =
+        dailyInsight?.getFocusAreas(locale) ?? template.getFocusAreas(locale);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Focus Areas (keywords)
-        Wrap(
-          spacing: 6,
-          runSpacing: 6,
-          children: focusAreas.map((keyword) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: TarotTheme.brightBlue20,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                keyword,
-                style: const TextStyle(
-                  color: TarotTheme.brightBlue,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-
-        const SizedBox(height: 10),
-
-        // Energy Description
-        Text(
-          energyDescription,
-          style: const TextStyle(
-            color: TarotTheme.deepNavy,
-            fontSize: 11,
-            height: 1.4,
+    return Wrap(
+      spacing: 6,
+      runSpacing: 6,
+      children: focusAreas.map((keyword) {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: TarotTheme.brightBlue20,
+            borderRadius: BorderRadius.circular(8),
           ),
-        ),
-      ],
+          child: Text(
+            keyword,
+            style: const TextStyle(
+              color: TarotTheme.brightBlue,
+              fontSize: 10,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
-  Widget _buildSpecificInsight(LunarGuide guide, String locale) {
-    final insight = guide.dailyInsight!.getSpecificInsight(locale);
+  Widget _buildGuidance(DailyLunarInsight dailyInsight, String locale) {
+    final guidance = dailyInsight.getGuidance(locale);
 
     return Container(
       padding: const EdgeInsets.all(12),
@@ -422,10 +457,11 @@ class _GuideTabState extends State<GuideTab> {
         children: [
           Row(
             children: [
-              const Icon(Icons.favorite, color: TarotTheme.brightBlue, size: 14),
+              const Icon(Icons.lightbulb_outline,
+                  color: TarotTheme.brightBlue, size: 14),
               const SizedBox(width: 6),
               const Text(
-                'For You',
+                'Guidance',
                 style: TextStyle(
                   color: TarotTheme.deepNavy,
                   fontSize: 11,
@@ -436,7 +472,7 @@ class _GuideTabState extends State<GuideTab> {
           ),
           const SizedBox(height: 8),
           Text(
-            insight,
+            guidance,
             style: const TextStyle(
               color: TarotTheme.deepNavy,
               fontSize: 11,
@@ -448,8 +484,14 @@ class _GuideTabState extends State<GuideTab> {
     );
   }
 
-  Widget _buildRecommendedActions(LunarGuideTemplate template, String locale) {
-    final actions = template.getRecommendedActions(locale);
+  Widget _buildRecommendedActions(
+    LunarGuideTemplate template,
+    DailyLunarInsight? dailyInsight,
+    String locale,
+  ) {
+    // Use composed recommended actions if available, otherwise template actions
+    final actions = dailyInsight?.getRecommendedActions(locale) ??
+        template.getRecommendedActions(locale);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -469,7 +511,7 @@ class _GuideTabState extends State<GuideTab> {
           ],
         ),
         const SizedBox(height: 8),
-        ...actions.take(3).map((action) {
+        ...actions.take(5).map((action) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 6),
             child: Row(

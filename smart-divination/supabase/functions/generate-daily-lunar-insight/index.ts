@@ -1,10 +1,11 @@
 // Supabase Edge Function: Generate Daily Lunar Insight
-// Runs daily at 00:00 UTC to generate AI-powered lunar guidance
+// Runs daily at 00:00 UTC to compose modular lunar guidance
+// ZERO external API cost - uses pre-written seasonal content
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { calculateLunarPhase, getLunarPhaseId, getZodiacSign, getElementFromZodiac } from './lunar-calculator.ts';
-import { generateInsightWithAI } from './openai-generator.ts';
+import { composeGuide } from './content-composer.ts';
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -31,12 +32,17 @@ interface DailyLunarInsight {
   element: string;
   lunar_age: number;
   illumination: number;
-  universal_insight: Record<string, string>;
-  specific_insight: Record<string, string>;
-  generation_model: string;
-  generation_cost: number;
-  is_special_event: boolean;
-  special_event_type: string | null;
+  template_id: string;
+  composed_headline: Record<string, string>;
+  composed_description: Record<string, string>;
+  composed_guidance: Record<string, string>;
+  focus_areas: Record<string, string[]>;
+  recommended_actions: Record<string, string[]>;
+  seasonal_overlay_id: string | null;
+  weekday: string;
+  special_event_ids: string[];
+  composed_at: string;
+  composition_version: string;
 }
 
 serve(async (req) => {
@@ -94,13 +100,8 @@ serve(async (req) => {
 
     console.log(`Using template: ${selectedTemplate.id} (priority: ${selectedTemplate.priority})`);
 
-    // Step 3: Check for special astronomical events
-    // (For now, just detect full/new moon, can expand later)
-    const isSpecialEvent = phaseId === 'new_moon' || phaseId === 'full_moon';
-    const specialEventType = isSpecialEvent ? `${phaseId} in ${zodiacSign}` : null;
-
-    // Step 4: Generate AI insights
-    const aiResult = await generateInsightWithAI({
+    // Step 3: Compose modular content (base + seasonal + weekday + events)
+    const composedGuide = await composeGuide({
       date: targetDate,
       phaseId,
       zodiacSign,
@@ -108,11 +109,11 @@ serve(async (req) => {
       lunarAge: lunarData.age,
       illumination: lunarData.illumination,
       template: selectedTemplate,
-      isSpecialEvent,
-      specialEventType,
     });
 
-    // Step 5: Save to database
+    console.log(`Composed guide with: season overlay=${!!composedGuide.seasonal_overlay_id}, weekday=${composedGuide.weekday}, events=${composedGuide.special_event_ids.length}`);
+
+    // Step 4: Save to database
     const insightData: DailyLunarInsight = {
       date: dateString,
       phase_id: phaseId,
@@ -120,12 +121,17 @@ serve(async (req) => {
       element: element,
       lunar_age: lunarData.age,
       illumination: lunarData.illumination,
-      universal_insight: aiResult.universal_insight,
-      specific_insight: aiResult.specific_insight,
-      generation_model: aiResult.model,
-      generation_cost: aiResult.cost,
-      is_special_event: isSpecialEvent,
-      special_event_type: specialEventType,
+      template_id: selectedTemplate.id,
+      composed_headline: composedGuide.composed_headline,
+      composed_description: composedGuide.composed_description,
+      composed_guidance: composedGuide.composed_guidance,
+      focus_areas: composedGuide.focus_areas,
+      recommended_actions: composedGuide.recommended_actions,
+      seasonal_overlay_id: composedGuide.seasonal_overlay_id,
+      weekday: composedGuide.weekday,
+      special_event_ids: composedGuide.special_event_ids,
+      composed_at: new Date().toISOString(),
+      composition_version: composedGuide.composition_version,
     };
 
     const { data: savedInsight, error: saveError } = await supabase
@@ -138,14 +144,20 @@ serve(async (req) => {
       throw new Error(`Failed to save insight: ${saveError.message}`);
     }
 
-    console.log(`Successfully generated and saved insight for ${dateString}`);
+    console.log(`✅ Successfully composed and saved insight for ${dateString} (ZERO cost)`);
 
     return new Response(
       JSON.stringify({
         success: true,
         date: dateString,
         insight: savedInsight,
-        cost: aiResult.cost,
+        composition: {
+          version: composedGuide.composition_version,
+          seasonal_overlay: !!composedGuide.seasonal_overlay_id,
+          weekday: composedGuide.weekday,
+          special_events: composedGuide.special_event_ids.length,
+        },
+        cost: 0, // ZERO external API cost!
       }),
       {
         headers: { 'Content-Type': 'application/json' },

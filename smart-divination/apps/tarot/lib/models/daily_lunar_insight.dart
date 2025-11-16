@@ -1,5 +1,6 @@
-/// Model for AI-generated daily lunar insights
-/// Contains personalized guidance for each specific day
+/// Model for modular-composed daily lunar insights
+/// Contains guidance composed from: Base Template + Seasonal Overlay + Weekday Energy + Special Events
+/// ZERO AI cost - uses pre-written astrological content
 class DailyLunarInsight {
   final String id;
   final DateTime date;
@@ -9,13 +10,22 @@ class DailyLunarInsight {
   final double lunarAge;
   final double illumination;
 
-  final Map<String, String> universalInsight;
-  final Map<String, String> specificInsight;
+  // Reference to the base template used
+  final String templateId;
 
-  final bool isSpecialEvent;
-  final String? specialEventType;
+  // Composed multilingual content (en/es/ca)
+  final Map<String, String> composedHeadline;
+  final Map<String, String> composedDescription;
+  final Map<String, String> composedGuidance;
+  final Map<String, List<String>> focusAreas;
+  final Map<String, List<String>> recommendedActions;
 
-  final DateTime generatedAt;
+  // Composition metadata
+  final String? seasonalOverlayId;
+  final String weekday;
+  final List<String> specialEventIds;
+  final DateTime composedAt;
+  final String compositionVersion;
 
   const DailyLunarInsight({
     required this.id,
@@ -25,11 +35,17 @@ class DailyLunarInsight {
     required this.element,
     required this.lunarAge,
     required this.illumination,
-    required this.universalInsight,
-    required this.specificInsight,
-    this.isSpecialEvent = false,
-    this.specialEventType,
-    required this.generatedAt,
+    required this.templateId,
+    required this.composedHeadline,
+    required this.composedDescription,
+    required this.composedGuidance,
+    required this.focusAreas,
+    required this.recommendedActions,
+    this.seasonalOverlayId,
+    required this.weekday,
+    required this.specialEventIds,
+    required this.composedAt,
+    required this.compositionVersion,
   });
 
   factory DailyLunarInsight.fromJson(Map<String, dynamic> json) {
@@ -41,15 +57,33 @@ class DailyLunarInsight {
       element: json['element'] as String,
       lunarAge: (json['lunar_age'] as num).toDouble(),
       illumination: (json['illumination'] as num).toDouble(),
-      universalInsight: Map<String, String>.from(
-        json['universal_insight'] as Map,
+      templateId: json['template_id'] as String,
+      composedHeadline: Map<String, String>.from(
+        json['composed_headline'] as Map,
       ),
-      specificInsight: Map<String, String>.from(
-        json['specific_insight'] as Map,
+      composedDescription: Map<String, String>.from(
+        json['composed_description'] as Map,
       ),
-      isSpecialEvent: json['is_special_event'] as bool? ?? false,
-      specialEventType: json['special_event_type'] as String?,
-      generatedAt: DateTime.parse(json['generated_at'] as String),
+      composedGuidance: Map<String, String>.from(
+        json['composed_guidance'] as Map,
+      ),
+      focusAreas: (json['focus_areas'] as Map).map(
+        (key, value) => MapEntry(
+          key as String,
+          List<String>.from(value as List),
+        ),
+      ),
+      recommendedActions: (json['recommended_actions'] as Map).map(
+        (key, value) => MapEntry(
+          key as String,
+          List<String>.from(value as List),
+        ),
+      ),
+      seasonalOverlayId: json['seasonal_overlay_id'] as String?,
+      weekday: json['weekday'] as String,
+      specialEventIds: List<String>.from(json['special_event_ids'] as List? ?? []),
+      composedAt: DateTime.parse(json['composed_at'] as String),
+      compositionVersion: json['composition_version'] as String,
     );
   }
 
@@ -62,21 +96,36 @@ class DailyLunarInsight {
       'element': element,
       'lunar_age': lunarAge,
       'illumination': illumination,
-      'universal_insight': universalInsight,
-      'specific_insight': specificInsight,
-      'is_special_event': isSpecialEvent,
-      'special_event_type': specialEventType,
-      'generated_at': generatedAt.toIso8601String(),
+      'template_id': templateId,
+      'composed_headline': composedHeadline,
+      'composed_description': composedDescription,
+      'composed_guidance': composedGuidance,
+      'focus_areas': focusAreas,
+      'recommended_actions': recommendedActions,
+      'seasonal_overlay_id': seasonalOverlayId,
+      'weekday': weekday,
+      'special_event_ids': specialEventIds,
+      'composed_at': composedAt.toIso8601String(),
+      'composition_version': compositionVersion,
     };
   }
 
   // Localized getters
 
-  String getUniversalInsight(String locale) =>
-      universalInsight[locale] ?? universalInsight['en'] ?? '';
+  String getHeadline(String locale) =>
+      composedHeadline[locale] ?? composedHeadline['en'] ?? '';
 
-  String getSpecificInsight(String locale) =>
-      specificInsight[locale] ?? specificInsight['en'] ?? '';
+  String getDescription(String locale) =>
+      composedDescription[locale] ?? composedDescription['en'] ?? '';
+
+  String getGuidance(String locale) =>
+      composedGuidance[locale] ?? composedGuidance['en'] ?? '';
+
+  List<String> getFocusAreas(String locale) =>
+      focusAreas[locale] ?? focusAreas['en'] ?? [];
+
+  List<String> getRecommendedActions(String locale) =>
+      recommendedActions[locale] ?? recommendedActions['en'] ?? [];
 
   @override
   String toString() {
