@@ -25,17 +25,18 @@ import { SPREADS, type SpreadDefinition } from '../../../lib/data/spreads';
 const SUPPORTED_LOCALES = new Set(['en', 'es', 'ca']);
 
 const interpretationRequestSchema = baseRequestSchema.extend({
-  spreadMessageId: z.string().min(1, 'spreadMessageId is required'),
-  spreadId: z.string().min(1, 'spreadId is required'),
+  spreadMessageId: z.string().min(1).optional(), // Optional for backward compatibility
+  spreadId: z.string().min(1).optional(), // Optional - can derive from spreadName
   spreadName: z.string().optional(),
   cards: z.array(
     z.object({
-      id: z.string().min(1),
+      id: z.string().min(1).optional(), // Optional for backward compatibility
+      name: z.string().optional(), // Accept card name directly
       upright: z.boolean(),
-      position: z.number().int().min(1).max(9),
+      position: z.union([z.number().int().min(1).max(10), z.string()]), // Accept both number and string
       meaning: z.string().optional(),
     })
-  ).min(1).max(9),
+  ).min(1).max(10),
   question: z.string().optional(),
 });
 
@@ -70,18 +71,48 @@ export default async function handler(
     );
 
     const locale = normaliseLocale(body.locale);
-    const spreadDefinition = findSpreadDefinition(body.spreadId, requestId);
-    const spreadName = body.spreadName?.trim() || localiseSpreadName(spreadDefinition, locale);
+
+    // Derive spreadId from spreadName if not provided (backward compatibility)
+    let spreadId = body.spreadId;
+    if (!spreadId && body.spreadName) {
+      const matchedSpread = SPREADS.find(s =>
+        s.name === body.spreadName ||
+        s.nameCA === body.spreadName ||
+        s.nameES === body.spreadName
+      );
+      spreadId = matchedSpread?.id;
+    }
+
+    const spreadDefinition = spreadId ? findSpreadDefinition(spreadId, requestId) : undefined;
+    const spreadName = body.spreadName?.trim() || (spreadDefinition ? localiseSpreadName(spreadDefinition, locale) : 'Tarot Reading');
 
     const cardsForInterpretation = body.cards.map((card, index) => {
-      const cardMetadata = findCardById(Number(card.id), requestId);
+      // Support both card.id (new format) and card.name (old format)
+      let cardName: string;
+      if (card.name) {
+        cardName = card.name;
+      } else if (card.id) {
+        const cardMetadata = findCardById(Number(card.id), requestId);
+        cardName = cardMetadata.en;
+      } else {
+        throw createApiError(
+          'INVALID_CARD',
+          'Card must have either id or name',
+          400,
+          undefined,
+          requestId,
+        );
+      }
+
       const positionLabel =
         card.meaning?.trim() && card.meaning.trim().length > 0
           ? card.meaning.trim()
-          : `Position ${card.position}`;
+          : typeof card.position === 'string'
+            ? card.position
+            : `Position ${card.position}`;
 
       return {
-        name: cardMetadata.en,
+        name: cardName,
         upright: card.upright,
         position: positionLabel,
       };
@@ -89,7 +120,7 @@ export default async function handler(
 
     log('info', 'Generating chat interpretation', {
       requestId,
-      spreadId: body.spreadId,
+      spreadId,
       cardCount: cardsForInterpretation.length,
     });
 
@@ -99,7 +130,7 @@ export default async function handler(
       spreadName,
       locale,
       requestId,
-      body.spreadId,
+      spreadId,
     );
 
     const trimmedInterpretation = interpretation.trim();
