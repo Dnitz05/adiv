@@ -99,6 +99,7 @@ export default async function handler(
       spreadName,
       locale,
       requestId,
+      body.spreadId,
     );
 
     const trimmedInterpretation = interpretation.trim();

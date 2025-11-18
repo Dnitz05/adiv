@@ -3,8 +3,13 @@
  * Synchronized with Flutter app spreads
  */
 
+import type { SpreadEducationalContent } from './spreads-educational';
+import { SPREADS_EDUCATIONAL } from './spreads-educational';
+
 export interface SpreadPosition {
   number: number;
+  code?: string; // Semantic identifier (e.g., PAST, PRESENT, FUTURE)
+  index?: number; // Animation order (0-based)
   meaning: string;
   meaningCA: string;
   meaningES: string;
@@ -35,6 +40,7 @@ export interface SpreadDefinition {
   instructionsES?: string;
   isFreemium: boolean;
   estimatedDurationMinutes: number;
+  educational?: SpreadEducationalContent; // Educational content for AI and LEARN
 }
 
 /**
@@ -61,6 +67,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'ANSWER', // Semantic code
+        index: 0, // Animation order
         meaning: 'Your Answer',
         meaningCA: 'La Teva Resposta',
         meaningES: 'Tu Respuesta',
@@ -71,6 +79,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Orientación directa para tu pregunta',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['single'], // Educational content for AI
   },
 
   // 2. Two Card
@@ -93,6 +102,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'OPTION_A', // Semantic code
+        index: 0, // Animation order
         meaning: 'Option A',
         meaningCA: 'Opció A',
         meaningES: 'Opción A',
@@ -104,6 +115,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'OPTION_B', // Semantic code
+        index: 1, // Animation order
         meaning: 'Option B',
         meaningCA: 'Opció B',
         meaningES: 'Opción B',
@@ -114,6 +127,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Camino o consecuencia de la segunda opción',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['two_card'], // Educational content for AI
   },
 
   // 3. Three Card Spread
@@ -136,6 +150,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'PAST', // Semantic code for AI
+        index: 0, // Animation order
         meaning: 'Past',
         meaningCA: 'Passat',
         meaningES: 'Pasado',
@@ -147,6 +163,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'PRESENT', // Semantic code for AI
+        index: 1, // Animation order
         meaning: 'Present',
         meaningCA: 'Present',
         meaningES: 'Presente',
@@ -158,6 +176,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'FUTURE', // Semantic code for AI
+        index: 2, // Animation order
         meaning: 'Future',
         meaningCA: 'Futur',
         meaningES: 'Futuro',
@@ -168,6 +188,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'El camino que se abre ante ti',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['three_card'], // Educational content for AI
   },
 
   // 4. Five Card Cross
@@ -190,6 +211,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'PAST',
+        index: 0,
         meaning: 'Past',
         meaningCA: 'Passat',
         meaningES: 'Pasado',
@@ -201,6 +224,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'PRESENT',
+        index: 1,
         meaning: 'Present',
         meaningCA: 'Present',
         meaningES: 'Presente',
@@ -212,6 +237,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'FUTURE',
+        index: 2,
         meaning: 'Future',
         meaningCA: 'Futur',
         meaningES: 'Futuro',
@@ -223,6 +250,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'BLOCK',
+        index: 3,
         meaning: 'What Holds You Back',
         meaningCA: 'El que et Reté',
         meaningES: 'Lo que te Retiene',
@@ -234,6 +263,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'ADVICE',
+        index: 4,
         meaning: 'Advice',
         meaningCA: 'Consell',
         meaningES: 'Consejo',
@@ -244,6 +275,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Orientación para avanzar',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['five_card_cross'],
   },
 
   // 5. Relationship
@@ -266,6 +298,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'YOU',
+        index: 0,
         meaning: 'You',
         meaningCA: 'Tu',
         meaningES: 'Tú',
@@ -277,6 +311,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'PARTNER',
+        index: 1,
         meaning: 'Partner',
         meaningCA: 'Parella',
         meaningES: 'Pareja',
@@ -288,6 +324,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'STRENGTHS',
+        index: 2,
         meaning: 'Strengths',
         meaningCA: 'Fortaleses',
         meaningES: 'Fortalezas',
@@ -299,6 +337,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'CHALLENGES',
+        index: 3,
         meaning: 'Challenges',
         meaningCA: 'Desafiaments',
         meaningES: 'Desafíos',
@@ -310,6 +350,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'DYNAMIC',
+        index: 4,
         meaning: 'Current Dynamic',
         meaningCA: 'Dinàmica Actual',
         meaningES: 'Dinámica Actual',
@@ -321,6 +363,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'YOUR_NEEDS',
+        index: 5,
         meaning: 'Your Needs',
         meaningCA: 'Les Teves Necessitats',
         meaningES: 'Tus Necesidades',
@@ -332,6 +376,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 7,
+        code: 'THEIR_NEEDS',
+        index: 6,
         meaning: 'Their Needs',
         meaningCA: 'Les Seves Necessitats',
         meaningES: 'Sus Necesidades',
@@ -342,6 +388,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Lo que necesitan',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['relationship'],
   },
 
   // 6. Pyramid
@@ -364,6 +411,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'GOAL',
+        index: 0,
         meaning: 'Goal',
         meaningCA: 'Objectiu',
         meaningES: 'Objetivo',
@@ -375,6 +424,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'MIND',
+        index: 1,
         meaning: 'Mind',
         meaningCA: 'Ment',
         meaningES: 'Mente',
@@ -386,6 +437,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'HEART',
+        index: 2,
         meaning: 'Heart',
         meaningCA: 'Cor',
         meaningES: 'Corazón',
@@ -397,6 +450,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'ACTION',
+        index: 3,
         meaning: 'Action',
         meaningCA: 'Acció',
         meaningES: 'Acción',
@@ -408,6 +463,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'RESOURCES',
+        index: 4,
         meaning: 'Resources',
         meaningCA: 'Recursos',
         meaningES: 'Recursos',
@@ -419,6 +476,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'FOUNDATION',
+        index: 5,
         meaning: 'Foundation',
         meaningCA: 'Fonament',
         meaningES: 'Fundamento',
@@ -429,6 +488,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Soporte central',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['pyramid'],
   },
 
   // 7. Horseshoe
@@ -451,6 +511,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'PAST',
+        index: 0,
         meaning: 'Past',
         meaningCA: 'Passat',
         meaningES: 'Pasado',
@@ -462,6 +524,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'PRESENT',
+        index: 1,
         meaning: 'Present',
         meaningCA: 'Present',
         meaningES: 'Presente',
@@ -473,6 +537,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'HIDDEN',
+        index: 2,
         meaning: 'Hidden Influences',
         meaningCA: 'Influències Ocultes',
         meaningES: 'Influencias Ocultas',
@@ -484,6 +550,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'OBSTACLES',
+        index: 3,
         meaning: 'Obstacles',
         meaningCA: 'Obstacles',
         meaningES: 'Obstáculos',
@@ -495,6 +563,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'EXTERNAL',
+        index: 4,
         meaning: 'External Influences',
         meaningCA: 'Influències Externes',
         meaningES: 'Influencias Externas',
@@ -506,6 +576,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'ADVICE',
+        index: 5,
         meaning: 'Advice',
         meaningCA: 'Consell',
         meaningES: 'Consejo',
@@ -517,6 +589,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 7,
+        code: 'OUTCOME',
+        index: 6,
         meaning: 'Outcome',
         meaningCA: 'Resultat',
         meaningES: 'Resultado',
@@ -527,6 +601,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Resultado probable',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['horseshoe'],
   },
 
   // 8. Celtic Cross
@@ -549,6 +624,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'PRESENT',
+        index: 0,
         meaning: 'Present',
         meaningCA: 'Present',
         meaningES: 'Presente',
@@ -560,6 +637,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'CHALLENGE',
+        index: 1,
         meaning: 'Challenge',
         meaningCA: 'Desafiament',
         meaningES: 'Desafío',
@@ -571,6 +650,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'DISTANT_PAST',
+        index: 2,
         meaning: 'Distant Past',
         meaningCA: 'Passat Llunyà',
         meaningES: 'Pasado Lejano',
@@ -582,6 +663,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'RECENT_PAST',
+        index: 3,
         meaning: 'Recent Past',
         meaningCA: 'Passat Recent',
         meaningES: 'Pasado Reciente',
@@ -593,6 +676,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'GOAL',
+        index: 4,
         meaning: 'Goal',
         meaningCA: 'Objectiu',
         meaningES: 'Objetivo',
@@ -604,6 +689,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'NEAR_FUTURE',
+        index: 5,
         meaning: 'Near Future',
         meaningCA: 'Futur Proper',
         meaningES: 'Futuro Próximo',
@@ -615,6 +702,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 7,
+        code: 'SELF',
+        index: 6,
         meaning: 'Self',
         meaningCA: 'Jo',
         meaningES: 'Yo',
@@ -626,6 +715,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 8,
+        code: 'ENVIRONMENT',
+        index: 7,
         meaning: 'Environment',
         meaningCA: 'Entorn',
         meaningES: 'Entorno',
@@ -637,6 +728,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 9,
+        code: 'HOPES_FEARS',
+        index: 8,
         meaning: 'Hopes & Fears',
         meaningCA: 'Esperances i Pors',
         meaningES: 'Esperanzas y Miedos',
@@ -648,6 +741,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 10,
+        code: 'OUTCOME',
+        index: 9,
         meaning: 'Outcome',
         meaningCA: 'Resultat',
         meaningES: 'Resultado',
@@ -658,6 +753,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Resultado final',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['celtic_cross'],
   },
 
   // 9. Star
@@ -680,6 +776,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'SPIRIT',
+        index: 0,
         meaning: 'Spirit',
         meaningCA: 'Esperit',
         meaningES: 'Espíritu',
@@ -691,6 +789,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'ABUNDANCE',
+        index: 1,
         meaning: 'Abundance',
         meaningCA: 'Abundància',
         meaningES: 'Abundancia',
@@ -702,6 +802,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'LOVE',
+        index: 2,
         meaning: 'Love',
         meaningCA: 'Amor',
         meaningES: 'Amor',
@@ -713,6 +815,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'GROUNDING',
+        index: 3,
         meaning: 'Grounding',
         meaningCA: 'Enraizament',
         meaningES: 'Enraizamiento',
@@ -724,6 +828,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'CREATIVITY',
+        index: 4,
         meaning: 'Creativity',
         meaningCA: 'Creativitat',
         meaningES: 'Creatividad',
@@ -735,6 +841,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'WISDOM',
+        index: 5,
         meaning: 'Wisdom',
         meaningCA: 'Saviesa',
         meaningES: 'Sabiduría',
@@ -746,6 +854,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 7,
+        code: 'CORE_SELF',
+        index: 6,
         meaning: 'Core Self',
         meaningCA: 'Essència',
         meaningES: 'Esencia',
@@ -756,6 +866,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Tu verdad esencial',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['star'],
   },
 
   // 10. Astrological
@@ -778,6 +889,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'HOUSE_1',
+        index: 0,
         meaning: '1st House',
         meaningCA: '1a Casa',
         meaningES: '1ª Casa',
@@ -789,6 +902,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'HOUSE_2',
+        index: 1,
         meaning: '2nd House',
         meaningCA: '2a Casa',
         meaningES: '2ª Casa',
@@ -800,6 +915,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'HOUSE_3',
+        index: 2,
         meaning: '3rd House',
         meaningCA: '3a Casa',
         meaningES: '3ª Casa',
@@ -811,6 +928,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'HOUSE_4',
+        index: 3,
         meaning: '4th House',
         meaningCA: '4a Casa',
         meaningES: '4ª Casa',
@@ -822,6 +941,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'HOUSE_5',
+        index: 4,
         meaning: '5th House',
         meaningCA: '5a Casa',
         meaningES: '5ª Casa',
@@ -833,6 +954,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'HOUSE_6',
+        index: 5,
         meaning: '6th House',
         meaningCA: '6a Casa',
         meaningES: '6ª Casa',
@@ -844,6 +967,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 7,
+        code: 'HOUSE_7',
+        index: 6,
         meaning: '7th House',
         meaningCA: '7a Casa',
         meaningES: '7ª Casa',
@@ -855,6 +980,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 8,
+        code: 'HOUSE_8',
+        index: 7,
         meaning: '8th House',
         meaningCA: '8a Casa',
         meaningES: '8ª Casa',
@@ -866,6 +993,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 9,
+        code: 'HOUSE_9',
+        index: 8,
         meaning: '9th House',
         meaningCA: '9a Casa',
         meaningES: '9ª Casa',
@@ -877,6 +1006,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 10,
+        code: 'HOUSE_10',
+        index: 9,
         meaning: '10th House',
         meaningCA: '10a Casa',
         meaningES: '10ª Casa',
@@ -888,6 +1019,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 11,
+        code: 'HOUSE_11',
+        index: 10,
         meaning: '11th House',
         meaningCA: '11a Casa',
         meaningES: '11ª Casa',
@@ -899,6 +1032,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 12,
+        code: 'HOUSE_12',
+        index: 11,
         meaning: '12th House',
         meaningCA: '12a Casa',
         meaningES: '12ª Casa',
@@ -909,6 +1044,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Espiritualidad e Inconsciente',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['astrological'],
   },
 
   // 11. Year Ahead
@@ -931,6 +1067,8 @@ export const SPREADS: SpreadDefinition[] = [
     positions: [
       {
         number: 1,
+        code: 'MONTH_1',
+        index: 0,
         meaning: 'January',
         meaningCA: 'Gener',
         meaningES: 'Enero',
@@ -942,6 +1080,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 2,
+        code: 'MONTH_2',
+        index: 1,
         meaning: 'February',
         meaningCA: 'Febrer',
         meaningES: 'Febrero',
@@ -953,6 +1093,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 3,
+        code: 'MONTH_3',
+        index: 2,
         meaning: 'March',
         meaningCA: 'Març',
         meaningES: 'Marzo',
@@ -964,6 +1106,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 4,
+        code: 'MONTH_4',
+        index: 3,
         meaning: 'April',
         meaningCA: 'Abril',
         meaningES: 'Abril',
@@ -975,6 +1119,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 5,
+        code: 'MONTH_5',
+        index: 4,
         meaning: 'May',
         meaningCA: 'Maig',
         meaningES: 'Mayo',
@@ -986,6 +1132,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 6,
+        code: 'MONTH_6',
+        index: 5,
         meaning: 'June',
         meaningCA: 'Juny',
         meaningES: 'Junio',
@@ -997,6 +1145,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 7,
+        code: 'MONTH_7',
+        index: 6,
         meaning: 'July',
         meaningCA: 'Juliol',
         meaningES: 'Julio',
@@ -1008,6 +1158,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 8,
+        code: 'MONTH_8',
+        index: 7,
         meaning: 'August',
         meaningCA: 'Agost',
         meaningES: 'Agosto',
@@ -1019,6 +1171,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 9,
+        code: 'MONTH_9',
+        index: 8,
         meaning: 'September',
         meaningCA: 'Setembre',
         meaningES: 'Septiembre',
@@ -1030,6 +1184,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 10,
+        code: 'MONTH_10',
+        index: 9,
         meaning: 'October',
         meaningCA: 'Octubre',
         meaningES: 'Octubre',
@@ -1041,6 +1197,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 11,
+        code: 'MONTH_11',
+        index: 10,
         meaning: 'November',
         meaningCA: 'Novembre',
         meaningES: 'Noviembre',
@@ -1052,6 +1210,8 @@ export const SPREADS: SpreadDefinition[] = [
       },
       {
         number: 12,
+        code: 'MONTH_12',
+        index: 11,
         meaning: 'December',
         meaningCA: 'Desembre',
         meaningES: 'Diciembre',
@@ -1062,6 +1222,7 @@ export const SPREADS: SpreadDefinition[] = [
         descriptionES: 'Completación y descanso',
       },
     ],
+    educational: SPREADS_EDUCATIONAL['year_ahead'],
   },
 ];
 

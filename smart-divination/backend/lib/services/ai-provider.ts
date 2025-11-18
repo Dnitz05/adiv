@@ -78,11 +78,12 @@ export async function generateInterpretation(
   cards: Array<{ name: string; upright: boolean; position: string }>,
   spreadName: string,
   locale: string,
-  requestId?: string
+  requestId?: string,
+  spreadId?: string
 ): Promise<string> {
   if (isUsingGemini()) {
-    log('info', 'Using Gemini for interpretation', { requestId });
-    return await interpretCardsWithGemini(question, cards, spreadName, locale, requestId);
+    log('info', 'Using Gemini for interpretation', { requestId, spreadId });
+    return await interpretCardsWithGemini(question, cards, spreadName, locale, requestId, spreadId);
   }
 
   // For DeepSeek, return empty to use existing endpoint logic
