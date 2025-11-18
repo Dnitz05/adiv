@@ -40,7 +40,7 @@ function getTierLimits(tier: 'free' | 'premium' | 'premium_annual'): SessionVali
     case 'premium_annual':
       return { sessionsPerDay: 999, sessionsPerWeek: 999, sessionsPerMonth: 999 };
     default:
-      return { sessionsPerDay: 3, sessionsPerWeek: 10, sessionsPerMonth: 20 };
+      return { sessionsPerDay: 50, sessionsPerWeek: 100, sessionsPerMonth: 100 }; // Increased for testing
   }
 }
 

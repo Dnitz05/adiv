@@ -81,7 +81,7 @@ function getUserLimits(tier: 'free' | 'premium' | 'premium_annual'): PremiumStat
         historyRetention: 365,
       };
     default:
-      return { sessionsPerDay: 3, sessionsPerWeek: 10, sessionsPerMonth: 20, historyRetention: 30 };
+      return { sessionsPerDay: 50, sessionsPerWeek: 100, sessionsPerMonth: 100, historyRetention: 30 }; // Increased for testing
   }
 }
 
