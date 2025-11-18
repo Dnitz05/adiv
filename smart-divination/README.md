@@ -35,6 +35,14 @@ npm run dev
 ## Flutter Highlights
 - Run `melos bootstrap` at repo root before working on apps.
 - `apps/tarot` includes authentication, history, interpretations, entitlement scaffolding, and release automation (`flutter-release.yml`).
+- **Lunar Academy**: Complete educational content platform with 6 sections covering lunar wisdom, astronomy, and astrology with full multilingual support (ca/es/en):
+  - **Special Moon Events**: Eclipses, supermoons, blue moons, void of course moon, and Black Moon Lilith
+  - **Seasonal Wisdom**: 4 seasons and 8 sabbats with astrological correspondences
+  - **Planetary Days**: 7 weekdays with celestial rulers following the Chaldean Order
+  - **Lunar Elements**: Fire, Earth, Air, Water with zodiac signs and tarot suit connections
+  - **Moon in Signs**: 12 zodiac signs with detailed lunar influence information
+  - **Lunar Phases**: 8 moon phases with spiritual and practical guidance
+  - See `docs/LUNAR_ACADEMY_ARCHITECTURE.md` for technical architecture details
 - `apps/iching` and `apps/runes` share networking/state layers and target the new endpoints once feature flags flip; UX polish and entitlement handling remain in progress.
 - Add HTTP mocks and golden/widget tests before public release.
 
