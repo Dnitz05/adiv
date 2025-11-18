@@ -29,6 +29,7 @@ import 'widgets/ask_moon_banner.dart';
 import 'screens/chat_screen.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
+import 'screens/lunar_academy_screen.dart';
 import 'screens/lunar_advisor_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
@@ -3164,7 +3165,13 @@ class _HomeState extends State<_Home> {
         onNavigateToSpreads: () => _showLearnComingSoon(localisation),
         onNavigateToAstrology: () => _showLearnComingSoon(localisation),
         onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
-        onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
+        onNavigateToMoonPowers: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => LunarAcademyScreen(strings: localisation),
+            ),
+          );
+        },
       );
     } else {
       // Fallback: should never happen but required for null safety
@@ -4027,7 +4034,13 @@ class _HomeState extends State<_Home> {
           onNavigateToSpreads: () => _showLearnComingSoon(localisation),
           onNavigateToAstrology: () => _showLearnComingSoon(localisation),
           onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
-          onNavigateToMoonPowers: () => _showLearnComingSoon(localisation),
+          onNavigateToMoonPowers: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => LunarAcademyScreen(strings: localisation),
+              ),
+            );
+          },
         ),
         const SizedBox(height: 24),
         // History Banner

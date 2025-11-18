@@ -254,6 +254,51 @@ class LunarGuideService {
     }
   }
 
+  /// Get all 8 generic phase templates for educational purposes
+  Future<List<LunarGuideTemplate>> getAllPhaseTemplates() async {
+    try {
+      final response = await _supabase
+          .from('lunar_guide_templates')
+          .select()
+          .isFilter('zodiac_sign', null)
+          .isFilter('element', null)
+          .eq('active', true)
+          .order('phase_id');
+
+      if (response == null || (response as List).isEmpty) {
+        return [];
+      }
+
+      // Define phase order
+      final phaseOrder = [
+        'new_moon',
+        'waxing_crescent',
+        'first_quarter',
+        'waxing_gibbous',
+        'full_moon',
+        'waning_gibbous',
+        'last_quarter',
+        'waning_crescent',
+      ];
+
+      final templates = (response as List)
+          .map((json) => LunarGuideTemplate.fromJson(json))
+          .toList();
+
+      // Sort by custom phase order
+      templates.sort((a, b) {
+        final indexA = phaseOrder.indexOf(a.phaseId);
+        final indexB = phaseOrder.indexOf(b.phaseId);
+        return indexA.compareTo(indexB);
+      });
+
+      return templates;
+    } catch (e) {
+      print('Error fetching all phase templates: $e');
+      return [];
+    }
+  }
+
   String _formatDate(DateTime date) {
     return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
