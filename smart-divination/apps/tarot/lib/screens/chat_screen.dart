@@ -10,6 +10,7 @@ import '../widgets/chat_spread_bubble.dart';
 import '../widgets/chat_action_bubble.dart';
 import '../widgets/chat_input_field.dart';
 import '../widgets/typing_indicator.dart';
+import '../widgets/position_interactions_panel.dart'; // FASE 3
 import '../theme/tarot_theme.dart';
 import '../api/chat_api.dart';
 import '../services/credits_service.dart';
@@ -51,6 +52,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   bool _isTyping = false;
   bool _isInitialized = false;
+
+  // FASE 3: Store position interactions for current interpretation
+  List<PositionInteraction>? _currentPositionInteractions;
 
   @override
   void initState() {
@@ -245,15 +249,31 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     }
 
+    // FASE 3: Add extra item for position interactions panel
+    final hasInteractions = _currentPositionInteractions != null &&
+                            _currentPositionInteractions!.isNotEmpty;
+    final totalItems = _messages.length + (hasInteractions ? 1 : 0);
+
     return ListView.builder(
       controller: _scrollController,
       reverse: true, // Show latest at bottom
       padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: _messages.length,
+      itemCount: totalItems,
       itemBuilder: (context, index) {
+        // FASE 3: First item (index 0) shows position interactions panel
+        if (index == 0 && hasInteractions) {
+          return PositionInteractionsPanel(
+            interactions: _currentPositionInteractions!,
+            title: _getInteractionsPanelTitle(),
+          );
+        }
+
+        // Adjust index for messages (skip interactions panel if present)
+        final messageIndex = hasInteractions ? index - 1 : index;
+
         // Reverse index to show latest at bottom
-        final message = _messages[_messages.length - 1 - index];
-        final animate = index == 0;
+        final message = _messages[_messages.length - 1 - messageIndex];
+        final animate = messageIndex == 0;
         switch (message.kind) {
           case ChatMessageKind.text:
             return ChatMessageBubble(
@@ -422,10 +442,10 @@ class _ChatScreenState extends State<ChatScreen> {
         _updateMessageAction(message.id, action.copyWith(state: ChatActionState.completed));
         _messages.addAll(responseData.messages); // FASE 3: Access .messages
         _isTyping = false;
-      });
 
-      // FASE 3: Position interactions available in responseData.positionInteractions
-      // Will be used in FASE 3.3 to display UI panel
+        // FASE 3: Store position interactions to display below interpretation
+        _currentPositionInteractions = responseData.positionInteractions;
+      });
 
       await _creditsService.consume();
       _scrollToBottom();
@@ -515,6 +535,17 @@ class _ChatScreenState extends State<ChatScreen> {
         return '👋 ¡Hola! Soy tu asistente de tarot. Pregúntame lo que quieras sobre espiritualidad, tarot o tu camino personal.';
       default:
         return '👋 Hi! I\'m your tarot assistant. Ask me anything about spirituality, tarot, or your personal journey.';
+    }
+  }
+
+  String _getInteractionsPanelTitle() {
+    switch (widget.strings.localeName) {
+      case 'ca':
+        return 'Relacions entre Cartes';
+      case 'es':
+        return 'Relaciones entre Cartas';
+      default:
+        return 'Card Relationships';
     }
   }
 
