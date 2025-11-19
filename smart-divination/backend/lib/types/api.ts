@@ -325,8 +325,16 @@ export interface ChatCtaMessage extends ChatMessageBase {
 
 export type ChatResponseMessage = ChatTextMessage | ChatSpreadMessage | ChatCtaMessage;
 
+// FASE 3: Position Interaction (card relationship for user education)
+export interface PositionInteraction {
+  positions: string[]; // Position codes involved, e.g. ["PAST", "PRESENT"] or ["SELF", "ENVIRONMENT"]
+  description: string; // Human-readable description (localized)
+  aiGuidance: string;  // Technical guidance that was provided to AI
+}
+
 export interface ChatResponseData {
   messages: ChatResponseMessage[];
+  positionInteractions?: PositionInteraction[]; // FASE 3: Card relationships to show users
 }
 
 // AI Interpretation

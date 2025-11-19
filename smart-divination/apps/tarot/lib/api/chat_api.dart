@@ -97,7 +97,8 @@ Future<List<ChatMessage>> sendChatMessage({
   throw Exception('Invalid response format from chat API');
 }
 
-Future<List<ChatMessage>> interpretChatSpread({
+/// FASE 3: Returns ChatResponseData containing messages and optional position interactions
+Future<ChatResponseData> interpretChatSpread({
   required String spreadId,
   required String spreadMessageId,
   required List<ChatSpreadCardData> cards,
@@ -151,8 +152,8 @@ Future<List<ChatMessage>> interpretChatSpread({
   final Map<String, dynamic> data = jsonDecode(res.body) as Map<String, dynamic>;
   if (data['success'] == true && data['data'] != null) {
     final responseData = data['data'] as Map<String, dynamic>;
-    final messagesJson = responseData['messages'] as List<dynamic>? ?? <dynamic>[];
-    return _parseAssistantMessages(messagesJson);
+    // FASE 3: Use ChatResponseData.fromJson to parse messages + positionInteractions
+    return ChatResponseData.fromJson(responseData);
   }
 
   throw Exception('Invalid response format from interpretation API');

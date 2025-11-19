@@ -408,7 +408,8 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     try {
-      final interpretationMessages = await interpretChatSpread(
+      // FASE 3: interpretChatSpread now returns ChatResponseData
+      final responseData = await interpretChatSpread(
         spreadId: action.spreadId,
         spreadMessageId: action.spreadMessageId,
         cards: spreadData.cards,
@@ -419,9 +420,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
       setState(() {
         _updateMessageAction(message.id, action.copyWith(state: ChatActionState.completed));
-        _messages.addAll(interpretationMessages);
+        _messages.addAll(responseData.messages); // FASE 3: Access .messages
         _isTyping = false;
       });
+
+      // FASE 3: Position interactions available in responseData.positionInteractions
+      // Will be used in FASE 3.3 to display UI panel
+
       await _creditsService.consume();
       _scrollToBottom();
     } catch (error) {

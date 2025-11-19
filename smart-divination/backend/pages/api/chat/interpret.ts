@@ -17,7 +17,7 @@ import {
   log,
   parseApiRequest,
 } from '../../../lib/utils/api';
-import type { ChatResponseData, ChatResponseMessage, ChatTextMessage } from '../../../lib/types/api';
+import type { ChatResponseData, ChatResponseMessage, ChatTextMessage, PositionInteraction } from '../../../lib/types/api';
 import { generateInterpretation } from '../../../lib/services/ai-provider';
 import { CARD_NAMES, type CardName } from '../../../lib/data/card-names';
 import { SPREADS, type SpreadDefinition } from '../../../lib/data/spreads';
@@ -144,9 +144,24 @@ export default async function handler(
 
     const messages: ChatResponseMessage[] = [createTextMessage(reply)];
 
+    // FASE 3: Extract position interactions from spread for frontend display
+    const positionInteractions: PositionInteraction[] = [];
+    if (spreadDefinition?.educational?.positionInteractions) {
+      for (const interaction of spreadDefinition.educational.positionInteractions) {
+        positionInteractions.push({
+          positions: interaction.positions,
+          description: interaction.description[locale] || interaction.description['en'] || '',
+          aiGuidance: interaction.aiGuidance,
+        });
+      }
+    }
+
     return res.status(200).json(
       createApiResponse<ChatResponseData>(
-        { messages },
+        {
+          messages,
+          positionInteractions: positionInteractions.length > 0 ? positionInteractions : undefined,
+        },
         undefined,
         requestId,
       ),

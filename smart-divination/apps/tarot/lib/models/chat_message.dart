@@ -388,3 +388,141 @@ class ChatMessage {
         a.state == b.state;
   }
 }
+
+/// FASE 3: Chat response data containing messages and optional position interactions
+class ChatResponseData {
+  const ChatResponseData({
+    required this.messages,
+    this.positionInteractions,
+  });
+
+  final List<ChatMessage> messages;
+  final List<PositionInteraction>? positionInteractions;
+
+  factory ChatResponseData.fromJson(Map<String, dynamic> json) {
+    final messagesJson = json['messages'] as List<dynamic>? ?? <dynamic>[];
+    final interactionsJson = json['positionInteractions'] as List<dynamic>?;
+
+    return ChatResponseData(
+      messages: messagesJson
+          .whereType<Map<String, dynamic>>()
+          .map((m) => _parseSingleMessage(m))
+          .toList(),
+      positionInteractions: interactionsJson
+          ?.whereType<Map<String, dynamic>>()
+          .map(PositionInteraction.fromJson)
+          .toList(),
+    );
+  }
+
+  /// Helper to parse a single message (used internally)
+  static ChatMessage _parseSingleMessage(Map<String, dynamic> rawMessage) {
+    final type = rawMessage['type'] as String? ?? 'text';
+    final messageId = rawMessage['id'] as String? ?? 'msg_${DateTime.now().microsecondsSinceEpoch}';
+    final now = DateTime.now();
+
+    switch (type) {
+      case 'tarot_spread':
+        final spreadData = ChatSpreadData.fromJson(rawMessage);
+        return ChatMessage(
+          id: messageId,
+          kind: ChatMessageKind.spread,
+          isUser: false,
+          timestamp: now,
+          spread: spreadData,
+        );
+      case 'cta':
+        final payload = rawMessage['payload'] as Map<String, dynamic>? ?? <String, dynamic>{};
+        final actionData = ChatActionData(
+          type: ChatActionType.interpretSpread,
+          label: rawMessage['label'] as String? ?? 'Interpretation',
+          spreadMessageId: payload['spreadMessageId'] as String? ?? '',
+          spreadId: payload['spreadId'] as String? ?? '',
+        );
+        return ChatMessage(
+          id: messageId,
+          kind: ChatMessageKind.action,
+          isUser: false,
+          timestamp: now,
+          action: actionData,
+        );
+      default:
+        final text = rawMessage['text'] as String? ?? '';
+        return ChatMessage.text(
+          id: messageId,
+          isUser: false,
+          timestamp: now,
+          text: text,
+        );
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'messages': messages.map((m) => m.toJson()).toList(),
+      if (positionInteractions != null)
+        'positionInteractions': positionInteractions!.map((i) => i.toJson()).toList(),
+    };
+  }
+}
+
+/// FASE 3: Position Interaction (card relationship for user education)
+/// Represents how two or more positions relate to each other in a spread
+class PositionInteraction {
+  const PositionInteraction({
+    required this.positions,
+    required this.description,
+    required this.aiGuidance,
+  });
+
+  /// Position codes involved, e.g. ["PAST", "PRESENT"] or ["SELF", "ENVIRONMENT"]
+  final List<String> positions;
+
+  /// Human-readable description (localized)
+  final String description;
+
+  /// Technical guidance that was provided to AI
+  final String aiGuidance;
+
+  factory PositionInteraction.fromJson(Map<String, dynamic> json) {
+    final positionsJson = json['positions'] as List<dynamic>? ?? <dynamic>[];
+    return PositionInteraction(
+      positions: positionsJson.whereType<String>().toList(),
+      description: json['description'] as String? ?? '',
+      aiGuidance: json['aiGuidance'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'positions': positions,
+      'description': description,
+      'aiGuidance': aiGuidance,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'PositionInteraction(positions: ${positions.join(", ")}, description: "$description")';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! PositionInteraction) return false;
+
+    if (positions.length != other.positions.length) return false;
+    for (var i = 0; i < positions.length; i++) {
+      if (positions[i] != other.positions[i]) return false;
+    }
+
+    return description == other.description && aiGuidance == other.aiGuidance;
+  }
+
+  @override
+  int get hashCode {
+    return positions.fold<int>(0, (hash, pos) => hash ^ pos.hashCode) ^
+        description.hashCode ^
+        aiGuidance.hashCode;
+  }
+}

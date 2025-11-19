@@ -6,17 +6,20 @@ import 'package:http/http.dart' as http;
 import 'api_client.dart';
 import '../user_identity.dart';
 import 'draw_cards_api.dart';
+import '../models/chat_message.dart'; // FASE 3: For PositionInteraction
 
 class InterpretationResult {
   InterpretationResult({
     required this.interpretation,
     this.summary,
     this.keywords = const <String>[],
+    this.positionInteractions, // FASE 3: Card relationship insights
   });
 
   final String interpretation;
   final String? summary;
   final List<String> keywords;
+  final List<PositionInteraction>? positionInteractions; // FASE 3
 }
 
 /// Sanitizes interpretation text by removing JSON artifacts
@@ -131,7 +134,15 @@ Future<InterpretationResult?> submitInterpretation({
     throw Exception('Interpretation request failed: ${payload['error'] ?? payload}');
   }
 
-  final interpretation = data['interpretation'] as String?;
+  // FASE 3: Backend returns { messages: [...], positionInteractions: [...] }
+  // Extract interpretation from messages[0].text
+  final messagesJson = data['messages'] as List<dynamic>? ?? <dynamic>[];
+  if (messagesJson.isEmpty) {
+    return null;
+  }
+
+  final firstMessage = messagesJson[0] as Map<String, dynamic>? ?? <String, dynamic>{};
+  final interpretation = firstMessage['text'] as String?;
   if (interpretation == null || interpretation.isEmpty) {
     return null;
   }
@@ -139,6 +150,14 @@ Future<InterpretationResult?> submitInterpretation({
   // Sanitize the interpretation to remove JSON artifacts
   final cleanInterpretation = _sanitizeInterpretation(interpretation);
 
+  // FASE 3: Extract position interactions if present
+  final interactionsJson = data['positionInteractions'] as List<dynamic>?;
+  final positionInteractions = interactionsJson
+      ?.whereType<Map<String, dynamic>>()
+      .map(PositionInteraction.fromJson)
+      .toList();
+
+  // Legacy fields (may not be present in new backend response)
   final summary = data['summary'] as String?;
   final cleanSummary = summary != null ? _sanitizeInterpretation(summary) : null;
 
@@ -150,5 +169,6 @@ Future<InterpretationResult?> submitInterpretation({
     interpretation: cleanInterpretation,
     summary: cleanSummary,
     keywords: keywords,
+    positionInteractions: positionInteractions, // FASE 3
   );
 }
