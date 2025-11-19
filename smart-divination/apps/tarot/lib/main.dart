@@ -2176,10 +2176,12 @@ class _HomeState extends State<_Home> {
     });
   }
 
-  void _handleShowInterpretationView() {
+  Future<void> _handleShowInterpretationView() async {
     setState(() {
       _fullScreenStep = FullScreenStep.interpretation;
     });
+    // Fix: Request interpretation when showing the view
+    await _requestInterpretation();
   }
 
   void _closeFullScreenFlow() {
