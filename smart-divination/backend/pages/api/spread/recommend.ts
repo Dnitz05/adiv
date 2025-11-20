@@ -17,6 +17,7 @@ import {
 import { recordApiMetric } from '../../../lib/utils/metrics';
 import { extractKeywords } from '../../../lib/utils/text';
 import { findBestSpread, SPREADS, type SpreadDefinition } from '../../../lib/data/spreads';
+import { SPREADS_EDUCATIONAL, type SpreadEducationalContent } from '../../../lib/data/spreads-educational';
 import { isUsingGemini } from '../../../lib/services/ai-provider';
 import { selectSpreadWithGemini } from '../../../lib/services/gemini-ai';
 
@@ -30,7 +31,7 @@ const spreadRecommendationRequestSchema = baseRequestSchema.extend({
   question: z.string().min(1, 'question is required'),
   locale: z.string().min(2).optional().default('ca'),
   // Optional hints from the user
-  preferredComplexity: z.enum(['simple', 'medium', 'complex', 'extended']).optional(),
+  preferredComplexity: z.enum(['simple', 'moderate', 'complex', 'advanced']).optional(),
   preferredCategory: z
     .enum(['general', 'love', 'career', 'decision', 'spiritual', 'monthly', 'yearly'])
     .optional(),
@@ -54,6 +55,7 @@ interface SpreadRecommendation {
   detectedCategory?: string;
   detectedComplexity?: string;
   alternatives?: SpreadDefinition[];
+  educational?: SpreadEducationalContent; // FASE 3: Educational content
 }
 
 /**
@@ -91,6 +93,7 @@ async function recommendSpread(
       if (spread) {
         const alternatives = getAlternativeSpreads(spread, [], spread.category);
         const keywords = extractKeywords(question);
+        const educational = SPREADS_EDUCATIONAL[spread.id]; // FASE 3: Include educational content
 
         return {
           spread,
@@ -105,6 +108,7 @@ async function recommendSpread(
           detectedCategory: spread.category,
           detectedComplexity: spread.complexity,
           alternatives,
+          educational, // FASE 3: Educational content
         };
       }
     } catch (error) {
@@ -171,6 +175,8 @@ async function recommendSpread(
         ? interpretationGuideTemplates.es
         : interpretationGuideTemplates.en;
 
+  const educational = SPREADS_EDUCATIONAL[bestSpread.id]; // FASE 3: Include educational content
+
   return {
     spread: bestSpread,
     reasoning: reasoning.en,
@@ -184,6 +190,7 @@ async function recommendSpread(
     detectedCategory,
     detectedComplexity,
     alternatives,
+    educational, // FASE 3: Educational content
   };
 }
 
@@ -229,7 +236,7 @@ function detectComplexity(question: string, keywords: string[]): string {
     return 'complex';
   }
 
-  return 'medium';
+  return 'moderate';
 }
 
 /**
@@ -316,19 +323,19 @@ function generateReasoning(
   const complexityCa =
     spread.complexity === 'simple'
       ? 'amb un ritme àgil i clar'
-      : spread.complexity === 'medium'
+      : spread.complexity === 'moderate'
         ? 'amb prou profunditat sense perdre claredat'
         : 'amb la profunditat que cal per revisar totes les capes';
   const complexityEs =
     spread.complexity === 'simple'
       ? 'con un ritmo ágil y claro'
-      : spread.complexity === 'medium'
+      : spread.complexity === 'moderate'
         ? 'con la profundidad justa sin perder claridad'
         : 'con la profundidad necesaria para revisar cada capa';
   const complexityEn =
     spread.complexity === 'simple'
       ? 'with a quick, clear rhythm'
-      : spread.complexity === 'medium'
+      : spread.complexity === 'moderate'
         ? 'with enough depth while staying clear'
         : 'with the depth needed to explore every layer';
 
@@ -447,10 +454,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Send response
     res.status(200).json(
-      createApiResponse({
-        requestId,
-        data: recommendation,
-      })
+      createApiResponse(
+        recommendation,
+        undefined,
+        requestId
+      )
     );
   } catch (error) {
     const duration = Date.now() - startTime;
