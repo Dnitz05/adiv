@@ -1287,6 +1287,4993 @@ const YEAR_AHEAD_EDUCATIONAL: SpreadEducationalContent = {
 };
 
 /**
+ * MORNING GUIDANCE SPREAD
+ * Three-card ritual for setting daily intention and focus
+ */
+const MORNING_GUIDANCE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "The Morning Guidance Spread is a powerful three-card ritual designed to align your consciousness with the day's highest potential before the world's demands begin. Unlike a predictive reading, this spread is prescriptive—it tells you what energy to embody, where to direct your attention, and what outcome you're co-creating through your choices today. Think of it as your daily spiritual compass, grounding you in intentional living rather than reactive survival. Perfect for building a consistent tarot practice that transforms random card pulls into meaningful dialogue with your higher self.",
+
+    es: "La Tirada de Orientación Matutina es un poderoso ritual de tres cartas diseñado para alinear tu consciencia con el potencial más elevado del día antes de que comiencen las demandas del mundo. A diferencia de una lectura predictiva, esta tirada es prescriptiva: te dice qué energía encarnar, dónde dirigir tu atención, y qué resultado estás co-creando a través de tus elecciones hoy. Piénsala como tu brújula espiritual diaria, arraigándote en vivir intencionalmente en lugar de supervivencia reactiva. Perfecta para construir una práctica de tarot consistente que transforma tiradas aleatorias de cartas en diálogo significativo con tu yo superior.",
+
+    ca: "La Tirada d'Orientació Matinal és un poderós ritual de tres cartes dissenyat per alinear la teva consciència amb el potencial més elevat del dia abans que comencin les demandes del món. A diferència d'una lectura predictiva, aquesta tirada és prescriptiva: et diu quina energia encarnar, on dirigir la teva atenció, i quin resultat estàs co-creant a través de les teves eleccions avui. Pensa-la com la teva brúixola espiritual diària, arrelant-te en viure intencionalment en lloc de supervivència reactiva. Perfecta per construir una pràctica de tarot consistent que transforma tirades aleatòries de cartes en diàleg significatiu amb el teu jo superior.",
+  },
+
+  whenToUse: {
+    en: "Draw the Morning Guidance Spread as part of your morning ritual—ideally before checking your phone, before coffee, in that liminal space between sleep and day. Use it when you want to set conscious intention rather than stumble through your day on autopilot. Perfect for mornings when you have important meetings, difficult conversations, creative work, or simply want to live more mindfully. This spread shines when you're committed to personal growth and understand that tarot isn't fortune-telling but a tool for conscious co-creation. Especially powerful on Mondays (setting the week's tone), before job interviews or first dates, during Mercury retrograde when clarity is essential, or whenever you feel scattered and need centering. The consistency matters more than perfection—even pulling these three cards while half-awake builds your relationship with daily guidance.",
+
+    es: "Despliega la Tirada de Orientación Matutina como parte de tu ritual matutino, idealmente antes de revisar tu teléfono, antes del café, en ese espacio liminal entre el sueño y el día. Úsala cuando quieras establecer intención consciente en lugar de tropezar por tu día en piloto automático. Perfecta para mañanas cuando tienes reuniones importantes, conversaciones difíciles, trabajo creativo, o simplemente quieres vivir más conscientemente. Esta tirada brilla cuando estás comprometida al crecimiento personal y entiendes que el tarot no es adivinación sino una herramienta para co-creación consciente. Especialmente poderosa los lunes (estableciendo el tono de la semana), antes de entrevistas de trabajo o primeras citas, durante Mercurio retrógrado cuando la claridad es esencial, o cuando te sientes dispersa y necesitas centrarte. La consistencia importa más que la perfección: incluso sacar estas tres cartas medio dormida construye tu relación con la guía diaria.",
+
+    ca: "Desplega la Tirada d'Orientació Matinal com a part del teu ritual matinal, idealment abans de revisar el teu telèfon, abans del cafè, en aquest espai liminal entre el son i el dia. Usa-la quan vulguis establir intenció conscient en lloc d'ensopegar pel teu dia en pilot automàtic. Perfecta per a matins quan tens reunions importants, converses difícils, treball creatiu, o simplement vols viure més conscientment. Aquesta tirada brilla quan estàs compromès al creixement personal i entens que el tarot no és endevinació sinó una eina per a co-creació conscient. Especialment poderosa els dilluns (establint el to de la setmana), abans d'entrevistes de feina o primeres cites, durant Mercuri retrògrad quan la claredat és essencial, o quan et sents dispersat i necessites centrar-te. La consistència importa més que la perfecció: fins i tot treure aquestes tres cartes mig adormit construeix la teva relació amb la guia diària.",
+  },
+
+  whenToAvoid: {
+    en: "Skip the Morning Guidance Spread if you're rushed or stressed—pulling cards while anxious creates anxious readings. Don't use this for specific questions about other people or situations outside your control; morning guidance is about YOUR energy and agency, not predicting what your boss will do. Avoid it if you're looking for yes/no answers or want to know 'what will happen today' in a fortune-telling sense. This spread requires a mindset shift from passive prediction to active intention-setting. Also skip it if you're emotionally fragile and might catastrophize a challenging card—start with affirmations instead, returning to tarot when you're more grounded.",
+
+    es: "Omite la Tirada de Orientación Matutina si estás apresurada o estresada: sacar cartas mientras estás ansiosa crea lecturas ansiosas. No la uses para preguntas específicas sobre otras personas o situaciones fuera de tu control; la orientación matutina trata sobre TU energía y agencia, no predecir qué hará tu jefe. Evítala si buscas respuestas de sí/no o quieres saber 'qué pasará hoy' en sentido de adivinación. Esta tirada requiere un cambio de mentalidad de predicción pasiva a establecimiento activo de intención. También omítela si estás emocionalmente frágil y podrías catastrofizar una carta desafiante: comienza con afirmaciones en su lugar, regresando al tarot cuando estés más arraigada.",
+
+    ca: "Omet la Tirada d'Orientació Matinal si estàs apressat o estressat: treure cartes mentre estàs ansiós crea lectures ansioses. No l'usis per a preguntes específiques sobre altres persones o situacions fora del teu control; l'orientació matinal tracta sobre LA TEVA energia i agència, no predir què farà el teu cap. Evita-la si busques respostes de sí/no o vols saber 'què passarà avui' en sentit d'endevinació. Aquesta tirada requereix un canvi de mentalitat de predicció passiva a establiment actiu d'intenció. També omet-la si estàs emocionalment fràgil i podries catastrofitzar una carta desafiant: comença amb afirmacions en el seu lloc, retornant al tarot quan estiguis més arrelat.",
+  },
+
+  interpretationMethod: {
+    en: "Read the three positions as a sacred sequence of embodiment. ENERGY (position 1) reveals the archetypal quality to embody today—not what will happen TO you, but what you're called to BE. If you draw The Empress, you're invited to nurture, create, and embrace abundance consciousness. If you draw Five of Pentacles, you're working with themes of lack, resilience, and asking for help. Don't resist difficult cards; they're showing you the energy to transmute or the shadow to integrate. FOCUS (position 2) directs your attention—what deserves your mental and emotional bandwidth today? This card shows where to invest your limited resources of time and energy. Ace of Swords = mental clarity and new ideas; Four of Cups = examining what you've been taking for granted. Finally, OUTCOME (position 3) reveals the result you're actively creating through your choices today when aligned with the first two cards. This isn't fate; it's potential. If the Outcome is challenging, return to Energy and Focus to see what needs adjustment. Notice the flow: Does Energy support Focus? Does Focus logically lead to Outcome? If all three are harmonious (complementary suits, ascending numbers, visual coherence), you're in alignment. If they conflict, there's a teaching about where you're out of integrity. Major Arcana in Energy = significant soul work today. Court cards often represent aspects of yourself to embody or people who will mirror your growth. Before you start your day, sit with all three cards—let them become mantras you return to when stress arises.",
+
+    es: "Lee las tres posiciones como una secuencia sagrada de encarnación. ENERGÍA (posición 1) revela la cualidad arquetípica a encarnar hoy: no lo que te pasará, sino lo que estás llamada a SER. Si sacas La Emperatriz, estás invitada a nutrir, crear, y abrazar consciencia de abundancia. Si sacas Cinco de Oros, estás trabajando con temas de carencia, resiliencia, y pedir ayuda. No resistas cartas difíciles; te están mostrando la energía a transmutar o la sombra a integrar. ENFOQUE (posición 2) dirige tu atención: ¿qué merece tu ancho de banda mental y emocional hoy? Esta carta muestra dónde invertir tus recursos limitados de tiempo y energía. As de Espadas = claridad mental e ideas nuevas; Cuatro de Copas = examinar lo que has estado dando por sentado. Finalmente, RESULTADO (posición 3) revela el resultado que estás creando activamente a través de tus elecciones hoy cuando te alineas con las primeras dos cartas. Esto no es destino; es potencial. Si el Resultado es desafiante, regresa a Energía y Enfoque para ver qué necesita ajuste. Observa el flujo: ¿La Energía apoya el Enfoque? ¿El Enfoque conduce lógicamente al Resultado? Si las tres son armoniosas (palos complementarios, números ascendentes, coherencia visual), estás en alineación. Si entran en conflicto, hay una enseñanza sobre dónde estás fuera de integridad. Arcanos Mayores en Energía = trabajo significativo del alma hoy. Cartas de corte a menudo representan aspectos de ti misma a encarnar o personas que reflejarán tu crecimiento. Antes de comenzar tu día, siéntate con las tres cartas: déjalas convertirse en mantras a los que regresas cuando surja el estrés.",
+
+    ca: "Llegeix les tres posicions com una seqüència sagrada d'encarnació. ENERGIA (posició 1) revela la qualitat arquetípica a encarnar avui: no el que et passarà, sinó el que estàs cridat a SER. Si treus L'Emperadriu, estàs convidat a nodrir, crear, i abraçar consciència d'abundància. Si treus Cinc d'Ors, estàs treballant amb temes de mancança, resiliència, i demanar ajuda. No resisteixis cartes difícils; t'estan mostrant l'energia a transmutar o l'ombra a integrar. ENFOCAMENT (posició 2) dirigeix la teva atenció: què mereix el teu ample de banda mental i emocional avui? Aquesta carta mostra on invertir els teus recursos limitats de temps i energia. As d'Espases = claredat mental i idees noves; Quatre de Copes = examinar el que has estat donant per descomptat. Finalment, RESULTAT (posició 3) revela el resultat que estàs creant activament a través de les teves eleccions avui quan t'alineas amb les primeres dues cartes. Això no és destí; és potencial. Si el Resultat és desafiant, retorna a Energia i Enfocament per veure què necessita ajust. Observa el flux: L'Energia recolza l'Enfocament? L'Enfocament condueix lògicament al Resultat? Si les tres són harmonioses (pals complementaris, números ascendents, coherència visual), estàs en alineació. Si entren en conflicte, hi ha un ensenyament sobre on estàs fora d'integritat. Arcans Majors a Energia = treball significatiu de l'ànima avui. Cartes de cort sovint representen aspectes de tu mateix a encarnar o persones que reflectiran el teu creixement. Abans de començar el teu dia, seu amb les tres cartes: deixa-les convertir-se en mantres als quals retornes quan sorgeixi l'estrés.",
+  },
+
+  traditionalOrigin: {
+    en: "The Morning Guidance Spread is a modern standard variation of the foundational Three Card Spread, adapted for daily spiritual practice in the late 20th century as tarot shifted from fortune-telling to self-development tool. The practice of morning intention-setting has roots in ancient spiritual traditions—from Buddhist morning prayers to Renaissance alchemical 'operations of the day'—making this a natural synthesis of tarot's temporal structure (past-present-future) reimagined as prescriptive guidance (energy-focus-outcome). Teachers like Mary K. Greer and Angeles Arrien championed daily tarot practice as transformative ritual, elevating the morning card pull from superstition to sacred mindfulness.",
+
+    es: "La Tirada de Orientación Matutina es una variación estándar moderna de la Tirada de Tres Cartas fundacional, adaptada para práctica espiritual diaria a finales del siglo XX cuando el tarot pasó de adivinación a herramienta de autodesarrollo. La práctica de establecer intención matutina tiene raíces en tradiciones espirituales antiguas, desde oraciones matutinas budistas hasta 'operaciones del día' alquímicas renacentistas, haciendo de esto una síntesis natural de la estructura temporal del tarot (pasado-presente-futuro) reimaginada como guía prescriptiva (energía-enfoque-resultado). Maestras como Mary K. Greer y Angeles Arrien defendieron la práctica diaria de tarot como ritual transformador, elevando la tirada matutina de carta de superstición a mindfulness sagrado.",
+
+    ca: "La Tirada d'Orientació Matinal és una variació estàndard moderna de la Tirada de Tres Cartes fundacional, adaptada per a pràctica espiritual diària a finals del segle XX quan el tarot va passar d'endevinació a eina d'autodesenvolvament. La pràctica d'establir intenció matinal té arrels en tradicions espirituals antigues, des d'oracions matinals budistes fins a 'operacions del dia' alquímiques renaixentistes, fent d'això una síntesi natural de l'estructura temporal del tarot (passat-present-futur) reimaginada com a guia prescriptiva (energia-enfocament-resultat). Mestres com Mary K. Greer i Angeles Arrien van defensar la pràctica diària de tarot com a ritual transformador, elevant la tirada matinal de carta de superstició a mindfulness sagrat.",
+  },
+
+  positionInteractions: [
+    {
+      description: {
+        en: "ENERGY → FOCUS: From Being to Doing - Alignment of essence and action",
+        es: "ENERGÍA → ENFOQUE: Del Ser al Hacer - Alineación de esencia y acción",
+        ca: "ENERGIA → ENFOCAMENT: Del Ser al Fer - Alineació d'essència i acció",
+      },
+      positions: ["ENERGY", "FOCUS"],
+      aiGuidance: "The ENERGY card sets the vibrational frequency; the FOCUS card shows how to apply it practically. If Energy is Empress (nurturing) and Focus is Three of Pentacles (collaborative work), nurture your team today. If they conflict (Energy = solitary Hermit, Focus = social Three of Cups), explore the tension—maybe you need solitary recharge BEFORE socializing, or you're being called to bring hermit wisdom into community. Harmonious flow (same element, complementary numbers) = easy alignment. Tension = growth edge.",
+    },
+    {
+      description: {
+        en: "FOCUS → OUTCOME: The Manifestation Channel - Where attention goes, energy flows",
+        es: "ENFOQUE → RESULTADO: El Canal de Manifestación - Donde va la atención, fluye la energía",
+        ca: "ENFOCAMENT → RESULTAT: El Canal de Manifestació - On va l'atenció, flueix l'energia",
+      },
+      positions: ["FOCUS", "OUTCOME"],
+      aiGuidance: "This connection reveals cause-and-effect. If FOCUS is clear (Ace of Swords) and OUTCOME is success (Six of Wands), mental clarity leads to victory. If FOCUS is scattered (Seven of Cups) and OUTCOME is confusion (Moon), the reading warns of fantasy vs reality. When OUTCOME seems disconnected from FOCUS, check if the querent is sabotaging their own intentions—the cards reveal subconscious patterns. A challenging OUTCOME invites revisiting FOCUS: where should attention shift?",
+    },
+    {
+      description: {
+        en: "The Morning Trinity: ENERGY → FOCUS → OUTCOME as daily creation cycle",
+        es: "La Trinidad Matutina: ENERGÍA → ENFOQUE → RESULTADO como ciclo de creación diario",
+        ca: "La Trinitat Matinal: ENERGIA → ENFOCAMENT → RESULTAT com a cicle de creació diari",
+      },
+      positions: ["ENERGY", "FOCUS", "OUTCOME"],
+      aiGuidance: "Read all three as one breath: I embody [ENERGY], I direct my attention to [FOCUS], I create [OUTCOME]. This isn't fortune-telling but spell-casting through consciousness. If all three align harmoniously (ascending arc, complementary energies), the day flows naturally. If there's discord, it reveals inner fragmentation—mental desire conflicting with emotional truth, or spiritual calling at odds with practical reality. Multiple Major Arcana = significant soul work day, not just routine. All Minor = practical, grounded focus. Court cards = personas to embody or people who'll play key roles. Use the narrative to set intention: 'Today I am [Energy], focusing on [Focus], to create [Outcome].' Return to this statement throughout the day as your anchor.",
+    },
+  ],
+
+  aiSelectionCriteria: {
+    questionPatterns: [
+      "morning guidance",
+      "daily intention",
+      "start my day",
+      "what energy should i bring",
+      "where should i focus today",
+      "morning ritual",
+      "daily practice",
+      "set intention",
+      "guidance for today",
+      "today's energy",
+      "how should i approach today",
+      "morning reading",
+    ],
+    emotionalStates: [
+      "seeking daily guidance",
+      "wanting to set intention",
+      "need morning clarity",
+      "building spiritual practice",
+      "desire mindful living",
+      "ready for conscious day",
+      "seeking alignment",
+    ],
+    preferWhen: {
+      cardCountPreference: "3",
+      complexityLevel: "simple",
+      experienceLevel: "any",
+      timeframe: "today, morning, daily practice",
+    },
+  },
+};
+
+/**
+ * EVENING REFLECTION SPREAD
+ * Three-card ritual for daily integration and release
+ */
+const EVENING_REFLECTION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "The Evening Reflection Spread is the sacred bookend to your day, a three-card ritual of integration that transforms experiences into wisdom. While Morning Guidance sets intention forward, Evening Reflection processes what actually unfolded—harvesting lessons learned, releasing what no longer serves, and identifying what deserves to be carried into tomorrow. This isn't about judgment or self-criticism; it's about conscious digestion of your day's experiences, both 'good' and 'bad,' recognizing that every moment contains teaching. Perfect for building self-awareness, closing energetic loops, and preventing the accumulation of unprocessed emotional residue that leads to burnout or anxiety.",
+
+    es: "La Tirada de Reflexión Vespertina es el cierre sagrado de tu día, un ritual de tres cartas de integración que transforma experiencias en sabiduría. Mientras la Orientación Matutina establece intención hacia adelante, la Reflexión Vespertina procesa lo que realmente se desarrolló: cosechando lecciones aprendidas, liberando lo que ya no sirve, e identificando lo que merece ser llevado al mañana. No se trata de juicio o autocrítica; se trata de digestión consciente de las experiencias de tu día, tanto 'buenas' como 'malas,' reconociendo que cada momento contiene enseñanza. Perfecta para construir autoconciencia, cerrar ciclos energéticos, y prevenir la acumulación de residuo emocional no procesado que lleva al agotamiento o ansiedad.",
+
+    ca: "La Tirada de Reflexió Vespertina és el tancament sagrat del teu dia, un ritual de tres cartes d'integració que transforma experiències en saviesa. Mentre l'Orientació Matinal estableix intenció cap endavant, la Reflexió Vespertina processa el que realment es va desenvolupar: collint lliçons apreses, alliberant el que ja no serveix, i identificant el que mereix ser portat al demà. No es tracta de judici o autocrítica; es tracta de digestió conscient de les experiències del teu dia, tant 'bones' com 'dolentes,' reconeixent que cada moment conté ensenyament. Perfecta per construir autoconsciència, tancar cicles energètics, i prevenir l'acumulació de residu emocional no processat que porta a l'esgotament o ansietat.",
+  },
+
+  whenToUse: {
+    en: "Draw the Evening Reflection Spread as part of your nightly wind-down ritual—after dinner, before bed, in that transitional space when the day's demands have quieted. Use it after challenging days when emotions ran high, after significant events (difficult conversations, job interviews, first dates, creative breakthroughs), or simply as a daily practice to cultivate self-awareness. Perfect for journaling companions who want to go deeper than 'what happened' to 'what did it mean?' This spread excels when you've been triggered emotionally and need to understand why, when you're processing relationship dynamics, or when you sense you learned something important but can't quite name it. Especially valuable on Sundays (closing the week), after conflict or breakthroughs, during therapy or shadow work periods, or whenever you feel emotionally cluttered and need to clear your psychic space before sleep. Unlike morning guidance which is forward-facing, this is backward-integrating—honoring what was.",
+
+    es: "Despliega la Tirada de Reflexión Vespertina como parte de tu ritual nocturno de relajación: después de cenar, antes de dormir, en ese espacio transicional cuando las demandas del día se han calmado. Úsala después de días desafiantes cuando las emociones fueron intensas, después de eventos significativos (conversaciones difíciles, entrevistas de trabajo, primeras citas, avances creativos), o simplemente como práctica diaria para cultivar autoconciencia. Perfecta para compañeras de journaling que quieren ir más profundo que 'qué pasó' a '¿qué significó?' Esta tirada sobresale cuando has sido activada emocionalmente y necesitas entender por qué, cuando estás procesando dinámicas relacionales, o cuando percibes que aprendiste algo importante pero no puedes nombrarlo. Especialmente valiosa los domingos (cerrando la semana), después de conflictos o avances, durante periodos de terapia o trabajo de sombra, o cuando te sientes emocionalmente desordenada y necesitas limpiar tu espacio psíquico antes de dormir. A diferencia de la orientación matutina que mira hacia adelante, esta integra hacia atrás, honrando lo que fue.",
+
+    ca: "Desplega la Tirada de Reflexió Vespertina com a part del teu ritual nocturn de relaxació: després de sopar, abans de dormir, en aquest espai transicional quan les demandes del dia s'han calmat. Usa-la després de dies desafiants quan les emocions van ser intenses, després d'esdeveniments significatius (converses difícils, entrevistes de feina, primeres cites, avenços creatius), o simplement com a pràctica diària per cultivar autoconsciència. Perfecta per a companys de journaling que volen anar més profund que 'què va passar' a 'què va significar?' Aquesta tirada sobresurt quan has estat activat emocionalment i necessites entendre per què, quan estàs processant dinàmiques relacionals, o quan percebs que vas aprendre alguna cosa important però no pots nomenar-la. Especialment valuosa els diumenges (tancant la setmana), després de conflictes o avenços, durant períodes de teràpia o treball d'ombra, o quan et sents emocionalment desordenat i necessites netejar el teu espai psíquic abans de dormir. A diferència de l'orientació matinal que mira cap endavant, aquesta integra cap enrere, honrant el que va ser.",
+  },
+
+  whenToAvoid: {
+    en: "Skip the Evening Reflection if you're exhausted and just need sleep—forcing a reading when depleted creates distorted interpretations. Don't use this as self-punishment or to rehash what went wrong; the purpose is integration, not rumination. Avoid it if you're still emotionally activated and need to process through talking, movement, or therapy first—tarot works best from a slightly grounded state. Also skip if you're prone to anxiety spirals at night; some people need to disconnect from the day rather than analyze it. If you find yourself using this spread to beat yourself up over 'mistakes,' switch to gratitude journaling instead and return to tarot when you can hold self-compassion.",
+
+    es: "Omite la Reflexión Vespertina si estás agotada y solo necesitas dormir: forzar una lectura cuando estás agotada crea interpretaciones distorsionadas. No la uses como auto-castigo o para revivir lo que salió mal; el propósito es integración, no rumiación. Evítala si aún estás emocionalmente activada y necesitas procesar primero hablando, moviéndote, o en terapia: el tarot funciona mejor desde un estado ligeramente arraigado. También omítela si eres propensa a espirales de ansiedad por la noche; algunas personas necesitan desconectarse del día en lugar de analizarlo. Si te encuentras usando esta tirada para castigarte por 'errores,' cambia a journaling de gratitud en su lugar y regresa al tarot cuando puedas sostener auto-compasión.",
+
+    ca: "Omet la Reflexió Vespertina si estàs exhaust i només necessites dormir: forçar una lectura quan estàs esgotat crea interpretacions distorsionades. No l'usis com a auto-càstig o per reviscolar el que va anar malament; el propòsit és integració, no ruminació. Evita-la si encara estàs emocionalment activat i necessites processar primer parlant, movent-te, o en teràpia: el tarot funciona millor des d'un estat lleugerament arrelat. També omet-la si ets propens a espirals d'ansietat a la nit; algunes persones necessiten desconnectar-se del dia en lloc d'analitzar-lo. Si et trobes usant aquesta tirada per castigar-te per 'errors,' canvia a journaling de gratitud en el seu lloc i retorna al tarot quan puguis sostenir auto-compassió.",
+  },
+
+  interpretationMethod: {
+    en: "Read the three positions as a sacred process of alchemical transformation—lead into gold, experience into wisdom. LESSON (position 1) reveals the day's primary teaching, the insight or growth edge you encountered. This might be obvious (you drew Strength and had to be brave in a meeting) or subtle (Ten of Cups appeared but you felt disconnected from joy—why?). Don't force the card to match events literally; sometimes the lesson is in the contrast between card and reality. If you drew Justice but acted unfairly, that's the teaching. RELEASE (position 2) shows what you're called to let go of tonight—emotions, beliefs, grudges, expectations that aren't serving you. Five of Cups = release the rumination over what didn't work. Eight of Swords = release the mental prison of limiting thoughts. Devil = release the attachment or addiction. This isn't about suppressing feelings but consciously choosing not to carry them into tomorrow. Reversed cards here often show what you're struggling to release. CARRY_FORWARD (position 3) identifies the gold to keep—the insight, strength, connection, or achievement that deserves to be integrated into your ongoing story. This is your harvest, your trophy from today's battles. Star = carry forward hope and vision. Three of Pentacles = carry forward collaborative success. Notice the arc: did you actually learn the LESSON the cards named? Can you genuinely RELEASE what's shown, or do you need support? What does CARRY_FORWARD ask you to remember tomorrow? The three cards together tell the story of integration: I learned [Lesson], I release [Release], I keep [Carry Forward]. Journal on these. Notice patterns over weeks—are you learning the same lesson repeatedly? Refusing to release the same patterns? This spread becomes a mirror of your growth trajectory when practiced consistently.",
+
+    es: "Lee las tres posiciones como un proceso sagrado de transformación alquímica: plomo en oro, experiencia en sabiduría. LECCIÓN (posición 1) revela la enseñanza principal del día, la percepción o límite de crecimiento que encontraste. Esto podría ser obvio (sacaste Fuerza y tuviste que ser valiente en una reunión) o sutil (Diez de Copas apareció pero te sentiste desconectada de la alegría—¿por qué?). No fuerces la carta a coincidir con eventos literalmente; a veces la lección está en el contraste entre carta y realidad. Si sacaste Justicia pero actuaste injustamente, esa es la enseñanza. LIBERACIÓN (posición 2) muestra lo que estás llamada a soltar esta noche: emociones, creencias, rencores, expectativas que no te están sirviendo. Cinco de Copas = libera la rumiación sobre lo que no funcionó. Ocho de Espadas = libera la prisión mental de pensamientos limitantes. Diablo = libera el apego o adicción. No se trata de suprimir sentimientos sino de elegir conscientemente no llevarlos al mañana. Las cartas invertidas aquí a menudo muestran lo que estás luchando por liberar. LLEVAR_ADELANTE (posición 3) identifica el oro a mantener: la percepción, fuerza, conexión, o logro que merece ser integrado en tu historia continua. Esta es tu cosecha, tu trofeo de las batallas de hoy. Estrella = lleva adelante esperanza y visión. Tres de Oros = lleva adelante éxito colaborativo. Observa el arco: ¿realmente aprendiste la LECCIÓN que nombraron las cartas? ¿Puedes genuinamente LIBERAR lo que se muestra, o necesitas apoyo? ¿Qué te pide LLEVAR_ADELANTE recordar mañana? Las tres cartas juntas cuentan la historia de integración: Aprendí [Lección], libero [Liberación], mantengo [Llevar Adelante]. Escribe en tu diario sobre estas. Observa patrones durante semanas: ¿estás aprendiendo la misma lección repetidamente? ¿Negándote a liberar los mismos patrones? Esta tirada se convierte en un espejo de tu trayectoria de crecimiento cuando se practica consistentemente.",
+
+    ca: "Llegeix les tres posicions com un procés sagrat de transformació alquímica: plom en or, experiència en saviesa. LLIÇÓ (posició 1) revela l'ensenyament principal del dia, la percepció o límit de creixement que vas trobar. Això podria ser obvi (vas treure Força i vas haver de ser valent en una reunió) o subtil (Deu de Copes va aparèixer però et vas sentir desconnectat de l'alegria—per què?). No forcis la carta a coincidir amb esdeveniments literalment; a vegades la lliçó està en el contrast entre carta i realitat. Si vas treure Justícia però vas actuar injustament, aquesta és l'ensenyament. ALLIBERAMENT (posició 2) mostra el que estàs cridat a deixar anar aquesta nit: emocions, creences, rancors, expectatives que no t'estan servint. Cinc de Copes = allibera la ruminació sobre el que no va funcionar. Vuit d'Espases = allibera la presó mental de pensaments limitants. Diable = allibera l'aferrament o addicció. No es tracta de suprimir sentiments sinó d'elegir conscientment no portar-los al demà. Les cartes invertides aquí sovint mostren el que estàs lluitant per alliberar. PORTAR_ENDAVANT (posició 3) identifica l'or a mantenir: la percepció, força, connexió, o assoliment que mereix ser integrat en la teva història contínua. Aquesta és la teva collita, el teu trofeu de les batalles d'avui. Estrella = porta endavant esperança i visió. Tres d'Ors = porta endavant èxit col·laboratiu. Observa l'arc: realment vas aprendre la LLIÇÓ que van nomenar les cartes? Pots genuïnament ALLIBERAR el que es mostra, o necessites suport? Què et demana PORTAR_ENDAVANT recordar demà? Les tres cartes juntes compten la història d'integració: Vaig aprendre [Lliçó], allibero [Alliberament], mantinc [Portar Endavant]. Escriu al teu diari sobre aquestes. Observa patrons durant setmanes: estàs aprenent la mateixa lliçó repetidament? Negant-te a alliberar els mateixos patrons? Aquesta tirada es converteix en un mirall de la teva trajectòria de creixement quan es practica consistentment.",
+  },
+
+  traditionalOrigin: {
+    en: "The Evening Reflection Spread is a modern standard adaptation of the Three Card Spread, reimagined for contemplative practice in the late 20th century as tarot evolved into a self-development and mindfulness tool. The practice of evening examination of conscience has deep roots in spiritual traditions—from Jesuit Ignatian Examen to Buddhist evening meditation—making this a natural synthesis of tarot's reflective capacity with ancient practices of daily review. The specific focus on lesson-release-carry forward mirrors psychological concepts of integration and emotional processing, bringing tarot into dialogue with contemporary therapy and personal growth movements while honoring its divinatory heritage.",
+
+    es: "La Tirada de Reflexión Vespertina es una adaptación estándar moderna de la Tirada de Tres Cartas, reimaginada para práctica contemplativa a finales del siglo XX cuando el tarot evolucionó hacia una herramienta de autodesarrollo y mindfulness. La práctica de examen de consciencia vespertino tiene raíces profundas en tradiciones espirituales, desde el Examen Ignaciano jesuita hasta la meditación vespertina budista, haciendo de esto una síntesis natural de la capacidad reflexiva del tarot con prácticas antiguas de revisión diaria. El enfoque específico en lección-liberación-llevar adelante refleja conceptos psicológicos de integración y procesamiento emocional, trayendo el tarot al diálogo con movimientos contemporáneos de terapia y crecimiento personal mientras honra su herencia adivinatoria.",
+
+    ca: "La Tirada de Reflexió Vespertina és una adaptació estàndard moderna de la Tirada de Tres Cartes, reimaginada per a pràctica contemplativa a finals del segle XX quan el tarot va evolucionar cap a una eina d'autodesenvolvament i mindfulness. La pràctica d'examen de consciència vespertí té arrels profundes en tradicions espirituals, des de l'Examen Ignacià jesuïta fins a la meditació vespertina budista, fent d'això una síntesi natural de la capacitat reflexiva del tarot amb pràctiques antigues de revisió diària. L'enfocament específic en lliçó-alliberament-portar endavant reflecteix conceptes psicològics d'integració i processament emocional, portant el tarot al diàleg amb moviments contemporanis de teràpia i creixement personal mentre honra la seva herència endevinatòria.",
+  },
+
+  positionInteractions: [
+    {
+      description: {
+        en: "LESSON → RELEASE: From Insight to Liberation - The integration pathway",
+        es: "LECCIÓN → LIBERACIÓN: De la Percepción a la Liberación - El camino de integración",
+        ca: "LLIÇÓ → ALLIBERAMENT: De la Percepció a l'Alliberament - El camí d'integració",
+      },
+      positions: ["LESSON", "RELEASE"],
+      aiGuidance: "The LESSON often explains what needs to be RELEASED. If Lesson is Tower (sudden change/destruction) and Release is Four of Pentacles (holding on), the teaching is to release control. If Lesson is Temperance (balance) and Release is Seven of Swords (deception/strategy), release the manipulation and embrace authenticity. Sometimes they seem contradictory—Lesson is Ace of Cups (new love) but Release is Ten of Cups (contentment)—dig deeper: maybe you need to release OLD relationship patterns to welcome new love. The flow should feel like cause-and-effect leading to liberation.",
+    },
+    {
+      description: {
+        en: "RELEASE → CARRY_FORWARD: The Alchemical Transmutation - From letting go to integration",
+        es: "LIBERACIÓN → LLEVAR_ADELANTE: La Transmutación Alquímica - De soltar a integración",
+        ca: "ALLIBERAMENT → PORTAR_ENDAVANT: La Transmutació Alquímica - De deixar anar a integració",
+      },
+      positions: ["RELEASE", "CARRY_FORWARD"],
+      aiGuidance: "These two cards show the exchange: what you release creates space for what you carry forward. If Release is Five of Cups (grief) and Carry Forward is Strength (courage), letting go of sorrow makes room for bravery. If both are challenging (Release = Tower, Carry Forward = Five of Pentacles), the message may be: even in loss, carry forward resilience and survival. Notice if Carry Forward feels genuinely earned—if the querent released what RELEASE showed, they've earned the harvest of CARRY_FORWARD. If not, that card becomes aspirational guidance for tomorrow.",
+    },
+    {
+      description: {
+        en: "The Evening Trinity: LESSON → RELEASE → CARRY_FORWARD as wisdom cycle",
+        es: "La Trinidad Vespertina: LECCIÓN → LIBERACIÓN → LLEVAR_ADELANTE como ciclo de sabiduría",
+        ca: "La Trinitat Vespertina: LLIÇÓ → ALLIBERAMENT → PORTAR_ENDAVANT com a cicle de saviesa",
+      },
+      positions: ["LESSON", "RELEASE", "CARRY_FORWARD"],
+      aiGuidance: "Read all three as the complete cycle of integration: Today taught me [LESSON], so I release [RELEASE], and I carry forward [CARRY_FORWARD]. This should feel like a coherent story of transformation. If the three cards seem disconnected, explore hidden connections—often the LESSON is subtle, revealed through the relationship between what's released and what's kept. Multiple Major Arcana = significant soul lesson day. All Minor = practical learning. Reversed cards often appear in RELEASE (what's hard to let go) or LESSON (what hasn't fully landed). Track these spreads over time—patterns emerge showing recurring lessons, habitual attachments, and cumulative wisdom. The Evening Reflection becomes a longitudinal map of consciousness evolution.",
+    },
+  ],
+
+  aiSelectionCriteria: {
+    questionPatterns: [
+      "evening reflection",
+      "end of day",
+      "what did i learn today",
+      "process my day",
+      "daily review",
+      "what should i release",
+      "evening ritual",
+      "reflect on today",
+      "integrate my day",
+      "nightly practice",
+      "close the day",
+      "evening guidance",
+    ],
+    emotionalStates: [
+      "processing the day",
+      "need to release",
+      "seeking integration",
+      "want to learn from today",
+      "evening contemplation",
+      "ready to let go",
+      "building evening practice",
+    ],
+    preferWhen: {
+      cardCountPreference: "3",
+      complexityLevel: "simple",
+      experienceLevel: "any",
+      timeframe: "today, evening, daily practice",
+    },
+  },
+};
+
+/**
+ * WEEKLY OVERVIEW SPREAD
+ * Seven-card calendar for weekly planning and awareness
+ */
+const WEEKLY_OVERVIEW_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "The Weekly Overview Spread is a seven-card calendar that maps the energetic weather of your week ahead, one card per day from Monday through Sunday. Unlike predictive fortune-telling, this spread reveals the dominant energy, theme, or focus for each day—empowering you to plan strategically, prepare emotionally, and navigate your week with consciousness rather than being blindsided by challenges. Think of it as your weekly forecast: not dictating what WILL happen, but showing what energies are active so you can work with them skillfully. Perfect for Sunday night planning, professional goal-setting, or anyone who wants to move through their week with intentionality and grace.",
+
+    es: "La Tirada de Panorama Semanal es un calendario de siete cartas que mapea el clima energético de tu semana por delante, una carta por día de lunes a domingo. A diferencia de adivinación predictiva, esta tirada revela la energía dominante, tema, o enfoque para cada día, empoderándote para planificar estratégicamente, prepararte emocionalmente, y navegar tu semana con consciencia en lugar de ser sorprendida por desafíos. Piénsala como tu pronóstico semanal: no dictando lo que PASARÁ, sino mostrando qué energías están activas para que puedas trabajar con ellas hábilmente. Perfecta para planificación del domingo por la noche, establecimiento de objetivos profesionales, o cualquiera que quiera moverse a través de su semana con intencionalidad y gracia.",
+
+    ca: "La Tirada de Panorama Setmanal és un calendari de set cartes que mapeja el clima energètic de la teva setmana per endavant, una carta per dia de dilluns a diumenge. A diferència d'endevinació predictiva, aquesta tirada revela l'energia dominant, tema, o enfocament per a cada dia, apoderant-te per planificar estratègicament, preparar-te emocionalment, i navegar la teva setmana amb consciència en lloc de ser sorprès per desafiaments. Pensa-la com el teu pronòstic setmanal: no dictant el que PASSARÀ, sinó mostrant quines energies estan actives perquè puguis treballar amb elles hàbilment. Perfecta per a planificació del diumenge a la nit, establiment d'objectius professionals, o qualsevol que vulgui moure's a través de la seva setmana amb intencionalitat i gràcia.",
+  },
+
+  whenToUse: {
+    en: "Draw the Weekly Overview at the start of your week—Sunday evening is ideal, giving you Monday morning clarity, though Monday morning works too. Perfect for busy professionals who need to strategize their workweek, parents juggling complex family schedules, creatives planning project timelines, or anyone navigating a significant week (job interviews, travel, launches, difficult conversations). Use this when you want to allocate your energy wisely across seven days rather than being reactive. Especially valuable during busy seasons (back to school, year-end, tax season), when you're starting a new job or project, during relationship transitions, or when you simply want to feel more in control of your time. This spread also works beautifully for weekly goal-setting—seeing Wednesday's energy might inspire you to schedule that difficult conversation then rather than Friday. Unlike daily pulls which offer immediate guidance, this gives you the strategic advantage of seeing the whole arc of your week at once.",
+
+    es: "Despliega el Panorama Semanal al inicio de tu semana—el domingo por la noche es ideal, dándote claridad para el lunes por la mañana, aunque el lunes por la mañana también funciona. Perfecta para profesionales ocupadas que necesitan estrategizar su semana laboral, padres haciendo malabarismos con horarios familiares complejos, creativos planificando cronogramas de proyectos, o cualquiera navegando una semana significativa (entrevistas de trabajo, viajes, lanzamientos, conversaciones difíciles). Úsala cuando quieras asignar tu energía sabiamente a través de siete días en lugar de ser reactiva. Especialmente valiosa durante temporadas ocupadas (regreso a clases, fin de año, temporada de impuestos), cuando estás comenzando un trabajo o proyecto nuevo, durante transiciones relacionales, o cuando simplemente quieres sentir más control de tu tiempo. Esta tirada también funciona maravillosamente para establecimiento de objetivos semanales: ver la energía del miércoles podría inspirarte a programar esa conversación difícil entonces en lugar del viernes. A diferencia de tiradas diarias que ofrecen guía inmediata, esto te da la ventaja estratégica de ver el arco completo de tu semana de una vez.",
+
+    ca: "Desplega el Panorama Setmanal a l'inici de la teva setmana—el diumenge a la nit és ideal, donant-te claredat per al dilluns al matí, tot i que el dilluns al matí també funciona. Perfecta per a professionals ocupats que necessiten estrategitzar la seva setmana laboral, pares fent malabarismes amb horaris familiars complexos, creatius planificant cronogrames de projectes, o qualsevol navegant una setmana significativa (entrevistes de feina, viatges, llançaments, converses difícils). Usa-la quan vulguis assignar la teva energia sàviament a través de set dies en lloc de ser reactiu. Especialment valuosa durant temporades ocupades (tornada a l'escola, fi d'any, temporada d'impostos), quan estàs començant una feina o projecte nou, durant transicions relacionals, o quan simplement vols sentir més control del teu temps. Aquesta tirada també funciona meravellosament per a establiment d'objectius setmanals: veure l'energia del dimecres podria inspirar-te a programar aquella conversa difícil aleshores en lloc del divendres. A diferència de tirades diàries que ofereixen guia immediata, això et dóna l'avantatge estratègic de veure l'arc complet de la teva setmana d'una vegada.",
+  },
+
+  whenToAvoid: {
+    en: "Skip the Weekly Overview if you prefer spontaneity and find planning restrictive—some people thrive on not knowing what's coming. Don't use this if you'll obsess over 'bad' cards and spend all week dreading Thursday just because Death appeared. Avoid it if you're already overwhelmed; seven cards of information can feel like homework rather than guidance. Also not ideal if your week is completely unstructured or unpredictable (freelancers with chaotic schedules might find daily pulls more useful). If you find yourself using the spread to avoid living (constantly checking 'what will Monday bring' instead of being present), pull back and focus on single daily cards instead.",
+
+    es: "Omite el Panorama Semanal si prefieres espontaneidad y encuentras la planificación restrictiva—algunas personas prosperan no sabiendo qué viene. No la uses si obsesionarás sobre cartas 'malas' y pasarás toda la semana temiendo el jueves solo porque apareció la Muerte. Evítala si ya estás abrumada; siete cartas de información pueden sentirse como tarea en lugar de guía. Tampoco es ideal si tu semana está completamente desestructurada o impredecible (freelancers con horarios caóticos podrían encontrar tiradas diarias más útiles). Si te encuentras usando la tirada para evitar vivir (constantemente revisando 'qué traerá el lunes' en lugar de estar presente), retrocede y enfócate en cartas diarias únicas en su lugar.",
+
+    ca: "Omet el Panorama Setmanal si prefereixes espontaneïtat i trobes la planificació restrictiva—algunes persones prosperen no sabent què ve. No l'usis si obsessionaràs sobre cartes 'dolentes' i passaràs tota la setmana tement el dijous només perquè va aparèixer la Mort. Evita-la si ja estàs aclaparat; set cartes d'informació poden sentir-se com a tasca en lloc de guia. Tampoc és ideal si la teva setmana està completament desestructurada o impredictible (freelancers amb horaris caòtics podrien trobar tirades diàries més útils). Si et trobes usant la tirada per evitar viure (constantment revisant 'què portarà el dilluns' en lloc d'estar present), retrocedeix i enfoca't en cartes diàries úniques en el seu lloc.",
+  },
+
+  interpretationMethod: {
+    en: "Read the seven cards as a narrative arc—your week's story from beginning to end. Start by laying them out in sequence: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday. First, scan the entire week for patterns: Are there multiple cards of the same suit (all Cups = emotional week, all Pentacles = material/work focus, all Swords = mental challenges, all Wands = active/creative energy)? How many Major Arcana (3+ = significant, fated week)? Do you see an ascending or descending arc (getting better or more challenging)? Then read each day individually as the dominant energy or theme. Monday's Ace of Wands = initiate new projects with enthusiasm. Wednesday's Five of Cups = expect disappointment or need to process grief. Friday's Sun = celebration and success. Don't over-interpret—each card is a tone, not a detailed prediction. Next, notice the transitions: does Tuesday's energy lead logically into Wednesday's? If Tuesday is Ten of Pentacles (stability) and Wednesday is Tower (upheaval), prepare for sudden change midweek. Use this information strategically: if Thursday shows Strength, schedule difficult conversations or challenges then when you'll have courage. If Saturday is Four of Swords (rest), protect that day for recovery rather than overcommitting. Court Cards often indicate people you'll interact with that day or personas you'll need to embody. Reversed cards suggest internal or blocked energy—work on inner shifts rather than external action. The Weekly Overview isn't about passively accepting fate; it's about working skillfully with the energies present. If you see a challenging day coming, prepare mentally and emotionally. If you see opportunity, seize it. Track your accuracy over weeks—you'll learn how YOUR deck speaks about time.",
+
+    es: "Lee las siete cartas como un arco narrativo: la historia de tu semana de principio a fin. Comienza desplegándolas en secuencia: lunes, martes, miércoles, jueves, viernes, sábado, domingo. Primero, escanea la semana entera buscando patrones: ¿Hay múltiples cartas del mismo palo (todas Copas = semana emocional, todos Oros = enfoque material/trabajo, todas Espadas = desafíos mentales, todos Bastos = energía activa/creativa)? ¿Cuántos Arcanos Mayores (3+ = semana significativa, destinada)? ¿Ves un arco ascendente o descendente (mejorando o más desafiante)? Luego lee cada día individualmente como la energía o tema dominante. El As de Bastos del lunes = inicia nuevos proyectos con entusiasmo. El Cinco de Copas del miércoles = espera decepción o necesidad de procesar duelo. El Sol del viernes = celebración y éxito. No sobre-interpretes—cada carta es un tono, no una predicción detallada. Luego, observa las transiciones: ¿la energía del martes conduce lógicamente a la del miércoles? Si el martes es Diez de Oros (estabilidad) y el miércoles es Torre (conmoción), prepárate para cambio repentino a mitad de semana. Usa esta información estratégicamente: si el jueves muestra Fuerza, programa conversaciones o desafíos difíciles entonces cuando tendrás coraje. Si el sábado es Cuatro de Espadas (descanso), protege ese día para recuperación en lugar de sobrecomprometerte. Las Cartas de Corte a menudo indican personas con las que interactuarás ese día o personas que necesitarás encarnar. Las cartas invertidas sugieren energía interna o bloqueada—trabaja en cambios internos en lugar de acción externa. El Panorama Semanal no se trata de aceptar pasivamente el destino; se trata de trabajar hábilmente con las energías presentes. Si ves un día desafiante venir, prepárate mental y emocionalmente. Si ves oportunidad, aprovéchala. Rastrea tu precisión durante semanas: aprenderás cómo TU mazo habla sobre el tiempo.",
+
+    ca: "Llegeix les set cartes com un arc narratiu: la història de la teva setmana de principi a fi. Comença desplegant-les en seqüència: dilluns, dimarts, dimecres, dijous, divendres, dissabte, diumenge. Primer, escaneja tota la setmana cercant patrons: Hi ha múltiples cartes del mateix pal (totes Copes = setmana emocional, tots Ors = enfocament material/treball, totes Espases = desafiaments mentals, tots Bastons = energia activa/creativa)? Quants Arcans Majors (3+ = setmana significativa, destinada)? Veus un arc ascendent o descendent (millorant o més desafiant)? Després llegeix cada dia individualment com l'energia o tema dominant. L'As de Bastons del dilluns = inicia nous projectes amb entusiasme. El Cinc de Copes del dimecres = espera decepció o necessitat de processar dol. El Sol del divendres = celebració i èxit. No sobre-interpretis—cada carta és un to, no una predicció detallada. Després, observa les transicions: l'energia del dimarts condueix lògicament a la del dimecres? Si el dimarts és Deu d'Ors (estabilitat) i el dimecres és Torre (convulsió), prepara't per canvi sobtat a meitat de setmana. Usa aquesta informació estratègicament: si el dijous mostra Força, programa converses o desafiaments difícils aleshores quan tindràs coratge. Si el dissabte és Quatre d'Espases (descans), protegeix aquell dia per recuperació en lloc de sobrecomprometre't. Les Cartes de Cort sovint indiquen persones amb les que interactuaràs aquell dia o persones que necessitaràs encarnar. Les cartes invertides suggereixen energia interna o bloquejada—treballa en canvis interns en lloc d'acció externa. El Panorama Setmanal no es tracta d'acceptar passivament el destí; es tracta de treballar hàbilment amb les energies presents. Si veus un dia desafiant venir, prepara't mental i emocionalment. Si veus oportunitat, aprofita-la. Rastreja la teva precisió durant setmanes: aprendràs com EL TEU mazo parla sobre el temps.",
+  },
+
+  traditionalOrigin: {
+    en: "The Weekly Overview is a modern standard spread that evolved naturally from the calendar-based tradition of tarot divination. The practice of assigning one card per time unit—whether day, week, or month—has roots in 19th-century European cartomancy, where fortune-tellers would lay cards for each day of the week to guide clients' planning. The seven-card structure also resonates with the symbolic significance of seven in Western esotericism (seven classical planets, seven days of creation, seven chakras), though the Weekly Overview is more practical than mystical. This spread gained prominence in the late 20th century as tarot shifted from occasional consultations to daily practice, and people sought tools for integrating spiritual guidance with modern calendar-based living.",
+
+    es: "El Panorama Semanal es una tirada estándar moderna que evolucionó naturalmente de la tradición de adivinación del tarot basada en calendario. La práctica de asignar una carta por unidad de tiempo—ya sea día, semana, o mes—tiene raíces en la cartomancia europea del siglo XIX, donde los adivinos desplegaban cartas para cada día de la semana para guiar la planificación de los clientes. La estructura de siete cartas también resuena con el significado simbólico del siete en el esoterismo occidental (siete planetas clásicos, siete días de la creación, siete chakras), aunque el Panorama Semanal es más práctico que místico. Esta tirada ganó prominencia a finales del siglo XX cuando el tarot pasó de consultas ocasionales a práctica diaria, y la gente buscaba herramientas para integrar guía espiritual con vida basada en calendario moderno.",
+
+    ca: "El Panorama Setmanal és una tirada estàndard moderna que va evolucionar naturalment de la tradició d'endevinació del tarot basada en calendari. La pràctica d'assignar una carta per unitat de temps—ja sigui dia, setmana, o mes—té arrels en la cartomància europea del segle XIX, on els endevins desplegaven cartes per a cada dia de la setmana per guiar la planificació dels clients. L'estructura de set cartes també ressona amb el significat simbòlic del set en l'esoterisme occidental (set planetes clàssics, set dies de la creació, set chakres), tot i que el Panorama Setmanal és més pràctic que místic. Aquesta tirada va guanyar prominència a finals del segle XX quan el tarot va passar de consultes ocasionals a pràctica diària, i la gent buscava eines per integrar guia espiritual amb vida basada en calendari modern.",
+  },
+
+  positionInteractions: [
+    {
+      description: {
+        en: "MON → TUE → WED: The Opening Arc - How your week begins",
+        es: "LUN → MAR → MIÉ: El Arco de Apertura - Cómo comienza tu semana",
+        ca: "DIL → DIM → DIM: L'Arc d'Obertura - Com comença la teva setmana",
+      },
+      positions: ["MON", "TUE", "WED"],
+      aiGuidance: "These first three days set the tone for the entire week. If they're ascending (challenge to ease, conflict to resolution), the week starts rough but improves. If descending (celebration to struggle), front-load your week with the good energy while you have it. Look for narrative flow: does Monday's action lead to Tuesday's consequence and Wednesday's resolution? A strong Monday (Magician, Ace of Wands) suggests taking initiative early. Multiple Majors here = significant first half of week.",
+    },
+    {
+      description: {
+        en: "THU: The Turning Point - Midweek pivot energy",
+        es: "JUE: El Punto de Inflexión - Energía de pivote de mitad de semana",
+        ca: "DIJ: El Punt d'Inflexió - Energia de pivot de meitat de setmana",
+      },
+      positions: ["THU"],
+      aiGuidance: "Thursday is the fulcrum of the week—the hinge between early week momentum and weekend wind-down. A powerful Thursday card (Emperor, Strength, Sun) gives second wind for finishing strong. A challenging Thursday (Tower, Ten of Swords) warns of midweek crisis or breakthrough. Notice if Thursday's energy shifts the week's direction—does it resolve earlier tensions or introduce new challenges? This is often the 'truth' day where the week's real theme becomes clear.",
+    },
+    {
+      description: {
+        en: "FRI → SAT → SUN: The Closing Arc - How your week resolves",
+        es: "VIE → SÁB → DOM: El Arco de Cierre - Cómo se resuelve tu semana",
+        ca: "DIV → DIS → DIU: L'Arc de Tancament - Com es resol la teva setmana",
+      },
+      positions: ["FRI", "SAT", "SUN"],
+      aiGuidance: "The weekend trilogy shows how the week lands and transitions into rest/recreation. Ideally, these cards feel lighter or more restorative than the workweek, but sometimes they reveal continued challenges or soul work. If Sunday is difficult (Five of Pentacles, Three of Swords), protect your Sunday for genuine self-care to recover before next week. If Sunday is inspiring (Star, World, Ace of anything), it's setting up Monday's fresh start. The FRI→SAT→SUN arc should feel like release, restoration, and preparation.",
+    },
+    {
+      description: {
+        en: "The Full Week: Seven-Day Symphony of Energy",
+        es: "La Semana Completa: Sinfonía de Energía de Siete Días",
+        ca: "La Setmana Completa: Simfonia d'Energia de Set Dies",
+      },
+      positions: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+      aiGuidance: "Step back and view the entire week as one coherent energy pattern. Count dominant suits to identify the week's primary realm (4+ Cups = emotional focus week, 4+ Pentacles = material/work week, etc.). Track Major Arcana count (3+ = fated, significant week with soul lessons). Notice if there's a peak day (most powerful card) and valley day (most challenging)—this shows the week's climax and nadir. Look for bookend patterns: if MON and SUN mirror each other, the week is cyclical. If they contrast, you'll end very differently than you began. Recommend the querent identify the 1-2 most important cards (usually Majors or dramatic cards like Tower, Death, Sun) and build their week around those pivot points. The Weekly Overview should feel like a weather forecast—you can't control the weather, but you can dress appropriately and plan activities wisely.",
+    },
+  ],
+
+  aiSelectionCriteria: {
+    questionPatterns: [
+      "weekly overview",
+      "week ahead",
+      "plan my week",
+      "this coming week",
+      "weekly forecast",
+      "what to expect this week",
+      "weekly guidance",
+      "seven day",
+      "upcoming week",
+      "weekly reading",
+      "monday through sunday",
+      "week forecast",
+    ],
+    emotionalStates: [
+      "planning the week",
+      "need weekly guidance",
+      "want strategic overview",
+      "seeking week-long clarity",
+      "organizing my time",
+      "need to prepare",
+      "weekly check-in",
+    ],
+    preferWhen: {
+      cardCountPreference: "7",
+      complexityLevel: "medium",
+      experienceLevel: "any",
+      timeframe: "one week, seven days, upcoming week",
+    },
+  },
+};
+
+/**
+ * 15. Yes/No Spread Educational Content
+ */
+const YES_NO_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "The Yes/No Spread is the most direct divinatory tool in tarot—a single card drawn with the intention of receiving clear guidance on a binary question. This deceptively simple spread cuts through mental noise and indecision, allowing the cards to deliver an unambiguous energetic signal. Rather than offering complex narratives, this spread provides pure essence: affirmative flow or cautionary pause. It's particularly powerful for quick decision-making when you need immediate clarity without extensive analysis. The card's upright or reversed orientation, suit, and archetypal energy combine to convey the universe's response to your yes/no inquiry.",
+    es: "La Tirada Sí/No es la herramienta divinatoria más directa del tarot: una sola carta extraída con la intención de recibir orientación clara sobre una pregunta binaria. Esta tirada engañosamente simple atraviesa el ruido mental y la indecisión, permitiendo que las cartas entreguen una señal energética inequívoca. En lugar de ofrecer narrativas complejas, esta tirada proporciona esencia pura: flujo afirmativo o pausa cautelar. Es particularmente poderosa para tomar decisiones rápidas cuando necesitas claridad inmediata sin análisis extenso. La orientación vertical o invertida de la carta, su palo y energía arquetípica se combinan para transmitir la respuesta del universo a tu consulta de sí/no.",
+    ca: "La Tirada Sí/No és l'eina divinatòria més directa del tarot: una sola carta extreta amb la intenció de rebre orientació clara sobre una pregunta binària. Aquesta tirada enganyosament simple travessa el soroll mental i la indecisió, permetent que les cartes lliurin un senyal energètic inequívoc. En lloc d'oferir narratives complexes, aquesta tirada proporciona essència pura: flux afirmatiu o pausa cautelar. És particularment poderosa per prendre decisions ràpides quan necessites claredat immediata sense anàlisi extensa. L'orientació vertical o invertida de la carta, el seu pal i energia arquetípica es combinen per transmetre la resposta de l'univers a la teva consulta de sí/no.",
+  },
+  whenToUse: {
+    en: "Draw the Yes/No Spread when you face a concrete binary decision requiring immediate clarity: \"Should I take this job?\" \"Is now the right time to move?\" \"Will this relationship work out?\" It's ideal when you're torn between two paths and need the universe's gentle nudge in one direction. Use it after meditation or when you've already analyzed the situation intellectually but need intuitive confirmation. This spread works best for questions where you're genuinely open to either answer—not when you're seeking validation for a decision you've already made. It's perfect for time-sensitive choices, gut-check moments, and when you need to bypass overthinking.",
+    es: "Despliega la Tirada Sí/No cuando enfrentas una decisión binaria concreta que requiere claridad inmediata: \"¿Debería aceptar este trabajo?\" \"¿Es ahora el momento adecuado para mudarme?\" \"¿Funcionará esta relación?\" Es ideal cuando estás dividido entre dos caminos y necesitas el empujón suave del universo en una dirección. Úsala después de meditar o cuando ya has analizado la situación intelectualmente pero necesitas confirmación intuitiva. Esta tirada funciona mejor para preguntas donde estás genuinamente abierto a cualquier respuesta, no cuando buscas validación para una decisión que ya tomaste. Es perfecta para elecciones sensibles al tiempo, momentos de verificación intuitiva y cuando necesitas evitar pensar demasiado.",
+    ca: "Desplega la Tirada Sí/No quan t'enfrontes a una decisió binària concreta que requereix claredat immediata: \"Hauria d'acceptar aquesta feina?\" \"És ara el moment adequat per traslladar-me?\" \"Funcionarà aquesta relació?\" És ideal quan estàs dividit entre dos camins i necessites l'empenta suau de l'univers en una direcció. Usa-la després de meditar o quan ja has analitzat la situació intel·lectualment però necessites confirmació intuïtiva. Aquesta tirada funciona millor per a preguntes on estàs genuïnament obert a qualsevol resposta, no quan cerques validació per a una decisió que ja has pres. És perfecta per a eleccions sensibles al temps, moments de verificació intuïtiva i quan necessites evitar pensar massa.",
+  },
+  whenToAvoid: {
+    en: "Avoid the Yes/No Spread for complex situations requiring nuanced understanding—questions about \"how\" or \"why\" need multi-card spreads. Don't use it when you're emotionally charged or desperate for a specific answer, as your energy will cloud the reading. Skip this spread if the question isn't truly binary (multiple options require different spreads), or if you're asking about someone else's free will (\"Will they love me?\"). It's also inappropriate for ethical or life-altering decisions that deserve deeper exploration. If you find yourself repeatedly drawing cards hoping for a different answer, stop—that's ego override, not divination.",
+    es: "Evita la Tirada Sí/No para situaciones complejas que requieren comprensión matizada: las preguntas sobre \"cómo\" o \"por qué\" necesitan tiradas de múltiples cartas. No la uses cuando estés emocionalmente cargado o desesperado por una respuesta específica, ya que tu energía nublará la lectura. Omite esta tirada si la pregunta no es verdaderamente binaria (múltiples opciones requieren tiradas diferentes), o si preguntas sobre el libre albedrío de otra persona (\"¿Me amarán?\"). También es inapropiada para decisiones éticas o que alteran la vida y merecen exploración más profunda. Si te encuentras extrayendo cartas repetidamente esperando una respuesta diferente, detente: eso es anulación del ego, no adivinación.",
+    ca: "Evita la Tirada Sí/No per a situacions complexes que requereixen comprensió matisada: les preguntes sobre \"com\" o \"per què\" necessiten tirades de múltiples cartes. No l'usis quan estiguis emocionalment carregat o desesperat per una resposta específica, ja que la teva energia entorbirà la lectura. Omet aquesta tirada si la pregunta no és veritablement binària (múltiples opcions requereixen tirades diferents), o si preguntes sobre el lliure albir d'una altra persona (\"M'estimaran?\"). També és inapropiada per a decisions ètiques o que alteren la vida i mereixen exploració més profunda. Si et trobes extraient cartes repetidament esperant una resposta diferent, atura't: això és anul·lació de l'ego, no endevinació.",
+  },
+  interpretationMethod: {
+    en: "Interpret the single card through multiple lenses simultaneously. First, note the orientation: upright generally signals affirmation (yes, proceed, green light), while reversed suggests caution, delay, or reconsideration (no, wait, red light). Second, consider the suit energy: Wands indicate passionate action (yes with enthusiasm), Cups affirm emotional rightness (yes from the heart), Swords suggest intellectual clarity (yes with logic), Pentacles confirm material stability (yes with security). Major Arcana cards carry archetypal weight—The Sun is an emphatic yes, The Tower warns against proceeding, The Hanged Man suggests waiting. Third, synthesize card-specific meanings: Page of Cups might say \"yes, but approach with innocence,\" while Five of Pentacles reversed could mean \"no, this leads to scarcity.\" Trust your first intuitive hit—the answer usually arrives as a visceral knowing before intellectual analysis.",
+    es: "Interpreta la carta única a través de múltiples lentes simultáneamente. Primero, nota la orientación: vertical generalmente señala afirmación (sí, procede, luz verde), mientras que invertida sugiere precaución, retraso o reconsideración (no, espera, luz roja). Segundo, considera la energía del palo: Bastos indican acción apasionada (sí con entusiasmo), Copas afirman rectitud emocional (sí desde el corazón), Espadas sugieren claridad intelectual (sí con lógica), Oros confirman estabilidad material (sí con seguridad). Las cartas de Arcanos Mayores llevan peso arquetípico: El Sol es un sí enfático, La Torre advierte contra proceder, El Colgado sugiere esperar. Tercero, sintetiza significados específicos de la carta: Sota de Copas podría decir \"sí, pero acércate con inocencia,\" mientras que Cinco de Oros invertido podría significar \"no, esto lleva a la escasez.\" Confía en tu primer golpe intuitivo: la respuesta suele llegar como un saber visceral antes del análisis intelectual.",
+    ca: "Interpreta la carta única a través de múltiples lents simultàniament. Primer, nota l'orientació: vertical generalment senyala afirmació (sí, procedeix, llum verda), mentre que invertida suggereix precaució, retard o reconsideració (no, espera, llum vermella). Segon, considera l'energia del pal: Bastos indiquen acció apassionada (sí amb entusiasme), Copes afirmen rectitud emocional (sí des del cor), Espases suggereixen claredat intel·lectual (sí amb lògica), Ors confirmen estabilitat material (sí amb seguretat). Les cartes d'Arcans Majors porten pes arquetípic: El Sol és un sí emfàtic, La Torre adverteix contra procedir, El Penjat suggereix esperar. Tercer, sintetitza significats específics de la carta: Sota de Copes podria dir \"sí, però acosta't amb innocència,\" mentre que Cinc d'Ors invertit podria significar \"no, això porta a l'escassetat.\" Confia en el teu primer colp intuïtiu: la resposta sol arribar com un saber visceral abans de l'anàlisi intel·lectual.",
+  },
+  traditionalOrigin: {
+    en: "The Yes/No Spread represents tarot's oldest and most fundamental function: binary divination. From the earliest cartomancy practices of the 1700s, single-card draws were used for immediate yes/no answers—a practice predating complex spread structures. This method honors the original fortune-telling use of cards before esoteric systems (Qabalah, astrology) were overlaid. Every tarot tradition includes single-card consultation, making this a universally traditional (🏛️) practice verified across centuries of documented use.",
+    es: "La Tirada Sí/No representa la función más antigua y fundamental del tarot: la adivinación binaria. Desde las prácticas más tempranas de cartomancia de los años 1700, las extracciones de carta única se usaban para respuestas inmediatas de sí/no, una práctica anterior a las estructuras de tiradas complejas. Este método honra el uso original de adivinación de las cartas antes de que se superpusieran sistemas esotéricos (Qabalá, astrología). Cada tradición del tarot incluye consulta de carta única, haciendo de esta una práctica universalmente tradicional (🏛️) verificada a través de siglos de uso documentado.",
+    ca: "La Tirada Sí/No representa la funció més antiga i fonamental del tarot: l'endevinació binària. Des de les pràctiques més primerenques de cartomància dels anys 1700, les extraccions de carta única s'usaven per a respostes immediates de sí/no, una pràctica anterior a les estructures de tirades complexes. Aquest mètode honra l'ús original d'endevinació de les cartes abans que se sobreposessin sistemes esotèrics (Qabalà, astrologia). Cada tradició del tarot inclou consulta de carta única, fent d'aquesta una pràctica universalment tradicional (🏛️) verificada a través de segles d'ús documentat.",
+  },
+  positionInteractions: [],
+  aiSelectionCriteria: {
+    questionPatterns: [
+      "yes or no",
+      "should I",
+      "will this",
+      "is this the right",
+      "quick answer",
+      "simple yes/no",
+      "binary decision",
+      "straight answer",
+    ],
+    emotionalStates: [
+      "need quick clarity",
+      "binary decision point",
+      "seeking immediate guidance",
+      "torn between two options",
+      "need confirmation",
+      "gut check needed",
+      "time-sensitive decision",
+    ],
+    preferWhen: {
+      cardCountPreference: "1",
+      complexityLevel: "simple",
+      experienceLevel: "any",
+      timeframe: "immediate, now, today",
+    },
+  },
+};
+
+/**
+ * 16. Quick Insight Spread Educational Content
+ */
+const QUICK_INSIGHT_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "The Quick Insight Spread is a streamlined two-card oracle designed for rapid clarity when time or energy is limited. Unlike the traditional three-card Past/Present/Future spread, this distills tarot wisdom into its most essential components: Situation (what is) and Advice (what to do). It's perfect for moments when you need focused guidance without extended contemplation—a spiritual espresso shot rather than a full ceremony. This spread respects the principle that sometimes less is more, offering actionable wisdom in under five minutes. The two-card structure creates a powerful before-and-after dynamic: here's where you are, here's the key to moving forward.",
+    es: "La Tirada de Perspicacia Rápida es un oráculo simplificado de dos cartas diseñado para claridad rápida cuando el tiempo o la energía son limitados. A diferencia de la tirada tradicional de tres cartas Pasado/Presente/Futuro, esto destila la sabiduría del tarot en sus componentes más esenciales: Situación (qué es) y Consejo (qué hacer). Es perfecta para momentos cuando necesitas orientación enfocada sin contemplación extendida, un shot de espresso espiritual en lugar de una ceremonia completa. Esta tirada respeta el principio de que a veces menos es más, ofreciendo sabiduría accionable en menos de cinco minutos. La estructura de dos cartas crea una poderosa dinámica de antes y después: aquí es donde estás, aquí está la clave para avanzar.",
+    ca: "La Tirada de Perspicàcia Ràpida és un oracle simplificat de dues cartes dissenyat per a claredat ràpida quan el temps o l'energia són limitats. A diferència de la tirada tradicional de tres cartes Passat/Present/Futur, això destil·la la saviesa del tarot en els seus components més essencials: Situació (què és) i Consell (què fer). És perfecta per a moments quan necessites orientació enfocada sense contemplació estesa, un shot d'espresso espiritual en lloc d'una cerimònia completa. Aquesta tirada respecta el principi que de vegades menys és més, oferint saviesa accionable en menys de cinc minuts. L'estructura de dues cartes crea una poderosa dinàmica d'abans i després: aquí és on estàs, aquí està la clau per avançar.",
+  },
+  whenToUse: {
+    en: "Draw the Quick Insight Spread when you're pressed for time but still need tarot's perspective—during a lunch break, before a meeting, or when making a minor decision that doesn't warrant a full spread. It's ideal for daily check-ins, travel consultations, or when you're new to tarot and building confidence with simpler layouts. Use it when you have a specific situation that's confusing or frustrating and you need one clear action step. This spread works beautifully for relationship micro-moments (\"How should I approach this conversation?\"), career pivots (\"What's my next move in this project?\"), or creative blocks (\"What will unlock my flow?\"). It's also perfect for teaching beginners the core structure of situational analysis + guidance.",
+    es: "Despliega la Tirada de Perspicacia Rápida cuando tienes poco tiempo pero aún necesitas la perspectiva del tarot: durante un descanso para almorzar, antes de una reunión, o cuando tomas una decisión menor que no justifica una tirada completa. Es ideal para chequeos diarios, consultas de viaje, o cuando eres nuevo en el tarot y estás construyendo confianza con diseños más simples. Úsala cuando tienes una situación específica que es confusa o frustrante y necesitas un paso de acción claro. Esta tirada funciona bellamente para micro-momentos de relación (\"¿Cómo debería abordar esta conversación?\"), pivotes de carrera (\"¿Cuál es mi próximo movimiento en este proyecto?\"), o bloqueos creativos (\"¿Qué desbloqueará mi flujo?\"). También es perfecta para enseñar a principiantes la estructura central de análisis situacional + orientación.",
+    ca: "Desplega la Tirada de Perspicàcia Ràpida quan tens poc temps però encara necessites la perspectiva del tarot: durant un descans per dinar, abans d'una reunió, o quan prens una decisió menor que no justifica una tirada completa. És ideal per a xecs diaris, consultes de viatge, o quan ets nou al tarot i estàs construint confiança amb dissenys més simples. Usa-la quan tens una situació específica que és confusa o frustrant i necessites un pas d'acció clar. Aquesta tirada funciona bellament per a micro-moments de relació (\"Com hauria d'abordar aquesta conversa?\"), pivots de carrera (\"Quin és el meu pròxim moviment en aquest projecte?\"), o bloquejos creatius (\"Què desbloquejarà el meu flux?\"). També és perfecta per ensenyar a principiants l'estructura central d'anàlisi situacional + orientació.",
+  },
+  whenToAvoid: {
+    en: "Skip the Quick Insight Spread when the situation is genuinely complex and requires deeper exploration—relationship crises, career crossroads, or spiritual emergencies need more comprehensive spreads like Celtic Cross or Five Card Cross. Don't use it when you're seeking validation rather than guidance (if you've already decided and just want the cards to agree, choose a different practice). Avoid this spread for questions requiring temporal context (past influences, future outcomes)—those need three or more cards. If you're in deep emotional distress, the minimalism of two cards might feel unsatisfying; honor that need for more extensive support.",
+    es: "Omite la Tirada de Perspicacia Rápida cuando la situación es genuinamente compleja y requiere exploración más profunda: crisis de relación, encrucijadas de carrera o emergencias espirituales necesitan tiradas más comprehensivas como la Cruz Celta o Cruz de Cinco Cartas. No la uses cuando buscas validación en lugar de orientación (si ya has decidido y solo quieres que las cartas estén de acuerdo, elige una práctica diferente). Evita esta tirada para preguntas que requieren contexto temporal (influencias pasadas, resultados futuros): esas necesitan tres o más cartas. Si estás en angustia emocional profunda, el minimalismo de dos cartas podría sentirse insatisfactorio; honra esa necesidad de apoyo más extenso.",
+    ca: "Omet la Tirada de Perspicàcia Ràpida quan la situació és genuïnament complexa i requereix exploració més profunda: crisis de relació, encreuades de carrera o emergències espirituals necessiten tirades més comprensives com la Creu Celta o Creu de Cinc Cartes. No l'usis quan cerques validació en lloc d'orientació (si ja has decidit i només vols que les cartes estiguin d'acord, tria una pràctica diferent). Evita aquesta tirada per a preguntes que requereixen context temporal (influències passades, resultats futurs): aquestes necessiten tres o més cartes. Si estàs en angoixa emocional profunda, el minimalisme de dues cartes podria sentir-se insatisfactori; honra aquesta necessitat de suport més extens.",
+  },
+  interpretationMethod: {
+    en: "Read the two positions as a dynamic dialogue between what is and what's needed. SITUATION (position 1) reveals the current energetic reality—not what you think is happening, but what the cards see beneath the surface. Look for hidden dynamics: if you're asking about a job opportunity and draw the Eight of Swords, the situation isn't \"good opportunity,\" it's \"perceived limitation and self-imposed restriction.\" ADVICE (position 2) then offers the medicine, the key, the next step. This isn't passive fortune-telling (\"this will happen\") but active co-creation (\"this is your power move\"). The magic happens in the synthesis: Eight of Swords (trapped) + The Chariot (directed will) means \"break free through focused action.\" Read the suit dialogue: Cups to Wands suggests moving from feeling to doing; Swords to Pentacles indicates manifesting thoughts into form. Court cards as advice often represent qualities to embody or people to consult.",
+    es: "Lee las dos posiciones como un diálogo dinámico entre lo que es y lo que se necesita. SITUACIÓN (posición 1) revela la realidad energética actual, no lo que crees que está sucediendo, sino lo que las cartas ven bajo la superficie. Busca dinámicas ocultas: si preguntas sobre una oportunidad laboral y extraes el Ocho de Espadas, la situación no es \"buena oportunidad,\" es \"limitación percibida y restricción autoimpuesta.\" CONSEJO (posición 2) entonces ofrece la medicina, la clave, el siguiente paso. Esto no es adivinación pasiva (\"esto sucederá\") sino co-creación activa (\"este es tu movimiento de poder\"). La magia sucede en la síntesis: Ocho de Espadas (atrapado) + El Carro (voluntad dirigida) significa \"libérate a través de acción enfocada.\" Lee el diálogo de palos: Copas a Bastos sugiere moverse del sentir al hacer; Espadas a Oros indica manifestar pensamientos en forma. Cartas de corte como consejo a menudo representan cualidades para encarnar o personas a consultar.",
+    ca: "Llegeix les dues posicions com un diàleg dinàmic entre el que és i el que es necessita. SITUACIÓ (posició 1) revela la realitat energètica actual, no el que creus que està succeint, sinó el que les cartes veuen sota la superfície. Busca dinàmiques ocultes: si preguntes sobre una oportunitat laboral i extreus el Vuit d'Espases, la situació no és \"bona oportunitat,\" és \"limitació percebuda i restricció autoimposada.\" CONSELL (posició 2) després ofereix la medicina, la clau, el següent pas. Això no és endevinació passiva (\"això succeirà\") sinó co-creació activa (\"aquest és el teu moviment de poder\"). La màgia succeeix en la síntesi: Vuit d'Espases (atrapat) + El Carro (voluntat dirigida) significa \"allibera't a través d'acció enfocada.\" Llegeix el diàleg de pals: Copes a Bastos suggereix moure's del sentir al fer; Espases a Ors indica manifestar pensaments en forma. Cartes de cort com a consell sovint representen qualitats per encarnar o persones a consultar.",
+  },
+  traditionalOrigin: {
+    en: "The Quick Insight Spread is a logical variation (🔄) of the traditional Two Card Spread, which itself derives from the universal binary structure found throughout cartomancy history. The Situation + Advice format is a modern refinement that emphasizes actionable wisdom over passive prediction. While not historically documented in classic texts like Waite's \"Pictorial Key,\" it follows the established tarot principle of problem-solution pairing found in spreads like the traditional \"Challenge & Solution\" layout. This structure appears in multiple contemporary sources and represents the modern tarot trend toward empowerment-based readings rather than deterministic fortune-telling.",
+    es: "La Tirada de Perspicacia Rápida es una variación lógica (🔄) de la Tirada de Dos Cartas tradicional, que en sí deriva de la estructura binaria universal encontrada a lo largo de la historia de la cartomancia. El formato Situación + Consejo es un refinamiento moderno que enfatiza sabiduría accionable sobre predicción pasiva. Aunque no está históricamente documentada en textos clásicos como la \"Clave Pictórica\" de Waite, sigue el principio establecido del tarot de emparejamiento problema-solución encontrado en tiradas como el diseño tradicional \"Desafío & Solución\". Esta estructura aparece en múltiples fuentes contemporáneas y representa la tendencia moderna del tarot hacia lecturas basadas en empoderamiento en lugar de adivinación determinística.",
+    ca: "La Tirada de Perspicàcia Ràpida és una variació lògica (🔄) de la Tirada de Dues Cartes tradicional, que en si deriva de l'estructura binària universal trobada al llarg de la història de la cartomància. El format Situació + Consell és un refinament modern que emfatitza saviesa accionable sobre predicció passiva. Tot i que no està històricament documentada en textos clàssics com la \"Clau Pictòrica\" de Waite, segueix el principi establert del tarot d'emparellament problema-solució trobat en tirades com el disseny tradicional \"Desafiament & Solució\". Aquesta estructura apareix en múltiples fonts contemporànies i representa la tendència moderna del tarot cap a lectures basades en apoderament en lloc d'endevinació determinística.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "SITUATION → ADVICE: From Diagnosis to Remedy - The core dynamic of actionable guidance",
+        es: "SITUACIÓN → CONSEJO: Del Diagnóstico al Remedio - La dinámica central de orientación accionable",
+        ca: "SITUACIÓ → CONSELL: Del Diagnòstic al Remei - La dinàmica central d'orientació accionable",
+      },
+      positions: ["SITUATION", "ADVICE"],
+      aiGuidance: "The SITUATION card names the energetic reality beneath surface appearances; the ADVICE card provides the specific action, mindset, or approach needed to navigate it. This is problem-solution pairing at its most elegant. When interpreting, always connect the two: 'Given [SITUATION card], your power move is [ADVICE card].' Look for elemental dialogue between suits—water (Cups) to fire (Wands) suggests emotional understanding leading to passionate action; air (Swords) to earth (Pentacles) indicates mental clarity manifesting in material form. If both cards share a suit, the message is particularly focused in that elemental domain. Reversed cards in SITUATION signal internal blocks; in ADVICE, they suggest releasing or inverting expectations.",
+    },
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: [
+      "quick reading",
+      "fast guidance",
+      "what should I do",
+      "need advice",
+      "short reading",
+      "situation and advice",
+      "in a hurry",
+      "brief insight",
+    ],
+    emotionalStates: [
+      "need fast clarity",
+      "time-limited",
+      "want focused guidance",
+      "overwhelmed by complex spreads",
+      "beginner seeking simplicity",
+      "need actionable advice",
+      "specific problem to solve",
+    ],
+    preferWhen: {
+      cardCountPreference: "2",
+      complexityLevel: "simple",
+      experienceLevel: "beginner to intermediate",
+      timeframe: "immediate, today, right now",
+    },
+  },
+};
+
+const NEW_LOVE_POTENTIAL_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 5-card spread provides medium level insight into love, new relationship, dating. Five cards to discover new love opportunities",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 5-card spread provides medium level insight into love, new relationship, dating. Five cards to discover new love opportunities",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 5-card spread provides medium level insight into love, new relationship, dating. Five cards to discover new love opportunities",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and new relationship.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and new relationship.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and new relationship.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Current State and What Blocks Love reveals the core dynamic of this situation",
+        es: "La relación entre Tu Estado Actual y Qué Bloquea el Amor revela la dinámica central de esta situación",
+        ca: "La relació entre El Teu Estat Actual i Què Bloqueja l'Amor revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "BLOCKS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Opportunities Ahead to Potential Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Oportunidades Por Venir hasta Resultado Potencial muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Oportunitats Davant fins a Resultat Potencial mostra el flux natural cap a la resolució",
+      },
+      positions: ["OPPORTUNITIES", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const HEALING_BREAKUP_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 5-card spread provides medium level insight into love, breakup, healing. Five cards to heal and move forward after heartbreak",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 5-card spread provides medium level insight into love, breakup, healing. Five cards to heal and move forward after heartbreak",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 5-card spread provides medium level insight into love, breakup, healing. Five cards to heal and move forward after heartbreak",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and breakup.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and breakup.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and breakup.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CAUSE and NEW_BEGINNING positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CAUSE and NEW_BEGINNING positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CAUSE and NEW_BEGINNING positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Root Cause and Lesson to Learn reveals the core dynamic of this situation",
+        es: "La relación entre Causa Raíz y Lección a Aprender revela la dinámica central de esta situación",
+        ca: "La relació entre Causa Arrel i Lliçó a Aprendre revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ROOT_CAUSE", "LESSON"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Path to Healing to New Beginning shows the natural flow toward resolution",
+        es: "La progresión desde Camino hacia la Sanación hasta Nuevo Comienzo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Camí cap a la Curació fins a Nou Començament mostra el flux natural cap a la resolució",
+      },
+      positions: ["HEALING", "NEW_BEGINNING"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SOULMATE_SEARCH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 7-card spread provides medium level insight into love, soulmate, twin flame. Seven cards to guide you toward your soulmate",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 7-card spread provides medium level insight into love, soulmate, twin flame. Seven cards to guide you toward your soulmate",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 7-card spread provides medium level insight into love, soulmate, twin flame. Seven cards to guide you toward your soulmate",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and soulmate.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and soulmate.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and soulmate.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_ENERGY and SIGN positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_ENERGY and SIGN positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_ENERGY and SIGN positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Current Energy and Blocks reveals the core dynamic of this situation",
+        es: "La relación entre Tu Energía Actual y Bloqueos revela la dinámica central de esta situación",
+        ca: "La relació entre La Teva Energia Actual i Bloquejos revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_ENERGY", "BLOCKS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Where to Look to Recognition Sign shows the natural flow toward resolution",
+        es: "La progresión desde Dónde Buscar hasta Señal de Reconocimiento muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de On Buscar fins a Senyal de Reconeixement mostra el flux natural cap a la resolució",
+      },
+      positions: ["WHERE", "SIGN"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const COMPATIBILITY_CHECK_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 8-card spread provides medium level insight into love, compatibility, relationship. Eight cards to assess relationship compatibility",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 8-card spread provides medium level insight into love, compatibility, relationship. Eight cards to assess relationship compatibility",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 8-card spread provides medium level insight into love, compatibility, relationship. Eight cards to assess relationship compatibility",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and compatibility.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and compatibility.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and compatibility.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between YOU and FUTURE positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between YOU and FUTURE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between YOU and FUTURE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between You and Them reveals the core dynamic of this situation",
+        es: "La relación entre Tú y Ellos revela la dinámica central de esta situación",
+        ca: "La relació entre Tu i Ells revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YOU", "THEM"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Communication to Future Together shows the natural flow toward resolution",
+        es: "La progresión desde Comunicación hasta Futuro Juntos muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Comunicació fins a Futur Junts mostra el flux natural cap a la resolució",
+      },
+      positions: ["COMMUNICATION", "FUTURE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const MARRIAGE_DECISION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 7-card spread provides medium level insight into love, marriage, commitment. Seven cards to explore commitment and marriage readiness",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 7-card spread provides medium level insight into love, marriage, commitment. Seven cards to explore commitment and marriage readiness",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 7-card spread provides medium level insight into love, marriage, commitment. Seven cards to explore commitment and marriage readiness",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and marriage.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and marriage.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and marriage.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_FOUNDATION and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_FOUNDATION and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_FOUNDATION and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Foundation and Your Readiness reveals the core dynamic of this situation",
+        es: "La relación entre Fundamento Actual y Tu Preparación revela la dinámica central de esta situación",
+        ca: "La relació entre Fonament Actual i La Teva Preparació revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_FOUNDATION", "YOUR_READINESS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Potential Challenges to Likely Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos Potenciales hasta Resultado Probable muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments Potencials fins a Resultat Probable mostra el flux natural cap a la resolució",
+      },
+      positions: ["CHALLENGES", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const DATING_GUIDANCE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 4-card spread provides simple level insight into love, dating, new relationship. Four cards for navigating the dating world",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 4-card spread provides simple level insight into love, dating, new relationship. Four cards for navigating el dating world",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 4-card spread provides simple level insight into love, dating, new relationship. Four cards for navigating el dating world",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for quick insight and clarity. Perfect for questions about love and dating.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for quick insight and clarity. Perfect for questions about love and dating.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for quick insight and clarity. Perfect for questions about love and dating.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOU_NOW and NEXT_STEP positions.",
+    es: "Lee cartas sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOU_NOW and NEXT_STEP positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOU_NOW and NEXT_STEP positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between You Right Now and This Person's Potential reveals the core dynamic of this situation",
+        es: "La relación entre Tú Ahora Mismo y Potencial de Esta Persona revela la dinámica central de esta situación",
+        ca: "La relació entre Tu Ara Mateix i Potencial d'Aquesta Persona revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YOU_NOW", "POTENTIAL"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const TOXIC_RELATIONSHIP_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 6-card spread provides medium level insight into love, toxic, unhealthy. Six cards to understand and heal from toxic patterns",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 6-card spread provides medium level insight into love, toxic, unhealthy. Six cards to understand and heal from toxic patterns",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 6-card spread provides medium level insight into love, toxic, unhealthy. Six cards to understand and heal from toxic patterns",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and toxic.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and toxic.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and toxic.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PATTERN and FUTURE_PATH positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PATTERN and FUTURE_PATH positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PATTERN and FUTURE_PATH positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Toxic Pattern and Your Role reveals the core dynamic of this situation",
+        es: "La relación entre Patrón Tóxico y Tu Rol revela la dinámica central de esta situación",
+        ca: "La relació entre Patró Tòxic i El Teu Rol revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PATTERN", "YOUR_ROLE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Core Wound to Healthy Path Forward shows the natural flow toward resolution",
+        es: "La progresión desde Herida Central hasta Camino Saludable Adelante muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Ferida Central fins a Camí Saludable Endavant mostra el flux natural cap a la resolució",
+      },
+      positions: ["WOUND", "FUTURE_PATH"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SELF_LOVE_JOURNEY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 5-card spread provides medium level insight into love, self-love, self-care. Five cards to cultivate self-love and acceptance",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 5-card spread provides medium level insight into love, self-love, self-care. Five cards to cultivate self-love and acceptance",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 5-card spread provides medium level insight into love, self-love, self-care. Five cards to cultivate self-love and acceptance",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and self-love.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and self-love.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and self-love.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and TRANSFORMATION positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and TRANSFORMATION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and TRANSFORMATION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Self-Love State and Wounds to Heal reveals the core dynamic of this situation",
+        es: "La relación entre Estado Actual de Amor Propio y Heridas a Sanar revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Actual d'Amor Propi i Ferides a Curar revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "WOUNDS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Your Strengths to Transformation shows the natural flow toward resolution",
+        es: "La progresión desde Tus Fortalezas hasta Transformación muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Les Teves Fortaleses fins a Transformació mostra el flux natural cap a la resolució",
+      },
+      positions: ["STRENGTHS", "TRANSFORMATION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const INTIMACY_ISSUES_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 6-card spread provides medium level insight into love, intimacy, connection. Six cards to deepen intimacy and connection",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 6-card spread provides medium level insight into love, intimacy, connection. Six cards to deepen intimacy and connection",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 6-card spread provides medium level insight into love, intimacy, connection. Six cards to deepen intimacy and connection",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and intimacy.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and intimacy.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and intimacy.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ISSUE and DEEPENING positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ISSUE and DEEPENING positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ISSUE and DEEPENING positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Core Issue and Your Fear reveals the core dynamic of this situation",
+        es: "La relación entre Problema Central y Tu Miedo revela la dinámica central de esta situación",
+        ca: "La relació entre Problema Central i La Teva Por revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ISSUE", "YOUR_FEAR"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Building Bridge to Deepening Intimacy shows the natural flow toward resolution",
+        es: "La progresión desde Construir Puente hasta Profundizar Intimidad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Construir Pont fins a Aprofundir Intimitat mostra el flux natural cap a la resolució",
+      },
+      positions: ["BRIDGE", "DEEPENING"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PARTNERSHIP_BALANCE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 6-card spread provides medium level insight into love, balance, partnership. Six cards to restore balance in your relationship",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 6-card spread provides medium level insight into love, balance, partnership. Six cards to restore balance in your relationship",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 6-card spread provides medium level insight into love, balance, partnership. Six cards to restore balance in your relationship",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and balance.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and balance.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about love and balance.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between GIVE and HARMONY positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between GIVE and HARMONY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between GIVE and HARMONY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between What You Give and What You Receive reveals the core dynamic of this situation",
+        es: "La relación entre Lo Que Das y Lo Que Recibes revela la dinámica central de esta situación",
+        ca: "La relació entre El Que Dones i El Que Reps revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["GIVE", "RECEIVE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Needed Adjustment to Path to Harmony shows the natural flow toward resolution",
+        es: "La progresión desde Ajuste Necesario hasta Camino hacia la Armonía muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Ajust Necessari fins a Camí cap a l'Harmonia mostra el flux natural cap a la resolució",
+      },
+      positions: ["ADJUSTMENT", "HARMONY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const LOVE_TRIANGLE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread illuminates the energies and dynamics in romantic relationships. This 9-card spread provides complex level insight into love, choice, decision. Nine cards to navigate complex love situations",
+    es: "Esta spread illuminates el energies and dynamics in romantic relationships. Esta 9-card spread provides complex level insight into love, choice, decision. Nine cards to navigate complex love situations",
+    ca: "Aquesta spread illuminates el energies and dynamics in romantic relationships. Aquesta 9-card spread provides complex level insight into love, choice, decision. Nine cards to navigate complex love situations",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on relationship, love, partner matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about love and choice.",
+    es: "Elige this spread when tú need guidance on relationship, love, partner matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about love and choice.",
+    ca: "Tria this spread when tu need guidance on relationship, love, partner matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about love and choice.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for career decisions, financial planning, health issues. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for career decisions, financial planning, health issues. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for career decisions, financial planning, health issues. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between YOU and GUIDANCE positions.",
+    es: "Lee cartas sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between YOU and GUIDANCE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between YOU and GUIDANCE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between You and Person A reveals the core dynamic of this situation",
+        es: "La relación entre Tú y Persona A revela la dinámica central de esta situación",
+        ca: "La relació entre Tu i Persona A revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YOU", "PERSON_A"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from You & Person B to Guidance shows the natural flow toward resolution",
+        es: "La progresión desde Tú y Persona B hasta Guía muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Tu i Persona B fins a Guia mostra el flux natural cap a la resolució",
+      },
+      positions: ["DYNAMIC_B", "GUIDANCE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["relationship", "love", "partner", "connection", "heart", "romance"],
+    emotionalStates: ["seeking connection"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const JOB_SEARCH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 5-card spread provides medium level insight into career, job, search. Navigate your job search with clarity on your strengths and timing",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 5-card spread provides medium level insight into career, job, search. Navigate your job search with clarity on your strengths and timing",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 5-card spread provides medium level insight into career, job, search. Navigate your job search with clarity on your strengths and timing",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about career and job.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about career and job.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about career and job.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_POSITION and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_POSITION and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_POSITION and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Position and Skills to Highlight reveals the core dynamic of this situation",
+        es: "La relación entre Posición Actual y Habilidades a Destacar revela la dinámica central de esta situación",
+        ca: "La relació entre Posició Actual i Habilitats a Destacar revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_POSITION", "SKILLS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Where Opportunities Lie to Likely Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Dónde Hay Oportunidades hasta Resultado Probable muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de On Hi Ha Oportunitats fins a Resultat Probable mostra el flux natural cap a la resolució",
+      },
+      positions: ["OPPORTUNITIES", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const INTERVIEW_PREP_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 4-card spread provides simple level insight into interview, job, career. Get ready for your interview with insights on strengths and expectations",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 4-card spread provides simple level insight into interview, job, career. Get ready for your interview with insights on strengths and expectations",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 4-card spread provides simple level insight into interview, job, career. Get ready for your interview with insights on strengths and expectations",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for quick insight and clarity. Perfect for questions about interview and job.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for quick insight and clarity. Perfect for questions about interview and job.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for quick insight and clarity. Perfect for questions about interview and job.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_STRENGTH and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_STRENGTH and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_STRENGTH and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Strength and What They Need reveals the core dynamic of this situation",
+        es: "La relación entre Tu Fortaleza y Lo Que Necesitan revela la dinámica central de esta situación",
+        ca: "La relació entre La Teva Fortalesa i El Que Necessiten revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YOUR_STRENGTH", "THEIR_NEEDS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PROMOTION_PATH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 6-card spread provides medium level insight into promotion, career, advancement. Map your path to advancement with clarity on gaps and timing",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 6-card spread provides medium level insight into promotion, career, advancement. Map your path to advancement with clarity on gaps and timing",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 6-card spread provides medium level insight into promotion, career, advancement. Map your path to advancement with clarity on gaps and timing",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about promotion and career.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about promotion and career.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about promotion and career.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STANDING and PATH positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STANDING and PATH positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STANDING and PATH positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Standing and Your Strengths reveals the core dynamic of this situation",
+        es: "La relación entre Posición Actual y Tus Fortalezas revela la dinámica central de esta situación",
+        ca: "La relació entre Posició Actual i Les Teves Fortaleses revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STANDING", "STRENGTHS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Increasing Visibility to Path to Promotion shows the natural flow toward resolution",
+        es: "La progresión desde Aumentar Visibilidad hasta Camino hacia la Promoción muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Augmentar Visibilitat fins a Camí cap a la Promoció mostra el flux natural cap a la resolució",
+      },
+      positions: ["VISIBILITY", "PATH"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const CAREER_CHANGE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 7-card spread provides medium level insight into career, change, transition. Navigate a major career transition with insight into your calling and obstacles",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 7-card spread provides medium level insight into career, change, transition. Navigate a major career transition with insight into your calling and obstacles",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 7-card spread provides medium level insight into career, change, transition. Navigate a major career transition with insight into your calling and obstacles",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about career and change.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about career and change.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about career and change.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_DISSATISFACTION and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_DISSATISFACTION and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_DISSATISFACTION and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Dissatisfaction and True Calling reveals the core dynamic of this situation",
+        es: "La relación entre Insatisfacción Actual y Vocación Verdadera revela la dinámica central de esta situación",
+        ca: "La relació entre Insatisfacció Actual i Vocació Veritable revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_DISSATISFACTION", "TRUE_CALLING"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Obstacles to Potential Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Obstáculos hasta Resultado Potencial muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Obstacles fins a Resultat Potencial mostra el flux natural cap a la resolució",
+      },
+      positions: ["OBSTACLES", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const WORK_CONFLICTS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 5-card spread provides medium level insight into conflict, work, tension. Resolve workplace tensions with understanding of root causes and solutions",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 5-card spread provides medium level insight into conflict, work, tension. Resolve workplace tensions with understanding of root causes and solutions",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 5-card spread provides medium level insight into conflict, work, tension. Resolve workplace tensions with understanding of root causes and solutions",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about conflict and work.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about conflict and work.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about conflict and work.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CAUSE and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CAUSE and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CAUSE and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Root Cause and Your Role reveals the core dynamic of this situation",
+        es: "La relación entre Causa Raíz y Tu Rol revela la dinámica central de esta situación",
+        ca: "La relació entre Causa Arrel i El Teu Rol revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ROOT_CAUSE", "YOUR_ROLE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Their Perspective to Likely Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Su Perspectiva hasta Resultado Probable muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de La Seva Perspectiva fins a Resultat Probable mostra el flux natural cap a la resolució",
+      },
+      positions: ["THEIR_PERSPECTIVE", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const TEAM_DYNAMICS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 6-card spread provides medium level insight into team, collaboration, work. Understand and improve your team relationships and collaboration",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 6-card spread provides medium level insight into team, collaboration, work. Understand and improve your team relationships and collaboration",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 6-card spread provides medium level insight into team, collaboration, work. Understand and improve your team relationships and collaboration",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about team and collaboration.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about team and collaboration.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about team and collaboration.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between TEAM_ENERGY and HARMONY positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between TEAM_ENERGY and HARMONY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between TEAM_ENERGY and HARMONY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Team Energy and Your Contribution reveals the core dynamic of this situation",
+        es: "La relación entre Energía del Equipo y Tu Contribución revela la dinámica central de esta situación",
+        ca: "La relació entre Energia de l'Equip i La Teva Contribució revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["TEAM_ENERGY", "YOUR_CONTRIBUTION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Challenges to Creating Harmony shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos hasta Crear Armonía muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments fins a Crear Harmonia mostra el flux natural cap a la resolució",
+      },
+      positions: ["CHALLENGES", "HARMONY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const ENTREPRENEURSHIP_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 8-card spread provides complex level insight into entrepreneurship, business, startup. Comprehensive guidance for starting your own business venture",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 8-card spread provides complex level insight into entrepreneurship, business, startup. Comprehensive guidance for starting your own business venture",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 8-card spread provides complex level insight into entrepreneurship, business, startup. Comprehensive guidance for starting your own business venture",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about entrepreneurship and business.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about entrepreneurship and business.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about entrepreneurship and business.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between VISION and SUCCESS positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between VISION and SUCCESS positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between VISION and SUCCESS positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Vision and Available Resources reveals the core dynamic of this situation",
+        es: "La relación entre Tu Visión y Recursos Disponibles revela la dinámica central de esta situación",
+        ca: "La relació entre La Teva Visió i Recursos Disponibles revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["VISION", "RESOURCES"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Challenges Ahead to Path to Success shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos por Delante hasta Camino al Éxito muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Reptes per Davant fins a Camí cap a l'Èxit mostra el flux natural cap a la resolució",
+      },
+      positions: ["CHALLENGES", "SUCCESS"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SIDE_HUSTLE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 5-card spread provides medium level insight into side-hustle, passion-project, extra-income. Explore turning your passion into a profitable side business",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 5-card spread provides medium level insight into side-hustle, passion-project, extra-income. Explore turning your passion into a profitable side business",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 5-card spread provides medium level insight into side-hustle, passion-project, extra-income. Explore turning your passion into a profitable side business",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about side-hustle and passion-project.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about side-hustle and passion-project.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about side-hustle and passion-project.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PASSION and POTENTIAL positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PASSION and POTENTIAL positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PASSION and POTENTIAL positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Passion and Viability reveals the core dynamic of this situation",
+        es: "La relación entre Tu Pasión y Viabilidad revela la dinámica central de esta situación",
+        ca: "La relació entre La Teva Passió i Viabilitat revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PASSION", "VIABLE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Work-Life Balance to Growth Potential shows the natural flow toward resolution",
+        es: "La progresión desde Equilibrio Vida-Trabajo hasta Potencial de Crecimiento muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Equilibri Vida-Treball fins a Potencial de Creixement mostra el flux natural cap a la resolució",
+      },
+      positions: ["BALANCE", "POTENTIAL"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const WORK_LIFE_BALANCE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 7-card spread provides medium level insight into work-life-balance, burnout, boundaries. Find harmony between professional demands and personal wellbeing",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 7-card spread provides medium level insight into work-life-balance, burnout, boundaries. Find harmony between professional demands and personal wellbeing",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 7-card spread provides medium level insight into work-life-balance, burnout, boundaries. Find harmony between professional demands and personal wellbeing",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about work-life-balance and burnout.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about work-life-balance and burnout.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about work-life-balance and burnout.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and HARMONY positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and HARMONY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and HARMONY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current State and Work Demands reveals the core dynamic of this situation",
+        es: "La relación entre Estado Actual y Demandas Laborales revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Actual i Demandes Laborals revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "WORK_DEMANDS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from What You're Sacrificing to Path to Harmony shows the natural flow toward resolution",
+        es: "La progresión desde Lo Que Estás Sacrificando hasta Camino a la Armonía muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de El Que Estàs Sacrificant fins a Camí cap a l'Harmonia mostra el flux natural cap a la resolució",
+      },
+      positions: ["SACRIFICE", "HARMONY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const CAREER_PURPOSE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 6-card spread provides medium level insight into purpose, calling, fulfillment. Discover your true calling and align your career with your soul purpose",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 6-card spread provides medium level insight into purpose, calling, fulfillment. Discover your true calling and align your career with your soul purpose",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 6-card spread provides medium level insight into purpose, calling, fulfillment. Discover your true calling and align your career with your soul purpose",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about purpose and calling.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about purpose and calling.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about purpose and calling.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_PATH and FULFILLMENT positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_PATH and FULFILLMENT positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_PATH and FULFILLMENT positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Path and Your True Gifts reveals the core dynamic of this situation",
+        es: "La relación entre Camino Actual y Tus Verdaderos Dones revela la dinámica central de esta situación",
+        ca: "La relació entre Camí Actual i Els Teus Veritables Dons revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_PATH", "TRUE_GIFTS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Creating Alignment to Path to Fulfillment shows the natural flow toward resolution",
+        es: "La progresión desde Crear Alineación hasta Camino a la Realización muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Crear Alineació fins a Camí cap a la Realització mostra el flux natural cap a la resolució",
+      },
+      positions: ["ALIGNMENT", "FULFILLMENT"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const NEGOTIATION_STRATEGY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 5-card spread provides medium level insight into negotiation, salary, deal. Strategic guidance for salary negotiations and professional deals",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 5-card spread provides medium level insight into negotiation, salary, deal. Strategic guidance for salary negotiations and professional deals",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 5-card spread provides medium level insight into negotiation, salary, deal. Strategic guidance for salary negotiations and professional deals",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about negotiation and salary.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about negotiation and salary.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about negotiation and salary.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_POSITION and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_POSITION and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_POSITION and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Position and Their Position reveals the core dynamic of this situation",
+        es: "La relación entre Tu Posición y Su Posición revela la dinámica central de esta situación",
+        ca: "La relació entre La Teva Posició i La Seva Posició revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YOUR_POSITION", "THEIR_POSITION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Your Leverage to Likely Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Tu Ventaja hasta Resultado Probable muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de El Teu Avantatge fins a Resultat Probable mostra el flux natural cap a la resolució",
+      },
+      positions: ["LEVERAGE", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PROFESSIONAL_GROWTH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals professional path, work dynamics, and career development. This 6-card spread provides medium level insight into growth, development, learning. Chart your path to mastery and professional development",
+    es: "Esta spread reveals professional path, work dynamics, and career development. Esta 6-card spread provides medium level insight into growth, development, learning. Chart your path to mastery and professional development",
+    ca: "Aquesta spread reveals professional path, work dynamics, and career development. Aquesta 6-card spread provides medium level insight into growth, development, learning. Chart your path to mastery and professional development",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about growth and development.",
+    es: "Elige this spread when tú need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about growth and development.",
+    ca: "Tria this spread when tu need guidance on job, career, work matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about growth and development.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep emotional healing, relationship matters, health diagnosis. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_SKILLS and MASTERY positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_SKILLS and MASTERY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_SKILLS and MASTERY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Skills and Growth Area reveals the core dynamic of this situation",
+        es: "La relación entre Habilidades Actuales y Área de Crecimiento revela la dinámica central de esta situación",
+        ca: "La relació entre Habilitats Actuals i Àrea de Creixement revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_SKILLS", "GROWTH_AREA"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Mentor/Resource to Path to Mastery shows the natural flow toward resolution",
+        es: "La progresión desde Mentor/Recurso hasta Camino a la Maestría muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Mentor/Recurs fins a Camí cap a la Mestria mostra el flux natural cap a la resolució",
+      },
+      positions: ["MENTOR", "MASTERY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["job", "career", "work", "professional", "vocation", "colleagues"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const FINANCIAL_OVERVIEW_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 5-card spread provides medium level insight into finance, money, budget. Comprehensive view of your current financial situation and opportunities",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 5-card spread provides medium level insight into finance, money, budget. Comprehensive view of your current financial situation and opportunities",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 5-card spread provides medium level insight into finance, money, budget. Comprehensive view of your current financial situation and opportunities",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about finance and money.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about finance and money.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about finance and money.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and ADVICE positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and ADVICE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and ADVICE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Financial State and Income Flow reveals the core dynamic of this situation",
+        es: "La relación entre Estado Financiero Actual y Flujo de Ingresos revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Financer Actual i Flux d'Ingressos revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "INCOME"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Expense Patterns to Guidance shows the natural flow toward resolution",
+        es: "La progresión desde Patrones de Gastos hasta Consejo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Patrons de Despeses fins a Consell mostra el flux natural cap a la resolució",
+      },
+      positions: ["EXPENSES", "ADVICE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const INVESTMENT_DECISION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 6-card spread provides medium level insight into investment, finance, decision. Evaluate investment opportunities with insight into risks and potential",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 6-card spread provides medium level insight into investment, finance, decision. Evaluate investment opportunities with insight into risks and potential",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 6-card spread provides medium level insight into investment, finance, decision. Evaluate investment opportunities with insight into risks and potential",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about investment and finance.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about investment and finance.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about investment and finance.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between OPPORTUNITY and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between OPPORTUNITY and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between OPPORTUNITY and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between The Opportunity and Growth Potential reveals the core dynamic of this situation",
+        es: "La relación entre La Oportunidad y Potencial de Crecimiento revela la dinámica central de esta situación",
+        ca: "La relació entre L'Oportunitat i Potencial de Creixement revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["OPPORTUNITY", "POTENTIAL"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Timing to Likely Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Momento hasta Resultado Probable muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Moment fins a Resultat Probable mostra el flux natural cap a la resolució",
+      },
+      positions: ["TIMING", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const DEBT_MANAGEMENT_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 5-card spread provides medium level insight into debt, finance, freedom. Navigate your debt with clarity on causes and path to freedom",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 5-card spread provides medium level insight into debt, finance, freedom. Navigate your debt with clarity on causes and path to freedom",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 5-card spread provides medium level insight into debt, finance, freedom. Navigate your debt with clarity on causes and path to freedom",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about debt and finance.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about debt and finance.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about debt and finance.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between DEBT_ROOT and FREEDOM positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between DEBT_ROOT and FREEDOM positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between DEBT_ROOT and FREEDOM positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Root of Debt and Spending Patterns reveals the core dynamic of this situation",
+        es: "La relación entre Raíz de la Deuda y Patrones de Gasto revela la dinámica central de esta situación",
+        ca: "La relació entre Arrel del Deute i Patrons de Despesa revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["DEBT_ROOT", "PATTERNS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Priority Action to Path to Freedom shows the natural flow toward resolution",
+        es: "La progresión desde Acción Prioritaria hasta Camino hacia la Libertad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Acció Prioritària fins a Camí cap a la Llibertat mostra el flux natural cap a la resolució",
+      },
+      positions: ["PRIORITY", "FREEDOM"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SALARY_NEGOTIATION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 4-card spread provides simple level insight into salary, negotiation, raise. Prepare for salary discussions with insight into value and approach",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 4-card spread provides simple level insight into salary, negotiation, raise. Prepare for salary discussions with insight into value and approach",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 4-card spread provides simple level insight into salary, negotiation, raise. Prepare for salary discussions with insight into value and approach",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for quick insight and clarity. Perfect for questions about salary and negotiation.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for quick insight and clarity. Perfect for questions about salary and negotiation.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for quick insight and clarity. Perfect for questions about salary and negotiation.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_VALUE and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_VALUE and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YOUR_VALUE and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Value and Employer Perspective reveals the core dynamic of this situation",
+        es: "La relación entre Tu Valor y Perspectiva del Empleador revela la dinámica central de esta situación",
+        ca: "La relació entre El Teu Valor i Perspectiva de l'Empleador revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YOUR_VALUE", "EMPLOYER_VIEW"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const ABUNDANCE_MINDSET_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 6-card spread provides medium level insight into abundance, mindset, prosperity. Transform your money mindset from scarcity to abundance",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 6-card spread provides medium level insight into abundance, mindset, prosperity. Transform your money mindset from scarcity to abundance",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 6-card spread provides medium level insight into abundance, mindset, prosperity. Transform your money mindset from scarcity to abundance",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about abundance and mindset.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about abundance and mindset.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about abundance and mindset.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MINDSET and MANIFESTATION positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MINDSET and MANIFESTATION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MINDSET and MANIFESTATION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Money Mindset and Scarcity Blocks reveals the core dynamic of this situation",
+        es: "La relación entre Mentalidad Monetaria Actual y Bloqueos de Escasez revela la dinámica central de esta situación",
+        ca: "La relació entre Mentalitat Monetària Actual i Bloquejos d'Escassetat revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_MINDSET", "SCARCITY_BLOCKS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Mindset Shift to Manifesting Abundance shows the natural flow toward resolution",
+        es: "La progresión desde Cambio de Mentalidad hasta Manifestar Abundancia muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Canvi de Mentalitat fins a Manifestar Abundància mostra el flux natural cap a la resolució",
+      },
+      positions: ["SHIFT", "MANIFESTATION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const BUSINESS_FINANCES_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 7-card spread provides medium level insight into business, finance, revenue. Comprehensive financial guidance for your business venture",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 7-card spread provides medium level insight into business, finance, revenue. Comprehensive financial guidance for your business venture",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 7-card spread provides medium level insight into business, finance, revenue. Comprehensive financial guidance for your business venture",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about business and finance.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about business and finance.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about business and finance.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and PROJECTION positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and PROJECTION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and PROJECTION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Financial State and Revenue Streams reveals the core dynamic of this situation",
+        es: "La relación entre Estado Financiero Actual y Fuentes de Ingresos revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Financer Actual i Fonts d'Ingressos revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "REVENUE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Growth Opportunities to 6-Month Projection shows the natural flow toward resolution",
+        es: "La progresión desde Oportunidades de Crecimiento hasta Proyección 6 Meses muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Oportunitats de Creixement fins a Projecció 6 Mesos mostra el flux natural cap a la resolució",
+      },
+      positions: ["GROWTH", "PROJECTION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SAVINGS_GOALS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 5-card spread provides medium level insight into savings, goals, planning. Achieve your savings goals with clarity on obstacles and strategy",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 5-card spread provides medium level insight into savings, goals, planning. Achieve your savings goals with clarity on obstacles and strategy",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 5-card spread provides medium level insight into savings, goals, planning. Achieve your savings goals with clarity on obstacles and strategy",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about savings and goals.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about savings and goals.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about savings and goals.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between GOAL and SUCCESS positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between GOAL and SUCCESS positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between GOAL and SUCCESS positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Goal and Current Habits reveals the core dynamic of this situation",
+        es: "La relación entre Tu Objetivo y Hábitos Actuales revela la dinámica central de esta situación",
+        ca: "La relació entre El Teu Objectiu i Hàbits Actuals revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["GOAL", "CURRENT_HABITS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Obstacles to Path to Success shows the natural flow toward resolution",
+        es: "La progresión desde Obstáculos hasta Camino hacia el Éxito muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Obstacles fins a Camí cap a l'Èxit mostra el flux natural cap a la resolució",
+      },
+      positions: ["OBSTACLES", "SUCCESS"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const FINANCIAL_BLOCKS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 6-card spread provides medium level insight into blocks, beliefs, healing. Identify and release blocks preventing financial flow",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 6-card spread provides medium level insight into blocks, beliefs, healing. Identify and release blocks preventing financial flow",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 6-card spread provides medium level insight into blocks, beliefs, healing. Identify and release blocks preventing financial flow",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about blocks and beliefs.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about blocks and beliefs.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about blocks and beliefs.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between MAIN_BLOCK and FLOW positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between MAIN_BLOCK and FLOW positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between MAIN_BLOCK and FLOW positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Main Financial Block and Origin/Root Cause reveals the core dynamic of this situation",
+        es: "La relación entre Principal Bloqueo Financiero y Origen/Causa Raíz revela la dinámica central de esta situación",
+        ca: "La relació entre Principal Bloqueig Financer i Origen/Causa Arrel revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["MAIN_BLOCK", "ORIGIN"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Releasing Process to Opening Financial Flow shows the natural flow toward resolution",
+        es: "La progresión desde Proceso de Liberación hasta Abrir Flujo Financiero muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Procés d'Alliberament fins a Obrir Flux Financer mostra el flux natural cap a la resolució",
+      },
+      positions: ["RELEASE", "FLOW"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const MONEY_FLOW_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 5-card spread provides medium level insight into flow, circulation, energy. Understand and improve the flow of money in your life",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 5-card spread provides medium level insight into flow, circulation, energy. Understand and improve el flow of money in your life",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 5-card spread provides medium level insight into flow, circulation, energy. Understand and improve el flow of money in your life",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about flow and circulation.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about flow and circulation.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about flow and circulation.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_FLOW and INCREASE positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_FLOW and INCREASE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_FLOW and INCREASE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Money Flow and Where Flow Blocks reveals the core dynamic of this situation",
+        es: "La relación entre Flujo de Dinero Actual y Donde se Bloquea revela la dinámica central de esta situación",
+        ca: "La relació entre Flux de Diners Actual i On es Bloqueja revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_FLOW", "BLOCKAGE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Inflow Opportunity to Increasing Flow shows the natural flow toward resolution",
+        es: "La progresión desde Oportunidad de Entrada hasta Aumentar el Flujo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Oportunitat d'Entrada fins a Augmentar el Flux mostra el flux natural cap a la resolució",
+      },
+      positions: ["OPPORTUNITY", "INCREASE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PROSPERITY_PATH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines financial energies, money flow, and material resources. This 7-card spread provides medium level insight into prosperity, wealth, success. Map your journey to lasting prosperity and financial well-being",
+    es: "Esta spread examines financial energies, money flow, and material resources. Esta 7-card spread provides medium level insight into prosperity, wealth, success. Map your journey to lasting prosperity and financial well-being",
+    ca: "Aquesta spread examines financial energies, money flow, and material resources. Aquesta 7-card spread provides medium level insight into prosperity, wealth, success. Map your journey to lasting prosperity and financial well-being",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about prosperity and wealth.",
+    es: "Elige this spread when tú need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about prosperity and wealth.",
+    ca: "Tria this spread when tu need guidance on money, finances, income matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about prosperity and wealth.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    es: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+    ca: "Evita this spread for relationship counseling, career path discovery, spiritual awakening. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and PROSPERITY positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and PROSPERITY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and PROSPERITY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current State and Financial Strengths reveals the core dynamic of this situation",
+        es: "La relación entre Estado Actual y Fortalezas Financieras revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Actual i Fortaleses Financeres revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "STRENGTHS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Building Discipline to True Prosperity shows the natural flow toward resolution",
+        es: "La progresión desde Construir Disciplina hasta Prosperidad Verdadera muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Construir Disciplina fins a Prosperitat Veritable mostra el flux natural cap a la resolució",
+      },
+      positions: ["DISCIPLINE", "PROSPERITY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["money", "finances", "income", "savings", "investment", "abundance"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SPIRITUAL_PATH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 7-card spread provides medium level insight into spiritual, growth, journey. Seven card journey pattern revealing your spiritual ascension and growth",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 7-card spread provides medium level insight into spiritual, growth, journey. Seven card journey pattern revealing your spiritual ascension and growth",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 7-card spread provides medium level insight into spiritual, growth, journey. Seven card journey pattern revealing your spiritual ascension and growth",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and growth.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and growth.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and growth.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between STARTING_POINT and HIGHEST_POTENTIAL positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between STARTING_POINT and HIGHEST_POTENTIAL positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between STARTING_POINT and HIGHEST_POTENTIAL positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Starting Point and First Lesson reveals the core dynamic of this situation",
+        es: "La relación entre Punto de Partida y Primera Lección revela la dinámica central de esta situación",
+        ca: "La relació entre Punt de Partida i Primera Lliçó revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["STARTING_POINT", "FIRST_LESSON"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Breakthrough to Highest Potential shows the natural flow toward resolution",
+        es: "La progresión desde Revelación hasta Máximo Potencial muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Revelació fins a Màxim Potencial mostra el flux natural cap a la resolució",
+      },
+      positions: ["BREAKTHROUGH", "HIGHEST_POTENTIAL"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const CHAKRA_ALIGNMENT_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 7-card spread provides medium level insight into spiritual, chakra, energy. Seven card vertical layout examining each chakra from root to crown",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 7-card spread provides medium level insight into spiritual, chakra, energy. Seven card vertical layout examining each chakra from root to crown",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 7-card spread provides medium level insight into spiritual, chakra, energy. Seven card vertical layout examining each chakra from root to crown",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and chakra.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and chakra.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and chakra.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CHAKRA and CROWN_CHAKRA positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CHAKRA and CROWN_CHAKRA positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_CHAKRA and CROWN_CHAKRA positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Root Chakra and Sacral Chakra reveals the core dynamic of this situation",
+        es: "La relación entre Chakra Raíz y Chakra Sacro revela la dinámica central de esta situación",
+        ca: "La relació entre Chakra Arrel i Chakra Sacre revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ROOT_CHAKRA", "SACRAL_CHAKRA"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Heart Chakra to Crown Chakra shows the natural flow toward resolution",
+        es: "La progresión desde Chakra Cardíaco hasta Chakra Corona muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Chakra Cardíac fins a Chakra Corona mostra el flux natural cap a la resolució",
+      },
+      positions: ["HEART_CHAKRA", "CROWN_CHAKRA"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SHADOW_WORK_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 6-card spread provides medium level insight into spiritual, shadow-work, healing. Six card circular pattern exploring hidden aspects and unconscious patterns",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 6-card spread provides medium level insight into spiritual, shadow-work, healing. Six card circular pattern exploring hidden aspects and unconscious patterns",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 6-card spread provides medium level insight into spiritual, shadow-work, healing. Six card circular pattern exploring hidden aspects and unconscious patterns",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and shadow-work.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and shadow-work.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and shadow-work.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CONSCIOUS_SELF and WHOLENESS positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CONSCIOUS_SELF and WHOLENESS positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CONSCIOUS_SELF and WHOLENESS positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Conscious Self and Hidden Shadow reveals the core dynamic of this situation",
+        es: "La relación entre Yo Consciente y Sombra Oculta revela la dinámica central de esta situación",
+        ca: "La relació entre Jo Conscient i Ombra Oculta revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CONSCIOUS_SELF", "HIDDEN_SHADOW"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Gift in Shadow to Wholeness shows the natural flow toward resolution",
+        es: "La progresión desde Regalo en la Sombra hasta Totalidad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Regal a l'Ombra fins a Totalitat mostra el flux natural cap a la resolució",
+      },
+      positions: ["GIFT_IN_SHADOW", "WHOLENESS"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const LIFE_PURPOSE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 8-card spread provides extended level insight into spiritual, purpose, calling. Eight card star pattern revealing your soul mission and calling",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 8-card spread provides extended level insight into spiritual, purpose, calling. Eight card star pattern revealing your soul mission and calling",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 8-card spread provides extended level insight into spiritual, purpose, calling. Eight card star pattern revealing your soul mission and calling",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about spiritual and purpose.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about spiritual and purpose.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about spiritual and purpose.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between SOUL_ESSENCE and FULFILLMENT positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between SOUL_ESSENCE and FULFILLMENT positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between SOUL_ESSENCE and FULFILLMENT positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Soul Essence and Earthly Mission reveals the core dynamic of this situation",
+        es: "La relación entre Esencia del Alma y Misión Terrenal revela la dinámica central de esta situación",
+        ca: "La relació entre Essència de l'Ànima i Missió Terrenal revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["SOUL_ESSENCE", "EARTHLY_MISSION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Service to Fulfillment shows the natural flow toward resolution",
+        es: "La progresión desde Servicio hasta Realización muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Servei fins a Realització mostra el flux natural cap a la resolució",
+      },
+      positions: ["SERVICE", "FULFILLMENT"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "extended",
+      experienceLevel: "advanced",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SPIRITUAL_AWAKENING_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 7-card spread provides medium level insight into spiritual, awakening, consciousness. Seven card spiral pattern tracking your consciousness expansion journey",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 7-card spread provides medium level insight into spiritual, awakening, consciousness. Seven card spiral pattern tracking your consciousness expansion journey",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 7-card spread provides medium level insight into spiritual, awakening, consciousness. Seven card spiral pattern tracking your consciousness expansion journey",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and awakening.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and awakening.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and awakening.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between SLEEP_STATE and NEW_BEING positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between SLEEP_STATE and NEW_BEING positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between SLEEP_STATE and NEW_BEING positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Sleep State and Catalyst reveals the core dynamic of this situation",
+        es: "La relación entre Estado de Sueño y Catalizador revela la dinámica central de esta situación",
+        ca: "La relació entre Estat de Son i Catalitzador revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["SLEEP_STATE", "CATALYST"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Dark Night to New Being shows the natural flow toward resolution",
+        es: "La progresión desde Noche Oscura hasta Nuevo Ser muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Nit Fosca fins a Nou Ser mostra el flux natural cap a la resolució",
+      },
+      positions: ["DARK_NIGHT", "NEW_BEING"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PAST_LIFE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 6-card spread provides medium level insight into spiritual, past-life, karma. Six card horizontal timeline exploring karmic patterns and soul memories",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 6-card spread provides medium level insight into spiritual, past-life, karma. Six card horizontal timeline exploring karmic patterns and soul memories",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 6-card spread provides medium level insight into spiritual, past-life, karma. Six card horizontal timeline exploring karmic patterns and soul memories",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and past-life.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and past-life.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and past-life.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PAST_IDENTITY and LIBERATION positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PAST_IDENTITY and LIBERATION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PAST_IDENTITY and LIBERATION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Past Identity and Past Challenge reveals the core dynamic of this situation",
+        es: "La relación entre Identidad Pasada y Desafío Pasado revela la dinámica central de esta situación",
+        ca: "La relació entre Identitat Passada i Repte Passat revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PAST_IDENTITY", "PAST_CHALLENGE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Current Echo to Liberation shows the natural flow toward resolution",
+        es: "La progresión desde Eco Actual hasta Liberación muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Eco Actual fins a Alliberament mostra el flux natural cap a la resolució",
+      },
+      positions: ["CURRENT_ECHO", "LIBERATION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SPIRIT_GUIDES_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 5-card spread provides simple level insight into spiritual, guides, messages. Five card layout for connecting with spiritual guides and receiving messages",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 5-card spread provides simple level insight into spiritual, guides, messages. Five card layout for connecting with spiritual guides and receiving messages",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 5-card spread provides simple level insight into spiritual, guides, messages. Five card layout for connecting with spiritual guides and receiving messages",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and guides.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and guides.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and guides.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between GUIDE_IDENTITY and COLLABORATIVE_PATH positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between GUIDE_IDENTITY and COLLABORATIVE_PATH positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between GUIDE_IDENTITY and COLLABORATIVE_PATH positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Guide Identity and Guide Message reveals the core dynamic of this situation",
+        es: "La relación entre Identidad del Guía y Mensaje del Guía revela la dinámica central de esta situación",
+        ca: "La relació entre Identitat del Guia i Missatge del Guia revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["GUIDE_IDENTITY", "GUIDE_MESSAGE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Guide Gift to Collaborative Path shows the natural flow toward resolution",
+        es: "La progresión desde Regalo del Guía hasta Camino Colaborativo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Regal del Guia fins a Camí Col·laboratiu mostra el flux natural cap a la resolució",
+      },
+      positions: ["GUIDE_GIFT", "COLLABORATIVE_PATH"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PSYCHIC_DEVELOPMENT_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 6-card spread provides medium level insight into spiritual, psychic, intuition. Six card layout examining and strengthening intuitive abilities",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 6-card spread provides medium level insight into spiritual, psychic, intuition. Six card layout examining and strengthening intuitive abilities",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 6-card spread provides medium level insight into spiritual, psychic, intuition. Six card layout examining and strengthening intuitive abilities",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and psychic.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and psychic.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and psychic.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_ABILITIES and HIGHEST_EXPRESSION positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_ABILITIES and HIGHEST_EXPRESSION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_ABILITIES and HIGHEST_EXPRESSION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Abilities and Dormant Potential reveals the core dynamic of this situation",
+        es: "La relación entre Habilidades Actuales y Potencial Latente revela la dinámica central de esta situación",
+        ca: "La relació entre Habilitats Actuals i Potencial Latent revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_ABILITIES", "DORMANT_POTENTIAL"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Strengthening Practice to Highest Expression shows the natural flow toward resolution",
+        es: "La progresión desde Práctica de Fortalecimiento hasta Expresión Más Alta muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Pràctica de Reforç fins a Expressió Més Alta mostra el flux natural cap a la resolució",
+      },
+      positions: ["STRENGTHENING_PRACTICE", "HIGHEST_EXPRESSION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const FULL_MOON_RITUAL_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 5-card spread provides simple level insight into spiritual, full-moon, release. Five card lunar release spread for releasing what no longer serves",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 5-card spread provides simple level insight into spiritual, full-moon, release. Five card lunar release spread for releasing what no longer serves",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 5-card spread provides simple level insight into spiritual, full-moon, release. Five card lunar release spread for releasing what no longer serves",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and full-moon.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and full-moon.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and full-moon.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ILLUMINATION and SPACE_CREATED positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ILLUMINATION and SPACE_CREATED positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between ILLUMINATION and SPACE_CREATED positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Illumination and What to Release reveals the core dynamic of this situation",
+        es: "La relación entre Iluminación y Qué Liberar revela la dinámica central de esta situación",
+        ca: "La relació entre Il·luminació i Què Alliberar revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ILLUMINATION", "WHAT_TO_RELEASE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Why You Hold On to Space Created shows the natural flow toward resolution",
+        es: "La progresión desde Por Qué Te Aferras hasta Espacio Creado muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Per Què T'Aferres fins a Espai Creat mostra el flux natural cap a la resolució",
+      },
+      positions: ["WHY_HOLD_ON", "SPACE_CREATED"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const NEW_MOON_INTENTIONS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 5-card spread provides simple level insight into spiritual, new-moon, manifestation. Five card lunar manifestation spread for setting powerful intentions",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 5-card spread provides simple level insight into spiritual, new-moon, manifestation. Five card lunar manifestation spread for setting powerful intentions",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 5-card spread provides simple level insight into spiritual, new-moon, manifestation. Five card lunar manifestation spread for setting powerful intentions",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and new-moon.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and new-moon.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for quick insight and clarity. Perfect for questions about spiritual and new-moon.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between BLANK_SLATE and MOONTH_POTENTIAL positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between BLANK_SLATE and MOONTH_POTENTIAL positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between BLANK_SLATE and MOONTH_POTENTIAL positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Blank Slate and Heart Desire reveals the core dynamic of this situation",
+        es: "La relación entre Pizarra En Blanco y Deseo del Corazón revela la dinámica central de esta situación",
+        ca: "La relació entre Pissarra Buida i Desig del Cor revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["BLANK_SLATE", "HEART_DESIRE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Aligned Action to Month Potential shows the natural flow toward resolution",
+        es: "La progresión desde Acción Alineada hasta Potencial del Mes muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Acció Alineada fins a Potencial del Mes mostra el flux natural cap a la resolució",
+      },
+      positions: ["ALIGNED_ACTION", "MOONTH_POTENTIAL"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const MEDITATION_JOURNEY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 7-card spread provides medium level insight into spiritual, meditation, inner-journey. Seven card inner path layout for deepening contemplative practice",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 7-card spread provides medium level insight into spiritual, meditation, inner-journey. Seven card inner path layout for deepening contemplative practice",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 7-card spread provides medium level insight into spiritual, meditation, inner-journey. Seven card inner path layout for deepening contemplative practice",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and meditation.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and meditation.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about spiritual and meditation.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ENTRY_POINT and INTEGRATION positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ENTRY_POINT and INTEGRATION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ENTRY_POINT and INTEGRATION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Entry Point and Breath Gate reveals the core dynamic of this situation",
+        es: "La relación entre Punto de Entrada y Portal de la Respiración revela la dinámica central de esta situación",
+        ca: "La relació entre Punt d'Entrada i Portal de la Respiració revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ENTRY_POINT", "BREATH_GATE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Heart Opening to Integration shows the natural flow toward resolution",
+        es: "La progresión desde Apertura del Corazón hasta Integración muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Obertura del Cor fins a Integració mostra el flux natural cap a la resolució",
+      },
+      positions: ["HEART_OPENING", "INTEGRATION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SACRED_CALLING_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread explores spiritual path, inner wisdom, and soul development. This 8-card spread provides extended level insight into spiritual, calling, vocation. Eight card vocation pattern exploring spiritual work and divine service",
+    es: "Esta spread explores spiritual path, inner wisdom, and soul development. Esta 8-card spread provides extended level insight into spiritual, calling, vocation. Eight card vocation pattern exploring spiritual work and divine service",
+    ca: "Aquesta spread explores spiritual path, inner wisdom, and soul development. Aquesta 8-card spread provides extended level insight into spiritual, calling, vocation. Eight card vocation pattern exploring spiritual work and divine service",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on spiritual, soul, purpose matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about spiritual and calling.",
+    es: "Elige this spread when tú need guidance on spiritual, soul, purpose matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about spiritual and calling.",
+    ca: "Tria this spread when tu need guidance on spiritual, soul, purpose matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about spiritual and calling.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate practical decisions, financial transactions, legal matters. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between DIVINE_CALL and IMPACT positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between DIVINE_CALL and IMPACT positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between DIVINE_CALL and IMPACT positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Divine Call and Sacred Wounds reveals the core dynamic of this situation",
+        es: "La relación entre Llamado Divino y Heridas Sagradas revela la dinámica central de esta situación",
+        ca: "La relació entre Crida Divina i Ferides Sagrades revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["DIVINE_CALL", "SACRED_WOUNDS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from How You Serve to Impact shows the natural flow toward resolution",
+        es: "La progresión desde Cómo Sirves hasta Impacto muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Com Serveixes fins a Impacte mostra el flux natural cap a la resolució",
+      },
+      positions: ["HOW_YOU_SERVE", "IMPACT"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["spiritual", "soul", "purpose", "awakening", "growth", "transcendence"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "extended",
+      experienceLevel: "advanced",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const HEALTH_CHECK_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 5-card spread provides medium level insight into health, wellness, balance. Body, mind, and spirit wellness assessment",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 5-card spread provides medium level insight into health, wellness, balance. Body, mind, and spirit wellness assessment",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 5-card spread provides medium level insight into health, wellness, balance. Body, mind, and spirit wellness assessment",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about health and wellness.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about health and wellness.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about health and wellness.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PHYSICAL_BODY and INTEGRATION positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PHYSICAL_BODY and INTEGRATION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PHYSICAL_BODY and INTEGRATION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Physical Body and Mental State reveals the core dynamic of this situation",
+        es: "La relación entre Cuerpo Físico y Estado Mental revela la dinámica central de esta situación",
+        ca: "La relació entre Cos Físic i Estat Mental revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PHYSICAL_BODY", "MENTAL_STATE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Emotional Wellbeing to Integration shows the natural flow toward resolution",
+        es: "La progresión desde Bienestar Emocional hasta Integración muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Benestar Emocional fins a Integració mostra el flux natural cap a la resolució",
+      },
+      positions: ["EMOTIONAL_WELLBEING", "INTEGRATION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const MENTAL_HEALTH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 6-card spread provides medium level insight into mental, emotions, thoughts. Deep exploration of mental and emotional wellness",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 6-card spread provides medium level insight into mental, emotions, thoughts. Deep exploration of mental and emotional wellness",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 6-card spread provides medium level insight into mental, emotions, thoughts. Deep exploration of mental and emotional wellness",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about mental and emotions.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about mental and emotions.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about mental and emotions.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MENTAL_STATE and FUTURE_OUTLOOK positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MENTAL_STATE and FUTURE_OUTLOOK positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MENTAL_STATE and FUTURE_OUTLOOK positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Mental State and Thought Patterns reveals the core dynamic of this situation",
+        es: "La relación entre Estado Mental Actual y Patrones de Pensamiento revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Mental Actual i Patrons de Pensament revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_MENTAL_STATE", "THOUGHT_PATTERNS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Healing Path to Future Outlook shows the natural flow toward resolution",
+        es: "La progresión desde Camino de Sanación hasta Perspectiva Futura muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Camí de Curació fins a Perspectiva Futura mostra el flux natural cap a la resolució",
+      },
+      positions: ["HEALING_PATH", "FUTURE_OUTLOOK"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const ENERGY_HEALING_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 7-card spread provides medium level insight into energy, chakra, healing. Chakra and energy flow alignment reading",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 7-card spread provides medium level insight into energy, chakra, healing. Chakra and energy flow alignment reading",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 7-card spread provides medium level insight into energy, chakra, healing. Chakra and energy flow alignment reading",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about energy and chakra.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about energy and chakra.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about energy and chakra.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_ENERGY and DIVINE_CONNECTION positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_ENERGY and DIVINE_CONNECTION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between ROOT_ENERGY and DIVINE_CONNECTION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Root Energy and Creative Flow reveals the core dynamic of this situation",
+        es: "La relación entre Energía Raíz y Flujo Creativo revela la dinámica central de esta situación",
+        ca: "La relació entre Energia Arrel i Flux Creatiu revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["ROOT_ENERGY", "CREATIVE_FLOW"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Heart Center to Divine Connection shows the natural flow toward resolution",
+        es: "La progresión desde Centro del Corazón hasta Conexión Divina muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Centre del Cor fins a Connexió Divina mostra el flux natural cap a la resolució",
+      },
+      positions: ["HEART_CENTER", "DIVINE_CONNECTION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const STRESS_RELIEF_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 5-card spread provides medium level insight into stress, anxiety, tension. Find peace and release tension from your life",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 5-card spread provides medium level insight into stress, anxiety, tension. Find peace and release tension from your life",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 5-card spread provides medium level insight into stress, anxiety, tension. Find peace and release tension from your life",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about stress and anxiety.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about stress and anxiety.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about stress and anxiety.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between STRESS_SOURCE and ONGOING_SUPPORT positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between STRESS_SOURCE and ONGOING_SUPPORT positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between STRESS_SOURCE and ONGOING_SUPPORT positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Stress Source and Physical Impact reveals the core dynamic of this situation",
+        es: "La relación entre Fuente de Estrés y Impacto Físico revela la dinámica central de esta situación",
+        ca: "La relació entre Font d'Estrès i Impacte Físic revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["STRESS_SOURCE", "PHYSICAL_IMPACT"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Release Strategy to Ongoing Support shows the natural flow toward resolution",
+        es: "La progresión desde Estrategia de Liberación hasta Apoyo Continuo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Estratègia d'Alliberament fins a Suport Continu mostra el flux natural cap a la resolució",
+      },
+      positions: ["RELEASE_STRATEGY", "ONGOING_SUPPORT"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const BURNOUT_RECOVERY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 6-card spread provides medium level insight into burnout, exhaustion, recovery. Journey from exhaustion to renewed vitality",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 6-card spread provides medium level insight into burnout, exhaustion, recovery. Journey from exhaustion to renewed vitality",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 6-card spread provides medium level insight into burnout, exhaustion, recovery. Journey from exhaustion to renewed vitality",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about burnout and exhaustion.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about burnout and exhaustion.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about burnout and exhaustion.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and SUSTAINABLE_FUTURE positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and SUSTAINABLE_FUTURE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_STATE and SUSTAINABLE_FUTURE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current State and Depletion Causes reveals the core dynamic of this situation",
+        es: "La relación entre Estado Actual y Causas de Agotamiento revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Actual i Causes d'Esgotament revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_STATE", "DEPLETION_CAUSES"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Boundaries to Sustainable Future shows the natural flow toward resolution",
+        es: "La progresión desde Límites hasta Futuro Sostenible muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Límits fins a Futur Sostenible mostra el flux natural cap a la resolució",
+      },
+      positions: ["BOUNDARIES", "SUSTAINABLE_FUTURE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const BODY_WISDOM_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 5-card spread provides medium level insight into body, intuition, physical. Listen to your body's messages and intuition",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 5-card spread provides medium level insight into body, intuition, physical. Listen to your body's messages and intuition",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 5-card spread provides medium level insight into body, intuition, physical. Listen to your body's messages and intuition",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about body and intuition.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about body and intuition.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about body and intuition.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PHYSICAL_SIGNALS and EMBODIED_WISDOM positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PHYSICAL_SIGNALS and EMBODIED_WISDOM positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between PHYSICAL_SIGNALS and EMBODIED_WISDOM positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Physical Signals and Body-Mind Connection reveals the core dynamic of this situation",
+        es: "La relación entre Señales Físicas y Conexión Cuerpo-Mente revela la dinámica central de esta situación",
+        ca: "La relació entre Senyals Físics i Connexió Cos-Ment revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PHYSICAL_SIGNALS", "BODY_MIND_CONNECTION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Intuitive Guidance to Embodied Wisdom shows the natural flow toward resolution",
+        es: "La progresión desde Guía Intuitiva hasta Sabiduría Encarnada muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Guia Intuïtiva fins a Saviesa Encarnada mostra el flux natural cap a la resolució",
+      },
+      positions: ["INTUITIVE_GUIDANCE", "EMBODIED_WISDOM"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const HOLISTIC_WELLNESS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 8-card spread provides complex level insight into holistic, wellness, complete. Complete wellness across physical, mental, emotional, and spiritual dimensions",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 8-card spread provides complex level insight into holistic, wellness, complete. Complete wellness across physical, mental, emotional, and spiritual dimensions",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 8-card spread provides complex level insight into holistic, wellness, complete. Complete wellness across physical, mental, emotional, and spiritual dimensions",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about holistic and wellness.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about holistic and wellness.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about holistic and wellness.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between PHYSICAL_DIMENSION and SPIRITUAL_PHYSICAL_BRIDGE positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between PHYSICAL_DIMENSION and SPIRITUAL_PHYSICAL_BRIDGE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between PHYSICAL_DIMENSION and SPIRITUAL_PHYSICAL_BRIDGE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Physical Dimension and Mental Dimension reveals the core dynamic of this situation",
+        es: "La relación entre Dimensión Física y Dimensión Mental revela la dinámica central de esta situación",
+        ca: "La relació entre Dimensió Física i Dimensió Mental revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PHYSICAL_DIMENSION", "MENTAL_DIMENSION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Physical-Mental Bridge to Spiritual-Physical Bridge shows the natural flow toward resolution",
+        es: "La progresión desde Puente Físico-Mental hasta Puente Espiritual-Físico muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Pont Físic-Mental fins a Pont Espiritual-Físic mostra el flux natural cap a la resolució",
+      },
+      positions: ["PHYSICAL_MENTAL_BRIDGE", "SPIRITUAL_PHYSICAL_BRIDGE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const HEALING_JOURNEY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines physical, mental, and energetic well-being. This 7-card spread provides medium level insight into healing, transformation, recovery. Transform through the healing process from wound to wholeness",
+    es: "Esta spread examines physical, mental, and energetic well-being. Esta 7-card spread provides medium level insight into healing, transformation, recovery. Transform through el healing process from wound to wholeness",
+    ca: "Aquesta spread examines physical, mental, and energetic well-being. Aquesta 7-card spread provides medium level insight into healing, transformation, recovery. Transform through el healing process from wound to wholeness",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about healing and transformation.",
+    es: "Elige this spread when tú need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about healing and transformation.",
+    ca: "Tria this spread when tu need guidance on health, wellness, body matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about healing and transformation.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for medical diagnosis (consult professionals), financial decisions, career planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between STARTING_POINT and WHOLENESS positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between STARTING_POINT and WHOLENESS positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between STARTING_POINT and WHOLENESS positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Starting Point and The Wound reveals the core dynamic of this situation",
+        es: "La relación entre Punto de Inicio y La Herida revela la dinámica central de esta situación",
+        ca: "La relació entre Punt d'Inici i La Ferida revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["STARTING_POINT", "THE_WOUND"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Transformation to Wholeness shows the natural flow toward resolution",
+        es: "La progresión desde Transformación hasta Integridad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Transformació fins a Integritat mostra el flux natural cap a la resolució",
+      },
+      positions: ["TRANSFORMATION", "WHOLENESS"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["health", "wellness", "body", "energy", "healing", "vitality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const THREE_OPTIONS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread clarifies choices, evaluates options, and reveals decision paths. This 9-card spread provides complex level insight into decision, choices, options. Deep analysis of three different paths or choices",
+    es: "Esta spread clarifies choices, evaluates options, and reveals decision paths. Esta 9-card spread provides complex level insight into decision, choices, options. Deep analysis of three different paths or choices",
+    ca: "Aquesta spread clarifies choices, evaluates options, and reveals decision paths. Aquesta 9-card spread provides complex level insight into decision, choices, options. Deep analysis of three different paths or choices",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on decision, choice, option matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about decision and choices.",
+    es: "Elige this spread when tú need guidance on decision, choice, option matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about decision and choices.",
+    ca: "Tria this spread when tu need guidance on decision, choice, option matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about decision and choices.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep psychological work, spiritual awakening, passive reflection. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between OPTION_A_NATURE and OPTION_C_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between OPTION_A_NATURE and OPTION_C_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between OPTION_A_NATURE and OPTION_C_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Option A: Nature and Option A: Challenge reveals the core dynamic of this situation",
+        es: "La relación entre Opción A: Naturaleza y Opción A: Desafío revela la dinámica central de esta situación",
+        ca: "La relació entre Opció A: Naturalesa i Opció A: Desafiament revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["OPTION_A_NATURE", "OPTION_A_CHALLENGE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Option B: Challenge to Option C: Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Opción B: Desafío hasta Opción C: Resultado muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Opció B: Desafiament fins a Opció C: Resultat mostra el flux natural cap a la resolució",
+      },
+      positions: ["OPTION_B_CHALLENGE", "OPTION_C_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["decision", "choice", "option", "crossroads", "dilemma", "path"],
+    emotionalStates: ["at crossroads"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const OPPORTUNITY_EVALUATION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread clarifies choices, evaluates options, and reveals decision paths. This 6-card spread provides medium level insight into opportunity, evaluation, pros. Six cards to thoroughly evaluate an opportunity",
+    es: "Esta spread clarifies choices, evaluates options, and reveals decision paths. Esta 6-card spread provides medium level insight into opportunity, evaluation, pros. Six cards to thoroughly evaluate an opportunity",
+    ca: "Aquesta spread clarifies choices, evaluates options, and reveals decision paths. Aquesta 6-card spread provides medium level insight into opportunity, evaluation, pros. Six cards to thoroughly evaluate an opportunity",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about opportunity and evaluation.",
+    es: "Elige this spread when tú need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about opportunity and evaluation.",
+    ca: "Tria this spread when tu need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about opportunity and evaluation.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PROS_1 and HIDDEN_FACTOR positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PROS_1 and HIDDEN_FACTOR positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PROS_1 and HIDDEN_FACTOR positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Pro: Benefit and Pro: Opportunity reveals the core dynamic of this situation",
+        es: "La relación entre Pro: Beneficio y Pro: Oportunidad revela la dinámica central de esta situación",
+        ca: "La relació entre Pro: Benefici i Pro: Oportunitat revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PROS_1", "PROS_2"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Con: Risk to Hidden Factor shows the natural flow toward resolution",
+        es: "La progresión desde Contra: Riesgo hasta Factor Oculto muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Contra: Risc fins a Factor Ocult mostra el flux natural cap a la resolució",
+      },
+      positions: ["CONS_1", "HIDDEN_FACTOR"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["decision", "choice", "option", "crossroads", "dilemma", "path"],
+    emotionalStates: ["at crossroads"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const RISK_ASSESSMENT_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread clarifies choices, evaluates options, and reveals decision paths. This 5-card spread provides medium level insight into risk, reward, assessment. Five cards to weigh risk versus reward",
+    es: "Esta spread clarifies choices, evaluates options, and reveals decision paths. Esta 5-card spread provides medium level insight into risk, reward, assessment. Five cards to weigh risk versus reward",
+    ca: "Aquesta spread clarifies choices, evaluates options, and reveals decision paths. Aquesta 5-card spread provides medium level insight into risk, reward, assessment. Five cards to weigh risk versus reward",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about risk and reward.",
+    es: "Elige this spread when tú need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about risk and reward.",
+    ca: "Tria this spread when tu need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about risk and reward.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between RISK and DECISION positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between RISK and DECISION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between RISK and DECISION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Risk and Reward reveals the core dynamic of this situation",
+        es: "La relación entre Riesgo y Recompensa revela la dinámica central de esta situación",
+        ca: "La relació entre Risc i Recompensa revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["RISK", "REWARD"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Timing to Decision shows the natural flow toward resolution",
+        es: "La progresión desde Momento hasta Decisión muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Moment fins a Decisió mostra el flux natural cap a la resolució",
+      },
+      positions: ["TIMING", "DECISION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["decision", "choice", "option", "crossroads", "dilemma", "path"],
+    emotionalStates: ["at crossroads"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const TIMING_DECISION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread clarifies choices, evaluates options, and reveals decision paths. This 4-card spread provides simple level insight into timing, when, decision. Four cards to determine optimal timing",
+    es: "Esta spread clarifies choices, evaluates options, and reveals decision paths. Esta 4-card spread provides simple level insight into timing, when, decision. Four cards to determine optimal timing",
+    ca: "Aquesta spread clarifies choices, evaluates options, and reveals decision paths. Aquesta 4-card spread provides simple level insight into timing, when, decision. Four cards to determine optimal timing",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on decision, choice, option matters. Ideal for quick insight and clarity. Perfect for questions about timing and when.",
+    es: "Elige this spread when tú need guidance on decision, choice, option matters. Ideal for quick insight and clarity. Perfect for questions about timing and when.",
+    ca: "Tria this spread when tu need guidance on decision, choice, option matters. Ideal for quick insight and clarity. Perfect for questions about timing and when.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep psychological work, spiritual awakening, passive reflection. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between NOW and BEST_TIMING positions.",
+    es: "Lee cartas sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between NOW and BEST_TIMING positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between NOW and BEST_TIMING positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Now and Soon reveals the core dynamic of this situation",
+        es: "La relación entre Ahora y Pronto revela la dinámica central de esta situación",
+        ca: "La relació entre Ara i Aviat revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["NOW", "SOON"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["decision", "choice", "option", "crossroads", "dilemma", "path"],
+    emotionalStates: ["at crossroads"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SHOULD_I_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread clarifies choices, evaluates options, and reveals decision paths. This 3-card spread provides simple level insight into decision, should, yes. Three cards for clear yes/no guidance with perspective",
+    es: "Esta spread clarifies choices, evaluates options, and reveals decision paths. Esta 3-card spread provides simple level insight into decision, should, yes. Three cards for clear yes/no guidance with perspective",
+    ca: "Aquesta spread clarifies choices, evaluates options, and reveals decision paths. Aquesta 3-card spread provides simple level insight into decision, should, yes. Three cards for clear yes/no guidance with perspective",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on decision, choice, option matters. Ideal for quick insight and clarity. Perfect for questions about decision and should.",
+    es: "Elige this spread when tú need guidance on decision, choice, option matters. Ideal for quick insight and clarity. Perfect for questions about decision and should.",
+    ca: "Tria this spread when tu need guidance on decision, choice, option matters. Ideal for quick insight and clarity. Perfect for questions about decision and should.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep psychological work, spiritual awakening, passive reflection. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 3, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YES_PERSPECTIVE and HIGHER_GUIDANCE positions.",
+    es: "Lee cartas sequentially from position 1 to 3, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YES_PERSPECTIVE and HIGHER_GUIDANCE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 3, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between YES_PERSPECTIVE and HIGHER_GUIDANCE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Yes Perspective and No Perspective reveals the core dynamic of this situation",
+        es: "La relación entre Perspectiva Sí y Perspectiva No revela la dinámica central de esta situación",
+        ca: "La relació entre Perspectiva Sí i Perspectiva No revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["YES_PERSPECTIVE", "NO_PERSPECTIVE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["decision", "choice", "option", "crossroads", "dilemma", "path"],
+    emotionalStates: ["at crossroads"],
+    preferWhen: {
+      cardCountPreference: "simple",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const LIFE_CROSSROADS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread clarifies choices, evaluates options, and reveals decision paths. This 7-card spread provides medium level insight into major decision, life choice, crossroads. Seven cards to navigate major life decisions",
+    es: "Esta spread clarifies choices, evaluates options, and reveals decision paths. Esta 7-card spread provides medium level insight into major decision, life choice, crossroads. Seven cards to navigate major life decisions",
+    ca: "Aquesta spread clarifies choices, evaluates options, and reveals decision paths. Aquesta 7-card spread provides medium level insight into major decision, life choice, crossroads. Seven cards to navigate major life decisions",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about major decision and life choice.",
+    es: "Elige this spread when tú need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about major decision and life choice.",
+    ca: "Tria this spread when tu need guidance on decision, choice, option matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about major decision and life choice.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep psychological work, spiritual awakening, passive reflection. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_POSITION and GUIDANCE positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_POSITION and GUIDANCE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_POSITION and GUIDANCE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Position and Path A: Nature reveals the core dynamic of this situation",
+        es: "La relación entre Posición Actual y Camino A: Naturaleza revela la dinámica central de esta situación",
+        ca: "La relació entre Posició Actual i Camí A: Naturalesa revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_POSITION", "PATH_A_NATURE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Path B: Nature to Guidance shows the natural flow toward resolution",
+        es: "La progresión desde Camino B: Naturaleza hasta Guía muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Camí B: Naturalesa fins a Guia mostra el flux natural cap a la resolució",
+      },
+      positions: ["PATH_B_NATURE", "GUIDANCE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["decision", "choice", "option", "crossroads", "dilemma", "path"],
+    emotionalStates: ["at crossroads"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const LIFE_PATH_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 7-card spread provides medium level insight into self-discovery, life-path, personal-growth. The Fool's Journey applied to your personal path of development",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 7-card spread provides medium level insight into self-discovery, life-path, personal-growth. The Fool's Journey applied to your personal path of development",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 7-card spread provides medium level insight into self-discovery, life-path, personal-growth. The Fool's Journey applied to your personal path of development",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and life-path.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and life-path.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and life-path.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between BIRTH and LEGACY positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between BIRTH and LEGACY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between BIRTH and LEGACY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Birth and Childhood reveals the core dynamic of this situation",
+        es: "La relación entre Nacimiento y Infancia revela la dinámica central de esta situación",
+        ca: "La relació entre Naixement i Infantesa revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["BIRTH", "CHILDHOOD"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Challenges to Legacy shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos hasta Legado muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments fins a Llegat mostra el flux natural cap a la resolució",
+      },
+      positions: ["CHALLENGES", "LEGACY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const HIDDEN_TALENTS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 5-card spread provides medium level insight into self-discovery, talents, abilities. Discover dormant abilities waiting to be awakened",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 5-card spread provides medium level insight into self-discovery, talents, abilities. Discover dormant abilities waiting to be awakened",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 5-card spread provides medium level insight into self-discovery, talents, abilities. Discover dormant abilities waiting to be awakened",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and talents.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and talents.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and talents.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between VISIBLE_SKILLS and IMPACT positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between VISIBLE_SKILLS and IMPACT positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between VISIBLE_SKILLS and IMPACT positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Visible Skills and Hidden Talent reveals the core dynamic of this situation",
+        es: "La relación entre Habilidades Visibles y Talento Oculto revela la dinámica central de esta situación",
+        ca: "La relació entre Habilitats Visibles i Talent Ocult revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["VISIBLE_SKILLS", "HIDDEN_TALENT_1"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Hidden Talent to Impact shows the natural flow toward resolution",
+        es: "La progresión desde Talento Oculto hasta Impacto muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Talent Ocult fins a Impacte mostra el flux natural cap a la resolució",
+      },
+      positions: ["HIDDEN_TALENT_2", "IMPACT"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PSYCHOLOGICAL_BLOCKS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 6-card spread provides medium level insight into self-discovery, shadow-work, blocks. Shadow work spread to identify and release inner obstacles",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 6-card spread provides medium level insight into self-discovery, shadow-work, blocks. Shadow work spread to identify and release inner obstacles",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 6-card spread provides medium level insight into self-discovery, shadow-work, blocks. Shadow work spread to identify and release inner obstacles",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and shadow-work.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and shadow-work.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and shadow-work.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_BLOCK and FREEDOM positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_BLOCK and FREEDOM positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_BLOCK and FREEDOM positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Block and Origin reveals the core dynamic of this situation",
+        es: "La relación entre Bloqueo Actual y Origen revela la dinámica central de esta situación",
+        ca: "La relació entre Bloqueig Actual i Origen revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_BLOCK", "ORIGIN"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Fear Behind It to Freedom shows the natural flow toward resolution",
+        es: "La progresión desde Miedo Detrás hasta Libertad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Por Darrere fins a Llibertat mostra el flux natural cap a la resolució",
+      },
+      positions: ["FEAR", "FREEDOM"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const BEHAVIOR_PATTERNS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 6-card spread provides medium level insight into self-discovery, patterns, behavior. Circular spread revealing repetitive cycles and how to break them",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 6-card spread provides medium level insight into self-discovery, patterns, behavior. Circular spread revealing repetitive cycles and how to break them",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 6-card spread provides medium level insight into self-discovery, patterns, behavior. Circular spread revealing repetitive cycles and how to break them",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and patterns.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and patterns.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and patterns.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PATTERN_1 and NEW_PATTERN positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PATTERN_1 and NEW_PATTERN positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PATTERN_1 and NEW_PATTERN positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Pattern 1 and Pattern 2 reveals the core dynamic of this situation",
+        es: "La relación entre Patrón 1 y Patrón 2 revela la dinámica central de esta situación",
+        ca: "La relació entre Patró 1 i Patró 2 revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PATTERN_1", "PATTERN_2"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Root Cause to New Pattern shows the natural flow toward resolution",
+        es: "La progresión desde Causa Raíz hasta Nuevo Patrón muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Causa Arrel fins a Nou Patró mostra el flux natural cap a la resolució",
+      },
+      positions: ["ROOT_CAUSE", "NEW_PATTERN"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const INNER_CHILD_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 5-card spread provides medium level insight into self-discovery, inner-child, healing. Jungian pentagon connecting with wounded and joyful aspects of self",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 5-card spread provides medium level insight into self-discovery, inner-child, healing. Jungian pentagon connecting with wounded and joyful aspects of self",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 5-card spread provides medium level insight into self-discovery, inner-child, healing. Jungian pentagon connecting with wounded and joyful aspects of self",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and inner-child.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and inner-child.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about self-discovery and inner-child.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between WOUNDED_CHILD and INTEGRATION positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between WOUNDED_CHILD and INTEGRATION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between WOUNDED_CHILD and INTEGRATION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Wounded Child and Joyful Child reveals the core dynamic of this situation",
+        es: "La relación entre Niño Herido y Niño Gozoso revela la dinámica central de esta situación",
+        ca: "La relació entre Infant Ferit i Infant Joiós revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["WOUNDED_CHILD", "JOYFUL_CHILD"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Message to Integration shows the natural flow toward resolution",
+        es: "La progresión desde Mensaje hasta Integración muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Missatge fins a Integració mostra el flux natural cap a la resolució",
+      },
+      positions: ["MESSAGE", "INTEGRATION"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SHADOW_SELF_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 6-card spread provides medium level insight into shadow work, self-discovery, integration. Jungian shadow work exploring hidden aspects of self",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 6-card spread provides medium level insight into shadow work, self-discovery, integration. Jungian shadow work exploring hidden aspects of self",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 6-card spread provides medium level insight into shadow work, self-discovery, integration. Jungian shadow work exploring hidden aspects of self",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about shadow work and self-discovery.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about shadow work and self-discovery.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about shadow work and self-discovery.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PERSONA and WHOLENESS positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PERSONA and WHOLENESS positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between PERSONA and WHOLENESS positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Persona and Shadow Aspect 1 reveals the core dynamic of this situation",
+        es: "La relación entre Persona y Aspecto Sombra 1 revela la dinámica central de esta situación",
+        ca: "La relació entre Persona i Aspecte Ombra 1 revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PERSONA", "SHADOW_ASPECT_1"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Gift in Shadow to Wholeness shows the natural flow toward resolution",
+        es: "La progresión desde Don en la Sombra hasta Integridad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Do a l'Ombra fins a Integritat mostra el flux natural cap a la resolució",
+      },
+      positions: ["GIFT_IN_SHADOW", "WHOLENESS"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const AUTHENTIC_SELF_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 7-card spread provides medium level insight into authenticity, true self, self-discovery. Seven-card spiral discovering your true self beyond conditioning",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 7-card spread provides medium level insight into authenticity, true self, self-discovery. Seven-card spiral discovering your true self beyond conditioning",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 7-card spread provides medium level insight into authenticity, true self, self-discovery. Seven-card spiral discovering your true self beyond conditioning",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about authenticity and true self.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about authenticity and true self.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about authenticity and true self.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between FALSE_SELF and LIBERATED_SELF positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between FALSE_SELF and LIBERATED_SELF positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between FALSE_SELF and LIBERATED_SELF positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between False Self and Societal Expectations reveals the core dynamic of this situation",
+        es: "La relación entre Falso Yo y Expectativas Sociales revela la dinámica central de esta situación",
+        ca: "La relació entre Fals Jo i Expectatives Socials revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["FALSE_SELF", "SOCIETAL_EXPECTATIONS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Core Essence to Liberated Self shows the natural flow toward resolution",
+        es: "La progresión desde Esencia Central hasta Yo Liberado muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Essència Central fins a Jo Alliberat mostra el flux natural cap a la resolució",
+      },
+      positions: ["CORE_ESSENCE", "LIBERATED_SELF"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const VALUES_CLARIFICATION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 5-card spread provides medium level insight into values, priorities, alignment. Five-card cross revealing your core values and alignment",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 5-card spread provides medium level insight into values, priorities, alignment. Five-card cross revealing your core values and alignment",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 5-card spread provides medium level insight into values, priorities, alignment. Five-card cross revealing your core values and alignment",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about values and priorities.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about values and priorities.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about values and priorities.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CORE_VALUE_1 and ALIGNMENT positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CORE_VALUE_1 and ALIGNMENT positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between CORE_VALUE_1 and ALIGNMENT positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Core Value 1 and Core Value 2 reveals the core dynamic of this situation",
+        es: "La relación entre Valor Central 1 y Valor Central 2 revela la dinámica central de esta situación",
+        ca: "La relació entre Valor Central 1 i Valor Central 2 revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CORE_VALUE_1", "CORE_VALUE_2"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Core Value 3 to Alignment shows the natural flow toward resolution",
+        es: "La progresión desde Valor Central 3 hasta Alineación muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Valor Central 3 fins a Alineació mostra el flux natural cap a la resolució",
+      },
+      positions: ["CORE_VALUE_3", "ALIGNMENT"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const STRENGTHS_WEAKNESSES_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 8-card spread provides complex level insight into self-assessment, swot, strengths. Eight-card SWOT-style mandala for comprehensive self-assessment",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 8-card spread provides complex level insight into self-assessment, swot, strengths. Eight-card SWOT-style mandala for comprehensive self-assessment",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 8-card spread provides complex level insight into self-assessment, swot, strengths. Eight-card SWOT-style mandala for comprehensive self-assessment",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about self-assessment and swot.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about self-assessment and swot.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about self-assessment and swot.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between STRENGTH_1 and GROWTH positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between STRENGTH_1 and GROWTH positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between STRENGTH_1 and GROWTH positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Strength 1 and Strength 2 reveals the core dynamic of this situation",
+        es: "La relación entre Fortaleza 1 y Fortaleza 2 revela la dinámica central de esta situación",
+        ca: "La relació entre Fortalesa 1 i Fortalesa 2 revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["STRENGTH_1", "STRENGTH_2"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Opportunity to Growth shows the natural flow toward resolution",
+        es: "La progresión desde Oportunidad hasta Crecimiento muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Oportunitat fins a Creixement mostra el flux natural cap a la resolució",
+      },
+      positions: ["OPPORTUNITY", "GROWTH"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PERSONAL_IDENTITY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread facilitates self-discovery, personal insight, and inner exploration. This 9-card spread provides complex level insight into identity, self-discovery, who am i. Nine-card grid exploring the multifaceted question: Who am I?",
+    es: "Esta spread facilitates self-discovery, personal insight, and inner exploration. Esta 9-card spread provides complex level insight into identity, self-discovery, who am i. Nine-card grid exploring el multifaceted question: Who am I?",
+    ca: "Aquesta spread facilitates self-discovery, personal insight, and inner exploration. Aquesta 9-card spread provides complex level insight into identity, self-discovery, who am i. Nine-card grid exploring el multifaceted question: Who am I?",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on self, identity, personality matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about identity and self-discovery.",
+    es: "Elige this spread when tú need guidance on self, identity, personality matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about identity and self-discovery.",
+    ca: "Tria this spread when tu need guidance on self, identity, personality matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about identity and self-discovery.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for urgent external decisions, relationship analysis with others, financial planning. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for urgent external decisions, relationship analysis with others, financial planning. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between BODY and CORE positions.",
+    es: "Lee cartas sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between BODY and CORE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 9, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between BODY and CORE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Body and Mind reveals the core dynamic of this situation",
+        es: "La relación entre Cuerpo y Mente revela la dinámica central de esta situación",
+        ca: "La relació entre Cos i Ment revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["BODY", "MIND"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Roles to Core shows the natural flow toward resolution",
+        es: "La progresión desde Roles hasta Núcleo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Rols fins a Nucli mostra el flux natural cap a la resolució",
+      },
+      positions: ["ROLES", "CORE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["self", "identity", "personality", "traits", "potential", "inner"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const MOVING_RELOCATION_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 6-card spread provides medium level insight into relocation, moving, home-change. Six cards exploring decision about changing homes or cities",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 6-card spread provides medium level insight into relocation, moving, home-change. Six cards exploring decision about changing homes or cities",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 6-card spread provides medium level insight into relocation, moving, home-change. Six cards exploring decision about changing homes or cities",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about relocation and moving.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about relocation and moving.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about relocation and moving.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_SITUATION and OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_SITUATION and OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_SITUATION and OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Situation and New Location Energy reveals the core dynamic of this situation",
+        es: "La relación entre Situación Actual y Energía de Nueva Ubicación revela la dinámica central de esta situación",
+        ca: "La relació entre Situació Actual i Energia de Nova Ubicació revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_SITUATION", "NEW_LOCATION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Timing Guidance to Potential Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Guía de Tiempo hasta Resultado Potencial muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Guia de Temps fins a Resultat Potencial mostra el flux natural cap a la resolució",
+      },
+      positions: ["TIMING", "OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const TRAVEL_PLANNING_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 5-card spread provides medium level insight into travel, journey, trip. Five cards providing guidance for upcoming journey",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 5-card spread provides medium level insight into travel, journey, trip. Five cards providing guidance for upcoming journey",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 5-card spread provides medium level insight into travel, journey, trip. Five cards providing guidance for upcoming journey",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about travel and journey.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about travel and journey.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about travel and journey.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between TRAVEL_PURPOSE and BLESSINGS positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between TRAVEL_PURPOSE and BLESSINGS positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between TRAVEL_PURPOSE and BLESSINGS positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Travel Purpose and Key Experiences reveals the core dynamic of this situation",
+        es: "La relación entre Propósito del Viaje y Experiencias Clave revela la dinámica central de esta situación",
+        ca: "La relació entre Propòsit del Viatge i Experiències Clau revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["TRAVEL_PURPOSE", "EXPERIENCES"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Insights & Learning to Journey's Blessing shows the natural flow toward resolution",
+        es: "La progresión desde Perspectiva y Aprendizaje hasta Bendición del Viaje muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Perspectiva i Aprenentatge fins a Benedicció del Viatge mostra el flux natural cap a la resolució",
+      },
+      positions: ["INSIGHTS", "BLESSINGS"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const LEGAL_ISSUES_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 7-card spread provides medium level insight into legal, justice, court. Seven cards for understanding legal matters and justice",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 7-card spread provides medium level insight into legal, justice, court. Seven cards for understanding legal matters and justice",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 7-card spread provides medium level insight into legal, justice, court. Seven cards for understanding legal matters and justice",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about legal and justice.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about legal and justice.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about legal and justice.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between SITUATION_ROOT and ULTIMATE_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between SITUATION_ROOT and ULTIMATE_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between SITUATION_ROOT and ULTIMATE_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Root of Situation and Your Position reveals the core dynamic of this situation",
+        es: "La relación entre Raíz de la Situación y Tu Posición revela la dinámica central de esta situación",
+        ca: "La relació entre Arrel de la Situació i La Teva Posició revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["SITUATION_ROOT", "MY_POSITION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Justice Energy to Ultimate Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Energía de Justicia hasta Resultado Final muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Energia de Justícia fins a Resultat Final mostra el flux natural cap a la resolució",
+      },
+      positions: ["JUSTICE_ENERGY", "ULTIMATE_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const FAMILY_DYNAMICS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 8-card spread provides complex level insight into family, relationships, patterns. Eight cards for understanding family relationships and patterns",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 8-card spread provides complex level insight into family, relationships, patterns. Eight cards for understanding family relationships and patterns",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 8-card spread provides complex level insight into family, relationships, patterns. Eight cards for understanding family relationships and patterns",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about family and relationships.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about family and relationships.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about family and relationships.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between FAMILY_CORE and FAMILY_FUTURE positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between FAMILY_CORE and FAMILY_FUTURE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between FAMILY_CORE and FAMILY_FUTURE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Family Core Energy and Your Family Role reveals the core dynamic of this situation",
+        es: "La relación entre Energía Central Familiar y Tu Rol Familiar revela la dinámica central de esta situación",
+        ca: "La relació entre Energia Central Familiar i El Teu Rol Familiar revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["FAMILY_CORE", "YOUR_ROLE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Hidden Patterns to Family Future shows the natural flow toward resolution",
+        es: "La progresión desde Patrones Ocultos hasta Futuro Familiar muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Patrons Ocults fins a Futur Familiar mostra el flux natural cap a la resolució",
+      },
+      positions: ["HIDDEN_PATTERNS", "FAMILY_FUTURE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const FRIENDSHIP_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 6-card spread provides medium level insight into friendship, platonic, relationships. Six cards for understanding platonic relationships",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 6-card spread provides medium level insight into friendship, platonic, relationships. Six cards for understanding platonic relationships",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 6-card spread provides medium level insight into friendship, platonic, relationships. Six cards for understanding platonic relationships",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about friendship and platonic.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about friendship and platonic.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about friendship and platonic.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between FRIENDSHIP_FOUNDATION and FRIENDSHIP_DESTINY positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between FRIENDSHIP_FOUNDATION and FRIENDSHIP_DESTINY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between FRIENDSHIP_FOUNDATION and FRIENDSHIP_DESTINY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Friendship Foundation and What You Bring reveals the core dynamic of this situation",
+        es: "La relación entre Fundamento de la Amistad y Lo Que Aportas revela la dinámica central de esta situación",
+        ca: "La relació entre Fonament de l'Amistat i El Que Aportes revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["FRIENDSHIP_FOUNDATION", "YOUR_CONTRIBUTION"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Friendship Challenges to Friendship Destiny shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos de la Amistad hasta Destino de la Amistad muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments de l'Amistat fins a Destí de l'Amistat mostra el flux natural cap a la resolució",
+      },
+      positions: ["CHALLENGES", "FRIENDSHIP_DESTINY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const EDUCATION_STUDY_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 6-card spread provides medium level insight into education, study, learning. Six cards providing guidance for learning and academic pursuits",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 6-card spread provides medium level insight into education, study, learning. Six cards providing guidance for learning and academic pursuits",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 6-card spread provides medium level insight into education, study, learning. Six cards providing guidance for learning and academic pursuits",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about education and study.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about education and study.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about education and study.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_LEARNING and ACADEMIC_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_LEARNING and ACADEMIC_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_LEARNING and ACADEMIC_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Learning State and Subject/Area Focus reveals the core dynamic of this situation",
+        es: "La relación entre Estado Actual de Aprendizaje y Enfoque de Asignatura/Área revela la dinámica central de esta situación",
+        ca: "La relació entre Estat Actual d'Aprenentatge i Enfocament de l'Assignatura/Àrea revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_LEARNING", "SUBJECT_FOCUS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Challenges to Academic Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos hasta Resultado Académico muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments fins a Resultat Acadèmic mostra el flux natural cap a la resolució",
+      },
+      positions: ["CHALLENGES", "ACADEMIC_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const CREATIVE_PROJECT_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 7-card spread provides medium level insight into creative, project, art. Seven cards exploring bringing creative visions to life",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 7-card spread provides medium level insight into creative, project, art. Seven cards exploring bringing creative visions to life",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 7-card spread provides medium level insight into creative, project, art. Seven cards exploring bringing creative visions to life",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about creative and project.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about creative and project.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about creative and project.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CREATIVE_VISION and CREATIVE_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CREATIVE_VISION and CREATIVE_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CREATIVE_VISION and CREATIVE_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Creative Vision and Inspiration Source reveals the core dynamic of this situation",
+        es: "La relación entre Tu Visión Creativa y Fuente de Inspiración revela la dinámica central de esta situación",
+        ca: "La relació entre La Teva Visió Creativa i Font d'Inspiració revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CREATIVE_VISION", "INSPIRATION_SOURCE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Creative Obstacles to Creative Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Obstáculos Creativos hasta Resultado Creativo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Obstacles Creatius fins a Resultat Creatiu mostra el flux natural cap a la resolució",
+      },
+      positions: ["OBSTACLES_TO_CREATION", "CREATIVE_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const HOME_LIFE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 6-card spread provides medium level insight into home, family, domestic. Six cards exploring domestic harmony and household matters",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 6-card spread provides medium level insight into home, family, domestic. Six cards exploring domestic harmony and household matters",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 6-card spread provides medium level insight into home, family, domestic. Six cards exploring domestic harmony and household matters",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about home and family.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about home and family.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about home and family.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between HOME_FOUNDATION and HOME_HARMONY positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between HOME_FOUNDATION and HOME_HARMONY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between HOME_FOUNDATION and HOME_HARMONY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Home Foundation and Family Dynamics reveals the core dynamic of this situation",
+        es: "La relación entre Fundamento del Hogar y Dinámica Familiar revela la dinámica central de esta situación",
+        ca: "La relació entre Fonament de la Llar i Dinàmica Familiar revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["HOME_FOUNDATION", "FAMILY_DYNAMICS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Challenges to Future Harmony shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos hasta Armonía Futura muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments fins a Harmonia Futura mostra el flux natural cap a la resolució",
+      },
+      positions: ["HOME_CHALLENGES", "HOME_HARMONY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const PARENTING_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 8-card spread provides complex level insight into parenting, children, family. Eight cards offering guidance for raising children",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 8-card spread provides complex level insight into parenting, children, family. Eight cards offering guidance for raising children",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 8-card spread provides complex level insight into parenting, children, family. Eight cards offering guidance for raising children",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about parenting and children.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about parenting and children.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for comprehensive analysis and detailed understanding. Perfect for questions about parenting and children.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need quick simple answers, use a simpler spread instead.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need quick simple answers, use a simpler spread instead.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need quick simple answers, use a simpler spread instead.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between PARENT_ROLE and PARENTING_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between PARENT_ROLE and PARENTING_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 8, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to elemental balance, Major Arcana concentration, and card reversals. Look for patterns between PARENT_ROLE and PARENTING_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Your Parenting Role and Child's Perspective reveals the core dynamic of this situation",
+        es: "La relación entre Tu Papel de Padre/Madre y Perspectiva del Niño revela la dinámica central de esta situación",
+        ca: "La relació entre El Teu Paper de Pare/Mare i Perspectiva de l'Infant revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["PARENT_ROLE", "CHILD_PERSPECTIVE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Your Growth as Parent to Long-term Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Tu Crecimiento como Padre/Madre hasta Resultado a Largo Plazo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de El Teu Creixement com a Mare/Pare fins a Resultat a Llarg Termini mostra el flux natural cap a la resolució",
+      },
+      positions: ["PARENTAL_GROWTH", "PARENTING_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "comprehensive",
+      complexityLevel: "complex",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const MAJOR_LIFE_CHANGE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread examines life circumstances, practical matters, and everyday situations. This 7-card spread provides medium level insight into transition, change, major. Seven cards for navigating significant life transitions",
+    es: "Esta spread examines life circumstances, practical matters, and everyday situations. Esta 7-card spread provides medium level insight into transition, change, major. Seven cards for navigating significant life transitions",
+    ca: "Aquesta spread examines life circumstances, practical matters, and everyday situations. Aquesta 7-card spread provides medium level insight into transition, change, major. Seven cards for navigating significant life transitions",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about transition and change.",
+    es: "Elige this spread when tú need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about transition and change.",
+    ca: "Tria this spread when tu need guidance on life, situation, circumstances matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about transition and change.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    es: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+    ca: "Evita this spread for deep spiritual work, professional career guidance, romantic relationships. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between WHAT_ENDS and NEW_CHAPTER_ENERGY positions.",
+    es: "Lee cartas sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between WHAT_ENDS and NEW_CHAPTER_ENERGY positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 7, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between WHAT_ENDS and NEW_CHAPTER_ENERGY positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between What Ends and Reason for Change reveals the core dynamic of this situation",
+        es: "La relación entre Lo Que Termina y Razón del Cambio revela la dinámica central de esta situación",
+        ca: "La relació entre El Que Acaba i Raó del Canvi revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["WHAT_ENDS", "REASON_FOR_CHANGE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Transition Challenges to New Chapter Energy shows the natural flow toward resolution",
+        es: "La progresión desde Desafíos de Transición hasta Energía del Nuevo Capítulo muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Desafiaments de Transició fins a Energia del Nou Capítol mostra el flux natural cap a la resolució",
+      },
+      positions: ["TRANSITION_CHALLENGES", "NEW_CHAPTER_ENERGY"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["life", "situation", "circumstances", "practical", "everyday", "reality"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "medium-term",
+    },
+  },
+};
+
+
+const SIX_MONTH_OUTLOOK_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals temporal patterns, upcoming energies, and future possibilities. This 6-card spread provides medium level insight into forecast, six months, planning. Six month forecast exploring themes and milestones across two quarters",
+    es: "Esta spread reveals temporal patterns, upcoming energies, and future possibilities. Esta 6-card spread provides medium level insight into forecast, six months, planning. Six month forecast exploring themes and milestones across two quarters",
+    ca: "Aquesta spread reveals temporal patterns, upcoming energies, and future possibilities. Aquesta 6-card spread provides medium level insight into forecast, six months, planning. Six month forecast exploring themes and milestones across two quarters",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about forecast and six months.",
+    es: "Elige this spread when tú need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about forecast and six months.",
+    ca: "Tria this spread when tu need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about forecast and six months.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cards for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MOMENTUM and SIX_MONTH_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartas for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MOMENTUM and SIX_MONTH_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 6, building the narrative progressively. Focus first on central positions for the core message, then expand to surrounding cartes for context. Pay attention to suit distribution and numerical progressions. Look for patterns between CURRENT_MOMENTUM and SIX_MONTH_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Current Momentum and First Quarter Theme reveals the core dynamic of this situation",
+        es: "La relación entre Impulso Actual y Tema del Primer Trimestre revela la dinámica central de esta situación",
+        ca: "La relació entre Impuls Actual i Tema del Primer Trimestre revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["CURRENT_MOMENTUM", "FIRST_QUARTER_THEME"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Second Quarter Theme to Six Month Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Tema del Segundo Trimestre hasta Resultado de Seis Meses muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Tema del Segon Trimestre fins a Resultat de Sis Mesos mostra el flux natural cap a la resolució",
+      },
+      positions: ["SECOND_QUARTER_THEME", "SIX_MONTH_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["future", "timing", "forecast", "upcoming", "timeline", "prediction"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "long-term",
+    },
+  },
+};
+
+
+const QUARTERLY_FORECAST_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals temporal patterns, upcoming energies, and future possibilities. This 3-card spread provides simple level insight into quarterly, three months, business. Three month business cycle forecast aligned with seasonal rhythms",
+    es: "Esta spread reveals temporal patterns, upcoming energies, and future possibilities. Esta 3-card spread provides simple level insight into quarterly, three months, business. Three month business cycle forecast aligned with seasonal rhythms",
+    ca: "Aquesta spread reveals temporal patterns, upcoming energies, and future possibilities. Aquesta 3-card spread provides simple level insight into quarterly, three months, business. Three month business cycle forecast aligned with seasonal rhythms",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on future, timing, forecast matters. Ideal for quick insight and clarity. Perfect for questions about quarterly and three months.",
+    es: "Elige this spread when tú need guidance on future, timing, forecast matters. Ideal for quick insight and clarity. Perfect for questions about quarterly and three months.",
+    ca: "Tria this spread when tu need guidance on future, timing, forecast matters. Ideal for quick insight and clarity. Perfect for questions about quarterly and three months.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 3, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between QUARTER_THEME and QUARTER_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 3, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between QUARTER_THEME and QUARTER_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 3, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between QUARTER_THEME and QUARTER_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Quarter Theme and Central Challenge reveals the core dynamic of this situation",
+        es: "La relación entre Tema del Trimestre y Desafío Central revela la dinámica central de esta situación",
+        ca: "La relació entre Tema del Trimestre i Desafiament Central revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["QUARTER_THEME", "CENTRAL_CHALLENGE"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["future", "timing", "forecast", "upcoming", "timeline", "prediction"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "simple",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "long-term",
+    },
+  },
+};
+
+
+const MONTHLY_FORECAST_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals temporal patterns, upcoming energies, and future possibilities. This 4-card spread provides simple level insight into monthly, month ahead, weekly flow. Four card month ahead guidance with week-by-week flow",
+    es: "Esta spread reveals temporal patterns, upcoming energies, and future possibilities. Esta 4-card spread provides simple level insight into monthly, month ahead, weekly flow. Four card month ahead guidance with week-by-week flow",
+    ca: "Aquesta spread reveals temporal patterns, upcoming energies, and future possibilities. Aquesta 4-card spread provides simple level insight into monthly, month ahead, weekly flow. Four card month ahead guidance with week-by-week flow",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on future, timing, forecast matters. Ideal for quick insight and clarity. Perfect for questions about monthly and month ahead.",
+    es: "Elige this spread when tú need guidance on future, timing, forecast matters. Ideal for quick insight and clarity. Perfect for questions about monthly and month ahead.",
+    ca: "Tria this spread when tu need guidance on future, timing, forecast matters. Ideal for quick insight and clarity. Perfect for questions about monthly and month ahead.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need more detailed analysis, consider a medium or complex spread.",
+    es: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need more detailed analysis, consider a medium or complex spread.",
+    ca: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need more detailed analysis, consider a medium or complex spread.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between MONTH_OPENING and MONTH_RESOLUTION positions.",
+    es: "Lee cartas sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between MONTH_OPENING and MONTH_RESOLUTION positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 4, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between MONTH_OPENING and MONTH_RESOLUTION positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Month Opening and Mid-Month Development reveals the core dynamic of this situation",
+        es: "La relación entre Apertura del Mes y Desarrollo a Mediados de Mes revela la dinámica central de esta situación",
+        ca: "La relació entre Obertura del Mes i Desenvolupament de Mitjans de Mes revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["MONTH_OPENING", "MID_MONTH_DEVELOPMENT"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["future", "timing", "forecast", "upcoming", "timeline", "prediction"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "simple",
+      experienceLevel: "beginner",
+      timeframe: "long-term",
+    },
+  },
+};
+
+
+const SPECIFIC_EVENT_TIMING_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals temporal patterns, upcoming energies, and future possibilities. This 5-card spread provides medium level insight into timing, when, event. Five card spread revealing when a specific event will unfold and what conditions surround it",
+    es: "Esta spread reveals temporal patterns, upcoming energies, and future possibilities. Esta 5-card spread provides medium level insight into timing, when, event. Five card spread revealing when a specific event will unfold and what conditions surround it",
+    ca: "Aquesta spread reveals temporal patterns, upcoming energies, and future possibilities. Aquesta 5-card spread provides medium level insight into timing, when, event. Five card spread revealing when a specific event will unfold and what conditions surround it",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and when.",
+    es: "Elige this spread when tú need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and when.",
+    ca: "Tria this spread when tu need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and when.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between TIMEFRAME and EVENT_NATURE positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between TIMEFRAME and EVENT_NATURE positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between TIMEFRAME and EVENT_NATURE positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Timeframe and Building Factors reveals the core dynamic of this situation",
+        es: "La relación entre Marco de Tiempo y Factores en Construcción revela la dinámica central de esta situación",
+        ca: "La relació entre Període de Temps i Factors en Construcció revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["TIMEFRAME", "BUILDING_FACTORS"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Catalyst to Event Nature shows the natural flow toward resolution",
+        es: "La progresión desde Catalizador hasta Naturaleza del Evento muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Catalizador fins a Naturalesa de l'Esdeveniment mostra el flux natural cap a la resolució",
+      },
+      positions: ["CATALYST", "EVENT_NATURE"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["future", "timing", "forecast", "upcoming", "timeline", "prediction"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "long-term",
+    },
+  },
+};
+
+
+const FOUR_SEASONS_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals temporal patterns, upcoming energies, and future possibilities. This 5-card spread provides medium level insight into timing, annual, seasons. Five card annual cycle exploring each season's energy and the year's overarching theme",
+    es: "Esta spread reveals temporal patterns, upcoming energies, and future possibilities. Esta 5-card spread provides medium level insight into timing, annual, seasons. Five card annual cycle exploring each season's energy and el year's overarching theme",
+    ca: "Aquesta spread reveals temporal patterns, upcoming energies, and future possibilities. Aquesta 5-card spread provides medium level insight into timing, annual, seasons. Five card annual cycle exploring each season's energy and el year's overarching theme",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and annual.",
+    es: "Elige this spread when tú need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and annual.",
+    ca: "Tria this spread when tu need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and annual.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between SPRING and WINTER positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between SPRING and WINTER positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between SPRING and WINTER positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Spring and Summer reveals the core dynamic of this situation",
+        es: "La relación entre Primavera y Verano revela la dinámica central de esta situación",
+        ca: "La relació entre Primavera i Estiu revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["SPRING", "SUMMER"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Year's Theme to Winter shows the natural flow toward resolution",
+        es: "La progresión desde Tema del Año hasta Invierno muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Tema de l'Any fins a Hivern mostra el flux natural cap a la resolució",
+      },
+      positions: ["YEAR_THEME", "WINTER"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["future", "timing", "forecast", "upcoming", "timeline", "prediction"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "long-term",
+    },
+  },
+};
+
+
+const NEXT_STEPS_TIMELINE_EDUCATIONAL: SpreadEducationalContent = {
+  purpose: {
+    en: "This spread reveals temporal patterns, upcoming energies, and future possibilities. This 5-card spread provides medium level insight into timing, action, plan. Five card sequential action plan revealing immediate, short, medium, long-term steps and final outcome",
+    es: "Esta spread reveals temporal patterns, upcoming energies, and future possibilities. Esta 5-card spread provides medium level insight into timing, action, plan. Five card sequential action plan revealing immediate, short, medium, long-term steps and final outcome",
+    ca: "Aquesta spread reveals temporal patterns, upcoming energies, and future possibilities. Aquesta 5-card spread provides medium level insight into timing, action, plan. Five card sequential action plan revealing immediate, short, medium, long-term steps and final outcome",
+  },
+  whenToUse: {
+    en: "Choose this spread when you need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and action.",
+    es: "Elige this spread when tú need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and action.",
+    ca: "Tria this spread when tu need guidance on future, timing, forecast matters. Ideal for balanced depth without overwhelming complexity. Perfect for questions about timing and action.",
+  },
+  whenToAvoid: {
+    en: "Avoid this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    es: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+    ca: "Evita this spread for immediate yes/no questions, deep psychological analysis, past life work. If you need different scope, explore other categories.",
+  },
+  interpretationMethod: {
+    en: "Read cards sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between IMMEDIATE_ACTION and FINAL_OUTCOME positions.",
+    es: "Lee cartas sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between IMMEDIATE_ACTION and FINAL_OUTCOME positions.",
+    ca: "Llegeix cartes sequentially from position 1 to 5, building the narrative progressively. Each position builds upon the previous, creating a clear story arc. Pay attention to suit distribution and numerical progressions. Look for patterns between IMMEDIATE_ACTION and FINAL_OUTCOME positions.",
+  },
+  positionInteractions: [
+    {
+      description: {
+        en: "The relationship between Immediate Action and Short Term (1-2 months) reveals the core dynamic of this situation",
+        es: "La relación entre Acción Inmediata y Corto Plazo (1-2 meses) revela la dinámica central de esta situación",
+        ca: "La relació entre Acció Immediata i Curt Termini (1-2 mesos) revela la dinàmica central d'aquesta situació",
+      },
+      positions: ["IMMEDIATE_ACTION", "SHORT_TERM"],
+      aiGuidance: "Compare these two positions for contrast or harmony. Look for complementary or opposing energies.",
+    },
+    {
+      description: {
+        en: "The progression from Medium Term (3-6 months) to Final Outcome shows the natural flow toward resolution",
+        es: "La progresión desde Plazo Medio (3-6 meses) hasta Resultado Final muestra el flujo natural hacia la resolución",
+        ca: "La progressió des de Termini Mitjà (3-6 mesos) fins a Resultat Final mostra el flux natural cap a la resolució",
+      },
+      positions: ["MEDIUM_TERM", "FINAL_OUTCOME"],
+      aiGuidance: "Track the energy shift from middle to end. Does it show improvement, challenge, or transformation?",
+    }
+  ],
+  aiSelectionCriteria: {
+    questionPatterns: ["future", "timing", "forecast", "upcoming", "timeline", "prediction"],
+    emotionalStates: ["seeking guidance"],
+    preferWhen: {
+      cardCountPreference: "moderate",
+      complexityLevel: "medium",
+      experienceLevel: "all",
+      timeframe: "long-term",
+    },
+  },
+};
+
+/**
  * Educational content registry
  */
 export const SPREADS_EDUCATIONAL: Record<string, SpreadEducationalContent> = {
@@ -1297,8 +6284,99 @@ export const SPREADS_EDUCATIONAL: Record<string, SpreadEducationalContent> = {
   relationship: RELATIONSHIP_EDUCATIONAL,
   pyramid: PYRAMID_EDUCATIONAL,
   horseshoe: HORSESHOE_EDUCATIONAL,
-  star: STAR_EDUCATIONAL,
   celtic_cross: CELTIC_CROSS_EDUCATIONAL,
+  star: STAR_EDUCATIONAL,
   astrological: ASTROLOGICAL_EDUCATIONAL,
   year_ahead: YEAR_AHEAD_EDUCATIONAL,
+  morning_guidance: MORNING_GUIDANCE_EDUCATIONAL,
+  evening_reflection: EVENING_REFLECTION_EDUCATIONAL,
+  weekly_overview: WEEKLY_OVERVIEW_EDUCATIONAL,
+  yes_no: YES_NO_EDUCATIONAL,
+  quick_insight: QUICK_INSIGHT_EDUCATIONAL,
+  new_love_potential: NEW_LOVE_POTENTIAL_EDUCATIONAL,
+  healing_breakup: HEALING_BREAKUP_EDUCATIONAL,
+  soulmate_search: SOULMATE_SEARCH_EDUCATIONAL,
+  compatibility_check: COMPATIBILITY_CHECK_EDUCATIONAL,
+  marriage_decision: MARRIAGE_DECISION_EDUCATIONAL,
+  dating_guidance: DATING_GUIDANCE_EDUCATIONAL,
+  toxic_relationship: TOXIC_RELATIONSHIP_EDUCATIONAL,
+  self_love_journey: SELF_LOVE_JOURNEY_EDUCATIONAL,
+  intimacy_issues: INTIMACY_ISSUES_EDUCATIONAL,
+  partnership_balance: PARTNERSHIP_BALANCE_EDUCATIONAL,
+  love_triangle: LOVE_TRIANGLE_EDUCATIONAL,
+  job_search: JOB_SEARCH_EDUCATIONAL,
+  interview_prep: INTERVIEW_PREP_EDUCATIONAL,
+  promotion_path: PROMOTION_PATH_EDUCATIONAL,
+  career_change: CAREER_CHANGE_EDUCATIONAL,
+  work_conflicts: WORK_CONFLICTS_EDUCATIONAL,
+  team_dynamics: TEAM_DYNAMICS_EDUCATIONAL,
+  entrepreneurship: ENTREPRENEURSHIP_EDUCATIONAL,
+  side_hustle: SIDE_HUSTLE_EDUCATIONAL,
+  work_life_balance: WORK_LIFE_BALANCE_EDUCATIONAL,
+  career_purpose: CAREER_PURPOSE_EDUCATIONAL,
+  negotiation_strategy: NEGOTIATION_STRATEGY_EDUCATIONAL,
+  professional_growth: PROFESSIONAL_GROWTH_EDUCATIONAL,
+  financial_overview: FINANCIAL_OVERVIEW_EDUCATIONAL,
+  investment_decision: INVESTMENT_DECISION_EDUCATIONAL,
+  debt_management: DEBT_MANAGEMENT_EDUCATIONAL,
+  salary_negotiation: SALARY_NEGOTIATION_EDUCATIONAL,
+  abundance_mindset: ABUNDANCE_MINDSET_EDUCATIONAL,
+  business_finances: BUSINESS_FINANCES_EDUCATIONAL,
+  savings_goals: SAVINGS_GOALS_EDUCATIONAL,
+  financial_blocks: FINANCIAL_BLOCKS_EDUCATIONAL,
+  money_flow: MONEY_FLOW_EDUCATIONAL,
+  prosperity_path: PROSPERITY_PATH_EDUCATIONAL,
+  spiritual_path: SPIRITUAL_PATH_EDUCATIONAL,
+  chakra_alignment: CHAKRA_ALIGNMENT_EDUCATIONAL,
+  shadow_work: SHADOW_WORK_EDUCATIONAL,
+  life_purpose: LIFE_PURPOSE_EDUCATIONAL,
+  spiritual_awakening: SPIRITUAL_AWAKENING_EDUCATIONAL,
+  past_life: PAST_LIFE_EDUCATIONAL,
+  spirit_guides: SPIRIT_GUIDES_EDUCATIONAL,
+  psychic_development: PSYCHIC_DEVELOPMENT_EDUCATIONAL,
+  full_moon_ritual: FULL_MOON_RITUAL_EDUCATIONAL,
+  new_moon_intentions: NEW_MOON_INTENTIONS_EDUCATIONAL,
+  meditation_journey: MEDITATION_JOURNEY_EDUCATIONAL,
+  sacred_calling: SACRED_CALLING_EDUCATIONAL,
+  health_check: HEALTH_CHECK_EDUCATIONAL,
+  mental_health: MENTAL_HEALTH_EDUCATIONAL,
+  energy_healing: ENERGY_HEALING_EDUCATIONAL,
+  stress_relief: STRESS_RELIEF_EDUCATIONAL,
+  burnout_recovery: BURNOUT_RECOVERY_EDUCATIONAL,
+  body_wisdom: BODY_WISDOM_EDUCATIONAL,
+  holistic_wellness: HOLISTIC_WELLNESS_EDUCATIONAL,
+  healing_journey: HEALING_JOURNEY_EDUCATIONAL,
+  three_options: THREE_OPTIONS_EDUCATIONAL,
+  opportunity_evaluation: OPPORTUNITY_EVALUATION_EDUCATIONAL,
+  risk_assessment: RISK_ASSESSMENT_EDUCATIONAL,
+  timing_decision: TIMING_DECISION_EDUCATIONAL,
+  should_i: SHOULD_I_EDUCATIONAL,
+  life_crossroads: LIFE_CROSSROADS_EDUCATIONAL,
+  life_path: LIFE_PATH_EDUCATIONAL,
+  hidden_talents: HIDDEN_TALENTS_EDUCATIONAL,
+  psychological_blocks: PSYCHOLOGICAL_BLOCKS_EDUCATIONAL,
+  behavior_patterns: BEHAVIOR_PATTERNS_EDUCATIONAL,
+  inner_child: INNER_CHILD_EDUCATIONAL,
+  shadow_self: SHADOW_SELF_EDUCATIONAL,
+  authentic_self: AUTHENTIC_SELF_EDUCATIONAL,
+  values_clarification: VALUES_CLARIFICATION_EDUCATIONAL,
+  strengths_weaknesses: STRENGTHS_WEAKNESSES_EDUCATIONAL,
+  personal_identity: PERSONAL_IDENTITY_EDUCATIONAL,
+  moving_relocation: MOVING_RELOCATION_EDUCATIONAL,
+  travel_planning: TRAVEL_PLANNING_EDUCATIONAL,
+  legal_issues: LEGAL_ISSUES_EDUCATIONAL,
+  family_dynamics: FAMILY_DYNAMICS_EDUCATIONAL,
+  friendship: FRIENDSHIP_EDUCATIONAL,
+  education_study: EDUCATION_STUDY_EDUCATIONAL,
+  creative_project: CREATIVE_PROJECT_EDUCATIONAL,
+  home_life: HOME_LIFE_EDUCATIONAL,
+  parenting: PARENTING_EDUCATIONAL,
+  major_life_change: MAJOR_LIFE_CHANGE_EDUCATIONAL,
+  six_month_outlook: SIX_MONTH_OUTLOOK_EDUCATIONAL,
+  quarterly_forecast: QUARTERLY_FORECAST_EDUCATIONAL,
+  monthly_forecast: MONTHLY_FORECAST_EDUCATIONAL,
+  specific_event_timing: SPECIFIC_EVENT_TIMING_EDUCATIONAL,
+  four_seasons: FOUR_SEASONS_EDUCATIONAL,
+  next_steps_timeline: NEXT_STEPS_TIMELINE_EDUCATIONAL,
 };
+

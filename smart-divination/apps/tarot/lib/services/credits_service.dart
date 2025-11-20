@@ -32,7 +32,7 @@ class CreditsService {
 
   factory CreditsService() => _instance;
 
-  static const int defaultDailyCredits = 3;
+  static const int defaultDailyCredits = 999; // TEMPORARY: For testing
   static const String _remainingKey = 'daily_credits_remaining';
   static const String _lastResetKey = 'daily_credits_last_reset';
   static const String _maxKey = 'daily_credits_max';

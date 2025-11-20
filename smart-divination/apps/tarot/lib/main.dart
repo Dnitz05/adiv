@@ -30,6 +30,7 @@ import 'screens/chat_screen.dart';
 import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
 import 'screens/lunar_academy_screen.dart';
+import 'screens/spreads_journey_screen.dart';
 import 'screens/lunar_advisor_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
@@ -40,6 +41,7 @@ import 'services/local_storage_service.dart';
 import 'services/daily_quote_service.dart';
 import 'services/audio_service.dart';
 import 'services/credits_service.dart';
+import 'services/learn_progress_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
 import 'state/full_screen_step.dart';
@@ -85,6 +87,10 @@ Future<void> _initialiseSupabase() async {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initialiseSupabase();
+
+  // Initialize LearnProgressService
+  await LearnProgressService().init();
+
   runApp(const SmartTarotApp());
 }
 
@@ -3164,7 +3170,13 @@ class _HomeState extends State<_Home> {
         strings: localisation,
         onNavigateToCards: () => _showLearnComingSoon(localisation),
         onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
-        onNavigateToSpreads: () => _showLearnComingSoon(localisation),
+        onNavigateToSpreads: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => SpreadsJourneyScreen(strings: localisation),
+            ),
+          );
+        },
         onNavigateToAstrology: () => _showLearnComingSoon(localisation),
         onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
         onNavigateToMoonPowers: () {
@@ -4033,7 +4045,13 @@ class _HomeState extends State<_Home> {
           strings: localisation,
           onNavigateToCards: () => _showLearnComingSoon(localisation),
           onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
-          onNavigateToSpreads: () => _showLearnComingSoon(localisation),
+          onNavigateToSpreads: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SpreadsJourneyScreen(strings: localisation),
+              ),
+            );
+          },
           onNavigateToAstrology: () => _showLearnComingSoon(localisation),
           onNavigateToKabbalah: () => _showLearnComingSoon(localisation),
           onNavigateToMoonPowers: () {

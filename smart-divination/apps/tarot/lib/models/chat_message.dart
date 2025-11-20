@@ -473,30 +473,67 @@ class PositionInteraction {
     required this.positions,
     required this.description,
     required this.aiGuidance,
+    this.descriptionMultilingual,
   });
 
   /// Position codes involved, e.g. ["PAST", "PRESENT"] or ["SELF", "ENVIRONMENT"]
   final List<String> positions;
 
-  /// Human-readable description (localized)
+  /// Human-readable description (localized) - legacy field
   final String description;
 
   /// Technical guidance that was provided to AI
   final String aiGuidance;
 
+  /// Multilingual description map (FASE 3 enhancement)
+  final Map<String, String>? descriptionMultilingual;
+
+  /// Get localized description, falling back to default language
+  String getDescription(String locale) {
+    if (descriptionMultilingual != null && descriptionMultilingual!.isNotEmpty) {
+      // Try requested locale first
+      final localized = descriptionMultilingual![locale] ??
+                       descriptionMultilingual!['en'] ??
+                       descriptionMultilingual!['ca'] ??
+                       descriptionMultilingual!['es'];
+      if (localized != null && localized.isNotEmpty) {
+        return localized;
+      }
+    }
+    return description.isNotEmpty ? description : 'No description available';
+  }
+
   factory PositionInteraction.fromJson(Map<String, dynamic> json) {
     final positionsJson = json['positions'] as List<dynamic>? ?? <dynamic>[];
+
+    // Handle both old format (string) and new format (multilingual map)
+    String descriptionString = '';
+    Map<String, String>? descriptionMap;
+
+    final descriptionJson = json['description'];
+    if (descriptionJson is String) {
+      descriptionString = descriptionJson;
+    } else if (descriptionJson is Map) {
+      descriptionMap = Map<String, String>.from(descriptionJson as Map);
+      // Use English as default for backward compatibility
+      descriptionString = descriptionMap['en'] ??
+                         descriptionMap['ca'] ??
+                         descriptionMap['es'] ??
+                         '';
+    }
+
     return PositionInteraction(
       positions: positionsJson.whereType<String>().toList(),
-      description: json['description'] as String? ?? '',
+      description: descriptionString,
       aiGuidance: json['aiGuidance'] as String? ?? '',
+      descriptionMultilingual: descriptionMap,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'positions': positions,
-      'description': description,
+      'description': descriptionMultilingual ?? {'en': description},
       'aiGuidance': aiGuidance,
     };
   }
@@ -524,5 +561,79 @@ class PositionInteraction {
     return positions.fold<int>(0, (hash, pos) => hash ^ pos.hashCode) ^
         description.hashCode ^
         aiGuidance.hashCode;
+  }
+}
+
+/// FASE 3: Spread Educational Content
+/// Comprehensive educational information for a tarot spread
+class SpreadEducational {
+  const SpreadEducational({
+    required this.purpose,
+    required this.whenToUse,
+    required this.whenToAvoid,
+    required this.interpretationMethod,
+    required this.positionInteractions,
+    this.traditionalOrigin,
+  });
+
+  /// Why this spread exists (multilingual)
+  final Map<String, String> purpose;
+
+  /// When to choose this spread (multilingual)
+  final Map<String, String> whenToUse;
+
+  /// When to skip this spread (multilingual)
+  final Map<String, String> whenToAvoid;
+
+  /// How to read and interpret this spread (multilingual)
+  final Map<String, String> interpretationMethod;
+
+  /// Optional historical context (multilingual)
+  final Map<String, String>? traditionalOrigin;
+
+  /// Card position relationships for deeper understanding
+  final List<PositionInteraction> positionInteractions;
+
+  factory SpreadEducational.fromJson(Map<String, dynamic> json) {
+    final interactionsJson = json['positionInteractions'] as List<dynamic>? ?? <dynamic>[];
+    final interactions = interactionsJson
+        .map((item) => PositionInteraction.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return SpreadEducational(
+      purpose: _parseMultilingualText(json['purpose']),
+      whenToUse: _parseMultilingualText(json['whenToUse']),
+      whenToAvoid: _parseMultilingualText(json['whenToAvoid']),
+      interpretationMethod: _parseMultilingualText(json['interpretationMethod']),
+      positionInteractions: interactions,
+      traditionalOrigin: json['traditionalOrigin'] != null
+          ? _parseMultilingualText(json['traditionalOrigin'])
+          : null,
+    );
+  }
+
+  static Map<String, String> _parseMultilingualText(dynamic json) {
+    if (json is Map) {
+      final result = <String, String>{};
+      json.forEach((key, value) {
+        if (key is String && value is String) {
+          result[key] = value;
+        }
+      });
+      return result;
+    }
+    return {};
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'purpose': purpose,
+      'whenToUse': whenToUse,
+      'whenToAvoid': whenToAvoid,
+      'interpretationMethod': interpretationMethod,
+      if (traditionalOrigin != null) 'traditionalOrigin': traditionalOrigin,
+      'positionInteractions':
+          positionInteractions.map((item) => item.toJson()).toList(),
+    };
   }
 }

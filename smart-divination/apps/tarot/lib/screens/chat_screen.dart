@@ -265,6 +265,7 @@ class _ChatScreenState extends State<ChatScreen> {
           return PositionInteractionsPanel(
             interactions: _currentPositionInteractions!,
             title: _getInteractionsPanelTitle(),
+            locale: widget.strings.localeName,
           );
         }
 

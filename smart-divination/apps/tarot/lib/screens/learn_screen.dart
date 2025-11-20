@@ -107,7 +107,7 @@ class LearnScreen extends StatelessWidget {
           progress: 0.0,
           color: const Color(0xFF06B6D4),
           onTap: onNavigateToSpreads,
-          isLocked: true,
+          isLocked: false,
         ),
 
         const SizedBox(height: 16),

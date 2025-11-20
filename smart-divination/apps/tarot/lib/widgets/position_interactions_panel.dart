@@ -9,10 +9,12 @@ class PositionInteractionsPanel extends StatefulWidget {
     super.key,
     required this.interactions,
     this.title = 'Card Relationships',
+    this.locale = 'en',
   });
 
   final List<PositionInteraction> interactions;
   final String title;
+  final String locale;
 
   @override
   State<PositionInteractionsPanel> createState() => _PositionInteractionsPanelState();
@@ -20,6 +22,17 @@ class PositionInteractionsPanel extends StatefulWidget {
 
 class _PositionInteractionsPanelState extends State<PositionInteractionsPanel> {
   final Set<int> _expandedIndices = {};
+
+  String _getReadingGuidanceLabel() {
+    switch (widget.locale) {
+      case 'ca':
+        return 'Guia de Lectura';
+      case 'es':
+        return 'Guía de Lectura';
+      default:
+        return 'Reading Guidance';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,9 +186,9 @@ class _PositionInteractionsPanelState extends State<PositionInteractionsPanel> {
 
                   const SizedBox(height: 8),
 
-                  // Description
+                  // Description (FASE 3: now supports multilingual)
                   Text(
-                    interaction.description,
+                    interaction.getDescription(widget.locale),
                     style: const TextStyle(
                       fontSize: 14,
                       color: TarotTheme.deepNavy,
@@ -212,7 +225,7 @@ class _PositionInteractionsPanelState extends State<PositionInteractionsPanel> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Reading Guidance',
+                        _getReadingGuidanceLabel(),
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
