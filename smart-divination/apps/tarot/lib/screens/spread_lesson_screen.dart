@@ -3,6 +3,7 @@ import 'package:common/l10n/common_strings.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../api/api_client.dart';
 import '../models/chat_message.dart';
 import '../models/spread_basic_info.dart';
 import '../theme/tarot_theme.dart';
@@ -81,11 +82,8 @@ class _SpreadLessonScreenState extends State<SpreadLessonScreen> {
     });
 
     try {
-      // TODO: Get API URL from environment/config
-      final apiUrl = 'http://localhost:3001'; // Development URL
-      final response = await http.get(
-        Uri.parse('$apiUrl/api/spread/educational/${widget.spreadId}'),
-      );
+      final uri = buildApiUri('api/spread/educational/${widget.spreadId}');
+      final response = await http.get(uri);
 
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
