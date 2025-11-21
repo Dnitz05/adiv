@@ -108,9 +108,10 @@ function generateSpreadSVG(spread: SpreadDefinition): string {
  */
 function minifySVG(svg: string): string {
   return svg
-    .replace(/\n\s+/g, '') // Remove newlines and indentation
+    .replace(/\n\s+/g, ' ') // Remove newlines but keep space
     .replace(/<!--.*?-->/g, '') // Remove comments
     .replace(/\s{2,}/g, ' ') // Replace multiple spaces with single space
+    .replace(/>\s+</g, '><') // Remove spaces between tags
     .trim();
 }
 
