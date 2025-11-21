@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  viewBox="0 0 400 400"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      text { pointer-events: none; }
+    </style>
+  </defs>
+
+  <!-- Background (transparent) -->
+  <rect width="400" height="400" fill="transparent"/>
+
+  <!-- Cards -->
+  
+    <!-- Card 1: CONSCIOUS_SELF -->
+    <g >
+      <rect
+        x="175.0"
+        y="20.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="200.0"
+        y="60.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >1</text>
+    </g>
+
+    <!-- Card 2: HIDDEN_SHADOW -->
+    <g transform="rotate(5 340 140)">
+      <rect
+        x="315.0"
+        y="100.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="340.0"
+        y="140.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >2</text>
+    </g>
+
+    <!-- Card 3: PROJECTION -->
+    <g transform="rotate(10 340 260)">
+      <rect
+        x="315.0"
+        y="220.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="340.0"
+        y="260.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >3</text>
+    </g>
+
+    <!-- Card 4: GIFT_IN_SHADOW -->
+    <g transform="rotate(12 200 340)">
+      <rect
+        x="175.0"
+        y="300.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="200.0"
+        y="340.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >4</text>
+    </g>
+
+    <!-- Card 5: INTEGRATION_PATH -->
+    <g transform="rotate(8 60 260)">
+      <rect
+        x="35.0"
+        y="220.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="60.0"
+        y="260.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >5</text>
+    </g>
+
+    <!-- Card 6: WHOLENESS -->
+    <g transform="rotate(3 60 140)">
+      <rect
+        x="35.0"
+        y="100.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="60.0"
+        y="140.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >6</text>
+    </g>
+</svg>

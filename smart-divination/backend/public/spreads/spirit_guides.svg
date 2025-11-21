@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  viewBox="0 0 400 470.5882352941177"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      text { pointer-events: none; }
+    </style>
+  </defs>
+
+  <!-- Background (transparent) -->
+  <rect width="400" height="470.5882352941177" fill="transparent"/>
+
+  <!-- Cards -->
+  
+    <!-- Card 1: GUIDE_IDENTITY -->
+    <g >
+      <rect
+        x="175.0"
+        y="30.6"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="200.0"
+        y="70.6"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >1</text>
+    </g>
+
+    <!-- Card 2: GUIDE_MESSAGE -->
+    <g transform="rotate(5 100 188.23529411764707)">
+      <rect
+        x="75.0"
+        y="148.2"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="100.0"
+        y="188.2"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >2</text>
+    </g>
+
+    <!-- Card 3: GUIDE_GIFT -->
+    <g transform="rotate(10 300 188.23529411764707)">
+      <rect
+        x="275.0"
+        y="148.2"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="300.0"
+        y="188.2"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >3</text>
+    </g>
+
+    <!-- Card 4: HOW_TO_CONNECT -->
+    <g transform="rotate(7 140 329.4117647058824)">
+      <rect
+        x="115.0"
+        y="289.4"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="140.0"
+        y="329.4"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >4</text>
+    </g>
+
+    <!-- Card 5: COLLABORATIVE_PATH -->
+    <g transform="rotate(3 260 329.4117647058824)">
+      <rect
+        x="235.0"
+        y="289.4"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="260.0"
+        y="329.4"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >5</text>
+    </g>
+</svg>

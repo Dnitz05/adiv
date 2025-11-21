@@ -1,0 +1,713 @@
+{
+  "generated": "2025-11-21T00:20:37.412Z",
+  "totalSpreads": 101,
+  "spreads": [
+    {
+      "id": "single",
+      "name": "Single Card",
+      "cardCount": 1,
+      "aspectRatio": 0.8,
+      "svgUrl": "/spreads/single.min.svg"
+    },
+    {
+      "id": "two_card",
+      "name": "Two Card",
+      "cardCount": 2,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/two_card.min.svg"
+    },
+    {
+      "id": "three_card",
+      "name": "Three Card Spread",
+      "cardCount": 3,
+      "aspectRatio": 1.8,
+      "svgUrl": "/spreads/three_card.min.svg"
+    },
+    {
+      "id": "five_card_cross",
+      "name": "Five Card Cross",
+      "cardCount": 5,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/five_card_cross.min.svg"
+    },
+    {
+      "id": "relationship",
+      "name": "Relationship",
+      "cardCount": 7,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/relationship.min.svg"
+    },
+    {
+      "id": "pyramid",
+      "name": "Pyramid",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/pyramid.min.svg"
+    },
+    {
+      "id": "horseshoe",
+      "name": "Horseshoe",
+      "cardCount": 7,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/horseshoe.min.svg"
+    },
+    {
+      "id": "celtic_cross",
+      "name": "Celtic Cross",
+      "cardCount": 10,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/celtic_cross.min.svg"
+    },
+    {
+      "id": "star",
+      "name": "Star",
+      "cardCount": 7,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/star.min.svg"
+    },
+    {
+      "id": "astrological",
+      "name": "Astrological Houses",
+      "cardCount": 12,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/astrological.min.svg"
+    },
+    {
+      "id": "year_ahead",
+      "name": "Year Ahead",
+      "cardCount": 12,
+      "aspectRatio": 2,
+      "svgUrl": "/spreads/year_ahead.min.svg"
+    },
+    {
+      "id": "morning_guidance",
+      "name": "Morning Guidance",
+      "cardCount": 3,
+      "aspectRatio": 1.8,
+      "svgUrl": "/spreads/morning_guidance.min.svg"
+    },
+    {
+      "id": "evening_reflection",
+      "name": "Evening Reflection",
+      "cardCount": 3,
+      "aspectRatio": 1.8,
+      "svgUrl": "/spreads/evening_reflection.min.svg"
+    },
+    {
+      "id": "weekly_overview",
+      "name": "Weekly Overview",
+      "cardCount": 7,
+      "aspectRatio": 2.5,
+      "svgUrl": "/spreads/weekly_overview.min.svg"
+    },
+    {
+      "id": "yes_no",
+      "name": "Yes/No Spread",
+      "cardCount": 1,
+      "aspectRatio": 0.8,
+      "svgUrl": "/spreads/yes_no.min.svg"
+    },
+    {
+      "id": "quick_insight",
+      "name": "Quick Insight",
+      "cardCount": 2,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/quick_insight.min.svg"
+    },
+    {
+      "id": "new_love_potential",
+      "name": "New Love Potential",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/new_love_potential.min.svg"
+    },
+    {
+      "id": "healing_breakup",
+      "name": "Healing After Breakup",
+      "cardCount": 5,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/healing_breakup.min.svg"
+    },
+    {
+      "id": "soulmate_search",
+      "name": "Soulmate Search",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/soulmate_search.min.svg"
+    },
+    {
+      "id": "compatibility_check",
+      "name": "Compatibility Check",
+      "cardCount": 8,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/compatibility_check.min.svg"
+    },
+    {
+      "id": "marriage_decision",
+      "name": "Marriage Decision",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/marriage_decision.min.svg"
+    },
+    {
+      "id": "dating_guidance",
+      "name": "Dating Guidance",
+      "cardCount": 4,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/dating_guidance.min.svg"
+    },
+    {
+      "id": "toxic_relationship",
+      "name": "Toxic Relationship",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/toxic_relationship.min.svg"
+    },
+    {
+      "id": "self_love_journey",
+      "name": "Self-Love Journey",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/self_love_journey.min.svg"
+    },
+    {
+      "id": "intimacy_issues",
+      "name": "Intimacy Issues",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/intimacy_issues.min.svg"
+    },
+    {
+      "id": "partnership_balance",
+      "name": "Partnership Balance",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/partnership_balance.min.svg"
+    },
+    {
+      "id": "love_triangle",
+      "name": "Love Triangle",
+      "cardCount": 9,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/love_triangle.min.svg"
+    },
+    {
+      "id": "job_search",
+      "name": "Job Search",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/job_search.min.svg"
+    },
+    {
+      "id": "interview_prep",
+      "name": "Interview Preparation",
+      "cardCount": 4,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/interview_prep.min.svg"
+    },
+    {
+      "id": "promotion_path",
+      "name": "Promotion Path",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/promotion_path.min.svg"
+    },
+    {
+      "id": "career_change",
+      "name": "Career Change",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/career_change.min.svg"
+    },
+    {
+      "id": "work_conflicts",
+      "name": "Work Conflicts",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/work_conflicts.min.svg"
+    },
+    {
+      "id": "team_dynamics",
+      "name": "Team Dynamics",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/team_dynamics.min.svg"
+    },
+    {
+      "id": "entrepreneurship",
+      "name": "Entrepreneurship",
+      "cardCount": 8,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/entrepreneurship.min.svg"
+    },
+    {
+      "id": "side_hustle",
+      "name": "Side Hustle",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/side_hustle.min.svg"
+    },
+    {
+      "id": "work_life_balance",
+      "name": "Work-Life Balance",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/work_life_balance.min.svg"
+    },
+    {
+      "id": "career_purpose",
+      "name": "Career Purpose",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/career_purpose.min.svg"
+    },
+    {
+      "id": "negotiation_strategy",
+      "name": "Negotiation Strategy",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/negotiation_strategy.min.svg"
+    },
+    {
+      "id": "professional_growth",
+      "name": "Professional Growth",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/professional_growth.min.svg"
+    },
+    {
+      "id": "financial_overview",
+      "name": "Financial Overview",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/financial_overview.min.svg"
+    },
+    {
+      "id": "investment_decision",
+      "name": "Investment Decision",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/investment_decision.min.svg"
+    },
+    {
+      "id": "debt_management",
+      "name": "Debt Management",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/debt_management.min.svg"
+    },
+    {
+      "id": "salary_negotiation",
+      "name": "Salary Negotiation",
+      "cardCount": 4,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/salary_negotiation.min.svg"
+    },
+    {
+      "id": "abundance_mindset",
+      "name": "Abundance Mindset",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/abundance_mindset.min.svg"
+    },
+    {
+      "id": "business_finances",
+      "name": "Business Finances",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/business_finances.min.svg"
+    },
+    {
+      "id": "savings_goals",
+      "name": "Savings Goals",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/savings_goals.min.svg"
+    },
+    {
+      "id": "financial_blocks",
+      "name": "Financial Blocks",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/financial_blocks.min.svg"
+    },
+    {
+      "id": "money_flow",
+      "name": "Money Flow",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/money_flow.min.svg"
+    },
+    {
+      "id": "prosperity_path",
+      "name": "Prosperity Path",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/prosperity_path.min.svg"
+    },
+    {
+      "id": "spiritual_path",
+      "name": "Spiritual Path",
+      "cardCount": 7,
+      "aspectRatio": 0.85,
+      "svgUrl": "/spreads/spiritual_path.min.svg"
+    },
+    {
+      "id": "chakra_alignment",
+      "name": "Chakra Alignment",
+      "cardCount": 7,
+      "aspectRatio": 0.8,
+      "svgUrl": "/spreads/chakra_alignment.min.svg"
+    },
+    {
+      "id": "shadow_work",
+      "name": "Shadow Work",
+      "cardCount": 6,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/shadow_work.min.svg"
+    },
+    {
+      "id": "life_purpose",
+      "name": "Life Purpose",
+      "cardCount": 8,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/life_purpose.min.svg"
+    },
+    {
+      "id": "spiritual_awakening",
+      "name": "Spiritual Awakening",
+      "cardCount": 7,
+      "aspectRatio": 0.9,
+      "svgUrl": "/spreads/spiritual_awakening.min.svg"
+    },
+    {
+      "id": "past_life",
+      "name": "Past Life",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/past_life.min.svg"
+    },
+    {
+      "id": "spirit_guides",
+      "name": "Spirit Guides",
+      "cardCount": 5,
+      "aspectRatio": 0.85,
+      "svgUrl": "/spreads/spirit_guides.min.svg"
+    },
+    {
+      "id": "psychic_development",
+      "name": "Psychic Development",
+      "cardCount": 6,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/psychic_development.min.svg"
+    },
+    {
+      "id": "full_moon_ritual",
+      "name": "Full Moon Ritual",
+      "cardCount": 5,
+      "aspectRatio": 0.9,
+      "svgUrl": "/spreads/full_moon_ritual.min.svg"
+    },
+    {
+      "id": "new_moon_intentions",
+      "name": "New Moon Intentions",
+      "cardCount": 5,
+      "aspectRatio": 0.9,
+      "svgUrl": "/spreads/new_moon_intentions.min.svg"
+    },
+    {
+      "id": "meditation_journey",
+      "name": "Meditation Journey",
+      "cardCount": 7,
+      "aspectRatio": 0.85,
+      "svgUrl": "/spreads/meditation_journey.min.svg"
+    },
+    {
+      "id": "sacred_calling",
+      "name": "Sacred Calling",
+      "cardCount": 8,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/sacred_calling.min.svg"
+    },
+    {
+      "id": "health_check",
+      "name": "Health Check",
+      "cardCount": 5,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/health_check.min.svg"
+    },
+    {
+      "id": "mental_health",
+      "name": "Mental Health",
+      "cardCount": 6,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/mental_health.min.svg"
+    },
+    {
+      "id": "energy_healing",
+      "name": "Energy Healing",
+      "cardCount": 7,
+      "aspectRatio": 0.5,
+      "svgUrl": "/spreads/energy_healing.min.svg"
+    },
+    {
+      "id": "stress_relief",
+      "name": "Stress Relief",
+      "cardCount": 5,
+      "aspectRatio": 1.2,
+      "svgUrl": "/spreads/stress_relief.min.svg"
+    },
+    {
+      "id": "burnout_recovery",
+      "name": "Burnout Recovery",
+      "cardCount": 6,
+      "aspectRatio": 2,
+      "svgUrl": "/spreads/burnout_recovery.min.svg"
+    },
+    {
+      "id": "body_wisdom",
+      "name": "Body Wisdom",
+      "cardCount": 5,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/body_wisdom.min.svg"
+    },
+    {
+      "id": "holistic_wellness",
+      "name": "Holistic Wellness",
+      "cardCount": 8,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/holistic_wellness.min.svg"
+    },
+    {
+      "id": "healing_journey",
+      "name": "Healing Journey",
+      "cardCount": 7,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/healing_journey.min.svg"
+    },
+    {
+      "id": "three_options",
+      "name": "Three Options",
+      "cardCount": 9,
+      "aspectRatio": 1.2,
+      "svgUrl": "/spreads/three_options.min.svg"
+    },
+    {
+      "id": "opportunity_evaluation",
+      "name": "Opportunity Evaluation",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/opportunity_evaluation.min.svg"
+    },
+    {
+      "id": "risk_assessment",
+      "name": "Risk Assessment",
+      "cardCount": 5,
+      "aspectRatio": 1.1,
+      "svgUrl": "/spreads/risk_assessment.min.svg"
+    },
+    {
+      "id": "timing_decision",
+      "name": "Timing Decision",
+      "cardCount": 4,
+      "aspectRatio": 2,
+      "svgUrl": "/spreads/timing_decision.min.svg"
+    },
+    {
+      "id": "should_i",
+      "name": "Should I",
+      "cardCount": 3,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/should_i.min.svg"
+    },
+    {
+      "id": "life_crossroads",
+      "name": "Life Crossroads",
+      "cardCount": 7,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/life_crossroads.min.svg"
+    },
+    {
+      "id": "life_path",
+      "name": "Life Path Journey",
+      "cardCount": 7,
+      "aspectRatio": 1.8,
+      "svgUrl": "/spreads/life_path.min.svg"
+    },
+    {
+      "id": "hidden_talents",
+      "name": "Hidden Talents",
+      "cardCount": 5,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/hidden_talents.min.svg"
+    },
+    {
+      "id": "psychological_blocks",
+      "name": "Psychological Blocks",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/psychological_blocks.min.svg"
+    },
+    {
+      "id": "behavior_patterns",
+      "name": "Behavior Patterns",
+      "cardCount": 6,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/behavior_patterns.min.svg"
+    },
+    {
+      "id": "inner_child",
+      "name": "Inner Child",
+      "cardCount": 5,
+      "aspectRatio": 1.2,
+      "svgUrl": "/spreads/inner_child.min.svg"
+    },
+    {
+      "id": "shadow_self",
+      "name": "Shadow Self",
+      "cardCount": 6,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/shadow_self.min.svg"
+    },
+    {
+      "id": "authentic_self",
+      "name": "Authentic Self",
+      "cardCount": 7,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/authentic_self.min.svg"
+    },
+    {
+      "id": "values_clarification",
+      "name": "Values Clarification",
+      "cardCount": 5,
+      "aspectRatio": 1.2,
+      "svgUrl": "/spreads/values_clarification.min.svg"
+    },
+    {
+      "id": "strengths_weaknesses",
+      "name": "Strengths & Weaknesses",
+      "cardCount": 8,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/strengths_weaknesses.min.svg"
+    },
+    {
+      "id": "personal_identity",
+      "name": "Personal Identity",
+      "cardCount": 9,
+      "aspectRatio": 1,
+      "svgUrl": "/spreads/personal_identity.min.svg"
+    },
+    {
+      "id": "moving_relocation",
+      "name": "Moving/Relocation",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/moving_relocation.min.svg"
+    },
+    {
+      "id": "travel_planning",
+      "name": "Travel Planning",
+      "cardCount": 5,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/travel_planning.min.svg"
+    },
+    {
+      "id": "legal_issues",
+      "name": "Legal Issues",
+      "cardCount": 7,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/legal_issues.min.svg"
+    },
+    {
+      "id": "family_dynamics",
+      "name": "Family Dynamics",
+      "cardCount": 8,
+      "aspectRatio": 1.6,
+      "svgUrl": "/spreads/family_dynamics.min.svg"
+    },
+    {
+      "id": "friendship",
+      "name": "Friendship",
+      "cardCount": 6,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/friendship.min.svg"
+    },
+    {
+      "id": "education_study",
+      "name": "Education/Study",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/education_study.min.svg"
+    },
+    {
+      "id": "creative_project",
+      "name": "Creative Project",
+      "cardCount": 7,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/creative_project.min.svg"
+    },
+    {
+      "id": "home_life",
+      "name": "Home Life",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/home_life.min.svg"
+    },
+    {
+      "id": "parenting",
+      "name": "Parenting",
+      "cardCount": 8,
+      "aspectRatio": 1.5,
+      "svgUrl": "/spreads/parenting.min.svg"
+    },
+    {
+      "id": "major_life_change",
+      "name": "Major Life Change",
+      "cardCount": 7,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/major_life_change.min.svg"
+    },
+    {
+      "id": "six_month_outlook",
+      "name": "Six Month Outlook",
+      "cardCount": 6,
+      "aspectRatio": 1.3,
+      "svgUrl": "/spreads/six_month_outlook.min.svg"
+    },
+    {
+      "id": "quarterly_forecast",
+      "name": "Quarterly Forecast",
+      "cardCount": 3,
+      "aspectRatio": 1.8,
+      "svgUrl": "/spreads/quarterly_forecast.min.svg"
+    },
+    {
+      "id": "monthly_forecast",
+      "name": "Monthly Forecast",
+      "cardCount": 4,
+      "aspectRatio": 1.4,
+      "svgUrl": "/spreads/monthly_forecast.min.svg"
+    },
+    {
+      "id": "specific_event_timing",
+      "name": "Specific Event Timing",
+      "cardCount": 5,
+      "aspectRatio": 1.8,
+      "svgUrl": "/spreads/specific_event_timing.min.svg"
+    },
+    {
+      "id": "four_seasons",
+      "name": "Four Seasons",
+      "cardCount": 5,
+      "aspectRatio": 2,
+      "svgUrl": "/spreads/four_seasons.min.svg"
+    },
+    {
+      "id": "next_steps_timeline",
+      "name": "Next Steps Timeline",
+      "cardCount": 5,
+      "aspectRatio": 2.1,
+      "svgUrl": "/spreads/next_steps_timeline.min.svg"
+    }
+  ]
+}

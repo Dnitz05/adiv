@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  viewBox="0 0 400 400"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      text { pointer-events: none; }
+    </style>
+  </defs>
+
+  <!-- Background (transparent) -->
+  <rect width="400" height="400" fill="transparent"/>
+
+  <!-- Cards -->
+  
+    <!-- Card 1: HOUSE_1 -->
+    <g >
+      <rect
+        x="303.0"
+        y="160.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="328.0"
+        y="200.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >1</text>
+    </g>
+
+    <!-- Card 2: HOUSE_2 -->
+    <g >
+      <rect
+        x="275.0"
+        y="252.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="300.0"
+        y="292.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >2</text>
+    </g>
+
+    <!-- Card 3: HOUSE_3 -->
+    <g >
+      <rect
+        x="215.0"
+        y="308.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="240.0"
+        y="348.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >3</text>
+    </g>
+
+    <!-- Card 4: HOUSE_4 -->
+    <g >
+      <rect
+        x="135.0"
+        y="308.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="160.0"
+        y="348.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >4</text>
+    </g>
+
+    <!-- Card 5: HOUSE_5 -->
+    <g >
+      <rect
+        x="75.0"
+        y="252.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="100.0"
+        y="292.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >5</text>
+    </g>
+
+    <!-- Card 6: HOUSE_6 -->
+    <g >
+      <rect
+        x="47.0"
+        y="160.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="72.0"
+        y="200.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >6</text>
+    </g>
+
+    <!-- Card 7: HOUSE_7 -->
+    <g >
+      <rect
+        x="75.0"
+        y="68.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="100.0"
+        y="108.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >7</text>
+    </g>
+
+    <!-- Card 8: HOUSE_8 -->
+    <g >
+      <rect
+        x="135.0"
+        y="12.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="160.0"
+        y="52.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >8</text>
+    </g>
+
+    <!-- Card 9: HOUSE_9 -->
+    <g >
+      <rect
+        x="215.0"
+        y="12.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="240.0"
+        y="52.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >9</text>
+    </g>
+
+    <!-- Card 10: HOUSE_10 -->
+    <g >
+      <rect
+        x="275.0"
+        y="68.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="300.0"
+        y="108.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >10</text>
+    </g>
+
+    <!-- Card 11: HOUSE_11 -->
+    <g >
+      <rect
+        x="303.0"
+        y="160.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="328.0"
+        y="200.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >11</text>
+    </g>
+
+    <!-- Card 12: HOUSE_12 -->
+    <g >
+      <rect
+        x="275.0"
+        y="252.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="300.0"
+        y="292.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >12</text>
+    </g>
+</svg>

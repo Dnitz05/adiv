@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  viewBox="0 0 400 307.6923076923077"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      text { pointer-events: none; }
+    </style>
+  </defs>
+
+  <!-- Background (transparent) -->
+  <rect width="400" height="307.6923076923077" fill="transparent"/>
+
+  <!-- Cards -->
+  
+    <!-- Card 1: CURRENT_LEARNING -->
+    <g >
+      <rect
+        x="175.0"
+        y="21.5"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="200.0"
+        y="61.5"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >1</text>
+    </g>
+
+    <!-- Card 2: SUBJECT_FOCUS -->
+    <g transform="rotate(-10 100 138.46153846153845)">
+      <rect
+        x="75.0"
+        y="98.5"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="100.0"
+        y="138.5"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >2</text>
+    </g>
+
+    <!-- Card 3: LEARNING_STYLE -->
+    <g transform="rotate(10 300 138.46153846153845)">
+      <rect
+        x="275.0"
+        y="98.5"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="300.0"
+        y="138.5"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >3</text>
+    </g>
+
+    <!-- Card 4: CHALLENGES -->
+    <g transform="rotate(-8 80 230.76923076923077)">
+      <rect
+        x="55.0"
+        y="190.8"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="80.0"
+        y="230.8"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >4</text>
+    </g>
+
+    <!-- Card 5: RESOURCES -->
+    <g transform="rotate(8 320 230.76923076923077)">
+      <rect
+        x="295.0"
+        y="190.8"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="320.0"
+        y="230.8"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >5</text>
+    </g>
+
+    <!-- Card 6: ACADEMIC_OUTCOME -->
+    <g >
+      <rect
+        x="175.0"
+        y="236.9"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="200.0"
+        y="276.9"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >6</text>
+    </g>
+</svg>

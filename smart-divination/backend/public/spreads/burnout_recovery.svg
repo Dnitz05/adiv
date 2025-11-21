@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  viewBox="0 0 400 200"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      text { pointer-events: none; }
+    </style>
+  </defs>
+
+  <!-- Background (transparent) -->
+  <rect width="400" height="200" fill="transparent"/>
+
+  <!-- Cards -->
+  
+    <!-- Card 1: CURRENT_STATE -->
+    <g transform="rotate(-3 40 100)">
+      <rect
+        x="15.0"
+        y="60.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="40.0"
+        y="100.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >1</text>
+    </g>
+
+    <!-- Card 2: DEPLETION_CAUSES -->
+    <g transform="rotate(4 104 100)">
+      <rect
+        x="79.0"
+        y="60.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="104.0"
+        y="100.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >2</text>
+    </g>
+
+    <!-- Card 3: REST_NEEDS -->
+    <g transform="rotate(-5 168 100)">
+      <rect
+        x="143.0"
+        y="60.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="168.0"
+        y="100.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >3</text>
+    </g>
+
+    <!-- Card 4: BOUNDARIES -->
+    <g transform="rotate(3 231.99999999999997 100)">
+      <rect
+        x="207.0"
+        y="60.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="232.0"
+        y="100.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >4</text>
+    </g>
+
+    <!-- Card 5: RENEWAL_PATH -->
+    <g transform="rotate(-4 296 100)">
+      <rect
+        x="271.0"
+        y="60.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="296.0"
+        y="100.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >5</text>
+    </g>
+
+    <!-- Card 6: SUSTAINABLE_FUTURE -->
+    <g >
+      <rect
+        x="335.0"
+        y="60.0"
+        width="50"
+        height="80"
+        rx="4"
+        fill="#1a1a2e"
+        stroke="#7c3aed"
+        stroke-width="2"
+        opacity="0.9"
+      />
+      <text
+        x="360.0"
+        y="100.0"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="#a78bfa"
+        font-size="20"
+        font-weight="600"
+        font-family="system-ui, -apple-system, sans-serif"
+      >6</text>
+    </g>
+</svg>
