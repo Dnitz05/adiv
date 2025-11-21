@@ -397,34 +397,41 @@ class _SpreadCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            // Card count visual
+            // SVG spread visualization
             Container(
-              width: 56,
+              width: 80,
               height: 56,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: color.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(8),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${spread.cardCount}',
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                    ),
+              clipBehavior: Clip.antiAlias,
+              child: SvgPicture.network(
+                buildApiUri('api/spread/svg/${spread.id}').toString(),
+                fit: BoxFit.contain,
+                placeholderBuilder: (context) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${spread.cardCount}',
+                        style: TextStyle(
+                          color: color,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        _getCardsLabel(locale),
+                        style: TextStyle(
+                          color: color.withValues(alpha: 0.8),
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    _getCardsLabel(locale),
-                    style: TextStyle(
-                      color: color.withValues(alpha: 0.8),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
 
