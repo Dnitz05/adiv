@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:common/l10n/common_strings.dart';
 
+import '../api/api_client.dart';
 import '../data/spread_learning_categories.dart';
 import '../models/spread_basic_info.dart';
 import '../theme/tarot_theme.dart';
