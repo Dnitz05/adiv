@@ -1,8 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:common/l10n/common_strings.dart';
 
+import '../api/api_client.dart';
 import '../models/tarot_spread.dart';
 import '../theme/tarot_theme.dart';
 
@@ -244,14 +246,22 @@ class _SpreadsScreenState extends State<SpreadsScreen> {
                           : TarotTheme.deepNight,
                     ),
                   ),
-                  Text(
-                    _resolve(locale,
-                        en: '${spread.cardCount} cards',
-                        es: '${spread.cardCount} cartas',
-                        ca: '${spread.cardCount} cartes'),
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Color(0xFF6B6B81),
+                  const SizedBox(height: 4),
+                  // SVG visualization of spread layout
+                  SizedBox(
+                    height: 50,
+                    child: SvgPicture.network(
+                      buildApiUri('api/spread/svg/${spread.id}').toString(),
+                      placeholderBuilder: (context) => Text(
+                        _resolve(locale,
+                            en: '${spread.cardCount} cards',
+                            es: '${spread.cardCount} cartas',
+                            ca: '${spread.cardCount} cartes'),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Color(0xFF6B6B81),
+                        ),
+                      ),
                     ),
                   ),
                 ],
