@@ -31,6 +31,7 @@ import 'screens/spreads_screen.dart';
 import 'screens/learn_screen.dart';
 import 'screens/lunar_academy_screen.dart';
 import 'screens/spreads_journey_screen.dart';
+import 'screens/wisdom_tradition_journey_screen.dart';
 import 'screens/lunar_advisor_screen.dart';
 import 'screens/daily_interpretation_screen.dart';
 import 'screens/smart_selection_screen.dart';
@@ -42,6 +43,7 @@ import 'services/daily_quote_service.dart';
 import 'services/audio_service.dart';
 import 'services/credits_service.dart';
 import 'services/learn_progress_service.dart';
+import 'services/lesson_bookmark_service.dart';
 import 'utils/card_image_mapper.dart';
 import 'utils/card_name_localizer.dart';
 import 'state/full_screen_step.dart';
@@ -90,6 +92,9 @@ Future<void> main() async {
 
   // Initialize LearnProgressService
   await LearnProgressService().init();
+
+  // Initialize LessonBookmarkService
+  await LessonBookmarkService().init();
 
   runApp(const SmartTarotApp());
 }
@@ -3169,7 +3174,13 @@ class _HomeState extends State<_Home> {
       bodyContent = LearnScreen(
         strings: localisation,
         onNavigateToCards: () => _showLearnComingSoon(localisation),
-        onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
+        onNavigateToKnowledge: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => WisdomTraditionJourneyScreen(strings: localisation),
+            ),
+          );
+        },
         onNavigateToSpreads: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -4044,7 +4055,13 @@ class _HomeState extends State<_Home> {
         LearnPanel(
           strings: localisation,
           onNavigateToCards: () => _showLearnComingSoon(localisation),
-          onNavigateToKnowledge: () => _showLearnComingSoon(localisation),
+          onNavigateToKnowledge: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => WisdomTraditionJourneyScreen(strings: localisation),
+              ),
+            );
+          },
           onNavigateToSpreads: () {
             Navigator.of(context).push(
               MaterialPageRoute(
