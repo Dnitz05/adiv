@@ -43,6 +43,15 @@ npm run dev
   - **Moon in Signs**: 12 zodiac signs with detailed lunar influence information
   - **Lunar Phases**: 8 moon phases with spiritual and practical guidance
   - See `docs/LUNAR_ACADEMY_ARCHITECTURE.md` for technical architecture details
+- **Wisdom & Tradition**: Traditional tarot knowledge learning journey with 6 categories and 43 lessons covering the history, ethics, systems, symbolism, reading practices, and rituals of tarot with full multilingual support (ca/es/en):
+  - **Origins & History** (8 lessons): From 15th century playing cards to modern tarot renaissance
+  - **Ethics & Responsible Practice** (6 lessons): Professional standards and cultural sensitivity
+  - **Traditional Tarot Systems** (5 lessons): Marseille, RWS, Thoth, Golden Dawn, and Kabbalistic traditions
+  - **Symbolism & Archetypes** (10 lessons): Deep dive into Major and Minor Arcana symbolism
+  - **Reading Practices & Techniques** (8 lessons): Spreads, reversals, intuition, and professional skills
+  - **Sacred Space & Rituals** (6 lessons): Preparation, cleansing, moon phases, and seasonal timing
+  - Features: Progress tracking, bookmarks, search, markdown content, offline-first
+  - See `WISDOM-TRADITION-ULTRATHINK-PLAN.md` for complete implementation plan
 - `apps/iching` and `apps/runes` share networking/state layers and target the new endpoints once feature flags flip; UX polish and entitlement handling remain in progress.
 - Add HTTP mocks and golden/widget tests before public release.
 
